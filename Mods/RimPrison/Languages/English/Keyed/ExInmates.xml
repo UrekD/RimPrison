@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Former inmates come back: the application, the hire and the visit (Story/ExInmates.cs). No capital after a colon: RimWorld capitalises the letter after ": ". -->
+  <RP_ExInmateLabel>{0} asks for work</RP_ExInmateLabel>
+  <RP_ExInmateText>{0} walked out {1} days ago and is asking for work here. They served {2} days for {3}. Conduct was {4}. Programs, {5}. Trade, {6}. Gang, {7}. {8}</RP_ExInmateText>
+  <RP_ExInmate_ConductClean>clean</RP_ExInmate_ConductClean>
+  <RP_ExInmate_ConductTroubles>marked by serious incidents ({0})</RP_ExInmate_ConductTroubles>
+  <RP_ExInmate_Programs>{0} passed</RP_ExInmate_Programs>
+  <RP_ExInmate_NoPrograms>none passed</RP_ExInmate_NoPrograms>
+  <RP_ExInmate_Trade>certified in {0}</RP_ExInmate_Trade>
+  <RP_ExInmate_NoTrade>none certified</RP_ExInmate_NoTrade>
+  <RP_ExInmate_Gang>the {0} gang</RP_ExInmate_Gang>
+  <RP_ExInmate_NoGang>none on the file</RP_ExInmate_NoGang>
+  <RP_ExInmate_BestFit>Their trade and skills suit the {0} post best, and hiring costs {1}.</RP_ExInmate_BestFit>
+  <RP_ExInmate_NoFit>None of the open posts suits their skills.</RP_ExInmate_NoFit>
+  <RP_ExInmate_Cook>Hire as a cook</RP_ExInmate_Cook>
+  <RP_ExInmate_Workman>Hire as a workman</RP_ExInmate_Workman>
+  <RP_ExInmate_Gardener>Hire as a gardener</RP_ExInmate_Gardener>
+  <RP_ExInmate_Decline>Turn them down for good</RP_ExInmate_Decline>
+  <RP_ExInmate_Gone>They cannot be reached any more</RP_ExInmate_Gone>
+  <RP_ExInmate_Locked>The {0} post is not open to hire into yet</RP_ExInmate_Locked>
+  <RP_ExInmate_Cannot>{0} cannot do a {1}'s work</RP_ExInmate_Cannot>
+  <RP_HiredFormer>{0}, who served {2} days here, starts work as a {1}.</RP_HiredFormer>
+  <RP_Chr_HiredFormer>{0}, a former inmate who served {2} days here, was hired as a {1}</RP_Chr_HiredFormer>
+  <RP_Chr_VisitedByFormer>{0} had a visit from {1}, a former inmate who served {2} days here</RP_Chr_VisitedByFormer>
+  <RP_StaffFormerInmate>Former inmate, served {0} days here</RP_StaffFormerInmate>
+</LanguageData>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimPrison.ChronicleCategoryDef><defName>RP_Chr_Intake</defName><label>arrivals</label><color>(0.55, 0.75, 0.95)</color><uiOrder>10</uiOrder></RimPrison.ChronicleCategoryDef>
+  <RimPrison.ChronicleCategoryDef><defName>RP_Chr_Release</defName><label>releases</label><color>(0.5, 0.9, 0.55)</color><uiOrder>20</uiOrder></RimPrison.ChronicleCategoryDef>
+  <RimPrison.ChronicleCategoryDef><defName>RP_Chr_Violence</defName><label>violence</label><color>(0.95, 0.4, 0.3)</color><uiOrder>30</uiOrder></RimPrison.ChronicleCategoryDef>
+  <RimPrison.ChronicleCategoryDef><defName>RP_Chr_Death</defName><label>deaths</label><color>(0.6, 0.15, 0.2)</color><uiOrder>40</uiOrder></RimPrison.ChronicleCategoryDef>
+  <RimPrison.ChronicleCategoryDef><defName>RP_Chr_Security</defName><label>security</label><color>(0.95, 0.75, 0.3)</color><uiOrder>50</uiOrder></RimPrison.ChronicleCategoryDef>
+  <RimPrison.ChronicleCategoryDef><defName>RP_Chr_Gangs</defName><label>gangs and informants</label><color>(0.7, 0.45, 0.85)</color><uiOrder>60</uiOrder></RimPrison.ChronicleCategoryDef>
+  <RimPrison.ChronicleCategoryDef><defName>RP_Chr_Staff</defName><label>staff</label><color>(0.4, 0.7, 0.75)</color><uiOrder>70</uiOrder></RimPrison.ChronicleCategoryDef>
+  <RimPrison.ChronicleCategoryDef><defName>RP_Chr_Decisions</defName><label>your decisions</label><color>(1, 0.9, 0.5)</color><uiOrder>80</uiOrder></RimPrison.ChronicleCategoryDef>
+  <RimPrison.ChronicleCategoryDef><defName>RP_Chr_Outside</defName><label>the outside world</label><color>(0.7, 0.7, 0.7)</color><uiOrder>90</uiOrder></RimPrison.ChronicleCategoryDef>
+  <RimPrison.ChronicleCategoryDef><defName>RP_Chr_Life</defName><label>life inside</label><color>(0.85, 0.65, 0.5)</color><uiOrder>100</uiOrder></RimPrison.ChronicleCategoryDef>
+</Defs>

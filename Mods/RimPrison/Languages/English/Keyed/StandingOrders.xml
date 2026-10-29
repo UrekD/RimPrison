@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Standing orders and the desk. No capital letter may follow a colon here (the game capitalises it): a dash or a new sentence. -->
+
+  <!-- The letter's box and what answering with it ticked says. -->
+  <RP_StandingOrderBox>Do this from now on</RP_StandingOrderBox>
+  <RP_StandingOrderBoxTip>Tick this, then answer. Every later letter of this kind is then answered the same way the moment it comes, without reaching your desk or using a place in the day's budget of decisions. A message tells you, with a link to review the letter. A letter the answer cannot be given for (an urgent one, or one whose case does not allow it) still comes to you as usual. Lift the order on the Policy tab.</RP_StandingOrderBoxTip>
+  <RP_StandingOrderBoxOnly>Only this answer can be given for good - {0}.</RP_StandingOrderBoxOnly>
+  <RP_StandingOrderBoxNow>Your standing order now - {0}. Ticking and answering replaces it.</RP_StandingOrderBoxNow>
+  <RP_StandingOrderSet>Standing order given for {0} - {1}, from now on. Lift it on the Policy tab.</RP_StandingOrderSet>
+  <RP_StandingOrderNotThisAnswer>No standing order given - "{0}" is not an answer to give for good.</RP_StandingOrderNotThisAnswer>
+  <RP_StandingOrderLifted>Standing order lifted - letters of {0} come to your desk again.</RP_StandingOrderLifted>
+
+  <!-- A letter answered by one, and one it could not answer. -->
+  <RP_StandingOrderAnswered>{0} - answered by your standing order ({1}).</RP_StandingOrderAnswered>
+  <RP_StandingOrderAnsweredLine>Answered at once by your standing order - {0}.</RP_StandingOrderAnsweredLine>
+  <RP_StandingOrderCouldNot>Your standing order ({0}) could not answer this letter. {1}. It is yours to answer.</RP_StandingOrderCouldNot>
+  <RP_StandingOrderWhyNotAllowed>This decision no longer takes that answer for good</RP_StandingOrderWhyNotAllowed>
+  <RP_StandingOrderWhyUrgent>The letter is urgent</RP_StandingOrderWhyUrgent>
+  <RP_StandingOrderWhyMissing>That answer is not offered for this case</RP_StandingOrderWhyMissing>
+  <RP_StandingOrderReview>Review</RP_StandingOrderReview>
+  <RP_Chr_DecisionStanding>{0}, by standing order</RP_Chr_DecisionStanding>
+
+  <!-- The Policy tab's section. -->
+  <RP_PolicyShowPunishments>Punishments</RP_PolicyShowPunishments>
+  <RP_StandingOrdersHeading>Standing orders ({0})</RP_StandingOrdersHeading>
+  <RP_StandingOrdersTip>Routine letters you have told to answer themselves. Tick "Do this from now on" on such a letter (a funeral or a quiet burial, the adjudication sheet left to the policy, a custody offer, a mentorship, a talent show, a family day) and answer it. Later letters of that kind are answered the same way at once and use none of the day's budget of decisions. An urgent letter, or one whose answer cannot be given for its case, still comes to you.</RP_StandingOrdersTip>
+  <RP_StandingOrdersNone>None yet. Tick "Do this from now on" on a routine letter and answer it.</RP_StandingOrdersNone>
+  <RP_StandingOrderRow>{0} - {1}</RP_StandingOrderRow>
+  <RP_StandingOrderLift>Lift</RP_StandingOrderLift>
+
+  <!-- The desk (the overview's letters view, and the panel's letters count). -->
+  <RP_DeskShowDesk>Show the desk ({0})</RP_DeskShowDesk>
+  <RP_DeskShowDeskTip>The letters waiting for you - the open ones with the hours left to answer them, the ones held back for midnight by the day's budget with when they lapse - and the day's decisions used and left. The count is of both.</RP_DeskShowDeskTip>
+  <RP_DeskHeading>The desk</RP_DeskHeading>
+  <RP_DeskBudgetLine>Today's decisions - {0} of {1} used, {2} left · {3} open · {4} held for midnight</RP_DeskBudgetLine>
+  <RP_DeskBudgetOff>The day's budget of decisions is off · {0} open · {1} held</RP_DeskBudgetOff>
+  <RP_DeskBudgetTip>A day has room for three decision letters and one more per twenty inmates (more where events come more often). Past that a letter waits for the next midnight with room, and one that has waited {0} days is answered by its default. Urgent letters (an answer time under {1} hours, or a deadline of their own) and letters a standing order answers use none of it.</RP_DeskBudgetTip>
+  <RP_DeskOpen>Open letters ({0})</RP_DeskOpen>
+  <RP_DeskOpenNone>Nothing waits for an answer.</RP_DeskOpenNone>
+  <RP_DeskHeld>Held for midnight ({0})</RP_DeskHeld>
+  <RP_DeskHeldNone>Nothing held back.</RP_DeskHeldNone>
+  <RP_DeskMore>and {0} more</RP_DeskMore>
+  <RP_DeskHoursLeft>{0} h left</RP_DeskHoursLeft>
+  <RP_DeskNoDeadline>no deadline</RP_DeskNoDeadline>
+  <RP_DeskLapses>lapses in {0} h</RP_DeskLapses>
+  <RP_DeskHeldShort>held</RP_DeskHeldShort>
+  <RP_DeskAnswerTime>{0} hours</RP_DeskAnswerTime>
+  <RP_DeskOpenTip>{0}\n\nClick to open it.</RP_DeskOpenTip>
+  <RP_DeskHeldTip>{0}\n\nHeld back by the day's budget of decisions. It reaches your desk at the next midnight with room, with {1} to answer it. If no day has room for it within {2} days it is answered by its default, as an unanswered letter is. Click to read it.</RP_DeskHeldTip>
+  <RP_DeskRowStanding>You have a standing order for these letters ({0}). It answers the ones that come after it, when it can.</RP_DeskRowStanding>
+  <RP_DeskStanding>Answered lately by standing orders</RP_DeskStanding>
+  <RP_HudLettersClick>Click for the desk on the overview.</RP_HudLettersClick>
+</LanguageData>

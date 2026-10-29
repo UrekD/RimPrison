@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Release preparation and supervision (Story/ReleasePrep.cs): the warden's lodging and the bounded help for a setback are paid under one expense line. -->
+  <RimPrison.LedgerCategoryDef><defName>RP_Resettlement</defName><label>resettlement support</label><uiOrder>74</uiOrder></RimPrison.LedgerCategoryDef>
+</Defs>

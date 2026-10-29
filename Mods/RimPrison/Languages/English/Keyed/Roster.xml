@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The roster (Staff/Roster.cs): who works nights, the handover and overtime. No capital after a colon: RimWorld capitalises the letter after ": ". -->
+  <RP_DeployRoster>Guards scheduled on duty by hour</RP_DeployRoster>
+  <RP_RosterHeading>Guards scheduled on duty by hour</RP_RosterHeading>
+  <RP_RosterHeadingKept>Guards scheduled by hour, and {0} off shift still on site</RP_RosterHeadingKept>
+  <RP_RosterTip>The guards scheduled on duty in each hour of the day, by the timetables as they are now (a suspended guard or one on leave is in none) - the same head count the staff are sent home and called in by. This is the schedule, not who is on site - the prison always keeps one member of staff on site, whatever the timetables say. Pin a guard to days or nights in the roster below; the balance fills the night third from the guards who are not pinned.</RP_RosterTip>
+  <RP_RosterKeptTip>Right now {0} off-shift member(s) of staff are still on site - the commute keeps one so that the prison is never left empty, and cannot send home anyone who is in the middle of something that cannot be cut short. They are not in the bars above.</RP_RosterKeptTip>
+  <RP_RosterBarTip>{0}: {1} scheduled on duty</RP_RosterBarTip>
+  <RP_RosterSplit>{0} on nights, {1} on days, {2} pinned</RP_RosterSplit>
+  <RP_RosterPolicyOff>Guard shifts are off in Policy - every guard works days, whatever the pins say.</RP_RosterPolicyOff>
+  <RP_RosterHandover>Handover</RP_RosterHandover>
+  <RP_RosterHandoverValue>{0} h past 22:00</RP_RosterHandoverValue>
+  <RP_RosterHandoverNone>none</RP_RosterHandoverNone>
+  <RP_RosterHandoverTip>Keeps the day guards on for up to three hours past the end of their shift (22:00), so the night shift is not left alone in the hour the day shift goes. Each hour is overtime at {0} the hourly rate, a sixteenth of the day's wage, for each hour a guard works it. It is paid at midnight for the hours worked, whatever the setting is then: {1} a day for the guards on the roster now.</RP_RosterHandoverTip>
+  <RP_StaffColPin>pin</RP_StaffColPin>
+  <RP_ShiftPin_Auto>auto</RP_ShiftPin_Auto>
+  <RP_ShiftPin_Days>days</RP_ShiftPin_Days>
+  <RP_ShiftPin_Nights>nights</RP_ShiftPin_Nights>
+  <RP_ShiftPinTip>Click to change - auto (the balance decides, a third of the guards on nights), days or nights. A guard pinned to nights is one of that third; the balance fills the rest from the guards who are not pinned. With guard shifts switched off in Policy nobody works nights, a pin to nights or not (the switch beats the pin). A guard who works nights for a week in a row resents it, and is glad of a fair rota when taken off.</RP_ShiftPinTip>
+  <RP_OvertimeNote>handover overtime, {0} guard-hours worked</RP_OvertimeNote>
+  <RP_PostFewest>fewest on duty {0}</RP_PostFewest>
+</LanguageData>

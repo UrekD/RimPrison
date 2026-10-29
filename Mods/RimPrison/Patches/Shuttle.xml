@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- The state shuttle holds in orbit in these (see ShuttleSystem.HoldReason); another mod's storm can be given the same extension. -->
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/WeatherDef[defName="RainyThunderstorm" or defName="DryThunderstorm" or defName="SnowHard"]</xpath>
+    <value><li Class="RimPrison.ShuttleHoldExtension" /></value>
+  </Operation>
+</Patch>

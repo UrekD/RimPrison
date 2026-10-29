@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_Chapel</defName>
+    <label>chapel</label>
+    <description>A quiet room where religious inmates pray in their free time. Dining chairs, stools and armchairs seat the spiritual guidance class; a chaplain leading a service (or the class) doubles the comfort and calms them.</description>
+    <color>(0.8, 0.7, 0.95)</color>
+    <uiOrder>38</uiOrder>
+    <keepable>true</keepable>
+  </RimPrison.PrisonZoneDef>
+
+  <NeedDef>
+    <defName>RP_Faith</defName>
+    <needClass>RimPrison.Need_Faith</needClass>
+    <label>faith</label>
+    <description>Religious inmates need time to pray. They go to the chapel in their free time.</description>
+    <fallPerDay>0.3</fallPerDay>
+    <listPriority>590</listPriority>
+    <major>false</major>
+    <colonistAndPrisonersOnly>true</colonistAndPrisonersOnly>
+    <showForCaravanMembers>false</showForCaravanMembers>
+    <modExtensions>
+      <li Class="RimPrison.NeedScopeExtension">
+        <religiousOnly>true</religiousOnly>
+        <fallPerDayAsleepFactor>0.5</fallPerDayAsleepFactor>
+        <thresholds><li>0.25</li><li>0.55</li></thresholds>
+      </li>
+    </modExtensions>
+  </NeedDef>
+  <ThoughtDef>
+    <defName>RP_FaithThought</defName>
+    <workerClass>RimPrison.ThoughtWorker_NeedLevel</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li><label>spiritually adrift</label><description>I haven't been able to pray in days. I feel lost in here.</description><baseMoodEffect>-6</baseMoodEffect></li>
+      <li><label>at peace</label><description>Prayer keeps me going in this place.</description><baseMoodEffect>4</baseMoodEffect></li>
+    </stages>
+    <modExtensions>
+      <li Class="RimPrison.NeedThoughtExtension">
+        <need>RP_Faith</need>
+        <belowLevel><li>0.25</li></belowLevel>
+        <aboveLevelForLast>0.8</aboveLevelForLast>
+      </li>
+    </modExtensions>
+  </ThoughtDef>
+
+  <JobDef>
+    <defName>RP_Pray</defName>
+    <driverClass>RimPrison.JobDriver_Pray</driverClass>
+    <reportString>praying.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+  <JobDef>
+    <defName>RP_LeadService</defName>
+    <driverClass>RimPrison.JobDriver_LeadService</driverClass>
+    <reportString>leading a service.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+
+  <WorkTypeDef>
+    <defName>RP_Ministry</defName>
+    <labelShort>ministry</labelShort>
+    <pawnLabel>Chaplain</pawnLabel>
+    <gerundLabel>ministering</gerundLabel>
+    <description>Lead services in the chapel.</description>
+    <verb>Minister</verb>
+    <naturalPriority>1045</naturalPriority>
+    <requireCapableColonist>true</requireCapableColonist>
+    <relevantSkills><li>Social</li></relevantSkills>
+    <workTags><li>Social</li></workTags>
+  </WorkTypeDef>
+  <WorkGiverDef>
+    <defName>RP_LeadService</defName>
+    <label>lead service</label>
+    <giverClass>RimPrison.WorkGiver_LeadService</giverClass>
+    <workType>RP_Ministry</workType>
+    <verb>lead</verb>
+    <gerund>leading a service for</gerund>
+    <priorityInType>100</priorityInType>
+  </WorkGiverDef>
+
+  <RimPrison.StaffRoleDef>
+    <defName>RP_Chaplain</defName>
+    <label>chaplain</label>
+    <description>Leads services in the chapel when inmates come to pray: faith restores twice as fast and tension eases.</description>
+    <dailyWage>60</dailyWage>
+    <hireCost>300</hireCost>
+    <workTypes><li>RP_Ministry</li></workTypes>
+    <keySkills><li>Social</li></keySkills>
+    <uniformColor>(0.15, 0.12, 0.15)</uniformColor>
+    <uiOrder>58</uiOrder>
+    <barGroup>Programs</barGroup>
+  </RimPrison.StaffRoleDef>
+
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_Chaplaincy</defName>
+    <label>chaplaincy</label>
+    <description>A chapel and a chaplain for religious inmates.</description>
+    <cost>400</cost>
+    <work>8</work>
+    <uiOrder>45</uiOrder>
+    <zones><li>RP_Chapel</li></zones>
+    <roles><li>RP_Chaplain</li></roles>
+  </RimPrison.BureaucracyDef>
+</Defs>

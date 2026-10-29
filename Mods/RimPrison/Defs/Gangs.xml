@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimPrison.GangDef>
+    <defName>RP_Gang_Saints</defName>
+    <label>Saints</label>
+    <description>Old-school crew that runs the yayo and flake trade inside.</description>
+    <tattooChance>0.4</tattooChance>
+    <color>(0.35, 0.6, 0.95)</color>
+    <rivals><li>RP_Gang_Ravens</li></rivals>
+    <typicalCrimes><li>RP_Crime_DrugDealing</li><li>RP_Crime_DrugPossession</li><li>RP_Crime_FlakeTrafficking</li><li>RP_Crime_GoJuiceSmuggling</li><li>RP_Crime_YayoPossession</li></typicalCrimes>
+  </RimPrison.GangDef>
+  <RimPrison.GangDef>
+    <defName>RP_Gang_Ravens</defName>
+    <label>Ravens</label>
+    <description>Violent and loud. They want the Saints' business.</description>
+    <tattooChance>0.6</tattooChance>
+    <color>(0.6, 0.6, 0.65)</color>
+    <rivals><li>RP_Gang_Saints</li><li>RP_Gang_Brotherhood</li></rivals>
+    <typicalCrimes><li>RP_Crime_ArmedRobbery</li><li>RP_Crime_Assault</li><li>RP_Crime_CaravanBanditry</li><li>RP_Crime_Raiding</li><li>RP_Crime_Piracy</li></typicalCrimes>
+  </RimPrison.GangDef>
+  <RimPrison.GangDef>
+    <defName>RP_Gang_Brotherhood</defName>
+    <label>Brotherhood</label>
+    <description>Disciplined and organised. Racketeers and enforcers.</description>
+    <tattooChance>0.3</tattooChance>
+    <color>(0.85, 0.3, 0.25)</color>
+    <rivals><li>RP_Gang_Ravens</li></rivals>
+    <typicalCrimes><li>RP_Crime_Racketeering</li><li>RP_Crime_Murder</li><li>RP_Crime_Kidnapping</li><li>RP_Crime_Slaving</li><li>RP_Crime_Sedition</li></typicalCrimes>
+    <commonality>0.7</commonality>
+  </RimPrison.GangDef>
+
+  <ThoughtDef>
+    <defName>RP_SameGang</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>RimPrison.ThoughtWorker_SameGang</workerClass>
+    <!-- The first stage while the warden does not know both gangs: the Social tab must not name them. -->
+    <stages>
+      <li><label>thick as thieves</label><baseOpinionOffset>20</baseOpinionOffset></li>
+      <li><label>same gang</label><baseOpinionOffset>20</baseOpinionOffset></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_RivalGang</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>RimPrison.ThoughtWorker_RivalGang</workerClass>
+    <stages>
+      <li><label>bad blood</label><baseOpinionOffset>-30</baseOpinionOffset></li>
+      <li><label>rival gang</label><baseOpinionOffset>-30</baseOpinionOffset></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_HatesSnitch</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>30</durationDays>
+    <stackLimit>5</stackLimit>
+    <stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+    <stages><li><label>snitch</label><baseOpinionOffset>-80</baseOpinionOffset></li></stages>
+  </ThoughtDef>
+
+  <RimPrison.MisconductDef>
+    <defName>RP_Tunneling</defName>
+    <label>digging a tunnel</label>
+    <baseWeight>0</baseWeight>
+    <minTension>999</minTension>
+    <severity>4</severity>
+    <punishmentHours>48</punishmentHours>
+    <tensionRelief>0</tensionRelief>
+    <workerClass>RimPrison.MisconductWorker_Never</workerClass>
+  </RimPrison.MisconductDef>
+
+  <!-- The gang war's own attack: not loud, unlike a brawl, so out of every guard's and camera's sight it goes unseen (no record that counts, nobody revealed). Never picked at random. -->
+  <RimPrison.MisconductDef>
+    <defName>RP_Ambush</defName>
+    <label>gang ambush</label>
+    <baseWeight>0</baseWeight>
+    <minTension>999</minTension>
+    <severity>2</severity>
+    <punishmentHours>12</punishmentHours>
+    <assault>true</assault>
+    <danger>Fight</danger>
+    <tensionRelief>30</tensionRelief>
+    <sanctionAs>RP_Fight</sanctionAs>
+    <workerClass>RimPrison.MisconductWorker_Never</workerClass>
+  </RimPrison.MisconductDef>
+
+  <RimPrison.StoryArcDef>
+    <defName>RP_Arc_GangWar</defName>
+    <label>gang war</label>
+    <workerClass>RimPrison.GangWarArc</workerClass>
+    <maxConcurrent>2</maxConcurrent>
+    <decisionHours>12</decisionHours>
+    <urgent>true</urgent>
+  </RimPrison.StoryArcDef>
+
+  <IncidentDef>
+    <defName>RP_GangWar</defName>
+    <label>gang war</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_GangWar</workerClass>
+    <baseChance>0.6</baseChance>
+    <minRefireDays>5</minRefireDays>
+      <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>3</drama>
+        <perPawnCooldownDays>3</perPawnCooldownDays>
+        <weights><li><metric>RivalGangs</metric><curve><points><li>(0,0)</li><li>(1,1)</li></points></curve></li><li><metric>DaysSinceRiot</metric><curve><points><li>(0,0.3)</li><li>(3,1)</li></points></curve></li></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+  <JobDef>
+    <defName>RP_SearchCell</defName>
+    <driverClass>RimPrison.JobDriver_SearchCell</driverClass>
+    <reportString>searching a cell.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RP_SearchCell</defName>
+    <label>search cells</label>
+    <giverClass>RimPrison.WorkGiver_SearchCell</giverClass>
+    <workType>Warden</workType>
+    <verb>search</verb>
+    <gerund>searching</gerund>
+    <priorityInType>55</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RP_SecurityCamera</defName>
+    <label>security camera</label>
+    <description>CCTV camera. Inmates in view are watched: misconduct is seen and punished, and being watched keeps them in line (like half a guard). Powered.</description>
+    <thingClass>Building</thingClass>
+    <designationCategory>RP_Prison</designationCategory>
+    <graphicData>
+      <texPath>Things/Building/RP_Camera</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.15</fillPercent>
+    <pathCost>20</pathCost>
+    <rotatable>false</rotatable>
+    <costList><Steel>30</Steel><ComponentIndustrial>2</ComponentIndustrial></costList>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <WorkToBuild>800</WorkToBuild>
+      <Mass>5</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>40</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="RimPrison.CompProperties_SecurityCamera">
+        <radius>9</radius>
+      </li>
+    </comps>
+    <placeWorkers><li>RimPrison.PlaceWorker_CameraRadius</li></placeWorkers>
+  </ThingDef>
+
+  <RimPrison.StaffRoleDef>
+    <defName>RP_RiotPolice</defName>
+    <label>riot police</label>
+    <description>Called in for riots. Restrains rioters, then leaves.</description>
+    <dailyWage>0</dailyWage>
+    <hireCost>0</hireCost>
+    <workTypes><li>Warden</li></workTypes>
+    <keySkills><li>Melee</li></keySkills>
+    <uniformColor>(0.15, 0.15, 0.2)</uniformColor>
+    <uiOrder>999</uiOrder>
+    <hireable>false</hireable>
+    <requiresViolence>true</requiresViolence>
+    <barGroup>Security</barGroup>
+  </RimPrison.StaffRoleDef>
+</Defs>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Weights benches: inmates lift in free time, in the yard or the common room (see Needs/Exercise.cs). -->
+  <ThingDef ParentName="RP_FixtureBase">
+    <defName>RP_WeightBench</defName>
+    <label>weights bench</label>
+    <description>A steel bench with a barbell on a rack. Inmates lift on it in free time, which keeps them from getting restless, and the violent ones get tougher for it. Plates have a way of ending up in a fist.</description>
+    <graphicData>
+      <texPath>Things/Building/RP_WeightBench</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <costList><Steel>60</Steel></costList>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <WorkToBuild>900</WorkToBuild>
+      <Mass>40</Mass>
+      <Beauty>-1</Beauty>
+    </statBases>
+    <comps>
+      <li Class="RimPrison.CompProperties_Fixture">
+        <need>RP_Exercise</need>
+        <gainPerTick>0.0007</gainPerTick>
+        <maxUseTicks>1000</maxUseTicks>
+        <satisfiedLevel>0.95</satisfiedLevel>
+        <useReport>lifting weights on {0}.</useReport>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- What a tense inmate can walk off with: contraband, but never smuggled in (no smuggle weight). -->
+  <ThingDef ParentName="BaseMeleeWeapon_Blunt">
+    <defName>RP_WeightPlate</defName>
+    <label>weight plate</label>
+    <description>A steel plate off the bench's barbell, swung by the rim. Contraband.</description>
+    <graphicData>
+      <texPath>Things/Item/RP_WeightPlate</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <recipeMaker IsNull="True" />
+    <costList><Steel>5</Steel></costList>
+    <statBases>
+      <MarketValue>6</MarketValue>
+      <Mass>2.5</Mass>
+    </statBases>
+    <equippedAngleOffset>-65</equippedAngleOffset>
+    <tools>
+      <li>
+        <label>rim</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>13</power>
+        <cooldownTime>2.2</cooldownTime>
+      </li>
+    </tools>
+    <modExtensions>
+      <li Class="RimPrison.ContrabandExtension">
+        <kind>Weapon</kind>
+        <metal>true</metal>
+        <smuggleWeight>0</smuggleWeight>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

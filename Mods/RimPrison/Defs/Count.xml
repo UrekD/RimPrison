@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The count (Security/Count.cs): the guards walk a wing and count heads, at lockup and at six by default. -->
+  <JobDef>
+    <defName>RP_Count</defName>
+    <driverClass>RimPrison.JobDriver_Count</driverClass>
+    <reportString>counting the wing.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+  <!-- Under the pad's and the escorts' work (a post, a patrol, a pad guard have their own) and over the posts and the patrol. -->
+  <WorkGiverDef>
+    <defName>RP_Count</defName>
+    <label>count the wing</label>
+    <giverClass>RimPrison.WorkGiver_Count</giverClass>
+    <workType>Warden</workType>
+    <verb>count</verb>
+    <gerund>counting</gerund>
+    <priorityInType>100</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+
+  <!-- Out of place at the count: a mark on the file that a guard saw (nothing is imposed unless the warden sets hours for it; see MisconductDef.mark for what a mark leaves alone). Never picked at random. -->
+  <RimPrison.MisconductDef>
+    <defName>RP_OutOfPlace</defName>
+    <label>out of place at the count</label>
+    <baseWeight>0</baseWeight>
+    <minTension>999</minTension>
+    <severity>1</severity>
+    <mark>true</mark>
+    <tensionRelief>0</tensionRelief>
+    <workerClass>RimPrison.MisconductWorker_Never</workerClass>
+  </RimPrison.MisconductDef>
+</Defs>

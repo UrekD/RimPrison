@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_Classroom</defName>
+    <label>classroom</label>
+    <description>Reform programs run here by default: school desks for the inmates and a counsellor on staff. Programs that need other rooms (chapel, workshop) run there. Two classrooms behind two doors seat two classes.</description>
+    <color>(0.95, 0.9, 0.45)</color>
+    <uiOrder>37</uiOrder>
+    <keepable>true</keepable>
+  </RimPrison.PrisonZoneDef>
+
+  <ThingDef ParentName="RP_FixtureBase">
+    <defName>RP_SchoolDesk</defName>
+    <label>school desk</label>
+    <description>A desk and stool for reform programs. One inmate per desk per session.</description>
+    <graphicData>
+      <texPath>Things/Building/RP_SchoolDesk</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <costList><WoodLog>30</WoodLog></costList>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToBuild>600</WorkToBuild>
+      <Mass>10</Mass>
+    </statBases>
+  </ThingDef>
+
+  <WorkTypeDef>
+    <defName>RP_Counselling</defName>
+    <labelShort>counsel</labelShort>
+    <pawnLabel>Counsellor</pawnLabel>
+    <gerundLabel>counselling</gerundLabel>
+    <description>Teach reform programs.</description>
+    <verb>Teach</verb>
+    <naturalPriority>1050</naturalPriority>
+    <requireCapableColonist>true</requireCapableColonist>
+    <relevantSkills><li>Social</li><li>Intellectual</li></relevantSkills>
+    <workTags><li>Social</li><li>Intellectual</li></workTags>
+  </WorkTypeDef>
+  <WorkGiverDef>
+    <defName>RP_TeachClass</defName>
+    <label>teach class</label>
+    <giverClass>RimPrison.WorkGiver_TeachClass</giverClass>
+    <workType>RP_Counselling</workType>
+    <verb>teach</verb>
+    <gerund>teaching</gerund>
+    <priorityInType>100</priorityInType>
+    <emergency>true</emergency>
+  </WorkGiverDef>
+  <!-- The same giver for every teacher: it finds the session of the teacher's own role. Each is an emergency giver, so a class
+       that starts is reached before the role's other work (and above it within its type); a teacher whose work type is off
+       does not teach (the Work tab), and Programs.cs ends their current job when a class begins. -->
+  <WorkGiverDef>
+    <defName>RP_TeachService</defName>
+    <label>teach class</label>
+    <giverClass>RimPrison.WorkGiver_TeachClass</giverClass>
+    <workType>RP_Ministry</workType>
+    <verb>teach</verb>
+    <gerund>teaching</gerund>
+    <priorityInType>110</priorityInType>
+    <emergency>true</emergency>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RP_TeachTherapy</defName>
+    <label>teach class</label>
+    <giverClass>RimPrison.WorkGiver_TeachClass</giverClass>
+    <workType>RP_Psychology</workType>
+    <verb>teach</verb>
+    <gerund>teaching</gerund>
+    <priorityInType>200</priorityInType>
+    <emergency>true</emergency>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RP_TeachInduction</defName>
+    <label>teach class</label>
+    <giverClass>RimPrison.WorkGiver_TeachClass</giverClass>
+    <workType>Crafting</workType>
+    <verb>teach</verb>
+    <gerund>teaching</gerund>
+    <priorityInType>200</priorityInType>
+    <emergency>true</emergency>
+  </WorkGiverDef>
+  <JobDef>
+    <defName>RP_AttendClass</defName>
+    <driverClass>RimPrison.JobDriver_AttendClass</driverClass>
+    <reportString>attending class.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <JobDef>
+    <defName>RP_TeachClass</defName>
+    <driverClass>RimPrison.JobDriver_TeachClass</driverClass>
+    <reportString>teaching a class.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <RimPrison.StaffRoleDef>
+    <defName>RP_Counsellor</defName>
+    <label>counsellor</label>
+    <description>Runs reform programs in the classroom: education and rehab. Other programs have their own teachers: the chaplain, a workman, the psychologist (who teaches anger management, with the counsellor as a stand-in).</description>
+    <dailyWage>70</dailyWage>
+    <hireCost>400</hireCost>
+    <workTypes><li>RP_Counselling</li><li>Warden</li></workTypes>
+    <keySkills><li>Social</li><li>Intellectual</li></keySkills>
+    <uniformColor>(0.55, 0.35, 0.6)</uniformColor>
+    <uiOrder>55</uiOrder>
+    <barGroup>Programs</barGroup>
+  </RimPrison.StaffRoleDef>
+
+  <RimPrison.ProgramDef>
+    <defName>RP_WorkshopInduction</defName>
+    <label>workshop induction</label>
+    <description>Safety training required before an inmate may work in the workshop. Taught in the workshop by a workman.</description>
+    <zone>RP_Workshop</zone>
+    <teacherRoles><li>RP_Workman</li></teacherRoles>
+    <standing>true</standing>
+    <sessions>3</sessions>
+    <costPerSession>40</costPerSession>
+    <passChance>0.75</passChance>
+    <examSkill>Crafting</examSkill>
+    <forJobs><li>RP_JobWorkshop</li></forJobs>
+    <grantOnPass>0</grantOnPass>
+    <uiOrder>10</uiOrder>
+  </RimPrison.ProgramDef>
+  <RimPrison.ProgramDef>
+    <defName>RP_FoundationEducation</defName>
+    <label>foundation education</label>
+    <description>Reading, writing, arithmetic. Passing it counts toward parole and lowers the chance of reoffending, like any program, and opens general education. An inmate who reads library books in the cell does better in the exam (up to 10 points).</description>
+    <sessions>8</sessions>
+    <costPerSession>60</costPerSession>
+    <passChance>0.35</passChance>
+    <examSkill>Intellectual</examSkill>
+    <passChancePerSkillLevel>0.04</passChancePerSkillLevel>
+    <literacyBonus>0.1</literacyBonus>
+    <maxSkillLevel>8</maxSkillLevel>
+    <everyone>true</everyone>
+    <grantOnPass>300</grantOnPass>
+    <skillXpOnPass>4000</skillXpOnPass>
+    <uiOrder>20</uiOrder>
+  </RimPrison.ProgramDef>
+  <RimPrison.ProgramDef>
+    <defName>RP_SubstanceAbuse</defName>
+    <label>substance abuse treatment</label>
+    <description>Rehab for addicts and drug offenders. Passing cures addictions.</description>
+    <sessions>6</sessions>
+    <costPerSession>80</costPerSession>
+    <passChance>0.5</passChance>
+    <drugCrimesOrAddicts>true</drugCrimesOrAddicts>
+    <curesAddictions>true</curesAddictions>
+    <grantOnPass>350</grantOnPass>
+    <uiOrder>30</uiOrder>
+  </RimPrison.ProgramDef>
+  <RimPrison.ProgramDef>
+    <defName>RP_AngerManagement</defName>
+    <label>anger management</label>
+    <description>Behavioural therapy for volatile inmates, taught by the psychologist, or the counsellor when there is none. Passing removes the volatile reputation.</description>
+    <teacherRoles><li>RP_Psychologist</li><li>RP_Counsellor</li></teacherRoles>
+    <sessions>6</sessions>
+    <costPerSession>80</costPerSession>
+    <passChance>0.4</passChance>
+    <examSkill>Social</examSkill>
+    <forReputations><li>RP_Volatile</li><li>RP_Instigator</li></forReputations>
+    <removesReputations><li>RP_Volatile</li></removesReputations>
+    <grantOnPass>350</grantOnPass>
+    <uiOrder>40</uiOrder>
+  </RimPrison.ProgramDef>
+
+  <RimPrison.ProgramDef>
+    <defName>RP_GeneralEducation</defName>
+    <label>general education</label>
+    <description>A high-school equivalency course for inmates who passed foundation education. Passing it counts toward parole and lowers the chance of reoffending, like any program. Reading library books in the cell helps in the exam (up to 10 points).</description>
+    <sessions>10</sessions>
+    <costPerSession>70</costPerSession>
+    <passChance>0.3</passChance>
+    <examSkill>Intellectual</examSkill>
+    <passChancePerSkillLevel>0.04</passChancePerSkillLevel>
+    <literacyBonus>0.1</literacyBonus>
+    <requiresProgram>RP_FoundationEducation</requiresProgram>
+    <everyone>true</everyone>
+    <grantOnPass>500</grantOnPass>
+    <skillXpOnPass>6000</skillXpOnPass>
+    <uiOrder>25</uiOrder>
+  </RimPrison.ProgramDef>
+  <RimPrison.ProgramDef>
+    <defName>RP_SpiritualGuidance</defName>
+    <label>spiritual guidance</label>
+    <description>Study and reflection for religious inmates, taught by the chaplain in the chapel during free time (dining chairs, stools and armchairs seat the class). Graduates find their faith steadier: it needs half as much prayer.</description>
+    <zone>RP_Chapel</zone>
+    <teacherRoles><li>RP_Chaplain</li></teacherRoles>
+    <seats><li>DiningChair</li><li>Stool</li><li>Armchair</li></seats>
+    <slot>RP_FreeTime</slot>
+    <sessions>4</sessions>
+    <costPerSession>30</costPerSession>
+    <passChance>0.7</passChance>
+    <religiousOnly>true</religiousOnly>
+    <everyone>true</everyone>
+    <deepensFaith>true</deepensFaith>
+    <grantOnPass>100</grantOnPass>
+    <uiOrder>50</uiOrder>
+  </RimPrison.ProgramDef>
+
+  <RimPrison.LedgerCategoryDef><defName>RP_Programs</defName><label>reform programs</label><uiOrder>65</uiOrder></RimPrison.LedgerCategoryDef>
+</Defs>

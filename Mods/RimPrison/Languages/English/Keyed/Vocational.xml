@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Vocational training and prison industries (Programs/Vocation.cs, Labor/Tailoring.cs). -->
+  <RP_SewNote>Cloth for {0} uniforms</RP_SewNote>
+  <RP_FileStatusTrade>Certified in {0}, with a better chance of a job in place on parole and a lower chance of reoffending.</RP_FileStatusTrade>
+  <RP_ParoleTerm_JobTrade>keep the job their {0} certificate found them</RP_ParoleTerm_JobTrade>
+  <RP_ParoleLetter_JobTrade>working in the trade they learned inside ({0})</RP_ParoleLetter_JobTrade>
+  <RP_FormerNews_Trade>{0} is working in the trade they learned inside ({3}), and staying out of trouble.</RP_FormerNews_Trade>
+</LanguageData>

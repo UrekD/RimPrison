@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="FurnitureBase">
+    <defName>RP_CommissaryCounter</defName>
+    <label>commissary counter</label>
+    <description>The prison shop. Staff stock it with chocolate and cigarettes; inmates buy them with the money they earn working or get from family. Sales are prison income.</description>
+    <thingClass>Building_Storage</thingClass>
+    <designationCategory>RP_Prison</designationCategory>
+    <graphicData>
+      <texPath>Things/Building/RP_CommissaryCounter</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,1)</drawSize>
+    </graphicData>
+    <size>(2,1)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.4</fillPercent>
+    <pathCost>50</pathCost>
+    <rotatable>false</rotatable>
+    <surfaceType>Item</surfaceType>
+    <canOverlapZones>false</canOverlapZones>
+    <costList><WoodLog>60</WoodLog><Steel>20</Steel></costList>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <WorkToBuild>1200</WorkToBuild>
+      <Mass>25</Mass>
+    </statBases>
+    <building>
+      <preventDeteriorationOnTop>true</preventDeteriorationOnTop>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <maxItemsInCell>3</maxItemsInCell>
+      <blueprintClass>Blueprint_Storage</blueprintClass>
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs><li>Chocolate</li><li>RP_Cigarettes</li></thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <thingDefs><li>Chocolate</li><li>RP_Cigarettes</li></thingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <inspectorTabs><li>ITab_Storage</li></inspectorTabs>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RP_Cigarettes</defName>
+    <label>cigarettes</label>
+    <description>Prison currency and a small comfort. Sold at the commissary.</description>
+    <graphicData>
+      <texPath>Things/Item/RP_Cigarettes</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <stackLimit>50</stackLimit>
+    <statBases>
+      <MarketValue>2</MarketValue>
+      <Mass>0.02</Mass>
+      <Flammability>1.0</Flammability>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <thingCategories><li>Items</li></thingCategories>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+      <foodType>Processed</foodType>
+      <joy>0.15</joy>
+      <joyKind>Chemical</joyKind>
+      <baseIngestTicks>500</baseIngestTicks>
+      <ingestSound>Ingest_Smoke</ingestSound>
+      <ingestCommandString>Smoke {0}</ingestCommandString>
+      <ingestReportString>Smoking {0}.</ingestReportString>
+      <chairSearchRadius>0</chairSearchRadius>
+    </ingestible>
+    <modExtensions>
+      <li Class="RimPrison.CommissaryItemExtension">
+        <price>4</price>
+        <thought>RP_BoughtTreat</thought>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThoughtDef>
+    <defName>RP_BoughtTreat</defName>
+    <durationDays>0.5</durationDays>
+    <stackLimit>2</stackLimit>
+    <stages>
+      <li><label>commissary treat</label><description>Small things make the days go by.</description><baseMoodEffect>3</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+
+  <JobDef>
+    <defName>RP_BuyCommissary</defName>
+    <driverClass>RimPrison.JobDriver_BuyCommissary</driverClass>
+    <reportString>buying TargetA at the commissary.</reportString>
+  </JobDef>
+
+  <RimPrison.LedgerCategoryDef><defName>RP_InmateWages</defName><label>inmate wages</label><uiOrder>42</uiOrder></RimPrison.LedgerCategoryDef>
+  <RimPrison.LedgerCategoryDef><defName>RP_CommissarySales</defName><label>commissary sales</label><income>true</income><uiOrder>32</uiOrder></RimPrison.LedgerCategoryDef>
+</Defs>

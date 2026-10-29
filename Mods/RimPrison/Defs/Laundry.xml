@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_Laundry</defName>
+    <label>laundry</label>
+    <description>Inmates with laundry jobs wash uniforms here on the washing machines. Every inmate swaps for a clean uniform at shower time; what the laundry does not wash is sent out to a laundry service at $9 a uniform.</description>
+    <color>(0.55, 0.75, 0.95)</color>
+    <uiOrder>36</uiOrder>
+  </RimPrison.PrisonZoneDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RP_WashingMachine</defName>
+    <label>industrial washing machine</label>
+    <description>A coin-free industrial washer. Inmates with laundry jobs run it in the laundry zone; each cycle washes 4 uniforms.</description>
+    <thingClass>Building</thingClass>
+    <designationCategory>RP_Prison</designationCategory>
+    <graphicData>
+      <texPath>Things/Building/RP_WashingMachine</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.6</fillPercent>
+    <pathCost>50</pathCost>
+    <rotatable>true</rotatable>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <defaultPlacingRot>South</defaultPlacingRot>
+    <costList><Steel>80</Steel><ComponentIndustrial>2</ComponentIndustrial></costList>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <WorkToBuild>1800</WorkToBuild>
+      <Mass>50</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>250</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="RimPrison.CompProperties_Workstation">
+        <laundry>4</laundry>
+        <workTicks>1500</workTicks>
+      </li>
+    </comps>
+    <placeWorkers><li>PlaceWorker_PreventInteractionSpotOverlap</li></placeWorkers>
+  </ThingDef>
+
+  <RimPrison.InmateJobDef>
+    <defName>RP_JobLaundry</defName>
+    <label>laundry</label>
+    <description>Runs the washing machines. Saves the outside laundry bill; quiet, steady work.</description>
+    <workerClass>RimPrison.InmateJobWorker_Laundry</workerClass>
+    <zone>RP_Laundry</zone>
+    <allowedSecurity><li>RP_Minimum</li><li>RP_Medium</li><li>RP_Protective</li></allowedSecurity>
+    <maxTension>60</maxTension>
+    <tensionPerHour>-3</tensionPerHour>
+    <wagePerHour>2</wagePerHour>
+    <uiOrder>15</uiOrder>
+  </RimPrison.InmateJobDef>
+
+  <JobDef>
+    <defName>RP_DoLaundry</defName>
+    <driverClass>RimPrison.JobDriver_DoLaundry</driverClass>
+    <reportString>washing uniforms.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <RimPrison.LedgerCategoryDef><defName>RP_Laundry</defName><label>laundry service</label><uiOrder>44</uiOrder></RimPrison.LedgerCategoryDef>
+
+  <NeedDef>
+    <defName>RP_CleanClothes</defName>
+    <needClass>RimPrison.Need_Fixture</needClass>
+    <label>clean uniform</label>
+    <description>How fresh this inmate's uniform is. They swap for a clean one at shower time, if the prison has clean uniforms.</description>
+    <fallPerDay>0.55</fallPerDay>
+    <listPriority>600</listPriority>
+    <major>false</major>
+    <colonistAndPrisonersOnly>true</colonistAndPrisonersOnly>
+    <showForCaravanMembers>false</showForCaravanMembers>
+    <modExtensions>
+      <li Class="RimPrison.NeedScopeExtension">
+        <fallPerDayAsleepFactor>1</fallPerDayAsleepFactor>
+        <thresholds><li>0.2</li><li>0.5</li></thresholds>
+      </li>
+    </modExtensions>
+  </NeedDef>
+  <ThoughtDef>
+    <defName>RP_CleanClothesThought</defName>
+    <workerClass>RimPrison.ThoughtWorker_NeedLevel</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li><label>reeking uniform</label><description>This jumpsuit could walk by itself. When did they last give us clean clothes?</description><baseMoodEffect>-8</baseMoodEffect></li>
+      <li><label>grubby uniform</label><description>My uniform needs a wash.</description><baseMoodEffect>-3</baseMoodEffect></li>
+      <li><label>fresh uniform</label><description>Clean clothes. Small things.</description><baseMoodEffect>2</baseMoodEffect></li>
+    </stages>
+    <modExtensions>
+      <li Class="RimPrison.NeedThoughtExtension">
+        <need>RP_CleanClothes</need>
+        <belowLevel><li>0.2</li><li>0.45</li></belowLevel>
+        <aboveLevelForLast>0.85</aboveLevelForLast>
+      </li>
+    </modExtensions>
+  </ThoughtDef>
+</Defs>

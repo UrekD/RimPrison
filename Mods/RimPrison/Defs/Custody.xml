@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Custody contracts (Intake/CustodyContracts.cs): the state offers a small cohort to rehabilitate. One kind so far. -->
+  <RimPrison.CustodyContractDef>
+    <defName>RP_Custody_Rehabilitation</defName>
+    <label>rehabilitation contract</label>
+    <cohort>3~5</cohort>
+    <levels><li>RP_Minimum</li><li>RP_Medium</li></levels>
+    <demandProgram>RP_FoundationEducation</demandProgram>
+    <serviceDays>7</serviceDays>
+    <requiredSessions>4</requiredSessions>
+    <minTermDays>10</minTermDays>
+    <offerHours>48</offerHours>
+    <arrivalDays>4</arrivalDays>
+    <maxArrivalExtensionDays>3</maxArrivalExtensionDays>
+    <admissionShare>0.5</admissionShare>
+    <bonusShare>1.5</bonusShare>
+    <offerEveryDays>7~10</offerEveryDays>
+  </RimPrison.CustodyContractDef>
+  <RimPrison.LedgerCategoryDef><defName>RP_Custody</defName><label>custody contracts</label><income>true</income><uiOrder>36</uiOrder></RimPrison.LedgerCategoryDef>
+  <!-- Not urgent: the day's budget of decisions holds the letter like any other. -->
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_CustodyContract</defName><label>custody contract offer</label><workerClass>RimPrison.CustodyContractDecision</workerClass><standingOrderAllowed>true</standingOrderAllowed></RimPrison.PrisonDecisionDef>
+</Defs>

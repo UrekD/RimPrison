@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Growing old inside: a chronic condition's decision letter, the chaplain at the hospice bed, the family's letters (Story/OldAge.cs). -->
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_OldAge</defName><label>chronic illness</label><workerClass>RimPrison.OldAgeDecision</workerClass></RimPrison.PrisonDecisionDef>
+
+  <ThoughtDef>
+    <defName>RP_ChaplainAtBedside</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>the chaplain sat with me</label><description>I am not going anywhere, but I am not alone.</description><baseMoodEffect>6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+
+  <!-- The family's letters to the warden (never post for an inmate: see CondolenceSystem). -->
+  <RimPrison.MailKindDef>
+    <defName>RP_Mail_CondolenceOld</defName>
+    <label>a family's letter after a death of age</label>
+    <weight>0</weight>
+    <workerClass>RimPrison.MailKindWorker_Condolence</workerClass>
+    <chronicleKey>RP_Mail_Chr_CondolenceOld</chronicleKey>
+    <importance>2</importance>
+    <minFamily>0</minFamily>
+  </RimPrison.MailKindDef>
+  <RimPrison.MailKindDef>
+    <defName>RP_Mail_CompassionateRelease</defName>
+    <label>a family's letter after a compassionate release</label>
+    <weight>0</weight>
+    <workerClass>RimPrison.MailKindWorker_Condolence</workerClass>
+    <chronicleKey>RP_Mail_Chr_CompassionateRelease</chronicleKey>
+    <importance>2</importance>
+    <reputation>1</reputation>
+    <minFamily>0</minFamily>
+  </RimPrison.MailKindDef>
+</Defs>

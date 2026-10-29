@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Guard posts (GuardPosts.cs, the Deployment tab). No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+  <RP_PostHour>{0}:00</RP_PostHour>
+  <RP_PostHoursAll>all day</RP_PostHoursAll>
+  <RP_PostHoursRange>{0} to {1}</RP_PostHoursRange>
+  <RP_PostGuardAny>any free guard</RP_PostGuardAny>
+  <RP_PostPlace>{0} ({1}, {2})</RP_PostPlace>
+  <RP_PostPlaceNone>post at ({0}, {1})</RP_PostPlaceNone>
+
+  <RP_PostInspectHours>Hours - {0}</RP_PostInspectHours>
+  <RP_PostInspectGuard>Guard - {0}</RP_PostInspectGuard>
+  <RP_PostStanding>Standing watch - {0}</RP_PostStanding>
+  <RP_PostOnTheWay>On the way - {0}</RP_PostOnTheWay>
+  <RP_PostUnmanned>Nobody here now</RP_PostUnmanned>
+  <RP_PostOutsideHours>Outside its hours - nobody is sent</RP_PostOutsideHours>
+  <RP_PostSuspended>Suspended while the state's chief sets the patrols - nobody is sent</RP_PostSuspended>
+
+  <RP_DeployPosts>Guard posts</RP_DeployPosts>
+  <RP_DeployPostsTip>A guard on shift and free (not on a tower, a built tower keeps its guard) stands at each post in its hours (the named one if there is one, else the nearest), until the hours or the shift end, or an emergency calls them away. Place a post from the prison menu (it costs nothing), or from a patch on the danger list.</RP_DeployPostsTip>
+  <RP_DeployPostsNone>No guard posts yet. Place one from the prison menu, or from a patch on the danger list.</RP_DeployPostsNone>
+  <RP_DeployPostsSuspended>The state's security chief sets the patrols while they are here, so the posts are suspended and nobody is sent.</RP_DeployPostsSuspended>
+  <RP_DeployPostFrom>from {0}</RP_DeployPostFrom>
+  <RP_DeployPostTo>to {0}</RP_DeployPostTo>
+  <RP_DeployPostHoursTip>The hours the post is manned. The same hour in both is all day, and the hours may run past midnight.</RP_DeployPostHoursTip>
+  <RP_DeployPostGuardTip>The guard who stands here when on shift and free (not on a tower). When they are not, any other free guard on shift goes.</RP_DeployPostGuardTip>
+  <RP_DeployPostGuardMenuAny>Any free guard</RP_DeployPostGuardMenuAny>
+  <RP_DeployPostGuardGone>(let go)</RP_DeployPostGuardGone>
+
+  <RP_PostHere>post a guard here</RP_PostHere>
+  <RP_PostHereTip>Place a guard post on this patch (on its cell, or the nearest cell a guard can stand on). It costs nothing and is there at once.</RP_PostHereTip>
+  <RP_PostHerePlaced>posted</RP_PostHerePlaced>
+  <RP_PostHerePlacedTip>A guard post already stands next to this patch.</RP_PostHerePlacedTip>
+  <RP_PostNoRoom>There is no free cell for a guard post near {0}.</RP_PostNoRoom>
+</LanguageData>

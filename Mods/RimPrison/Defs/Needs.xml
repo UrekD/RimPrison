@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <NeedDef>
+    <defName>RP_Hygiene</defName>
+    <needClass>RimPrison.Need_Fixture</needClass>
+    <label>hygiene</label>
+    <description>How clean this person feels. Showers restore it.</description>
+    <fallPerDay>0.55</fallPerDay>
+    <listPriority>620</listPriority>
+    <major>false</major>
+    <colonistAndPrisonersOnly>true</colonistAndPrisonersOnly>
+    <showForCaravanMembers>false</showForCaravanMembers>
+    <modExtensions>
+      <li Class="RimPrison.NeedScopeExtension">
+        <fallPerDayAsleepFactor>0.6</fallPerDayAsleepFactor>
+        <thresholds><li>0.15</li><li>0.35</li></thresholds>
+      </li>
+    </modExtensions>
+  </NeedDef>
+  <NeedDef>
+    <defName>RP_Bladder</defName>
+    <needClass>RimPrison.Need_Fixture</needClass>
+    <label>bladder</label>
+    <description>Low means this person needs a toilet. With no toilet nearby, they will relieve themselves wherever they are.</description>
+    <fallPerDay>2.6</fallPerDay>
+    <listPriority>610</listPriority>
+    <major>false</major>
+    <colonistAndPrisonersOnly>true</colonistAndPrisonersOnly>
+    <showForCaravanMembers>false</showForCaravanMembers>
+    <modExtensions>
+      <li Class="RimPrison.NeedScopeExtension">
+        <fallPerDayAsleepFactor>0.35</fallPerDayAsleepFactor>
+        <thresholds><li>0.3</li></thresholds>
+        <pausedWhileBedridden>true</pausedWhileBedridden>
+        <accidentFilth>Filth_Vomit</accidentFilth>
+        <accidentThought>RP_SoiledSelf</accidentThought>
+        <accidentHygieneLoss>0.5</accidentHygieneLoss>
+      </li>
+    </modExtensions>
+  </NeedDef>
+
+  <ThoughtDef>
+    <defName>RP_HygieneThought</defName>
+    <workerClass>RimPrison.ThoughtWorker_NeedLevel</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li><label>filthy</label><description>I stink. I can't remember the last time I washed.</description><baseMoodEffect>-10</baseMoodEffect></li>
+      <li><label>dirty</label><description>I need a shower.</description><baseMoodEffect>-5</baseMoodEffect></li>
+      <li><label>grimy</label><description>Could use a wash.</description><baseMoodEffect>-2</baseMoodEffect></li>
+      <li><label>freshly washed</label><description>Feels good to be clean.</description><baseMoodEffect>3</baseMoodEffect></li>
+    </stages>
+    <modExtensions>
+      <li Class="RimPrison.NeedThoughtExtension">
+        <need>RP_Hygiene</need>
+        <belowLevel><li>0.15</li><li>0.35</li><li>0.55</li></belowLevel>
+        <aboveLevelForLast>0.85</aboveLevelForLast>
+      </li>
+    </modExtensions>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_BladderThought</defName>
+    <workerClass>RimPrison.ThoughtWorker_NeedLevel</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li><label>desperate for a toilet</label><description>I really, really need to go.</description><baseMoodEffect>-8</baseMoodEffect></li>
+      <li><label>needs the toilet</label><description>I need to go.</description><baseMoodEffect>-3</baseMoodEffect></li>
+    </stages>
+    <modExtensions>
+      <li Class="RimPrison.NeedThoughtExtension">
+        <need>RP_Bladder</need>
+        <belowLevel><li>0.08</li><li>0.25</li></belowLevel>
+      </li>
+    </modExtensions>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_SoiledSelf</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>3</stackLimit>
+    <stages>
+      <li><label>soiled myself</label><description>There was no toilet. Humiliating.</description><baseMoodEffect>-10</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Exercise and literacy. Both start gentle: a slow fall, and the mood only bites below 0.2. -->
+  <NeedDef>
+    <defName>RP_Exercise</defName>
+    <needClass>RimPrison.Need_Fixture</needClass>
+    <label>exercise</label>
+    <description>How much this person has moved lately. A weights bench in the yard restores it. Without a workout for days they get restless, and restless inmates are tense. Not for those who eat in their cells (death row).</description>
+    <fallPerDay>0.3</fallPerDay>
+    <listPriority>600</listPriority>
+    <major>false</major>
+    <colonistAndPrisonersOnly>true</colonistAndPrisonersOnly>
+    <showForCaravanMembers>false</showForCaravanMembers>
+    <modExtensions>
+      <li Class="RimPrison.NeedScopeExtension">
+        <fallPerDayAsleepFactor>0.4</fallPerDayAsleepFactor>
+        <thresholds><li>0.2</li></thresholds>
+        <pausedWhileBedridden>true</pausedWhileBedridden>
+        <pausedForCellMeals>true</pausedForCellMeals>
+      </li>
+    </modExtensions>
+  </NeedDef>
+  <NeedDef>
+    <defName>RP_Literacy</defName>
+    <needClass>RimPrison.Need_Literacy</needClass>
+    <label>literacy</label>
+    <description>How much this person has read lately. Library books left at the cell door fill it, and a well-read inmate does better in the education programs. Only for those who can read.</description>
+    <fallPerDay>0.12</fallPerDay>
+    <listPriority>590</listPriority>
+    <major>false</major>
+    <colonistAndPrisonersOnly>true</colonistAndPrisonersOnly>
+    <showForCaravanMembers>false</showForCaravanMembers>
+    <modExtensions>
+      <li Class="RimPrison.NeedScopeExtension">
+        <fallPerDayAsleepFactor>0.2</fallPerDayAsleepFactor>
+        <thresholds><li>0.3</li></thresholds>
+        <literateOnly>true</literateOnly>
+      </li>
+    </modExtensions>
+  </NeedDef>
+
+  <ThoughtDef>
+    <defName>RP_RestlessThought</defName>
+    <workerClass>RimPrison.ThoughtWorker_NeedLevel</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li><label>restless</label><description>I have not moved in days. I need to lift something, run, anything.</description><baseMoodEffect>-4</baseMoodEffect></li>
+    </stages>
+    <modExtensions>
+      <li Class="RimPrison.NeedThoughtExtension">
+        <need>RP_Exercise</need>
+        <belowLevel><li>0.2</li></belowLevel>
+      </li>
+    </modExtensions>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_WellReadThought</defName>
+    <workerClass>RimPrison.ThoughtWorker_NeedLevel</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li><label>well read</label><description>A good book makes the walls a little thinner.</description><baseMoodEffect>2</baseMoodEffect></li>
+    </stages>
+    <modExtensions>
+      <li Class="RimPrison.NeedThoughtExtension">
+        <need>RP_Literacy</need>
+        <aboveLevelForLast>0.8</aboveLevelForLast>
+      </li>
+    </modExtensions>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_FinishedBook</defName>
+    <durationDays>1.5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>finished a book</label><description>I got to the end of it. Somebody else's life, for a few hours.</description><baseMoodEffect>3</baseMoodEffect></li></stages>
+  </ThoughtDef>
+</Defs>

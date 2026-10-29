@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Tasking an informant (Security/InformantTask.cs): a known informant set to watch one inmate. No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+  <RP_InformantTask_Button>Task...</RP_InformantTask_Button>
+  <RP_InformantTask_ButtonTip>Set {0} to watch one inmate. Their tips look at that inmate first, but every day in place (in the target's cell, on their wing or near them) makes it likelier they are found out, faster when the target's gang is on the wing. You can pull them out, or point them at someone else, at any time.</RP_InformantTask_ButtonTip>
+  <RP_InformantTask_MenuTitle>Whom should {0} watch?</RP_InformantTask_MenuTitle>
+  <RP_InformantTask_MoveTitle>Move {0} near {1}?</RP_InformantTask_MoveTitle>
+  <RP_InformantTask_PullOut>Pull out (stop watching {0})</RP_InformantTask_PullOut>
+  <RP_InformantTask_TargetSuspect>{0} - {1}</RP_InformantTask_TargetSuspect>
+  <RP_InformantTask_NoTargets>Nobody to watch.</RP_InformantTask_NoTargets>
+  <RP_InformantTask_WhyFlagged>flagged</RP_InformantTask_WhyFlagged>
+  <RP_InformantTask_WhySearch>a search due</RP_InformantTask_WhySearch>
+  <RP_InformantTask_WhyTunnel>a tunnel known</RP_InformantTask_WhyTunnel>
+  <RP_InformantTask_WhyRing>in a ring</RP_InformantTask_WhyRing>
+  <RP_InformantTask_WhyDebt>a debt</RP_InformantTask_WhyDebt>
+
+  <!-- The move near the target, offered and never forced. -->
+  <RP_InformantTask_MoveCell>Move them into {0}'s cell</RP_InformantTask_MoveCell>
+  <RP_InformantTask_MoveWing>Move them onto {0}'s wing</RP_InformantTask_MoveWing>
+  <RP_InformantTask_Stay>Leave {0} where they are</RP_InformantTask_Stay>
+  <RP_InformantTask_WhyKeptApart>you keep them apart from {0}</RP_InformantTask_WhyKeptApart>
+  <RP_InformantTask_WhyNoMove>{0} cannot be moved</RP_InformantTask_WhyNoMove>
+  <RP_InformantTask_WhySameCell>they share a cell already</RP_InformantTask_WhySameCell>
+  <RP_InformantTask_WhyNoCell>{0} has no cell</RP_InformantTask_WhyNoCell>
+  <RP_InformantTask_WhyNoBedCell>no free bed there that {0} may have</RP_InformantTask_WhyNoBedCell>
+  <RP_InformantTask_WhyNoWing>{0} lives in no wing</RP_InformantTask_WhyNoWing>
+  <RP_InformantTask_WhySameWing>they are on that wing already</RP_InformantTask_WhySameWing>
+  <RP_InformantTask_WhyNoBedWing>no free bed on the {1} wing that {0} may have</RP_InformantTask_WhyNoBedWing>
+  <RP_InformantTask_MoveFit>cell {0}, {1}</RP_InformantTask_MoveFit>
+  <RP_InformantTask_MoveRefused>{0} was not moved - {1}.</RP_InformantTask_MoveRefused>
+
+  <!-- The task on the file and on Intel, and how it ends. -->
+  <RP_InformantTask_Set>{0} is watching {1} from now on.</RP_InformantTask_Set>
+  <RP_InformantTask_PulledOutMsg>{0} has stopped watching {1}.</RP_InformantTask_PulledOutMsg>
+  <RP_InformantTask_EndedGone>{0} is no longer watching {1}, who is gone.</RP_InformantTask_EndedGone>
+  <RP_InformantTask_EndedLost>{0} is no longer watching anyone - the inmate they watched is not in the prison any more.</RP_InformantTask_EndedLost>
+  <RP_InformantTask_Line>Watching {0} - {1} days in place, exposure risk {2}</RP_InformantTask_Line>
+  <RP_InformantTask_LineNotYet>Watching {0} - not near them yet, no exposure risk</RP_InformantTask_LineNotYet>
+  <RP_InformantBand_Low>low</RP_InformantBand_Low>
+  <RP_InformantBand_Rising>rising</RP_InformantBand_Rising>
+  <RP_InformantBand_High>high</RP_InformantBand_High>
+  <RP_InformantTask_BurnedText>{1} has worked out why {0} was always around, and that {0} talks to the guards. {0} is now a target. Consider protective measures (solitary, transfer to another wing).</RP_InformantTask_BurnedText>
+  <RP_IntelPullOut>Pull out</RP_IntelPullOut>
+  <RP_IntelPullOutTip>Pull {0} out. The task ends, and nothing more is risked by it. The target stays wary of them for as long as they were in place, so pointing them at the same inmate again soon picks up where they left off.</RP_IntelPullOutTip>
+  <RP_IntelTip_InformantTask>The inmate {0} watches comes first in their tips. Each day in place adds {1} points to the chance they are found out ({2} when the target's gang has someone else on the wing). Only days within reach of the target count (their cell, their wing, or near them). A tip acted on gives them away at {3} percent plus that, and a quarter of it is risked every day in reach on its own. The band counts only gangs you know of - a gang you have not found still counts against them. Click to see the target.</RP_IntelTip_InformantTask>
+</LanguageData>

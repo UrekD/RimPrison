@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <WorkTypeDef>
+    <defName>RP_Psychology</defName>
+    <labelShort>psych</labelShort>
+    <pawnLabel>Psychologist</pawnLabel>
+    <gerundLabel>giving therapy</gerundLabel>
+    <description>Assess new inmates and talk tense inmates down.</description>
+    <verb>Counsel</verb>
+    <naturalPriority>1048</naturalPriority>
+    <requireCapableColonist>true</requireCapableColonist>
+    <relevantSkills><li>Social</li></relevantSkills>
+    <workTags><li>Social</li></workTags>
+  </WorkTypeDef>
+  <WorkGiverDef>
+    <defName>RP_Therapy</defName>
+    <label>therapy</label>
+    <giverClass>RimPrison.WorkGiver_Therapy</giverClass>
+    <workType>RP_Psychology</workType>
+    <verb>talk to</verb>
+    <gerund>talking to</gerund>
+    <priorityInType>100</priorityInType>
+    <requiredCapacities><li>Talking</li></requiredCapacities>
+  </WorkGiverDef>
+  <JobDef>
+    <defName>RP_Therapy</defName>
+    <driverClass>RimPrison.JobDriver_Therapy</driverClass>
+    <reportString>talking with TargetA.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+  <ThoughtDef>
+    <defName>RP_TherapyHelped</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>talked it through</label><description>The psychologist actually listened. I feel a bit lighter.</description><baseMoodEffect>5</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+
+  <RimPrison.StaffRoleDef>
+    <defName>RP_Psychologist</defName>
+    <label>psychologist</label>
+    <description>Assesses every new inmate (hidden reputations such as snitches and escape artists, and gang ties, come to light) and talks tense inmates down: tension drops and mood lifts for a day.</description>
+    <dailyWage>90</dailyWage>
+    <hireCost>500</hireCost>
+    <workTypes><li>RP_Psychology</li></workTypes>
+    <keySkills><li>Social</li><li>Intellectual</li></keySkills>
+    <uniformColor>(0.85, 0.85, 0.8)</uniformColor>
+    <uiOrder>56</uiOrder>
+    <barGroup>Medical</barGroup>
+  </RimPrison.StaffRoleDef>
+
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_Psychology</defName>
+    <label>psychology department</label>
+    <description>A prison psychologist: intake assessments and therapy for tense inmates.</description>
+    <cost>700</cost>
+    <work>12</work>
+    <uiOrder>42</uiOrder>
+    <prerequisites><li>RP_Bur_Reform</li></prerequisites>
+    <roles><li>RP_Psychologist</li></roles>
+  </RimPrison.BureaucracyDef>
+</Defs>

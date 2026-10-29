@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Inmates at risk: the watch list (Programs/WatchList.cs). -->
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_WatchList</defName><label>inmate at risk</label><workerClass>RimPrison.WatchListDecision</workerClass></RimPrison.PrisonDecisionDef>
+
+  <!-- A guard going to an inmate on the list (a watch's check, a crisis) reserves them on this layer: one guard at a time, and nobody else's work on the inmate (a tend, a rescue, therapy) is blocked. -->
+  <ReservationLayerDef><defName>RP_WatchLayer</defName></ReservationLayerDef>
+
+  <!-- The crisis: they keep to the room they are in until a member of staff reaches them, or the time runs out (see MentalState_Crisis). Not a break of the mood breaker: only the watch list starts it. -->
+  <MentalStateDef ParentName="BaseMentalState">
+    <defName>RP_Crisis</defName>
+    <stateClass>RimPrison.MentalState_Crisis</stateClass>
+    <label>in crisis</label>
+    <category>Misc</category>
+    <blockRandomInteraction>true</blockRandomInteraction>
+    <blockNormalThoughts>true</blockNormalThoughts>
+    <nameColor>(0.7,0.6,0.9)</nameColor>
+    <minTicksBeforeRecovery>3000</minTicksBeforeRecovery>
+    <maxTicksBeforeRecovery>3000</maxTicksBeforeRecovery>
+    <recoveryMtbDays>99999</recoveryMtbDays>
+    <baseInspectLine>In a crisis</baseInspectLine>
+  </MentalStateDef>
+
+  <!-- The watch: a guard looks in on them every half hour (care work: the care reserve takes it first). An emergency giver, under the rescue of the downed. -->
+  <JobDef>
+    <defName>RP_WatchCheck</defName>
+    <driverClass>RimPrison.JobDriver_WatchCheck</driverClass>
+    <reportString>checking on TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RP_WatchCheckGiver</defName>
+    <label>check on inmates on watch</label>
+    <giverClass>RimPrison.WorkGiver_WatchCheck</giverClass>
+    <workType>Warden</workType>
+    <verb>check on</verb>
+    <gerund>checking on</gerund>
+    <priorityInType>185</priorityInType>
+    <emergency>true</emergency>
+  </WorkGiverDef>
+
+  <!-- A crisis the staff have seen (or of one on watch): a guard goes to them, as to the downed. -->
+  <JobDef>
+    <defName>RP_CrisisResponse</defName>
+    <driverClass>RimPrison.JobDriver_CrisisResponse</driverClass>
+    <reportString>going to TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RP_CrisisResponseGiver</defName>
+    <label>go to an inmate in crisis</label>
+    <giverClass>RimPrison.WorkGiver_CrisisResponse</giverClass>
+    <workType>Warden</workType>
+    <verb>go to</verb>
+    <gerund>going to</gerund>
+    <priorityInType>195</priorityInType>
+    <emergency>true</emergency>
+  </WorkGiverDef>
+
+  <!-- Counselling: an hour a day with the counsellor (or the psychologist). -->
+  <JobDef>
+    <defName>RP_WatchCounselling</defName>
+    <driverClass>RimPrison.JobDriver_WatchCounselling</driverClass>
+    <reportString>counselling TargetA.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RP_WatchCounselling_Counsellor</defName>
+    <label>counsel an inmate at risk</label>
+    <giverClass>RimPrison.WorkGiver_WatchCounselling</giverClass>
+    <workType>RP_Counselling</workType>
+    <verb>counsel</verb>
+    <gerund>counselling</gerund>
+    <priorityInType>95</priorityInType>
+    <requiredCapacities><li>Talking</li></requiredCapacities>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RP_WatchCounselling_Psych</defName>
+    <label>counsel an inmate at risk</label>
+    <giverClass>RimPrison.WorkGiver_WatchCounselling</giverClass>
+    <workType>RP_Psychology</workType>
+    <verb>counsel</verb>
+    <gerund>counselling</gerund>
+    <priorityInType>90</priorityInType>
+    <requiredCapacities><li>Talking</li></requiredCapacities>
+  </WorkGiverDef>
+
+  <ThoughtDef>
+    <defName>RP_OnWatch</defName>
+    <workerClass>RimPrison.ThoughtWorker_OnWatch</workerClass>
+    <stages>
+      <li><label>on watch</label><description>They took my things, and someone looks in on me every half hour.</description><baseMoodEffect>-8</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_Counselled</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>someone listened</label><description>I talked with the counsellor for an hour. It did not fix anything, but it helped.</description><baseMoodEffect>8</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+</Defs>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Growing old inside: chronic illness, the hospice bed, compassionate release (Story/OldAge.cs). No capital after a colon: RimWorld capitalises the letter after ": ". -->
+  <RP_OldAgeLabel>{0} has been diagnosed with {1}</RP_OldAgeLabel>
+  <RP_OldAgeText>{0}, aged {1}, has {2}. They are {3}.
+
+{4}
+
+Treating them here costs {5}. A transfer to the state's hospital costs {6}. {7}</RP_OldAgeText>
+  <RP_OldAge_SentenceLife>serving life, {0} days in</RP_OldAge_SentenceLife>
+  <RP_OldAge_SentenceTerm>serving {0} days, with {1} served and {2} left</RP_OldAge_SentenceTerm>
+  <RP_OldAge_CanTreat>It can be cured, and a surgeon can cut it out. Left alone it will kill them, and a death of it would be called neglect.</RP_OldAge_CanTreat>
+  <RP_OldAge_Palliative>There is no cure and it will kill them in the end. Care here means palliative care. When the end is near they are put to bed in a medical bed, in their own wing where there is a free one, and the chaplain sits with them. Left alone, nothing could have been done, and a death of it is no neglect.</RP_OldAge_Palliative>
+  <RP_OldAge_Lived>It cannot be cured, only lived with. Care here means medicine and rest.</RP_OldAge_Lived>
+  <RP_OldAge_ReleaseYes>They qualify for a compassionate release.</RP_OldAge_ReleaseYes>
+  <RP_OldAge_ReleaseNo>They do not qualify for a compassionate release, since {0}.</RP_OldAge_ReleaseNo>
+  <RP_OldAge_Treat>Treat them here</RP_OldAge_Treat>
+  <RP_OldAge_Transfer>Send them to the state's hospital</RP_OldAge_Transfer>
+  <RP_OldAge_Release>Compassionate release</RP_OldAge_Release>
+  <RP_OldAge_Nothing>Do nothing</RP_OldAge_Nothing>
+  <RP_OldAge_Gone>They are not here to decide about</RP_OldAge_Gone>
+  <RP_OldAge_NoGone>they are on the way out already</RP_OldAge_NoGone>
+  <RP_OldAge_NoYoung>they are under {0} and not dying</RP_OldAge_NoYoung>
+  <RP_OldAge_NoRemand>they await trial</RP_OldAge_NoRemand>
+  <RP_OldAge_NoDeathRow>they are on death row</RP_OldAge_NoDeathRow>
+  <RP_OldAge_NoLifer>a lifer has to serve {0} days first and they have served {1}</RP_OldAge_NoLifer>
+  <RP_OldAge_NoShare>they have to serve {0} of the sentence first and have served {1} of {2} days</RP_OldAge_NoShare>
+  <RP_OldAge_NoDowned>they are too weak to be moved to the gate just now</RP_OldAge_NoDowned>
+  <RP_OldAgeNote>Care for {0}, {1}</RP_OldAgeNote>
+  <RP_Cause_StateHospital>treatment at the state's hospital</RP_Cause_StateHospital>
+  <RP_Cause_Compassionate>a compassionate release</RP_Cause_Compassionate>
+  <RP_Chr_Diagnosed>{0} was diagnosed with {1}</RP_Chr_Diagnosed>
+  <RP_Chr_OldAgeSurgery>{0} is to be operated on for {1}</RP_Chr_OldAgeSurgery>
+  <RP_Chr_OldAgeCare>{0} is given medicine and care for {1}</RP_Chr_OldAgeCare>
+  <RP_Chr_OldAgePalliative>{0} is given palliative care for {1}</RP_Chr_OldAgePalliative>
+  <RP_Chr_OldAgeNothing>Nothing was done about {1} for {0}</RP_Chr_OldAgeNothing>
+  <RP_Chr_Hospice>{0} was put to bed in the hospice, in the {1} wing</RP_Chr_Hospice>
+  <RP_Chr_ChaplainAtBedside>The chaplain sat with {0} at their bedside</RP_Chr_ChaplainAtBedside>
+  <RP_Chr_TransferredCause>{0} was transferred out for {1}</RP_Chr_TransferredCause>
+  <RP_Chr_ReleasedCompassionate>{0} was released on compassionate grounds after {1} days, with {2}</RP_Chr_ReleasedCompassionate>
+  <RP_Chr_ReleasedCompassionateLifer>{0}, a lifer, walked out on compassionate grounds after {1} days, with {2}</RP_Chr_ReleasedCompassionateLifer>
+  <RP_Chr_DiedOfAge>{0} died of {1} after {2} days inside, aged {3}</RP_Chr_DiedOfAge>
+  <RP_Chr_DiedOfAgeLifer>{0}, a lifer, died of {1} after {2} days inside, aged {3}</RP_Chr_DiedOfAgeLifer>
+
+  <RP_Mail_CondolenceOld_Label>A letter about {0}</RP_Mail_CondolenceOld_Label>
+  <RP_Mail_CondolenceOld_Text>{0}'s {1} writes to the warden. {0} grew old and died in the prison, and the body has come home on the state shuttle. The family says they had made their peace with it long ago, and thank the prison for the years of visits.</RP_Mail_CondolenceOld_Text>
+  <RP_Mail_Chr_CondolenceOld>The family of {0} wrote after the death of age, and made their peace.</RP_Mail_Chr_CondolenceOld>
+
+  <RP_Mail_CompassionateRelease_Label>A letter about {0}</RP_Mail_CompassionateRelease_Label>
+  <RP_Mail_CompassionateRelease_Text>{0}'s {1} writes to the warden. {0} is home, and the family is grateful that the prison let them go to be looked after in the time that is left.</RP_Mail_CompassionateRelease_Text>
+  <RP_Mail_Chr_CompassionateRelease>The family of {0} wrote to thank the warden for the compassionate release.</RP_Mail_Chr_CompassionateRelease>
+</LanguageData>

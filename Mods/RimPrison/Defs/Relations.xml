@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <PawnRelationDef>
+    <defName>RP_Enemy</defName>
+    <label>enemy</label>
+    <importance>40</importance>
+    <opinionOffset>-40</opinionOffset>
+    <reflexive>true</reflexive>
+  </PawnRelationDef>
+  <PawnRelationDef>
+    <defName>RP_Friend</defName>
+    <label>friend inside</label>
+    <importance>45</importance>
+    <opinionOffset>30</opinionOffset>
+    <reflexive>true</reflexive>
+    <diedThought>RP_FriendDied</diedThought>
+  </PawnRelationDef>
+
+  <RimPrison.StoryArcDef>
+    <defName>RP_Arc_Feud</defName>
+    <label>feud</label>
+    <workerClass>RimPrison.FeudArc</workerClass>
+    <maxConcurrent>4</maxConcurrent>
+    <decisionHours>12</decisionHours>
+    <urgent>true</urgent>
+  </RimPrison.StoryArcDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Arc</defName><label>story decision</label><workerClass>RimPrison.PrisonDecisionWorker_Arc</workerClass></RimPrison.PrisonDecisionDef>
+
+  <ThoughtDef>
+    <defName>RP_MadePeace</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>15</durationDays>
+    <stackLimit>1</stackLimit>
+    <stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+    <stages>
+      <li><label>made peace</label><baseOpinionOffset>15</baseOpinionOffset></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_CellRequestRefused</defName>
+    <durationDays>6</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>asked for another cell, refused</label><description>I asked to be moved and the warden did not even answer. Nobody in here listens.</description><baseMoodEffect>-4</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_CellRequest</defName><label>cell request</label><workerClass>RimPrison.PrisonDecisionWorker_CellRequest</workerClass></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_FriendSteppedIn</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>10</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+    <stages>
+      <li><label>had my back</label><baseOpinionOffset>12</baseOpinionOffset></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_FriendDoingWell</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>2</stackLimit>
+    <stages>
+      <li><label>news of a friend outside</label><description>Word came from someone who got out. They're doing all right. So it can be done.</description><baseMoodEffect>4</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_FriendHired</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>2</stackLimit>
+    <stages>
+      <li><label>a friend works here now</label><description>Someone I did time with has a job on the other side of the fence, here. They got out and came back on the right side of it.</description><baseMoodEffect>5</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_ThankedByFormer</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>a letter from a former inmate</label><description>One of the ones who got out wrote to say thank you. Some days this job is worth it.</description><baseMoodEffect>6</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_FriendReleased</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>2</stackLimit>
+    <stages>
+      <li><label>my friend got out</label><description>Good for them. It is quieter in here now.</description><baseMoodEffect>-3</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_FriendDied</defName>
+    <durationDays>8</durationDays>
+    <stackLimit>3</stackLimit>
+    <stages>
+      <li><label>my friend died inside</label><description>We were going to get out of here together.</description><baseMoodEffect>-10</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+</Defs>

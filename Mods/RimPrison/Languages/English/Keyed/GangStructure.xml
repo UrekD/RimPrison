@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Gang ranks, succession and a way out (gap analysis 4, section 1.2). Nothing here names a gang or a member the warden has not learned. -->
+
+  <!-- Ranks -->
+  <RP_GangLieutenant>lieutenant</RP_GangLieutenant>
+  <RP_GangLieutenantSuffix> (lt)</RP_GangLieutenantSuffix>
+  <RP_Chr_GangLieutenant>{0} was made a lieutenant of the {1}.</RP_Chr_GangLieutenant>
+  <RP_Chr_GangSuccession>{0} took over the {1} now their leader is gone.</RP_Chr_GangSuccession>
+  <RP_Chr_GangSuccessionWon>{0} came out on top of the fight for the {1}, and leads them now.</RP_Chr_GangSuccessionWon>
+  <RP_Chr_GangSuccessionUnnamed>The {0} have a new leader.</RP_Chr_GangSuccessionUnnamed>
+  <RP_Chr_GangSuccessionContested>The {0} lost their leader and {1} and {2} both want the post.</RP_Chr_GangSuccessionContested>
+  <RP_Chr_GangSuccessionContestedUnnamed>The {0} lost their leader and two of their own want the post.</RP_Chr_GangSuccessionContestedUnnamed>
+  <RP_Cause_Succession>a fight over who leads the gang</RP_Cause_Succession>
+
+  <!-- Tattoos -->
+  <RP_Chr_GangTattoo>{0} wears the mark of the {1}.</RP_Chr_GangTattoo>
+  <RP_GangTattooFound>The search found the mark of the {1} on {0}.</RP_GangTattooFound>
+
+  <!-- Leaving -->
+  <RP_Chr_GangSession>{0} ({1}) heard {2} out, and {2} wants to leave the {3}.</RP_Chr_GangSession>
+  <RP_Chr_GangRenounced>{0} renounced the {1}.</RP_Chr_GangRenounced>
+  <RP_Chr_GreenLight>The {0} have put a green light on {1}. A threat has been made, and a beating will follow.</RP_Chr_GreenLight>
+  <RP_Chr_GreenLightBeating>{0} beat {1} for walking out on the {2}.</RP_Chr_GreenLightBeating>
+  <RP_Chr_GreenLightBeatingUnnamed>Somebody from the {2} beat {1} for walking out.</RP_Chr_GreenLightBeatingUnnamed>
+  <RP_Chr_GreenLightOff>The {0} can no longer get at {1}, and the green light is off.</RP_Chr_GreenLightOff>
+  <RP_Cause_GreenLight>a green light from their old gang</RP_Cause_GreenLight>
+  <RP_Want_LeaveGang_Detail>Wants out of the {0}. They need a session with the chaplain or a counsellor, and then they will renounce it.</RP_Want_LeaveGang_Detail>
+  <RP_Want_LeaveGang_Detail_Renounce>Has been heard out and will renounce the {0} within hours.</RP_Want_LeaveGang_Detail_Renounce>
+  <RP_FileExMember>ex-{0}</RP_FileExMember>
+  <RP_FileExMemberTip>Left the {0}. The gang hates them for {1} days, and nobody counts them for turf.</RP_FileExMemberTip>
+
+  <!-- The warden's choice -->
+  <RP_LeftGangLabel>{0} left the {1}</RP_LeftGangLabel>
+  <RP_LeftGangText>{0} renounced the {1}. The gang has put out a green light. A threat has been made, and in {2} days or so a beating will follow wherever its members can get at {0}. Protective custody or a move to another wing, away from the gang, puts {0} out of reach. Doing nothing leaves them to it.</RP_LeftGangText>
+  <RP_LeftGang_PC>Protective custody</RP_LeftGang_PC>
+  <RP_LeftGang_Wing>Move to another wing</RP_LeftGang_Wing>
+  <RP_LeftGang_Nothing>Do nothing</RP_LeftGang_Nothing>
+  <RP_LeftGang_Gone>They are no longer here to move.</RP_LeftGang_Gone>
+  <RP_LeftGang_NoWing>No other wing has a free bed and none of the gang.</RP_LeftGang_NoWing>
+  <RP_LeftGangWhy>left a gang</RP_LeftGangWhy>
+</LanguageData>

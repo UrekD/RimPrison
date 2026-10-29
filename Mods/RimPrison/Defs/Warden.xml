@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The warden on the floor: see Staff/Warden.cs. -->
+  <RimPrison.StaffRoleDef>
+    <defName>RP_Warden</defName>
+    <label>warden</label>
+    <description>You, on the floor. Not on the payroll, never sent home, never let go. Addresses the canteen, walks a wing, has a word with an inmate; and is the one a riot would like to get its hands on.</description>
+    <dailyWage>0</dailyWage>
+    <hireCost>0</hireCost>
+    <keySkills><li>Social</li></keySkills>
+    <uniformColor>(0.5, 0.12, 0.15)</uniformColor>
+    <uiOrder>997</uiOrder>
+    <hireable>false</hireable>
+    <warden>true</warden>
+    <barGroup>Warden</barGroup>
+  </RimPrison.StaffRoleDef>
+
+  <JobDef>
+    <defName>RP_WardenAddress</defName>
+    <driverClass>RimPrison.JobDriver_WardenAddress</driverClass>
+    <reportString>addressing the canteen.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <JobDef>
+    <defName>RP_WardenWalk</defName>
+    <driverClass>RimPrison.JobDriver_WardenWalk</driverClass>
+    <reportString>walking the wing.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <JobDef>
+    <defName>RP_WardenWord</defName>
+    <driverClass>RimPrison.JobDriver_WardenWord</driverClass>
+    <reportString>having a word with TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <JobDef>
+    <defName>RP_WardenRetire</defName>
+    <driverClass>RimPrison.JobDriver_WardenRetire</driverClass>
+    <reportString>going to bed.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <ThoughtDef>
+    <defName>RP_WardenCalmed</defName>
+    <durationDays>1.5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>the warden spoke</label><description>The warden stood up in the canteen and spoke plainly. It helped to hear it.</description><baseMoodEffect>3</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_WardenFirm</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>the warden laid down the law</label><description>The warden stood in the canteen and told us how it will be. Nobody argued. Nobody liked it.</description><baseMoodEffect>-3</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_WardenHadAWord</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>the warden took the time</label><description>The warden came to my cell and talked to me like a person.</description><baseMoodEffect>4</baseMoodEffect></li></stages>
+  </ThoughtDef>
+</Defs>

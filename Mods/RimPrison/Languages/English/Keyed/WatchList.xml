@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Inmates at risk: the watch list (Programs/WatchList.cs). Plain, careful wording: "a crisis", "harmed themself", nothing more. No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+  <RP_Settings_SelfHarm>Self-harm crises</RP_Settings_SelfHarm>
+  <RP_Settings_SelfHarmDesc>An inmate flagged at risk who is left without a watch may, rarely, come to a crisis and harm themself. A guard or anyone on the staff who reaches them in time stops it. When it is off, inmates are still flagged at risk and the letter and the watch still happen, but no crisis ever starts.</RP_Settings_SelfHarmDesc>
+
+  <!-- The letter. -->
+  <RP_WatchLabel>{0} is at risk</RP_WatchLabel>
+  <RP_WatchText>{1}\n\nIn the last few days {2}, and for more than a day {0}'s mood has been very low (now {3}).\n\nFor the next {4} days the prison can do one of these.\n- A watch. A guard looks in on {0} every half hour, out of the guards' working time. Their belongings are taken ({5} mood) and they stay out of the yard.\n- A padded cell in the psych wing, {6}.\n- Counselling sessions, {7}.\n- Nothing.\n\nThis lasts {4} days, or less once {0}'s mood is back above {9}. You can stop a watch, the sessions or the padded cell early from the Intel screen, but {0} stays on the list, at risk, until then.{8}</RP_WatchText>
+  <RP_Watch_ByPsych>{0}, the psychologist, has assessed {1} and flagged them as at risk.</RP_Watch_ByPsych>
+  <RP_Watch_ByOfficer>{0}, the unit officer who knows the {2} wing, has flagged {1} as at risk.</RP_Watch_ByOfficer>
+  <RP_Watch_ByGuard>{0} noticed how low {1} is on the rounds and has flagged them as at risk.</RP_Watch_ByGuard>
+  <RP_WatchCause_None>things have gone badly for them</RP_WatchCause_None>
+  <RP_WatchCause_DearJohn>their partner wrote to end it</RP_WatchCause_DearJohn>
+  <RP_WatchCause_FamilyDeath>someone in their family died</RP_WatchCause_FamilyDeath>
+  <RP_WatchCause_ParoleRefused>the parole board turned them down</RP_WatchCause_ParoleRefused>
+  <RP_WatchCause_GreenLight>their old gang put a green light on them</RP_WatchCause_GreenLight>
+  <RP_WatchCause_Supermax>they have been in supermax for more than {0} days</RP_WatchCause_Supermax>
+  <RP_WatchCause_DebtBeating>they were beaten over a debt</RP_WatchCause_DebtBeating>
+  <RP_WatchCause_LifeTerm>they began a life sentence</RP_WatchCause_LifeTerm>
+  <RP_Watch_PaddedYes>a padded cell is free, and they go back to their wing when the time is up</RP_Watch_PaddedYes>
+  <RP_Watch_PaddedCase>a padded cell is free, and with a case of their own for the psych wing they would stay there after</RP_Watch_PaddedCase>
+  <RP_Watch_PaddedNo>not possible now ({0})</RP_Watch_PaddedNo>
+  <RP_Watch_CounselYes>{0} sees them for an hour a day, {1} hours of {0}'s time in all</RP_Watch_CounselYes>
+  <RP_Watch_CounselNo>nobody on the staff can give it (a counsellor or a psychologist)</RP_Watch_CounselNo>
+  <RP_Watch_CrisisRisk>Without a watch, or with one the guards do not keep up, someone this low may come to a crisis and harm themself. The chance is about {0} a day while their mood stays this low. Anyone on the staff who reaches them in time stops it.</RP_Watch_CrisisRisk>
+  <RP_Watch_OptWatch>Put them on watch</RP_Watch_OptWatch>
+  <RP_Watch_OptPadded>Move them to a padded cell</RP_Watch_OptPadded>
+  <RP_Watch_OptCounsel>Counselling sessions</RP_Watch_OptCounsel>
+  <RP_Watch_OptNothing>Nothing</RP_Watch_OptNothing>
+  <RP_Watch_Gone>They are no longer at risk here.</RP_Watch_Gone>
+  <RP_Watch_NoCounsellor>Nobody on the staff can give counselling (a counsellor or a psychologist).</RP_Watch_NoCounsellor>
+  <RP_Watch_PaddedWhy>at risk, for their own safety</RP_Watch_PaddedWhy>
+  <RP_Watch_PaddedBackWhy>back from the padded cell, their time on the watch list over</RP_Watch_PaddedBackWhy>
+  <RP_Watch_PaddedStays>{0}'s time in the padded cell is over, but there is no room in {1} to go back to. They stay in the psych wing for now.</RP_Watch_PaddedStays>
+  <RP_Chr_WatchFallback>"{1}" could not be done for {0} (the padded cell was taken, or nobody could give counselling), so nothing was done.</RP_Chr_WatchFallback>
+  <RP_Watch_Fallback>"{1}" could not be done for {0} (the padded cell was taken, or nobody can give counselling), so nothing is done. {0} stays on the watch list, at risk.</RP_Watch_Fallback>
+
+  <!-- The period. -->
+  <RP_Chr_AtRisk>{2} flagged {0} as at risk - {1}.</RP_Chr_AtRisk>
+  <RP_Watch_EndTime>{0}'s time on the watch list ran out.</RP_Watch_EndTime>
+  <RP_Watch_EndMood>{0} came off the watch list, their mood better.</RP_Watch_EndMood>
+  <RP_Watch_EndWarden>The warden stopped what was done for {0} ({1}). They stay on the watch list until the time is up.</RP_Watch_EndWarden>
+  <RP_Watch_Ended>Nothing more is done for {0}. They stay on the watch list, at risk, until the time is up or their mood recovers.</RP_Watch_Ended>
+  <RP_WatchAnswer_Pending>waiting for your answer</RP_WatchAnswer_Pending>
+  <RP_WatchAnswer_Watch>on watch</RP_WatchAnswer_Watch>
+  <RP_WatchAnswer_Padded>moved to a padded cell</RP_WatchAnswer_Padded>
+  <RP_WatchAnswer_Counselling>counselling</RP_WatchAnswer_Counselling>
+  <RP_WatchAnswer_Nothing>nothing done</RP_WatchAnswer_Nothing>
+  <RP_FileStatusWatch>At risk - {0}, {1} days left</RP_FileStatusWatch>
+
+  <!-- The crisis. -->
+  <RP_Chr_CrisisInterrupted>{0} reached {1} in time during a crisis.</RP_Chr_CrisisInterrupted>
+  <RP_Watch_Interrupted>{0} reached {1} in time. The crisis is over and nobody is hurt.</RP_Watch_Interrupted>
+  <RP_Chr_CrisisPadded>{0} came to a crisis in a padded cell and came to no harm.</RP_Chr_CrisisPadded>
+  <RP_Watch_Padded>{0} came to a crisis in the padded cell and came to no harm.</RP_Watch_Padded>
+  <RP_Chr_CrisisHarmed>{0} came to a crisis with nobody there and harmed themself.</RP_Chr_CrisisHarmed>
+  <RP_Watch_HarmedLabel>{0} harmed themself</RP_Watch_HarmedLabel>
+  <RP_Watch_HarmedText>{0} came to a crisis with nobody there and has harmed themself. They are hurt and need a doctor soon.</RP_Watch_HarmedText>
+
+  <!-- Intel. -->
+  <RP_IntelWatch>Watch list</RP_IntelWatch>
+  <RP_IntelHint_Watch>Nobody is flagged at risk. An inmate whose mood has been very low for a day after bad news (a Dear John letter, a death in the family, parole refused, a green light, a long supermax stay, a beating over a debt, a life sentence) is flagged by the psychologist, their unit officer or a guard, and you are asked what to do.</RP_IntelHint_Watch>
+  <RP_IntelWatchLine>{0} - {1}</RP_IntelWatchLine>
+  <RP_IntelWatchLeft>{0} days left</RP_IntelWatchLeft>
+  <RP_IntelTip_Watch>{0} is at risk - {1}.\nThe answer - {2}.\nMood now {3}. Crises so far, {4}.</RP_IntelTip_Watch>
+  <RP_IntelWatchEnd>End</RP_IntelWatchEnd>
+  <RP_IntelWatchEndTip>Stop what is done for {0} now ({1}). A watch ends and they get their things and the yard back, the sessions stop, and a padded cell given for these days is given up. {0} stays on the watch list, at risk, until the time is up or their mood recovers, as if nothing had been done.</RP_IntelWatchEndTip>
+
+  <!-- The care detail's queue. -->
+  <RP_CareKindCount_Watch>{0} checks on watch</RP_CareKindCount_Watch>
+  <RP_CareKind_Watch>a check on an inmate on watch</RP_CareKind_Watch>
+</LanguageData>

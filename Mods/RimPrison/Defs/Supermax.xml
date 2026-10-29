@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Supermax (see Security/Supermax.cs and Security/SupermaxEscort.cs): escorted moves out of the cell, a long stay that wears people down, the step-down letter. -->
+
+  <!-- A guard collects the inmate at the cell and walks them to a shower or a yard of their own, waits, and walks them back. A walk (never a follow job): the inmate's own job is a walk to the same place. -->
+  <JobDef>
+    <defName>RP_EscortInmate</defName>
+    <driverClass>RimPrison.JobDriver_EscortInmate</driverClass>
+    <reportString>escorting TargetA.</reportString>
+    <!-- Not interruptible by a break: a guard who walks off mid-walk leaves a supermax inmate outside their cell. -->
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RP_EscortInmate_WorkGiver</defName>
+    <label>escort a supermax inmate</label>
+    <giverClass>RimPrison.WorkGiver_EscortInmate</giverClass>
+    <workType>Warden</workType>
+    <verb>escort</verb>
+    <gerund>escorting</gerund>
+    <priorityInType>145</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+
+  <!-- The long stay: severity is the weeks served (added after the first week, gone when they leave). -->
+  <HediffDef>
+    <defName>RP_SupermaxStay</defName>
+    <label>long stay in supermax</label>
+    <description>Weeks alone in one cell, one walk and one hour of air a day, nobody but the guards to talk to. It wears people down: they break sooner, and the longer it lasts the sooner.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.65, 0.45, 0.8)</defaultLabelColor>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <maxSeverity>8</maxSeverity>
+    <stages>
+      <li>
+        <label>a week in</label>
+        <statOffsets><MentalBreakThreshold>0.02</MentalBreakThreshold></statOffsets>
+      </li>
+      <li>
+        <label>two weeks in</label>
+        <minSeverity>2</minSeverity>
+        <statOffsets><MentalBreakThreshold>0.04</MentalBreakThreshold></statOffsets>
+      </li>
+      <li>
+        <label>three weeks in</label>
+        <minSeverity>3</minSeverity>
+        <statOffsets><MentalBreakThreshold>0.06</MentalBreakThreshold></statOffsets>
+      </li>
+      <li>
+        <label>a month or more</label>
+        <minSeverity>4</minSeverity>
+        <statOffsets><MentalBreakThreshold>0.09</MentalBreakThreshold></statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+  <ThoughtDef>
+    <defName>RP_SupermaxStayThought</defName>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>RP_SupermaxStay</hediff>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li><label>a week in the box</label><description>Seven days of the same four walls. The hour in the yard is the only thing I count.</description><baseMoodEffect>-3</baseMoodEffect></li>
+      <li><label>weeks in the box</label><description>I have stopped counting the days. Nobody speaks to me who is not paid to.</description><baseMoodEffect>-6</baseMoodEffect></li>
+      <li><label>three weeks in the box</label><description>The walls are closer than they were. I talk to myself, and the answers worry me.</description><baseMoodEffect>-9</baseMoodEffect></li>
+      <li><label>a month in the box</label><description>There is no outside any more. There is the cell, the walk, and the door.</description><baseMoodEffect>-13</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- After ten clean days: step them down to maximum, or keep them where they are. -->
+  <RimPrison.PrisonDecisionDef>
+    <defName>RP_Decision_SupermaxStepDown</defName>
+    <label>supermax step-down</label>
+    <workerClass>RimPrison.SupermaxStepDownDecision</workerClass>
+  </RimPrison.PrisonDecisionDef>
+</Defs>

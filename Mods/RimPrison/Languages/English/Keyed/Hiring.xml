@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Choosing the people you hire (Staff/Applicants.cs, UI/ApplicantsUI.cs): the applicants' window opened from the Staff tab's hire buttons. No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+  <RP_ApplicantsTitle>Applicants - {0}</RP_ApplicantsTitle>
+  <RP_ApplicantsFee>Hiring fee {0} · wage {1}/day</RP_ApplicantsFee>
+  <RP_ApplicantsNextRound>The next recruitment round comes in {0}. Until then these are the people who applied.</RP_ApplicantsNextRound>
+  <RP_ApplicantsNobody>Nobody who applied this round could do the work of a {0}. Wait for the next round, or call the agency.</RP_ApplicantsNobody>
+  <RP_ApplicantsNoneLeft>Everybody who applied this round has been taken on. More will apply in the next round.</RP_ApplicantsNoneLeft>
+  <RP_ApplicantsFew>Only {0} of {1} could be found - nobody else who applied could do the work.</RP_ApplicantsFew>
+  <RP_ApplicantName>{0}, age {1}</RP_ApplicantName>
+  <RP_ApplicantPassionMajor>burning passion</RP_ApplicantPassionMajor>
+  <RP_ApplicantPassionMinor>passion</RP_ApplicantPassionMinor>
+  <RP_ApplicantNoTraits>No notable traits</RP_ApplicantNoTraits>
+  <RP_ApplicantCannot>Cannot do - {0}</RP_ApplicantCannot>
+  <RP_ApplicantCanDoAll>Can do all the work of the post</RP_ApplicantCanDoAll>
+  <RP_ApplicantHire>Hire</RP_ApplicantHire>
+  <RP_ApplicantShort>Need {0}</RP_ApplicantShort>
+  <RP_ApplicantGone>{0} is no longer available.</RP_ApplicantGone>
+  <RP_AgencyHire>Agency - hire now ({0})</RP_AgencyHire>
+  <RP_AgencyHireTip>An agency sends a stranger at once, at {1} times the usual fee ({0}). If nobody who can do the work is found there is no hire and no fee.</RP_AgencyHireTip>
+</LanguageData>

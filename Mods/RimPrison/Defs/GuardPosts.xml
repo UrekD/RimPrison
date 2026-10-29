@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- A guard post: a spot like vanilla's (nothing to build, nothing to pay: it is placed at once). The hours and the guard are set on the Deployment tab. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RP_GuardPost</defName>
+    <label>guard post</label>
+    <description>A spot where a guard stands watch, in the hours set on the Deployment tab (all day to begin with), and by the guard named there (else the nearest free guard on shift, among the guards not on a tower, a built tower keeps its guard). Whoever stands on it watches every inmate who is in sight, like any guard. Emergencies come first: a guard called to a fight, an alarm or an escort leaves it. Nothing to build.</description>
+    <graphicData>
+      <texPath>Things/Building/RP_GuardPost</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <statBases>
+      <WorkToBuild>0</WorkToBuild>
+    </statBases>
+    <rotatable>false</rotatable>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <useHitPoints>False</useHitPoints>
+    <designationCategory>RP_Prison</designationCategory>
+    <uiOrder>2100</uiOrder>
+    <passability>Standable</passability>
+    <building>
+      <canPlaceOverImpassablePlant>false</canPlaceOverImpassablePlant>
+      <ai_chillDestination>false</ai_chillDestination>
+      <wakeDormantPawnsOnConstruction>false</wakeDormantPawnsOnConstruction>
+      <artificialForMeditationPurposes>false</artificialForMeditationPurposes>
+    </building>
+    <comps>
+      <li Class="RimPrison.CompProperties_GuardPost" />
+    </comps>
+  </ThingDef>
+  <JobDef>
+    <defName>RP_ManPost</defName>
+    <driverClass>RimPrison.JobDriver_ManPost</driverClass>
+    <reportString>standing watch at TargetA.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+  <!-- Just under the tower (5) and above the patrol (1), under everything else a guard does (searches, meals, escorts, pad duty): the emergencies are checked by the job itself, every few seconds. -->
+  <WorkGiverDef>
+    <defName>RP_ManPost</defName>
+    <label>man guard posts</label>
+    <giverClass>RimPrison.WorkGiver_ManPost</giverClass>
+    <workType>Warden</workType>
+    <verb>man</verb>
+    <gerund>manning</gerund>
+    <priorityInType>4</priorityInType>
+  </WorkGiverDef>
+</Defs>

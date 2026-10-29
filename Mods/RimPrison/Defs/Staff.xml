@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimPrison.StaffRoleDef>
+    <defName>RP_Guard</defName>
+    <label>guard</label>
+    <description>Escorts and supervises inmates, feeds those who cannot get to the canteen, breaks up trouble. The more guards, the safer the prison.</description>
+    <dailyWage>60</dailyWage>
+    <hireCost>300</hireCost>
+    <workTypes><li>Warden</li><li>Doctor</li><li>Hauling</li></workTypes>
+    <keySkills><li>Social</li><li>Melee</li></keySkills>
+    <uniformColor>(0.2, 0.25, 0.45)</uniformColor>
+    <uiOrder>10</uiOrder>
+    <requiresViolence>true</requiresViolence>
+    <guardDuties>true</guardDuties>
+    <barGroup>Security</barGroup>
+  </RimPrison.StaffRoleDef>
+  <RimPrison.StaffRoleDef>
+    <defName>RP_Cook</defName>
+    <label>cook</label>
+    <description>Cooks meals in the kitchen and stocks the canteen.</description>
+    <dailyWage>40</dailyWage>
+    <hireCost>200</hireCost>
+    <workTypes><li>Cooking</li><li>Hauling</li></workTypes>
+    <keySkills><li>Cooking</li></keySkills>
+    <uniformColor>(0.95, 0.95, 0.95)</uniformColor>
+    <uiOrder>20</uiOrder>
+    <barGroup>Upkeep</barGroup>
+  </RimPrison.StaffRoleDef>
+  <RimPrison.StaffRoleDef>
+    <defName>RP_Workman</defName>
+    <label>workman</label>
+    <description>Builds, repairs and hauls deliveries. Needed for any construction.</description>
+    <dailyWage>40</dailyWage>
+    <hireCost>200</hireCost>
+    <workTypes><li>Construction</li><li>Hauling</li><li>PlantCutting</li><li>Mining</li><li>Smithing</li><li>Crafting</li></workTypes>
+    <keySkills><li>Construction</li></keySkills>
+    <uniformColor>(0.85, 0.65, 0.15)</uniformColor>
+    <uiOrder>30</uiOrder>
+    <barGroup>Upkeep</barGroup>
+  </RimPrison.StaffRoleDef>
+  <RimPrison.StaffRoleDef>
+    <defName>RP_Janitor</defName>
+    <label>janitor</label>
+    <description>Keeps the prison clean and hauls supplies. Filthy prisons make everyone miserable.</description>
+    <dailyWage>30</dailyWage>
+    <hireCost>150</hireCost>
+    <workTypes><li>Cleaning</li><li>Hauling</li></workTypes>
+    <uniformColor>(0.4, 0.55, 0.4)</uniformColor>
+    <uiOrder>40</uiOrder>
+    <barGroup>Upkeep</barGroup>
+  </RimPrison.StaffRoleDef>
+  <RimPrison.StaffRoleDef>
+    <defName>RP_Doctor</defName>
+    <label>doctor</label>
+    <description>Treats injured and sick inmates and staff in the infirmary.</description>
+    <dailyWage>90</dailyWage>
+    <hireCost>500</hireCost>
+    <workTypes><li>Doctor</li></workTypes>
+    <keySkills><li>Medicine</li></keySkills>
+    <uniformColor>(0.85, 0.9, 0.95)</uniformColor>
+    <uiOrder>50</uiOrder>
+    <barGroup>Medical</barGroup>
+  </RimPrison.StaffRoleDef>
+  <RimPrison.StaffRoleDef>
+    <defName>RP_Gardener</defName>
+    <label>gardener</label>
+    <description>Grows food and keeps the grounds tidy.</description>
+    <dailyWage>30</dailyWage>
+    <hireCost>150</hireCost>
+    <workTypes><li>Growing</li><li>PlantCutting</li><li>Hauling</li></workTypes>
+    <keySkills><li>Plants</li></keySkills>
+    <uniformColor>(0.3, 0.6, 0.25)</uniformColor>
+    <uiOrder>60</uiOrder>
+    <barGroup>Upkeep</barGroup>
+  </RimPrison.StaffRoleDef>
+</Defs>

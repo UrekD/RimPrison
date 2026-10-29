@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Kin across the wall: staff and inmates who are family, as vanilla relations (Story/Kin.cs). No capital after a colon: RimWorld capitalises the letter after ": ". -->
+  <RP_KinKinsfolk>kin</RP_KinKinsfolk>
+  <RP_KinStaffName>{0} {1}</RP_KinStaffName>
+  <RP_KinInmateName>inmate {0}</RP_KinInmateName>
+  <RP_KinInmateNumber>inmate {0} (#{1})</RP_KinInmateNumber>
+  <RP_KinLine>{0} of {1}</RP_KinLine>
+  <RP_StaffKeptOff>Kept off the wing where their kin is held</RP_StaffKeptOff>
+  <RP_KinAskLabel>{0} has kin inside</RP_KinAskLabel>
+  <RP_KinAskOne>their {0}, {1}, held in {2}</RP_KinAskOne>
+  <RP_KinAskText>{0}, a {1}, has kin inside - {2}. They would rather not walk that wing and ask to be kept off it, or they can stay on it and take what comes. It is their call, and yours.</RP_KinAskText>
+  <RP_Kin_KeepOff>Keep them off that wing</RP_Kin_KeepOff>
+  <RP_Kin_LetBe>Let them stay on it</RP_Kin_LetBe>
+  <RP_Chr_KinHired>{0} was hired, and {1} inside is their {2}.</RP_Chr_KinHired>
+  <RP_Chr_KinArrived>{0} arrived, and {1} on the staff is their {2}.</RP_Chr_KinArrived>
+  <RP_Chr_KinInmates>{0} arrived, and {1}, already inside, is their {2}.</RP_Chr_KinInmates>
+  <RP_Chr_KinKeptOff>{0} asked to be kept off the wing where their kin is held, and was.</RP_Chr_KinKeptOff>
+  <RP_Chr_KinDied>{0}'s {1} {2} died inside.</RP_Chr_KinDied>
+  <RP_Chr_KinExecuted>{0}'s {1} {2} was executed.</RP_Chr_KinExecuted>
+  <RP_Chr_KinStaffDied>{0}'s {1} {2}, of the staff, died on duty.</RP_Chr_KinStaffDied>
+  <RP_ComplaintLook_KinMotive>{0} is kin of {1}, who is feuding with {2}.</RP_ComplaintLook_KinMotive>
+  <RP_ComplaintLook_KinOwn>{1}, who complains, is the kin of {0}.</RP_ComplaintLook_KinOwn>
+</LanguageData>

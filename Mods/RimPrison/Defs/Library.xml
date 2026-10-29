@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The library and the book cart (see Needs/Library.cs). -->
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_Library</defName>
+    <label>library</label>
+    <description>Where the books are kept: put book shelves here. The prison buys books for the shelves each midnight. A trusted minimum security inmate on library duty pushes the book cart round the cells, leaving a book at the door of anyone who reads and is running short of it. Reading in the cell fills their literacy and helps them pass the education programs. Donated books now and then have something hidden in them.</description>
+    <color>(0.62, 0.45, 0.3)</color>
+    <uiOrder>38</uiOrder>
+    <keepable>true</keepable>
+  </RimPrison.PrisonZoneDef>
+
+  <ThingDef ParentName="RP_FixtureBase">
+    <defName>RP_BookShelf</defName>
+    <label>book shelf</label>
+    <description>A tall shelf of library books. The library clerk loads the book cart from it; the prison fills it at midnight. Put it in the library zone.</description>
+    <graphicData>
+      <texPath>Things/Building/RP_BookShelf</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <costList><WoodLog>40</WoodLog></costList>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToBuild>700</WorkToBuild>
+      <Mass>20</Mass>
+      <Beauty>1</Beauty>
+    </statBases>
+    <comps>
+      <li Class="RimPrison.CompProperties_BookShelf">
+        <capacity>24</capacity>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <RimPrison.InmateJobDef>
+    <defName>RP_JobLibrary</defName>
+    <label>library</label>
+    <description>Pushes the book cart: loads books at a shelf and leaves one at the door of each inmate who reads and is running short of it, the confined and those working toward a diploma first. Needs a library zone with a stocked shelf. Minimum security only.</description>
+    <workerClass>RimPrison.InmateJobWorker_Library</workerClass>
+    <zone>RP_Library</zone>
+    <allowedSecurity><li>RP_Minimum</li></allowedSecurity>
+    <maxTension>40</maxTension>
+    <tensionPerHour>-2</tensionPerHour>
+    <wagePerHour>2</wagePerHour>
+    <uiOrder>18</uiOrder>
+  </RimPrison.InmateJobDef>
+
+  <JobDef>
+    <defName>RP_DeliverBooks</defName>
+    <driverClass>RimPrison.JobDriver_DeliverBooks</driverClass>
+    <reportString>pushing the book cart.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <JobDef>
+    <defName>RP_ReadBook</defName>
+    <driverClass>RimPrison.JobDriver_ReadBook</driverClass>
+    <reportString>reading.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+</Defs>

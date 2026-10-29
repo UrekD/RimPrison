@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimPrison.RegimeActivityDef>
+    <defName>RP_Sleep</defName>
+    <label>sleep</label>
+    <description>Inmates sleep in their cells. Cell doors lock once everyone is inside.</description>
+    <color>(0.15, 0.2, 0.45)</color>
+    <lockup>true</lockup>
+    <workerClass>RimPrison.RegimeWorker_Sleep</workerClass>
+    <fallback>RP_Lockup</fallback>
+  </RimPrison.RegimeActivityDef>
+  <RimPrison.RegimeActivityDef>
+    <defName>RP_Lockup</defName>
+    <label>lockup</label>
+    <description>Inmates are confined to their cells.</description>
+    <color>(0.45, 0.45, 0.5)</color>
+    <lockup>true</lockup>
+    <workerClass>RimPrison.RegimeWorker_Lockup</workerClass>
+  </RimPrison.RegimeActivityDef>
+  <RimPrison.RegimeActivityDef>
+    <defName>RP_Eat</defName>
+    <label>eat</label>
+    <description>Inmates go to the canteen to eat.</description>
+    <color>(0.95, 0.75, 0.25)</color>
+    <zones><li>RP_Canteen</li></zones>
+    <workerClass>RimPrison.RegimeWorker_Eat</workerClass>
+    <fallback>RP_Lockup</fallback>
+  </RimPrison.RegimeActivityDef>
+  <RimPrison.RegimeActivityDef>
+    <defName>RP_ShowerTime</defName>
+    <label>shower</label>
+    <description>Inmates go to the showers to wash.</description>
+    <color>(0.35, 0.65, 0.95)</color>
+    <zones><li>RP_Shower</li></zones>
+    <workerClass>RimPrison.RegimeWorker_Shower</workerClass>
+    <fallback>RP_FreeTime</fallback>
+  </RimPrison.RegimeActivityDef>
+  <RimPrison.RegimeActivityDef>
+    <defName>RP_FreeTime</defName>
+    <label>free time</label>
+    <description>Inmates may go to the yard and common rooms for recreation and fresh air.</description>
+    <color>(0.35, 0.8, 0.35)</color>
+    <zones><li>RP_Yard</li><li>RP_CommonRoom</li></zones>
+    <workerClass>RimPrison.RegimeWorker_FreeTime</workerClass>
+    <fallback>RP_Lockup</fallback>
+  </RimPrison.RegimeActivityDef>
+  <RimPrison.RegimeActivityDef>
+    <defName>RP_YardAlone</defName>
+    <label>yard alone</label>
+    <description>An hour in a yard of their own, alone: a guard walks the inmate out and back (supermax). Only levels that keep inmates apart use it; for anyone else it is a lockup. Without a supermax yard it falls back to lockup.</description>
+    <color>(0.45, 0.7, 0.6)</color>
+    <zones><li>RP_SupermaxYard</li></zones>
+    <workerClass>RimPrison.RegimeWorker_YardAlone</workerClass>
+    <fallback>RP_Lockup</fallback>
+  </RimPrison.RegimeActivityDef>
+  <RimPrison.RegimeActivityDef>
+    <defName>RP_Work</defName>
+    <label>work</label>
+    <description>Inmates with a job go to work; others stay in their cells.</description>
+    <color>(0.75, 0.5, 0.25)</color>
+    <workerClass>RimPrison.RegimeWorker_Work</workerClass>
+    <fallback>RP_Lockup</fallback>
+  </RimPrison.RegimeActivityDef>
+</Defs>

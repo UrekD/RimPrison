@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The criminally insane and a psych wing (gap analysis 4, section 1.6): the psychologist's referral, the padded cells, the doctor's medication rounds. -->
+
+  <RP_Psych_CaseBreaks>{0} mental breaks in {1} days</RP_Psych_CaseBreaks>
+  <RP_Psych_CaseTrait>a {0} streak the assessment found</RP_Psych_CaseTrait>
+  <RP_Psych_Why>on the psychologist's referral, after {0}</RP_Psych_Why>
+  <RP_PsychNotUnlocked>The psychiatric wing is not cleared yet. Finish the psychiatric wing project in the office.</RP_PsychNotUnlocked>
+  <RP_PsychAlready>{0} is in psychiatric care already.</RP_PsychAlready>
+  <RP_PsychNotThem>{0} cannot be moved to psychiatric care now (death row, supermax, protective custody, or on the way out).</RP_PsychNotThem>
+  <RP_PsychNoRoom>No free padded cell for {0}, so they stay where they are. A padded cell is a room of its own with a padded bed, in the psychiatric wing.</RP_PsychNoRoom>
+  <RP_PsychCaseNotMoved>The psychologist would put {0} in psychiatric care, but they stay where they are. {1}</RP_PsychCaseNotMoved>
+  <RP_PsychBreakReason>Their medication ran out and nothing held it back.</RP_PsychBreakReason>
+  <RP_PsychBreakReasonCovered>Their medication was on, and it was not enough.</RP_PsychBreakReasonCovered>
+  <RP_PsychDischarged>{0} is out of psychiatric care after a long stretch without a break, and goes back to {1}.</RP_PsychDischarged>
+  <RP_PsychNoMedic>{0} inmates are in psychiatric care and there is no doctor on the staff who can make their rounds (none hired, or on leave). Their medication will run out and they will break.</RP_PsychNoMedic>
+  <RP_PsychNoDrug>{0} inmates are in psychiatric care and there is no antipsychotic on the map. An order is placed with the supply company; until it lands their rounds cannot be made and they will break.</RP_PsychNoDrug>
+</LanguageData>

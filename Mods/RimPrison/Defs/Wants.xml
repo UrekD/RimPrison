@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Inmate wants: a personal goal the systems feed (see Inmates/Wants.cs). A new goal is a def, a worker and its keyed text. -->
+  <ThoughtDef>
+    <defName>RP_WantFulfilled</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>reached a goal</label><description>Something I wanted for a long time has happened. For once, in here, it went my way.</description><baseMoodEffect>8</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_WantThwarted</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>a setback on a goal</label><description>The one thing I was working toward just slipped away. All that effort, for this.</description><baseMoodEffect>-8</baseMoodEffect></li></stages>
+  </ThoughtDef>
+
+  <RimPrison.InmateWantDef>
+    <defName>RP_Want_Parole</defName>
+    <label>make parole</label>
+    <description>Wants to be out. They need to have served half the sentence, kept a clean sheet, passed programs and kept calm before a hearing. A hearing that goes badly is a setback and they aim for the next one; a third refusal ends it. On track, they steer clear of serious trouble.</description>
+    <workerClass>RimPrison.WantWorker_Parole</workerClass>
+    <commonality>1.2</commonality>
+    <priority>1</priority>
+    <durationDays>6</durationDays>
+    <maxRenewals>2</maxRenewals>
+    <flipTo>RP_Want_ProveWrong</flipTo>
+  </RimPrison.InmateWantDef>
+  <RimPrison.InmateWantDef>
+    <defName>RP_Want_Clean</defName>
+    <label>get clean</label>
+    <description>Wants to be off the drugs. The addiction has to fade (supervised detox with a doctor on site, or a treatment program, is far quicker than waiting it out). A relapse or an overdose is a setback and they start again, twice at most. On track, they steer clear of serious trouble.</description>
+    <workerClass>RimPrison.WantWorker_Clean</workerClass>
+    <commonality>2</commonality>
+    <priority>1</priority>
+    <durationDays>25</durationDays>
+    <maxRenewals>2</maxRenewals>
+  </RimPrison.InmateWantDef>
+  <RimPrison.InmateWantDef>
+    <defName>RP_Want_Diploma</defName>
+    <label>earn a diploma</label>
+    <description>Wants a certificate to take outside: they need to pass the next education program (foundation, then general education). It needs a classroom, a teacher and a seat in the class. A failed exam is a setback and they try once more. On track, they steer clear of serious trouble.</description>
+    <workerClass>RimPrison.WantWorker_Diploma</workerClass>
+    <commonality>0.7</commonality>
+    <priority>0</priority>
+    <durationDays>30</durationDays>
+    <maxRenewals>1</maxRenewals>
+    <programs><li>RP_FoundationEducation</li><li>RP_GeneralEducation</li></programs>
+  </RimPrison.InmateWantDef>
+  <RimPrison.InmateWantDef>
+    <defName>RP_Want_Family</defName>
+    <label>stay in touch with family</label>
+    <description>Wants to keep somebody at home close: letters that reach them and visits from the family count. It needs a mailroom and visiting hours to work. If that person cuts them off (a partner leaving) or dies, the goal is over and the anger may turn into a grudge. A new baby in the family makes it a goal about the child. On track, they steer clear of serious trouble.</description>
+    <workerClass>RimPrison.WantWorker_Family</workerClass>
+    <commonality>0.8</commonality>
+    <priority>1</priority>
+    <durationDays>14</durationDays>
+    <maxRenewals>1</maxRenewals>
+    <contacts>3</contacts>
+    <flipTo>RP_Want_Score</flipTo>
+  </RimPrison.InmateWantDef>
+  <RimPrison.InmateWantDef>
+    <defName>RP_Want_Score</defName>
+    <label>settle a score</label>
+    <description>Holds a grudge against a particular member of staff (a memory of -60 or worse) or an enemy inside. Their outbursts go for that person, and they are readier to lash out at them than at anyone else. A blow that lands on them settles it (an insult does not); if the grudge cools or the window passes, they let it go.</description>
+    <workerClass>RimPrison.WantWorker_Score</workerClass>
+    <rolled>false</rolled>
+    <priority>2</priority>
+    <durationDays>10</durationDays>
+    <tensionRelief>0</tensionRelief>
+    <tensionOnThwarted>0</tensionOnThwarted>
+  </RimPrison.InmateWantDef>
+  <RimPrison.InmateWantDef>
+    <defName>RP_Want_ProveWrong</defName>
+    <label>prove the board wrong</label>
+    <description>Was turned down at a parole hearing and wants to show the board it was wrong: their odds there have to improve by a fair margin (a clean sheet, a program, work, a calmer head) and stay clean. A serious incident on the record ends it; if the window passes they let it go. Proving it earns a better hearing next time.</description>
+    <workerClass>RimPrison.WantWorker_ProveWrong</workerClass>
+    <rolled>false</rolled>
+    <priority>1</priority>
+    <durationDays>14</durationDays>
+    <tensionRelief>0.3</tensionRelief>
+  </RimPrison.InmateWantDef>
+  <RimPrison.InmateWantDef>
+    <defName>RP_Want_Amends</defName>
+    <label>make amends</label>
+    <description>Inside for a violent crime, they want to face the family of the one they hurt. The goal is enough for the counsellor to propose a restorative meeting (without it, a program passed is needed); the warden approves it, and the family comes to the visitation room. A meeting that goes well reaches it; one that goes badly ends it; a refusal is a setback, and they ask once more.</description>
+    <workerClass>RimPrison.WantWorker_Amends</workerClass>
+    <commonality>0.5</commonality>
+    <priority>1</priority>
+    <durationDays>20</durationDays>
+    <maxRenewals>1</maxRenewals>
+    <tensionRelief>0.3</tensionRelief>
+  </RimPrison.InmateWantDef>
+</Defs>

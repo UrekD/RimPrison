@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The morning after (Security/RiotReview.cs): the riot's report and the warden's answers, in a budgeted letter and its second step (the same morning's letter, not budgeted again). -->
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_RiotReview</defName><label>the morning after a riot</label><workerClass>RimPrison.PrisonDecisionWorker_RiotReview</workerClass></RimPrison.PrisonDecisionDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_RiotReviewMore</defName><label>a second answer to a riot</label><urgent>true</urgent><workerClass>RimPrison.PrisonDecisionWorker_RiotReview</workerClass></RimPrison.PrisonDecisionDef>
+  <RimPrison.LedgerCategoryDef><defName>RP_Restitution</defName><label>restitution</label><income>true</income><uiOrder>37</uiOrder></RimPrison.LedgerCategoryDef>
+</Defs>

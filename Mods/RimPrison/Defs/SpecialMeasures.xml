@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The state steps in (special measures, its security chief, flagship status): see Story/SpecialMeasures.cs. -->
+  <RimPrison.StaffRoleDef>
+    <defName>RP_Overseer</defName>
+    <label>state overseer</label>
+    <description>The state's inspector, in the prison for the length of a visit while it is under special measures. Does no work here and is not on the payroll.</description>
+    <dailyWage>0</dailyWage>
+    <hireCost>0</hireCost>
+    <uniformColor>(0.15, 0.15, 0.2)</uniformColor>
+    <uiOrder>999</uiOrder>
+    <hireable>false</hireable>
+    <visitor>true</visitor>
+  </RimPrison.StaffRoleDef>
+  <RimPrison.StaffRoleDef>
+    <defName>RP_SecurityChief</defName>
+    <label>state security chief</label>
+    <description>Installed by the state when a prison fails its special measures. Does guard duty like any guard, sets the patrols (the warden's zones are not used) and cannot be let go. The state takes the chief back when the prison has been graded B for a week.</description>
+    <dailyWage>120</dailyWage>
+    <hireCost>0</hireCost>
+    <workTypes><li>Warden</li><li>Doctor</li><li>Hauling</li></workTypes>
+    <keySkills><li>Social</li><li>Melee</li></keySkills>
+    <uniformColor>(0.15, 0.15, 0.2)</uniformColor>
+    <uiOrder>998</uiOrder>
+    <hireable>false</hireable>
+    <requiresViolence>true</requiresViolence>
+    <guardDuties>true</guardDuties>
+    <barGroup>Security</barGroup>
+  </RimPrison.StaffRoleDef>
+
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_MeasuresExtended</defName><label>special measures extended</label><urgent>true</urgent><workerClass>RimPrison.MeasuresExtendedDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_FlagshipTransfer</defName><label>legendary transfer</label><workerClass>RimPrison.FlagshipTransferDecision</workerClass></RimPrison.PrisonDecisionDef>
+
+  <RimPrison.StoryArcDef>
+    <defName>RP_Arc_Legend</defName>
+    <label>a legend inside</label>
+    <workerClass>RimPrison.LegendArc</workerClass>
+    <maxConcurrent>2</maxConcurrent>
+    <decisionHours>16</decisionHours>
+  </RimPrison.StoryArcDef>
+</Defs>

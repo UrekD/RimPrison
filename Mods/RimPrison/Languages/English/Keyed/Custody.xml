@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Custody contracts (Intake/CustodyContracts.cs, the Intake tab). No capital letter may follow a colon here (the game capitalises it): a dash or a comma. A keyed string defined twice keeps the first. -->
+  <RP_CustodyLabel>A custody contract</RP_CustodyLabel>
+  <RP_CustodyText>The state has a small group of minimum and medium security inmates it wants rehabilitated, and asks whether you will take them under contract.\n\nThe cohort ({0}) - the official file, nothing more.\n{3}\n\nThe state pays the fee on each inmate's admission, and the bonus at the end of that inmate's own {1} days inside, for each who attended at least {2} class sessions in them. Fees come to {4}, bonuses to {5} at most.\n\nWhat it asks of the prison - {6}\n\nBeds free against beds needed - {7}.\n\nThey come on the daily shuttle, after the state's own returning prisoners, and must be admitted within {8} days of signing. {10}\n\nThe offer stands for {9} days. Decline it, prepare the beds, the classroom and the counsellors first (postpone the letter), or sign and give up other work for the classes.</RP_CustodyText>
+  <RP_CustodyDossierLine>{0}. {1} - {2}, {3} days. Fee {4}, bonus {5}.</RP_CustodyDossierLine>
+  <RP_CustodyBedsPart>{1} free for {0} {2}</RP_CustodyBedsPart>
+  <RP_CustodyDemand>{0} inmates need {1} class sessions each within {2} days, at least {3} hours of a classroom and a counsellor. The prison has {4} classroom(s), the largest seating {5}, and {6} counsellor(s), so {7} can sit at once - {8}</RP_CustodyDemand>
+  <RP_CustodyDemandEnough>enough for the cohort to sit together.</RP_CustodyDemandEnough>
+  <RP_CustodyDemandShort>not enough, so classes would run in turns and take more of the week.</RP_CustodyDemandShort>
+  <RP_CustodyRules>A member who is released, paroled, transferred out, escapes or dies before their {0} days are up forfeits their bonus and nothing more. With fewer sessions than asked there is no bonus for them. Each is judged once. A shuttle called off, or filled by returning prisoners, adds a day to the arrival window (three at most). A member with no free bed of their level waits for one, and is dropped unpaid when the window ends. If the state steps in with special measures, the cohort not yet admitted is called off.</RP_CustodyRules>
+  <RP_Custody_Accept>Sign the contract</RP_Custody_Accept>
+  <RP_Custody_Decline>Decline</RP_Custody_Decline>
+  <RP_CustodyAlready>A custody contract is already running - one at a time.</RP_CustodyAlready>
+  <RP_CustodyOfferGone>This offer is no longer open.</RP_CustodyOfferGone>
+  <RP_CustodyNoOfferMeasures>the state does not send a cohort on contract while it is overseeing the prison</RP_CustodyNoOfferMeasures>
+  <RP_CustodyNoOfferContract>a contract is running</RP_CustodyNoOfferContract>
+  <RP_CustodyNoOfferOpen>an offer is open</RP_CustodyNoOfferOpen>
+  <RP_CustodyNoOfferLevels>the levels it asks for are not open yet</RP_CustodyNoOfferLevels>
+  <RP_CustodyNoOfferClassroom>no classroom with seats, or no counsellor, yet</RP_CustodyNoOfferClassroom>
+  <RP_CustodyAccepted>Contract signed. The {0} come by the daily shuttle and must be admitted within {1} days.</RP_CustodyAccepted>
+  <RP_Chr_CustodyAccepted>The warden signed a custody contract for {0} inmates to be rehabilitated - {1} days each, {2} class sessions asked of each.</RP_Chr_CustodyAccepted>
+  <RP_CustodyFeeNote>custody fee for {0}</RP_CustodyFeeNote>
+  <RP_CustodyBonusNote>custody bonus for {0}</RP_CustodyBonusNote>
+  <RP_CustodyAdmitted>{0} is admitted under the custody contract. Fee {1}. {2} days to attend {3} class sessions for the bonus.</RP_CustodyAdmitted>
+  <RP_CustodyForfeit>{0} left before the end of their service window - {2}. The bonus of {1} is forfeit.</RP_CustodyForfeit>
+  <RP_CustodyMet>{0} attended {1} of {2} class sessions. The state pays the bonus of {3}.</RP_CustodyMet>
+  <RP_CustodyMissed>{0} attended {1} of {2} class sessions. No bonus.</RP_CustodyMissed>
+  <RP_CustodyDropped>{0} will not come under the custody contract - {1}. Nothing is paid or owed.</RP_CustodyDropped>
+  <RP_CustodyAPlace>a place in the cohort</RP_CustodyAPlace>
+  <RP_CustodyEnd_Released>released</RP_CustodyEnd_Released>
+  <RP_CustodyEnd_Paroled>paroled</RP_CustodyEnd_Paroled>
+  <RP_CustodyEnd_Transferred>transferred out</RP_CustodyEnd_Transferred>
+  <RP_CustodyEnd_Died>died</RP_CustodyEnd_Died>
+  <RP_CustodyEnd_Escaped>escaped</RP_CustodyEnd_Escaped>
+  <RP_CustodyEnd_Gone>no longer in custody</RP_CustodyEnd_Gone>
+  <RP_CustodyEnd_Measures>the state's special measures</RP_CustodyEnd_Measures>
+  <RP_CustodyEnd_Lost>lost on the way</RP_CustodyEnd_Lost>
+  <RP_CustodyEnd_Late>not admitted within the arrival window</RP_CustodyEnd_Late>
+  <RP_CustodyClosed>The custody contract is over. {0} of {1} earned the bonus. Paid in all - {2} in fees and {3} in bonuses.</RP_CustodyClosed>
+  <RP_Chr_CustodyClosed>The custody contract ended - {0} of {1} inmates earned their bonus, {2} paid in all.</RP_Chr_CustodyClosed>
+  <RP_CustodyCancelled>Nobody came under the custody contract. It is called off, with nothing paid or owed.</RP_CustodyCancelled>
+  <RP_Chr_CustodyCancelled>A custody contract was called off - nobody was admitted under it.</RP_Chr_CustodyCancelled>
+  <RP_CustodyRowPending>{0} - on the way, admission window closes in {1} days</RP_CustodyRowPending>
+  <RP_CustodyRowServing>{0} - day {1} of {2}, {3} of {4} sessions, bonus {5} due in {6} days</RP_CustodyRowServing>
+  <RP_CustodyRowMet>{0} - {1} of {2} sessions, bonus {3} paid</RP_CustodyRowMet>
+  <RP_CustodyRowMissed>{0} - {1} of {2} sessions, no bonus</RP_CustodyRowMissed>
+  <RP_CustodyRowForfeited>{0} - {1}, bonus {2} forfeit</RP_CustodyRowForfeited>
+  <RP_CustodyRowDropped>{0} - never admitted, {1}</RP_CustodyRowDropped>
+  <RP_CustodySummary>{0} places - {1} serving, {2} still to arrive. Paid so far {3} in fees and {4} in bonuses, {5} in bonuses still to be judged.</RP_CustodySummary>
+  <RP_CustodyHeader>Custody contract</RP_CustodyHeader>
+  <RP_CustodyHeaderTip>The state's custody contract (the rehabilitation contract). The cohort comes on the daily shuttle, the state pays a fee on each admission, and a bonus at the end of each inmate's own service window for attending the sessions asked. Each is judged once.</RP_CustodyHeaderTip>
+  <RP_CustodyOfferOpenLine>An offer is open - {0} inmates, fees {1}, bonuses up to {2}. Answer the letter (it stands for {3} more hours).</RP_CustodyOfferOpenLine>
+  <RP_CustodyNextOffer>No contract. The next offer is due on day {0}.</RP_CustodyNextOffer>
+  <RP_CustodyNextOfferNone>No contract. Offers come every 7 to 10 days once the prison has a classroom with seats and a counsellor on staff.</RP_CustodyNextOfferNone>
+  <RP_CustodyNoOfferNow>No contract and no offer now - {0}.</RP_CustodyNoOfferNow>
+  <RP_CustodyLastLine>The last contract ended - {0} of {1} earned the bonus, {2} paid in all.</RP_CustodyLastLine>
+  <RP_CustodyDemandLine>Against the prison - {0}</RP_CustodyDemandLine>
+  <RP_CustodyBedsLine>Beds free against beds needed - {0}.</RP_CustodyBedsLine>
+  <RP_Stat_custodyOffers>Custody offers</RP_Stat_custodyOffers>
+  <RP_StatTip_custodyOffers>Custody contracts the state has offered (see the Intake tab).</RP_StatTip_custodyOffers>
+  <RP_Stat_custodyAccepted>Custody contracts signed</RP_Stat_custodyAccepted>
+  <RP_StatTip_custodyAccepted>Custody contracts the warden signed.</RP_StatTip_custodyAccepted>
+  <RP_Stat_custodyAdmitted>Admitted on contract</RP_Stat_custodyAdmitted>
+  <RP_StatTip_custodyAdmitted>Inmates admitted under a custody contract, each paid for on admission.</RP_StatTip_custodyAdmitted>
+  <RP_Stat_custodyMet>Custody bonuses earned</RP_Stat_custodyMet>
+  <RP_StatTip_custodyMet>Inmates who attended the class sessions the contract asked of them within their window, so that the state paid the bonus.</RP_StatTip_custodyMet>
+  <RP_Stat_custodyEarned>Custody bonuses paid</RP_Stat_custodyEarned>
+  <RP_StatTip_custodyEarned>Money the state has paid in custody bonuses.</RP_StatTip_custodyEarned>
+  <RP_Stat_custodyMissed>Custody bonuses missed</RP_Stat_custodyMissed>
+  <RP_StatTip_custodyMissed>Inmates whose window ended with fewer class sessions than the contract asked, so no bonus was paid.</RP_StatTip_custodyMissed>
+  <RP_Stat_custodyForfeited>Custody bonuses forfeited</RP_Stat_custodyForfeited>
+  <RP_StatTip_custodyForfeited>Inmates who left (released, paroled, transferred, escaped, dead) before their window ended, so no bonus was paid.</RP_StatTip_custodyForfeited>
+</LanguageData>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Pay by the grade (Economy/PerDiem.cs): the state's per-diem follows the last week's grades. No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+  <RP_PaymentsGradeNote>{0} inmates, {1} for the week's {2} ({3})</RP_PaymentsGradeNote>
+  <RP_PaymentsGradePlainNote>{0} inmates, the week's {1} - the plain rate</RP_PaymentsGradePlainNote>
+  <RP_PerDiemDesk>{0} a day from your {1} - the state's per-diem follows the mean of the last {2} days' grades ({3}, so {4} on every inmate's rate).</RP_PerDiemDesk>
+  <RP_PerDiemDeskPlain>Your {0} keeps the state's per-diem at its plain rate (the mean of the last {1} days' grades is {2}).</RP_PerDiemDeskPlain>
+  <RP_PerDiemDeskSoon>From day {0} the state pays its per-diem by your grades.</RP_PerDiemDeskSoon>
+  <RP_PerDiemDeskNone>No grades yet - the state pays its plain per-diem until there are.</RP_PerDiemDeskNone>
+  <RP_PerDiemScale>The mean of the last {0} days' grades - A +15%, B +5%, C the plain rate, D -10%, F -25% - on top of what reputation earns. It is paid at midnight.</RP_PerDiemScale>
+  <RP_Week_PerDiem>Per-diem by the grade - the last {0} days average {1} ({2}), {3} on the rate, {4} a day.</RP_Week_PerDiem>
+  <RP_Week_PerDiemPlain>Per-diem by the grade - the last {0} days average {1} ({2}), the plain rate.</RP_Week_PerDiemPlain>
+  <RP_Week_PerDiemSoon>Per-diem by the grade - the state pays by your grades from day {0}.</RP_Week_PerDiemSoon>
+</LanguageData>

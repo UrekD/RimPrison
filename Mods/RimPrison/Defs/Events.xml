@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <IncidentCategoryDef>
+    <defName>RP_StoryBeat</defName>
+    <label>life inside</label>
+    <needsParmsPoints>false</needsParmsPoints>
+  </IncidentCategoryDef>
+  <IncidentCategoryDef>
+    <defName>RP_PrisonEvent</defName>
+    <label>prison event</label>
+    <needsParmsPoints>false</needsParmsPoints>
+  </IncidentCategoryDef>
+
+  <IncidentDef>
+    <defName>RP_ContrabandDrop</defName>
+    <label>contraband over the wall</label>
+    <category>RP_PrisonEvent</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_ContrabandDrop</workerClass>
+    <baseChance>1.2</baseChance>
+    <letterLabel>Package over the wall</letterLabel>
+    <letterText>Someone outside has thrown a package over the wall into the yard. If the inmates get to it before the staff do, it will disappear into pockets.</letterText>
+    <letterDef>NegativeEvent</letterDef>
+  </IncidentDef>
+  <IncidentDef>
+    <defName>RP_FamilyTragedy</defName>
+    <label>news from home</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_NewsFromHome</workerClass>
+    <baseChance>0.8</baseChance>
+      <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>1</drama>
+        <perPawnCooldownDays>3</perPawnCooldownDays>
+        <weights></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <IncidentDef>
+    <defName>RP_Grudge</defName>
+    <label>grudge</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_Grudge</workerClass>
+    <baseChance>1.5</baseChance>
+    <letterLabel>Bad blood</letterLabel>
+    <letterText>{A_nameDef} and {B_nameDef} have fallen out: {REASON}. Keep them apart if you can.</letterText>
+    <letterDef>NeutralEvent</letterDef>
+      <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>1</drama>
+        <perPawnCooldownDays>3</perPawnCooldownDays>
+        <weights><li><metric>AvgTension</metric><curve><points><li>(10,0.4)</li><li>(40,1)</li><li>(70,2)</li></points></curve></li></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <IncidentDef>
+    <defName>RP_CelebrityInmate</defName>
+    <label>notorious inmate</label>
+    <category>RP_PrisonEvent</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_CelebrityInmate</workerClass>
+    <baseChance>0.3</baseChance>
+    <minRefireDays>8</minRefireDays>
+    <letterLabel>Notorious inmate</letterLabel>
+    <letterText>{PAWN_nameFull}, whose trial was all over the news, has been sentenced to your prison. The state pays a {GRANT} premium, but [PAWN_pronoun] is a magnet for trouble. Other inmates want to prove themselves against [PAWN_objective], and [PAWN_pronoun] knows how to stir a crowd.</letterText>
+    <letterDef>NeutralEvent</letterDef>
+  </IncidentDef>
+  <IncidentDef>
+    <defName>RP_Appeal</defName>
+    <label>successful appeal</label>
+    <category>RP_PrisonEvent</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_Appeal</workerClass>
+    <baseChance>0.4</baseChance>
+    <letterLabel>Appeal granted</letterLabel>
+    <letterText>{PAWN_nameDef}'s lawyer has won an appeal. [PAWN_pronoun] will be released at midnight.</letterText>
+    <letterDef>PositiveEvent</letterDef>
+  </IncidentDef>
+  <IncidentDef>
+    <defName>RP_FundingChange</defName>
+    <label>funding change</label>
+    <category>RP_PrisonEvent</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_FundingChange</workerClass>
+    <baseChance>0.4</baseChance>
+    <minRefireDays>10</minRefireDays>
+  </IncidentDef>
+  <IncidentDef>
+    <defName>RP_KitchenFire</defName>
+    <label>kitchen fire</label>
+    <category>RP_PrisonEvent</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_KitchenFire</workerClass>
+    <baseChance>0.2</baseChance>
+    <minRefireDays>12</minRefireDays>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_KitchenFire</defName><label>kitchen fire</label><urgent>true</urgent><workerClass>RimPrison.KitchenFireDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <IncidentDef>
+    <defName>RP_ExportContract</defName>
+    <label>export contract</label>
+    <category>RP_PrisonEvent</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_ExportContract</workerClass>
+    <baseChance>0.5</baseChance>
+    <minRefireDays>6</minRefireDays>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_ExportContract</defName><label>export contract offer</label><workerClass>RimPrison.ExportContractDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <IncidentDef>
+    <defName>RP_Inspection</defName>
+    <label>state inspection</label>
+    <category>RP_PrisonEvent</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_Inspection</workerClass>
+    <baseChance>0.5</baseChance>
+    <minRefireDays>6</minRefireDays>
+    <letterLabel>State inspection</letterLabel>
+    <letterText>A state inspector toured the prison today and graded it {GRADE}.\n\n{CARD}\n\n{VERDICT}\n\n{REPORT}</letterText>
+  </IncidentDef>
+  <IncidentDef>
+    <defName>RP_TransferRequest</defName>
+    <label>transfer request</label>
+    <category>RP_PrisonEvent</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_TransferRequest</workerClass>
+    <baseChance>0.6</baseChance>
+    <minRefireDays>4</minRefireDays>
+    <letterLabel>Transfer request</letterLabel>
+    <letterText>A state prison is overcrowded after a riot. They ask you to take {COUNT} maximum-security inmates today, for a premium of {PREMIUM} on top of the usual payments.\n\nThey are angry and dangerous. Accept?</letterText>
+  </IncidentDef>
+
+  <IncidentDef>
+    <defName>RP_HungerStrike</defName>
+    <label>hunger strike</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_HungerStrike</workerClass>
+    <baseChance>1.2</baseChance>
+    <minRefireDays>5</minRefireDays>
+    <letterLabel>Hunger strike</letterLabel>
+    <letterText>{COUNT} inmates have gone on hunger strike. They refuse meals until conditions improve (until they are reasonably content again) or hunger breaks them. The press has picked it up.
+
+Their main complaints:
+{NAMES}</letterText>
+    <letterDef>NegativeEvent</letterDef>
+      <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>3</drama>
+        <perPawnCooldownDays>5</perPawnCooldownDays>
+        <weights><li><metric>AvgMood</metric><curve><points><li>(0.2,2)</li><li>(0.4,1)</li><li>(0.6,0.2)</li></points></curve></li></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <IncidentDef>
+    <defName>RP_StaffStrike</defName>
+    <label>staff strike threat</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_StaffStrike</workerClass>
+    <baseChance>0.8</baseChance>
+    <minRefireDays>8</minRefireDays>
+    <letterLabel>Staff demand a bonus</letterLabel>
+    <letterText>Your staff are fed up - {CAUSE} The union rep says {ASK} or they down tools for {HOURS} hours.
+
+{OFFER}</letterText>
+      <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>2</drama>
+        <perPawnCooldownDays>3</perPawnCooldownDays>
+        <weights><li><metric>StaffAvgMood</metric><curve><points><li>(0.2,2.5)</li><li>(0.45,1)</li><li>(0.7,0.2)</li></points></curve></li></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <IncidentDef>
+    <defName>RP_Blackout</defName>
+    <label>blackout</label>
+    <category>RP_PrisonEvent</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_Blackout</workerClass>
+    <baseChance>0.5</baseChance>
+    <minRefireDays>6</minRefireDays>
+    <letterLabel>Blackout</letterLabel>
+    <letterText>The mains are down for about {HOURS} hours. Cameras, metal detectors, lights and machines are off, and the inmates know it. Misconduct is twice as likely in the dark.\n\nLock the prison down until the power is back, call out an emergency electrician ({COST}, back in about {FIX} hours), or ride it out.</letterText>
+    <letterDef>ThreatSmall</letterDef>
+  </IncidentDef>
+
+  <ThoughtDef>
+    <defName>RP_GotBonus</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>got a bonus</label><description>Management listened for once.</description><baseMoodEffect>8</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>RP_CellTurnedOver</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>cell turned over</label><description>They tore my cell apart in the shakedown. Nothing is mine in here.</description><baseMoodEffect>-6</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_TransferRequest</defName><label>transfer request</label><workerClass>RimPrison.PrisonDecisionWorker_TransferRequest</workerClass></RimPrison.PrisonDecisionDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_StaffStrike</defName><label>staff bonus demand</label><urgent>true</urgent><workerClass>RimPrison.PrisonDecisionWorker_StaffStrike</workerClass></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_SpokesHeard</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>the warden listened to me</label><description>I spoke for everyone and the warden kept their word. The others look at me differently now.</description><baseMoodEffect>6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_SpokesIgnored</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>made a fool of in front of everyone</label><description>I stood up for everyone and the warden brushed me off. They're all laughing at me.</description><baseMoodEffect>-6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_InmateDemand</defName><label>inmates' demand</label><urgent>true</urgent><workerClass>RimPrison.PrisonDecisionWorker_InmateDemand</workerClass></RimPrison.PrisonDecisionDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_ProtectiveCustody</defName><label>protective custody request</label><urgent>true</urgent><workerClass>RimPrison.PrisonDecisionWorker_ProtectiveCustody</workerClass></RimPrison.PrisonDecisionDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_RiotNegotiation</defName><label>riot negotiation</label><urgent>true</urgent><workerClass>RimPrison.PrisonDecisionWorker_RiotNegotiation</workerClass></RimPrison.PrisonDecisionDef>
+
+  <LetterDef ParentName="CustomChoiceLetterBase">
+    <defName>RP_DecisionLetter</defName>
+    <letterClass>RimPrison.ChoiceLetter_PrisonDecision</letterClass>
+    <color>(0.8, 0.75, 0.4)</color>
+    <flashColor>(0.9, 0.85, 0.5)</flashColor>
+  </LetterDef>
+
+  <ThoughtDef>
+    <defName>RP_FamilyDied</defName>
+    <durationDays>6</durationDays>
+    <stackLimit>2</stackLimit>
+    <stages>
+      <li><label>family member died outside</label><description>They died and I was in here. I couldn't even go to the funeral.</description><baseMoodEffect>-15</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_Grudge</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>15</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+    <stages>
+      <li><label>grudge</label><baseOpinionOffset>-45</baseOpinionOffset></li>
+    </stages>
+  </ThoughtDef>
+
+  <RimPrison.ReputationDef>
+    <defName>RP_Notorious</defName>
+    <label>notorious</label>
+    <description>Famous outside, a target inside. Others pick fights to make a name for themselves.</description>
+    <commonality>0</commonality>
+    <vulnerable>true</vulnerable>
+    <tensionFactor>1.2</tensionFactor>
+    <misconductFactors>
+      <li><misconduct>RP_Riot</misconduct><factor>2</factor></li>
+    </misconductFactors>
+  </RimPrison.ReputationDef>
+
+  <RimPrison.LedgerCategoryDef><defName>RP_Grants</defName><label>grants and bonuses</label><income>true</income><uiOrder>35</uiOrder></RimPrison.LedgerCategoryDef>
+  <IncidentDef>
+    <defName>RP_PressInterest</defName>
+    <label>press interest</label>
+    <category>RP_PrisonEvent</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_PressInterest</workerClass>
+    <baseChance>0.5</baseChance>
+    <minRefireDays>5</minRefireDays>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Press</defName><label>press request</label><workerClass>RimPrison.PressDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_HazardPay</defName><label>hazard pay demand</label><urgent>true</urgent><workerClass>RimPrison.PrisonDecisionWorker_HazardPay</workerClass></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_NewInFamily</defName>
+    <durationDays>5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>new in the family</label><description>A new baby in the family. I have a photo on the wall.</description><baseMoodEffect>8</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_PartnerLeft</defName>
+    <durationDays>10</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>partner left me</label><description>They couldn't wait any more. I don't blame them. I do.</description><baseMoodEffect>-12</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_JobWaiting</defName>
+    <durationDays>6</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>a job waiting outside</label><description>Someone will give me a job when I get out. Something to stay straight for.</description><baseMoodEffect>6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_ColleagueHurt</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>2</stackLimit>
+    <stages><li><label>a colleague got hurt</label><description>One of us went down on the job today.</description><baseMoodEffect>-4</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_Commended</defName>
+    <durationDays>5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>commended</label><description>I took a weapon off an inmate today, and the warden noticed.</description><baseMoodEffect>6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_HazardPay</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>hazard pay</label><description>Management paid up for the danger. It's something.</description><baseMoodEffect>5</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_ExInmate</defName><label>former inmate asks for work</label><workerClass>RimPrison.ExInmateDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Parole</defName><label>parole hearing</label><workerClass>RimPrison.ParoleDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_ParoleDenied</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>parole denied</label><description>The board said no. Back to counting days.</description><baseMoodEffect>-4</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_ParoleOpposed</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>the warden spoke against me</label><description>I had a chance, and the warden told the board I should stay.</description><baseMoodEffect>-8</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Inquiry</defName><label>inquiry into a death in custody</label><workerClass>RimPrison.PrisonDecisionWorker_Inquiry</workerClass></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_DeathInWing</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>2</stackLimit>
+    <stages><li><label>someone died on the wing</label><description>One of us didn't make it. Could have been me.</description><baseMoodEffect>-5</baseMoodEffect></li></stages>
+  </ThoughtDef>
+
+  <IncidentDef>
+    <defName>RP_Weather</defName>
+    <label>heat wave or cold snap</label>
+    <category>RP_PrisonEvent</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_Weather</workerClass>
+    <baseChance>0.3</baseChance>
+    <minRefireDays>10</minRefireDays>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Weather</defName><label>heat wave or cold snap</label><workerClass>RimPrison.WeatherDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Blackout</defName><label>blackout</label><workerClass>RimPrison.BlackoutDecision</workerClass></RimPrison.PrisonDecisionDef>
+</Defs>

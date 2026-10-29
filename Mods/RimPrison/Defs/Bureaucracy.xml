@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Administration: the people and furniture that move paperwork -->
+  <ThingDef ParentName="RP_FixtureBase">
+    <defName>RP_OfficeDesk</defName>
+    <label>office desk</label>
+    <description>A desk with a filing cabinet. Administrators work through bureaucracy projects here. Put it in a staff-only office.</description>
+    <graphicData>
+      <texPath>Things/Building/RP_OfficeDesk</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <costList><WoodLog>40</WoodLog><Steel>20</Steel></costList>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>900</WorkToBuild>
+      <Mass>20</Mass>
+    </statBases>
+  </ThingDef>
+
+  <WorkTypeDef>
+    <defName>RP_Administration</defName>
+    <labelShort>admin</labelShort>
+    <pawnLabel>Administrator</pawnLabel>
+    <gerundLabel>administering</gerundLabel>
+    <description>Work through bureaucracy projects at office desks.</description>
+    <verb>Administer</verb>
+    <naturalPriority>1040</naturalPriority>
+    <requireCapableColonist>true</requireCapableColonist>
+    <relevantSkills><li>Intellectual</li></relevantSkills>
+    <workTags><li>Intellectual</li></workTags>
+  </WorkTypeDef>
+  <WorkGiverDef>
+    <defName>RP_Paperwork</defName>
+    <label>do paperwork</label>
+    <giverClass>RimPrison.WorkGiver_Paperwork</giverClass>
+    <workType>RP_Administration</workType>
+    <verb>file</verb>
+    <gerund>doing paperwork at</gerund>
+    <priorityInType>100</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+  <JobDef>
+    <defName>RP_Paperwork</defName>
+    <driverClass>RimPrison.JobDriver_Paperwork</driverClass>
+    <reportString>doing paperwork.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+
+  <RimPrison.StaffRoleDef>
+    <defName>RP_Administrator</defName>
+    <label>administrator</label>
+    <description>Works through bureaucracy projects at an office desk: new departments, contracts and security clearances. Smarter administrators (Intellectual) work faster.</description>
+    <dailyWage>80</dailyWage>
+    <hireCost>400</hireCost>
+    <workTypes><li>RP_Administration</li></workTypes>
+    <keySkills><li>Intellectual</li></keySkills>
+    <uniformColor>(0.35, 0.35, 0.4)</uniformColor>
+    <uiOrder>5</uiOrder>
+    <barGroup>Programs</barGroup>
+  </RimPrison.StaffRoleDef>
+
+  <!-- The tree. Anything not listed in a project is available from the start. -->
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_Foreman</defName>
+    <label>foreman</label>
+    <description>A foreman to run prison industries: inmates press licence plates for export in the workshop and wash uniforms in the laundry.</description>
+    <cost>500</cost>
+    <work>12</work>
+    <uiOrder>10</uiOrder>
+    <zones><li>RP_Workshop</li><li>RP_Laundry</li></zones>
+    <buildings><li>RP_LicensePlatePress</li><li>RP_WashingMachine</li></buildings>
+  </RimPrison.BureaucracyDef>
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_Commissary</defName>
+    <label>commissary contract</label>
+    <description>A supplier contract for the commissary: inmates spend their wages on treats, the prison keeps the margin.</description>
+    <cost>400</cost>
+    <work>8</work>
+    <uiOrder>20</uiOrder>
+    <prerequisites><li>RP_Bur_Foreman</li></prerequisites>
+    <buildings><li>RP_CommissaryCounter</li></buildings>
+  </RimPrison.BureaucracyDef>
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_Visitation</defName>
+    <label>visitation office</label>
+    <description>Family visits and payphones: inmates keep in touch with home (and some visitors smuggle).</description>
+    <cost>300</cost>
+    <work>8</work>
+    <uiOrder>30</uiOrder>
+    <zones><li>RP_Visitation</li></zones>
+    <buildings><li>RP_PhoneBooth</li><li>RP_VisitationBooth</li></buildings>
+  </RimPrison.BureaucracyDef>
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_Reform</defName>
+    <label>reform programs</label>
+    <description>A counsellor and a classroom: education and rehab lower reoffending and tension.</description>
+    <cost>600</cost>
+    <work>16</work>
+    <uiOrder>40</uiOrder>
+    <zones><li>RP_Classroom</li></zones>
+    <buildings><li>RP_SchoolDesk</li></buildings>
+    <roles><li>RP_Counsellor</li></roles>
+  </RimPrison.BureaucracyDef>
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_Library</defName>
+    <label>prison library</label>
+    <description>Book shelves, a book budget and a book cart: a trusted inmate leaves books at the cells, inmates who read keep their literacy up, and the education programs pass more of them.</description>
+    <cost>400</cost>
+    <work>8</work>
+    <uiOrder>45</uiOrder>
+    <prerequisites><li>RP_Bur_Reform</li></prerequisites>
+    <zones><li>RP_Library</li></zones>
+    <buildings><li>RP_BookShelf</li></buildings>
+  </RimPrison.BureaucracyDef>
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_Security</defName>
+    <label>security chief</label>
+    <description>A security chief: CCTV cameras and metal detectors.</description>
+    <cost>600</cost>
+    <work>16</work>
+    <uiOrder>50</uiOrder>
+    <buildings><li>RP_SecurityCamera</li><li>RP_MetalDetector</li></buildings>
+  </RimPrison.BureaucracyDef>
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_Tasers</defName>
+    <label>tasers</label>
+    <description>Guards carry tasers: restraining an inmate succeeds far more often.</description>
+    <cost>700</cost>
+    <work>12</work>
+    <uiOrder>52</uiOrder>
+    <prerequisites><li>RP_Bur_Security</li></prerequisites>
+    <features><li>Tasers</li></features>
+  </RimPrison.BureaucracyDef>
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_RiotGear</defName>
+    <label>riot gear</label>
+    <description>Flak vests and helmets for every guard, armed guard and dog handler.</description>
+    <cost>1200</cost>
+    <work>12</work>
+    <uiOrder>54</uiOrder>
+    <prerequisites><li>RP_Bur_Security</li></prerequisites>
+    <features><li>RiotGear</li></features>
+  </RimPrison.BureaucracyDef>
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_K9</defName>
+    <label>K9 unit</label>
+    <description>Dog handlers and their dogs: drug detection, tunnel detection, and a deterrent with teeth.</description>
+    <cost>800</cost>
+    <work>16</work>
+    <uiOrder>60</uiOrder>
+    <prerequisites><li>RP_Bur_Security</li></prerequisites>
+    <roles><li>RP_DogHandler</li></roles>
+  </RimPrison.BureaucracyDef>
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_PhoneTaps</defName>
+    <label>phone monitoring</label>
+    <description>Listen in on payphone calls: arranged handovers flag the next visit for a thorough search, and loose talk about stashes, tunnels and gangs becomes intel.</description>
+    <cost>700</cost>
+    <work>12</work>
+    <uiOrder>62</uiOrder>
+    <prerequisites><li>RP_Bur_Security</li><li>RP_Bur_Visitation</li></prerequisites>
+    <features><li>PhoneTaps</li></features>
+  </RimPrison.BureaucracyDef>
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_MaxSecurity</defName>
+    <label>maximum security clearance</label>
+    <description>The state will send maximum security inmates: violent, well paid, trouble.</description>
+    <cost>800</cost>
+    <work>20</work>
+    <uiOrder>70</uiOrder>
+    <prerequisites><li>RP_Bur_Security</li></prerequisites>
+    <securities><li>RP_Maximum</li></securities>
+    <zones><li>RP_WingMaximum</li></zones>
+  </RimPrison.BureaucracyDef>
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_Supermax</defName>
+    <label>supermax clearance</label>
+    <description>The legal basis to hold the worst inmates in total isolation: a supermax wing with its own shower and yard. Staff killers, convicted murderers and hostage-takers are moved there when a cell is free.</description>
+    <cost>1800</cost>
+    <work>24</work>
+    <uiOrder>75</uiOrder>
+    <prerequisites><li>RP_Bur_MaxSecurity</li></prerequisites>
+    <securities><li>RP_Supermax</li></securities>
+    <zones><li>RP_WingSupermax</li><li>RP_SupermaxYard</li></zones>
+  </RimPrison.BureaucracyDef>
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_Armed</defName>
+    <label>armed security</label>
+    <description>Firearms licences: armed guards and guard towers.</description>
+    <cost>1500</cost>
+    <work>24</work>
+    <uiOrder>80</uiOrder>
+    <prerequisites><li>RP_Bur_MaxSecurity</li></prerequisites>
+    <roles><li>RP_ArmedGuard</li></roles>
+    <buildings><li>RP_GuardTower</li></buildings>
+  </RimPrison.BureaucracyDef>
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_DeathRow</defName>
+    <label>legal department, death row</label>
+    <description>Lawyers and a state contract for condemned inmates: death row wing, appeals, executions.</description>
+    <cost>2500</cost>
+    <work>32</work>
+    <uiOrder>90</uiOrder>
+    <prerequisites><li>RP_Bur_MaxSecurity</li></prerequisites>
+    <securities><li>RP_DeathRow</li></securities>
+    <zones><li>RP_WingDeathRow</li></zones>
+    <buildings><li>RP_ExecutionTable</li></buildings>
+  </RimPrison.BureaucracyDef>
+</Defs>

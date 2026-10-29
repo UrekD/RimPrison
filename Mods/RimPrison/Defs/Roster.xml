@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The roster (Staff/Roster.cs): a run of nights is resented, a fair rota is not. -->
+  <ThoughtDef>
+    <defName>RP_NightsAgain</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>nights again</label><description>A week of nights, and nobody has said a word about swapping. The sun is somebody else's.</description><baseMoodEffect>-5</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_FairRota</defName>
+    <durationDays>5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>a fair rota</label><description>They took me off nights when my turn was up. Somebody is keeping count, and it is not only the night shift.</description><baseMoodEffect>5</baseMoodEffect></li></stages>
+  </ThoughtDef>
+</Defs>

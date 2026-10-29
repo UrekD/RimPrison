@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The shot-caller's deal (gap analysis 6, item 5; see Security/GangDeals.cs): the warden's word with a known gang's known leader. One arc per gang under a deal, a background story (it keeps nobody out of other stories), with the deal as its payload. A breach's letter is the arc's decision letter. -->
+  <RimPrison.StoryArcDef>
+    <defName>RP_Arc_GangDeal</defName>
+    <label>shot-caller's deal</label>
+    <workerClass>RimPrison.GangDealArc</workerClass>
+    <maxConcurrent>8</maxConcurrent>
+    <minRefireDays>0</minRefireDays>
+    <decisionHours>12</decisionHours>
+    <occupiesCast>false</occupiesCast>
+  </RimPrison.StoryArcDef>
+
+  <!-- The terms the warden offers the leader, on the warden's own word: never held back by the day's budget of decisions. -->
+  <RimPrison.PrisonDecisionDef>
+    <defName>RP_Decision_GangDeal</defName>
+    <label>deal with a gang</label>
+    <workerClass>RimPrison.GangDealOfferDecision</workerClass>
+    <urgent>true</urgent>
+  </RimPrison.PrisonDecisionDef>
+</Defs>

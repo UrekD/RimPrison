@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The dark (ground glow under 0.3 in a free-time zone or a corridor): a guard sees 3 cells and a camera nothing; the coverage overlay and the danger map's hottest patches say so. -->
+
+  <RP_ToggleCoverageDark>Shaded blue - dark, with a ground glow under 0.3 (at night, in a blackout, or an unlit corner), in a free-time zone (corridors are not drawn, but the same holds in them), not in a cell. A guard on foot sees only 3 cells there and a camera nothing, whatever the colour says is close; a manned tower's searchlight still sees all of its range. A lamp lights it again. Dusk can show up to about a quarter of a minute late.</RP_ToggleCoverageDark>
+  <RP_DangerPlaceUnlit>{0} - unlit</RP_DangerPlaceUnlit>
+  <RP_DangerRowUnlit>{0} ({1}). Most of the patch is dark now - a guard sees only 3 cells there and a camera nothing, so light it as well as posting a guard.</RP_DangerRowUnlit>
+</LanguageData>

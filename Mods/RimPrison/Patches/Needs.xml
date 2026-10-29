@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Recreation for inmates: vanilla Joy is colonists-only. -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/NeedDef[defName="Joy"]/colonistsOnly</xpath>
+    <value><colonistsOnly>false</colonistsOnly></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/NeedDef[defName="Joy"]/neverOnPrisoner</xpath>
+    <value><neverOnPrisoner>false</neverOnPrisoner></value>
+  </Operation>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/NeedDef[defName="Joy"]</xpath>
+    <value><colonistAndPrisonersOnly>true</colonistAndPrisonersOnly></value>
+  </Operation>
+</Patch>

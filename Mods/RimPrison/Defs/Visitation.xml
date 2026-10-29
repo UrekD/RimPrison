@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_Visitation</defName>
+    <label>visitation</label>
+    <description>Where families visit inmates during free time. Put tables and chairs here, and a guard nearby: visitors smuggle contraband across the table.</description>
+    <color>(0.85, 0.55, 0.8)</color>
+    <uiOrder>38</uiOrder>
+    <keepable>true</keepable>
+  </RimPrison.PrisonZoneDef>
+
+  <NeedDef>
+    <defName>RP_Family</defName>
+    <needClass>RimPrison.Need_Fixture</needClass>
+    <label>family</label>
+    <description>Contact with family and friends outside. Visits and phone calls restore it.</description>
+    <fallPerDay>0.18</fallPerDay>
+    <listPriority>600</listPriority>
+    <major>false</major>
+    <colonistAndPrisonersOnly>true</colonistAndPrisonersOnly>
+    <showForCaravanMembers>false</showForCaravanMembers>
+    <modExtensions>
+      <li Class="RimPrison.NeedScopeExtension">
+        <fallPerDayAsleepFactor>1</fallPerDayAsleepFactor>
+        <thresholds><li>0.25</li></thresholds>
+      </li>
+    </modExtensions>
+  </NeedDef>
+  <ThoughtDef>
+    <defName>RP_FamilyThought</defName>
+    <workerClass>RimPrison.ThoughtWorker_NeedLevel</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li><label>cut off from family</label><description>Nobody comes. Nobody calls. Do they even remember me?</description><baseMoodEffect>-8</baseMoodEffect></li>
+      <li><label>missing family</label><description>I miss my people.</description><baseMoodEffect>-3</baseMoodEffect></li>
+    </stages>
+    <modExtensions>
+      <li Class="RimPrison.NeedThoughtExtension">
+        <need>RP_Family</need>
+        <belowLevel><li>0.1</li><li>0.3</li></belowLevel>
+      </li>
+    </modExtensions>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_FamilyVisited</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>family visited</label><description>It was good to see them.</description><baseMoodEffect>8</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+
+  <PawnKindDef>
+    <defName>RP_Visitor</defName>
+    <label>visitor</label>
+    <race>Human</race>
+    <defaultFactionDef>RP_Outside</defaultFactionDef>
+    <combatPower>20</combatPower>
+    <isFighter>false</isFighter>
+    <apparelMoney>200~500</apparelMoney>
+    <weaponMoney>0~0</weaponMoney>
+    <apparelTags><li>IndustrialBasic</li></apparelTags>
+    <chemicalAddictionChance>0.05</chemicalAddictionChance>
+    <initialWillRange>0~1</initialWillRange>
+    <initialResistanceRange>10~15</initialResistanceRange>
+  </PawnKindDef>
+
+  <DutyDef>
+    <defName>RP_VisitInmate</defName>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimPrison.JobGiver_VisitorWait" />
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+  <JobDef>
+    <defName>RP_VisitTalk</defName>
+    <driverClass>RimPrison.JobDriver_VisitTalk</driverClass>
+    <reportString>talking with visitor TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <ThingDef ParentName="RP_FixtureBase">
+    <defName>RP_PhoneBooth</defName>
+    <label>payphone</label>
+    <description>A wall payphone for inmates. Calls home help with the family need.</description>
+    <graphicData>
+      <texPath>Things/Building/RP_PhoneBooth</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <costList><Steel>40</Steel><ComponentIndustrial>2</ComponentIndustrial></costList>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>1000</WorkToBuild>
+      <Mass>15</Mass>
+    </statBases>
+    <comps>
+      <li Class="RimPrison.CompProperties_Fixture">
+        <need>RP_Family</need>
+        <gainPerTick>0.0002</gainPerTick>
+        <maxUseTicks>900</maxUseTicks>
+        <satisfiedLevel>0.6</satisfiedLevel>
+        <useReport>calling home.</useReport>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RP_FixtureBase">
+    <defName>RP_VisitationBooth</defName>
+    <label>visitation booth</label>
+    <description>A booth with a glass partition and a phone. Levels visited "through glass" can only receive visitors while a booth is free; nothing can be passed across, but a visit through glass does the family need less good.</description>
+    <graphicData>
+      <texPath>Things/Building/RP_VisitationBooth</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <costList><Steel>40</Steel><ComponentIndustrial>1</ComponentIndustrial></costList>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <WorkToBuild>900</WorkToBuild>
+      <Mass>20</Mass>
+    </statBases>
+  </ThingDef>
+
+  <JobDef>
+    <defName>RP_SearchVisitor</defName>
+    <driverClass>RimPrison.JobDriver_SearchVisitor</driverClass>
+    <reportString>searching visitor TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RP_SearchVisitor_WorkGiver</defName>
+    <label>search visitors</label>
+    <giverClass>RimPrison.WorkGiver_SearchVisitor</giverClass>
+    <workType>Warden</workType>
+    <verb>search</verb>
+    <gerund>searching</gerund>
+    <priorityInType>62</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+</Defs>

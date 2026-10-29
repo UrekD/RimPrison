@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_Workshop</defName>
+    <label>workshop</label>
+    <description>Prison industry. Inmates with workshop jobs press license plates here from steel kept in the workshop. Products are sold from the Exports zone. Tools have a way of going missing.</description>
+    <color>(0.75, 0.5, 0.25)</color>
+    <uiOrder>35</uiOrder>
+  </RimPrison.PrisonZoneDef>
+
+  <RimPrison.InmateJobDef>
+    <defName>RP_JobWorkshop</defName>
+    <label>workshop</label>
+    <description>Presses license plates in the workshop. Pays the prison, teaches crafting, keeps inmates busy.</description>
+    <workerClass>RimPrison.InmateJobWorker_Workshop</workerClass>
+    <zone>RP_Workshop</zone>
+    <allowedSecurity><li>RP_Minimum</li><li>RP_Medium</li></allowedSecurity>
+    <maxTension>55</maxTension>
+    <tensionPerHour>-4</tensionPerHour>
+    <wagePerHour>3</wagePerHour>
+    <skill>Crafting</skill>
+    <requiredProgram>RP_WorkshopInduction</requiredProgram>
+    <toolTheft>true</toolTheft>
+    <uiOrder>10</uiOrder>
+  </RimPrison.InmateJobDef>
+  <RimPrison.InmateJobDef>
+    <defName>RP_JobCleaning</defName>
+    <label>cleaning</label>
+    <description>Mops the inmate areas.</description>
+    <workerClass>RimPrison.InmateJobWorker_Cleaning</workerClass>
+    <maxTension>65</maxTension>
+    <tensionPerHour>-2</tensionPerHour>
+    <uiOrder>20</uiOrder>
+  </RimPrison.InmateJobDef>
+
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_Garden</defName>
+    <label>garden</label>
+    <description>Inmates with garden jobs sow and harvest the growing zones inside it (put a growing zone on good soil). The crop goes to the kitchen; garden tools have a way of disappearing, and a gardener who is inside for smokeleaf may sow a patch of their own among the crops.</description>
+    <color>(0.45, 0.7, 0.3)</color>
+    <uiOrder>34</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.InmateJobDef>
+    <defName>RP_JobGarden</defName>
+    <label>garden</label>
+    <description>Sows and harvests the prison garden. Fresh air, calming work, food for the kitchen.</description>
+    <workerClass>RimPrison.InmateJobWorker_Garden</workerClass>
+    <zone>RP_Garden</zone>
+    <allowedSecurity><li>RP_Minimum</li><li>RP_Medium</li></allowedSecurity>
+    <maxTension>55</maxTension>
+    <tensionPerHour>-4</tensionPerHour>
+    <wagePerHour>2</wagePerHour>
+    <skill>Plants</skill>
+    <toolTheft>true</toolTheft>
+    <growsContraband>true</growsContraband>
+    <uiOrder>12</uiOrder>
+  </RimPrison.InmateJobDef>
+
+  <RimPrison.InmateJobDef>
+    <defName>RP_JobKitchen</defName>
+    <label>kitchen</label>
+    <description>Cooks simple meals on the kitchen stoves from raw food kept in the kitchen. Kitchen workers may pass the kitchen's Auto doors during work hours (set the doors between the canteen and the kitchen to Auto). Saves cook wages; knives go missing now and then, and so does the fruit. Needs the kitchen safety course.</description>
+    <workerClass>RimPrison.InmateJobWorker_Kitchen</workerClass>
+    <zone>RP_Kitchen</zone>
+    <allowedSecurity><li>RP_Minimum</li></allowedSecurity>
+    <maxTension>40</maxTension>
+    <tensionPerHour>-3</tensionPerHour>
+    <wagePerHour>3</wagePerHour>
+    <skill>Cooking</skill>
+    <requiredProgram>RP_KitchenSafety</requiredProgram>
+    <toolTheft>true</toolTheft>
+    <theftKind>Weapon</theftKind>
+    <stealsFood>true</stealsFood>
+    <uiOrder>14</uiOrder>
+  </RimPrison.InmateJobDef>
+  <WorkGiverDef>
+    <defName>RP_HaulToMorgue</defName>
+    <label>carry the dead to the morgue</label>
+    <giverClass>RimPrison.WorkGiver_HaulToMorgue</giverClass>
+    <workType>Hauling</workType>
+    <verb>carry</verb>
+    <gerund>carrying the dead to the morgue</gerund>
+    <priorityInType>60</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+  <JobDef>
+    <defName>RP_HaulToMorgue</defName>
+    <driverClass>RimPrison.JobDriver_HaulToMorgue</driverClass>
+    <reportString>carrying TargetA to the morgue.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RP_BuryBody</defName>
+    <label>bury the dead</label>
+    <giverClass>RimPrison.WorkGiver_BuryBody</giverClass>
+    <workType>Hauling</workType>
+    <verb>bury</verb>
+    <gerund>burying the dead</gerund>
+    <priorityInType>59</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+  <JobDef>
+    <defName>RP_BuryBody</defName>
+    <driverClass>RimPrison.JobDriver_BuryBody</driverClass>
+    <reportString>burying TargetA in the prison plot.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <JobDef>
+    <defName>RP_StaffBreak</defName>
+    <driverClass>RimPrison.JobDriver_StaffBreak</driverClass>
+    <reportString>taking a break in the staff room.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+    <joyKind>Social</joyKind>
+  </JobDef>
+  <JobDef>
+    <defName>RP_InmateCook</defName>
+    <driverClass>RimPrison.JobDriver_InmateCook</driverClass>
+    <reportString>cooking at TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <JobDef>
+    <defName>RP_InmateProduce</defName>
+    <driverClass>RimPrison.JobDriver_InmateProduce</driverClass>
+    <reportString>working at TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RP_LicensePlatePress</defName>
+    <label>license plate press</label>
+    <description>A press that stamps license plates from steel. Inmates with workshop jobs run it during work hours; keep steel in the workshop zone.</description>
+    <thingClass>Building</thingClass>
+    <designationCategory>RP_Prison</designationCategory>
+    <graphicData>
+      <texPath>Things/Building/RP_LicensePlatePress</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,1)</drawSize>
+    </graphicData>
+    <size>(2,1)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.5</fillPercent>
+    <pathCost>50</pathCost>
+    <rotatable>true</rotatable>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <costList><Steel>120</Steel><ComponentIndustrial>2</ComponentIndustrial></costList>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>2500</WorkToBuild>
+      <Mass>60</Mass>
+    </statBases>
+    <comps>
+      <li Class="RimPrison.CompProperties_Workstation">
+        <input>Steel</input>
+        <inputCount>10</inputCount>
+        <product>RP_LicensePlates</product>
+        <productCount>6</productCount>
+        <workTicks>1800</workTicks>
+        <skill>Crafting</skill>
+      </li>
+    </comps>
+    <placeWorkers><li>PlaceWorker_PreventInteractionSpotOverlap</li></placeWorkers>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RP_LicensePlates</defName>
+    <label>license plates</label>
+    <description>License plates stamped by inmates. Leave them in the Exports zone to sell them.</description>
+    <graphicData>
+      <texPath>Things/Item/RP_LicensePlates</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <stackLimit>100</stackLimit>
+    <statBases>
+      <MarketValue>9</MarketValue>
+      <Mass>0.4</Mass>
+    </statBases>
+    <thingCategories><li>Manufactured</li></thingCategories>
+    <tradeability>All</tradeability>
+  </ThingDef>
+</Defs>

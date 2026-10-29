@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The criminally insane and a psych wing (see Programs/PsychWing.cs): the psychologist assesses an inmate into psychiatric care, the doctor makes medication rounds with an antipsychotic,
+       and a break in a padded cell harms neither the inmate nor the things in it. -->
+
+  <RimPrison.SecurityLevelDef>
+    <defName>RP_Psych</defName>
+    <wingOnly>true</wingOnly>
+    <paddedOnly>true</paddedOnly>
+    <referralOnly>true</referralOnly>
+    <labelShort>psych</labelShort>
+    <label>psychiatric care</label>
+    <description>Inmates who are not well: two or more mental breaks in ten days, or a trait (a pyromaniac, a bloodlust) that the psychologist's assessment finds. Housed only in padded cells of a psych wing (a bed of its own in a room of its own, the bed a padded one), where a break harms neither the inmate nor anything in the cell. The doctor makes medication rounds with an antipsychotic: it lowers the risk of a break, and when a round is missed it fades and a break comes. No workshop and no kitchen in the regime. Not sent by the state: the psychologist moves inmates here (once the psychiatric wing project is done and a padded cell is free), and conduct moves them out again after fourteen clean days.</description>
+    <color>(0.35, 0.7, 0.62)</color>
+    <intakeGrant>0</intakeGrant>
+    <dailyPayment>300</dailyPayment>
+    <defaultIntakePerDay>0</defaultIntakePerDay>
+    <dangerFactor>1.5</dangerFactor>
+    <uiOrder>36</uiOrder>
+    <promoteTo>RP_Medium</promoteTo>
+    <promoteAfterCleanDays>14</promoteAfterCleanDays>
+    <promoteMaxTension>30</promoteMaxTension>
+    <promotePrograms>0</promotePrograms>
+    <defaultRegime>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Lockup</li>
+      <li>RP_Eat</li>
+      <li>RP_ShowerTime</li>
+      <li>RP_Lockup</li>
+      <li>RP_FreeTime</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Eat</li>
+      <li>RP_Lockup</li>
+      <li>RP_FreeTime</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_ShowerTime</li>
+      <li>RP_FreeTime</li>
+      <li>RP_Lockup</li>
+      <li>RP_Eat</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+    </defaultRegime>
+    <modExtensions>
+      <li Class="RimPrison.PsychLevelExtension">
+        <traits>
+          <li>Pyromaniac</li>
+          <li>Bloodlust</li>
+        </traits>
+      </li>
+    </modExtensions>
+  </RimPrison.SecurityLevelDef>
+
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_WingPsych</defName>
+    <label>psychiatric wing</label>
+    <description>Paint over padded cells: their beds take only inmates in psychiatric care. A cell takes one padded bed and nothing else a prisoner sleeps in. A break in a padded cell harms neither the inmate nor the things in it.</description>
+    <color>(0.35, 0.7, 0.62)</color>
+    <security>RP_Psych</security>
+    <uiOrder>8</uiOrder>
+  </RimPrison.PrisonZoneDef>
+
+  <RimPrison.BureaucracyDef>
+    <defName>RP_Bur_PsychWing</defName>
+    <label>psychiatric wing</label>
+    <description>The licence and the budget for psychiatric care: padded cells, and a level the psychologist can move inmates to after two breaks in ten days (or a trait their assessment turns up). Needs the psychology department.</description>
+    <cost>1200</cost>
+    <work>16</work>
+    <uiOrder>44</uiOrder>
+    <prerequisites><li>RP_Bur_Psychology</li></prerequisites>
+    <securities><li>RP_Psych</li></securities>
+    <zones><li>RP_WingPsych</li></zones>
+    <buildings><li>RP_PaddedBed</li></buildings>
+  </RimPrison.BureaucracyDef>
+
+  <!-- The padded cell's bed: a room of the psych wing with only this bed in it has padded walls (see PaddedCells). -->
+  <ThingDef ParentName="BedBase">
+    <defName>RP_PaddedBed</defName>
+    <label>padded bed</label>
+    <description>A bed set in a padded cell: padded walls, a quilted mattress, nothing to break and nothing to hang from. Set in a cell of the psychiatric wing (painted as the wing, the only bed in the room), a mental break harms neither the inmate whose bed it is nor the things in the cell; anywhere else it pads nothing and houses no one. The room takes this bed and no other a prisoner sleeps in.</description>
+    <designationCategory>RP_Prison</designationCategory>
+    <graphicData>
+      <texPath>Things/Building/RP_PaddedBed</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,2)</drawSize>
+      <damageData>
+        <rect>(0,0.05,1,1.95)</rect>
+      </damageData>
+    </graphicData>
+    <size>(1,2)</size>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>1200</WorkToBuild>
+      <Mass>25</Mass>
+      <Comfort>0.55</Comfort>
+      <Beauty>-2</Beauty>
+      <BedRestEffectiveness>1</BedRestEffectiveness>
+      <Flammability>0.5</Flammability>
+      <ImmunityGainSpeedFactor>1.0</ImmunityGainSpeedFactor>
+      <SurgerySuccessChanceFactor>0.8</SurgerySuccessChanceFactor>
+    </statBases>
+    <costList>
+      <Cloth>40</Cloth>
+      <Steel>20</Steel>
+    </costList>
+    <fillPercent>0.35</fillPercent>
+    <pathCost>42</pathCost>
+    <castEdgeShadows>true</castEdgeShadows>
+    <uiOrder>2012</uiOrder>
+    <building>
+      <bed_showSleeperBody>false</bed_showSleeperBody>
+      <bed_healPerDay>3</bed_healPerDay>
+    </building>
+  </ThingDef>
+
+  <!-- The antipsychotic (bottled by the state, bought through the supply company, carried by the doctor on a round). Not a drug to anyone's policy: it has no use but the round. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RP_Antipsychotic</defName>
+    <label>antipsychotic</label>
+    <description>A bottle of antipsychotic tablets, for the doctor's medication rounds in the psychiatric wing. One dose lasts about a day; an inmate whose round is missed stops being covered, and then a break comes.</description>
+    <graphicData>
+      <texPath>Things/Item/RP_Antipsychotic</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <socialPropernessMatters>false</socialPropernessMatters>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <MarketValue>20</MarketValue>
+      <Mass>0.02</Mass>
+      <Flammability>0.7</Flammability>
+    </statBases>
+    <thingCategories><li>Drugs</li></thingCategories>
+    <techLevel>Industrial</techLevel>
+  </ThingDef>
+
+  <!-- A dose: covers them for a day. Severity is how much is left (1 fresh, falling a day's worth in a day); a round is due below half, and at 0 they are uncovered. -->
+  <HediffDef>
+    <defName>RP_Medicated</defName>
+    <label>antipsychotic</label>
+    <description>On an antipsychotic from the doctor's rounds. Fewer breaks while it lasts; when it wears off before the next round, the breaks come back.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.5, 0.8, 0.72)</defaultLabelColor>
+    <isBad>false</isBad>
+    <maxSeverity>1</maxSeverity>
+    <initialSeverity>1</initialSeverity>
+    <tendable>false</tendable>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-1</severityPerDay>
+        <showHoursToRecover>true</showHoursToRecover>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>wearing off</label>
+        <statOffsets><MentalBreakThreshold>-0.04</MentalBreakThreshold></statOffsets>
+      </li>
+      <li>
+        <label>covered</label>
+        <minSeverity>0.5</minSeverity>
+        <statOffsets><MentalBreakThreshold>-0.08</MentalBreakThreshold></statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- The doctor's round: pick up a dose, walk to the inmate, give it. Only to an inmate of psychiatric care whose cover is running out. -->
+  <JobDef>
+    <defName>RP_MedicationRound</defName>
+    <driverClass>RimPrison.JobDriver_MedicationRound</driverClass>
+    <reportString>giving TargetA their medication.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RP_MedicationRound</defName>
+    <label>medication rounds</label>
+    <giverClass>RimPrison.WorkGiver_MedicationRound</giverClass>
+    <workType>Doctor</workType>
+    <verb>medicate</verb>
+    <gerund>medicating</gerund>
+    <priorityInType>60</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+</Defs>

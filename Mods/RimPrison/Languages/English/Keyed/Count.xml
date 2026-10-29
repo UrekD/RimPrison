@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The count (Security/Count.cs): the guards walk the wings and count heads; an escape nobody saw is told at the next count. No capital after a colon: RimWorld capitalises the letter after ": ". -->
+  <RP_Count_WhereZone>in the {0}</RP_Count_WhereZone>
+  <RP_Count_WhereGrounds>on the grounds</RP_Count_WhereGrounds>
+  <RP_Count_WayWalked>They walked out through a gap that nobody was watching.</RP_Count_WayWalked>
+  <RP_Count_WayTunnel>A tunnel under the cell was used.</RP_Count_WayTunnel>
+  <RP_Count_WayStowaway>They stowed away on the state shuttle.</RP_Count_WayStowaway>
+  <RP_Count_SightedLabel>Escape attempt</RP_Count_SightedLabel>
+  <RP_Count_SightedText>{0} was seen making a break for it.</RP_Count_SightedText>
+  <RP_Count_ShortLabel>Short at the count</RP_Count_ShortLabel>
+  <RP_Count_ShortText>{0} was not in the prison at the {1} count, and nobody saw them go. {2} They were last seen {3}, about {4} hours ago.
+
+The prison has been fined {5}. The police have been told; the head start is {4} hours, and every hour of it counts against getting them back. A camera on the fence, a tower or a guard on the pad would have seen them sooner.</RP_Count_ShortText>
+  <RP_Chr_CountShort>{0} was missing at the count - the escape came to light.</RP_Chr_CountShort>
+  <RP_Chr_CountMissed>The {0} count was missed, with no guard free to walk the wings.</RP_Chr_CountMissed>
+  <RP_Chr_CountPartial>The {0} count missed {1} wings, with no guard free for them.</RP_Chr_CountPartial>
+  <RP_Chr_CountPartialOne>The {0} count missed 1 wing, with no guard free for it.</RP_Chr_CountPartialOne>
+  <RP_Count_Missed>The {0} count was missed - no guard was free to walk the wings. Whoever got out in the meantime stays unnoticed until the next one.</RP_Count_Missed>
+  <RP_Count_WingsMissed>The count walked {0} of {1} wings - no guard was free for the rest.</RP_Count_WingsMissed>
+  <RP_Count_WrittenUp>{0} inmate(s) were out of place at the count and have been written up.</RP_Count_WrittenUp>
+  <RP_Count_Line>{0} - last seen {1}, {2} hours ago</RP_Count_Line>
+  <RP_HudCountOff>counts off</RP_HudCountOff>
+  <RP_HudCounting>counting - {0} wings to go</RP_HudCounting>
+  <RP_HudCountingOne>counting - 1 wing to go</RP_HudCountingOne>
+  <RP_HudCountShort>count: {0} unaccounted</RP_HudCountShort>
+  <RP_HudCountAlso>{0}, counting - {1} to go</RP_HudCountAlso>
+  <RP_HudCountMissed>count missed {0}</RP_HudCountMissed>
+  <RP_HudCountCleared>count cleared {0}</RP_HudCountCleared>
+  <RP_HudCountNext>next count {0}:00</RP_HudCountNext>
+  <RP_HudCountTip>The count - the guards walk each wing and count heads, at {0}. Click for the Policy tab.</RP_HudCountTip>
+  <RP_HudCountTipOff>Counts are off in Policy - an escape is known the moment it happens.</RP_HudCountTipOff>
+  <RP_Alert_Unaccounted>Unaccounted for</RP_Alert_Unaccounted>
+  <RP_Alert_UnaccountedN>Unaccounted for ({0})</RP_Alert_UnaccountedN>
+  <RP_Alert_UnaccountedDesc>The last count came up short. These inmates are off the map, and nobody saw them go:
+
+{0}
+
+The police have been told, and every hour of head start counts against getting them back.</RP_Alert_UnaccountedDesc>
+  <RP_CountsLabel>Counts a day</RP_CountsLabel>
+  <RP_CountsValue>{0}, next {1}:00</RP_CountsValue>
+  <RP_CountsOff>off</RP_CountsOff>
+  <RP_CountsDesc>How many times a day the guards walk the wings and count heads (none to four; at lockup and at six by default). Each wing takes a guard half an hour at most; with no guard free in the hour the count is missed. An escape nobody saw - no guard, camera or tower had the runaway in sight - is not known until a count finds the cell empty, and every hour of it counts against getting them back. Counts are at {0}. With counts off an escape is known the moment it happens.</RP_CountsDesc>
+</LanguageData>

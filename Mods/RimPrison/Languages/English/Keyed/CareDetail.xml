@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The care reserve (Security/CareDetail.cs, the Deployment tab). No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+  <RP_DeployCare>Care detail</RP_DeployCare>
+  <RP_DeployCareTip>Keeps this many guards on duty for care - a meal for a hungry inmate shut in a cell, feeding by hand, carrying the downed to a bed, walking a supermax inmate back to the cell - while the rest answer the trouble. Picked afresh each hour from the guards on duty (those already on care work first), or named below. One guard on duty always stays outside it (naming a guard overrides that). A guard in the reserve takes no restraint, punishment carry, search or alarm unless an inmate acting out is close to them or to the inmate they are tending - and an escape, or trouble aimed at the staff (an assault, a hostage), is answered wherever it is; it does not make them any better at medicine, the doctors still do that. With none kept (the default) every guard answers the trouble first, as before.</RP_DeployCareTip>
+  <RP_DeployCareSize>Guards kept for care - {0}</RP_DeployCareSize>
+  <RP_DeployCareOff>None kept - every guard answers the trouble first. Care waits for whoever is free.</RP_DeployCareOff>
+  <RP_CareMembers>On it - {0}</RP_CareMembers>
+  <RP_CareMembersNone>Nobody on it right now</RP_CareMembersNone>
+  <RP_CareShort>Short of guards - {0} of {1} places filled, nobody else on duty can be spared or fit to take it</RP_CareShort>
+  <RP_CareFloor>{0} of {1} places filled - the last guard on duty is never taken, so one answers the trouble (naming a guard overrides it)</RP_CareFloor>
+  <RP_CareMemberNamed>{0} (named)</RP_CareMemberNamed>
+  <RP_CareUnavailable>Not available - {0}</RP_CareUnavailable>
+  <RP_CareUnavailableOne>{0} ({1})</RP_CareUnavailableOne>
+  <RP_CareOldest>Oldest waiting - {0} for {1}, {2} h</RP_CareOldest>
+  <RP_CareNothingWaiting>No care is waiting</RP_CareNothingWaiting>
+  <RP_CareOldestTip>The care request nobody has taken yet that has waited longest (a wait is counted from when the request was first seen, and starts again after a load).</RP_CareOldestTip>
+  <RP_CarePin>Name a guard</RP_CarePin>
+  <RP_CarePinTip>Name the guard who is in the reserve (one place each, never more than the number kept). A named guard who is off shift, suspended, on leave, on strike, standing on a post or tower, drafted, in a mental state or with no care work to do is listed as not available and the automatic pick fills the place until they are back; one who is let go or dead loses the name.</RP_CarePinTip>
+  <RP_CarePinNone>No guard to name</RP_CarePinNone>
+  <RP_CarePinMenu>Name {0}</RP_CarePinMenu>
+  <RP_CarePinMenuOff>Take the name off {0}</RP_CarePinMenuOff>
+  <RP_CarePinMenuWhy>{0} ({1})</RP_CarePinMenuWhy>
+  <RP_CarePinFull>every place is named</RP_CarePinFull>
+  <RP_CareRelease>Release the reserve</RP_CareRelease>
+  <RP_CareReleaseTip>Lets the reserve go for the rest of this hour, so every guard answers the trouble. Says which care requests will wait for it. The next hour's pick fills the reserve again.</RP_CareReleaseTip>
+  <RP_CareResume>Call the reserve back</RP_CareResume>
+  <RP_CareReleasedNote>Released until the next hour - every guard answers the trouble first.</RP_CareReleasedNote>
+  <RP_CareNoOneLeft>Every guard on duty is in the reserve - nobody answers the trouble.</RP_CareNoOneLeft>
+  <RP_CareReleased>The care reserve is released until the next hour. Care that now waits for whoever is free ({0}) - {1}.</RP_CareReleased>
+  <RP_CareReleasedNone>The care reserve is released until the next hour. No care is waiting now.</RP_CareReleasedNone>
+  <RP_CareKindCount_Rescue>{0} to carry to a bed</RP_CareKindCount_Rescue>
+  <RP_CareKindCount_Meal>{0} cell meals</RP_CareKindCount_Meal>
+  <RP_CareKindCount_Feed>{0} to feed by hand</RP_CareKindCount_Feed>
+  <RP_CareKindCount_Return>{0} to walk back to the cell</RP_CareKindCount_Return>
+  <RP_CareKind_Rescue>a carry to a bed</RP_CareKind_Rescue>
+  <RP_CareKind_Meal>a cell meal</RP_CareKind_Meal>
+  <RP_CareKind_Feed>feeding by hand</RP_CareKind_Feed>
+  <RP_CareKind_Return>a walk back to the cell</RP_CareKind_Return>
+  <RP_CareWhy_NotGuard>no longer a guard</RP_CareWhy_NotGuard>
+  <RP_CareWhy_Suspended>suspended</RP_CareWhy_Suspended>
+  <RP_CareWhy_Leave>on leave</RP_CareWhy_Leave>
+  <RP_CareWhy_Hostage>held hostage</RP_CareWhy_Hostage>
+  <RP_CareWhy_Strike>on strike</RP_CareWhy_Strike>
+  <RP_CareWhy_OffShift>off shift</RP_CareWhy_OffShift>
+  <RP_CareWhy_Down>down</RP_CareWhy_Down>
+  <RP_CareWhy_Post>on a post or tower</RP_CareWhy_Post>
+  <RP_CareWhy_Drafted>drafted</RP_CareWhy_Drafted>
+  <RP_CareWhy_Mental>in a mental state</RP_CareWhy_Mental>
+  <RP_CareWhy_NoCare>no care work to do</RP_CareWhy_NoCare>
+</LanguageData>

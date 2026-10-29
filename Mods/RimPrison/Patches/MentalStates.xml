@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Rim Prison mental states (riot, assault, vandalism, escape, held hostage) in the critical mental state subtree. -->
+  <Operation Class="PatchOperationInsert">
+    <xpath>Defs/ThinkTreeDef[defName="MentalStateCritical"]/thinkRoot/subNodes/li[1]</xpath>
+    <order>Prepend</order>
+    <value>
+      <li Class="ThinkNode_ConditionalMentalState">
+        <state>RP_Rioting</state>
+        <subNodes>
+          <li Class="RimPrison.JobGiver_Riot" />
+          <li Class="JobGiver_WanderCurrentRoom"><maxDanger>Deadly</maxDanger></li>
+        </subNodes>
+      </li>
+      <li Class="ThinkNode_ConditionalMentalState">
+        <state>RP_Assaulting</state>
+        <subNodes>
+          <li Class="RimPrison.JobGiver_AssaultTarget" />
+          <li Class="JobGiver_WanderCurrentRoom"><maxDanger>Deadly</maxDanger></li>
+        </subNodes>
+      </li>
+      <li Class="ThinkNode_ConditionalMentalState">
+        <state>RP_AttackingInmate</state>
+        <subNodes>
+          <li Class="RimPrison.JobGiver_AssaultTarget" />
+          <li Class="JobGiver_WanderCurrentRoom"><maxDanger>Deadly</maxDanger></li>
+        </subNodes>
+      </li>
+      <li Class="ThinkNode_ConditionalMentalState">
+        <state>RP_Vandalizing</state>
+        <subNodes>
+          <li Class="RimPrison.JobGiver_Vandalize" />
+          <li Class="JobGiver_WanderCurrentRoom"><maxDanger>Deadly</maxDanger></li>
+        </subNodes>
+      </li>
+      <li Class="ThinkNode_ConditionalMentalState">
+        <state>RP_BeingHeld</state>
+        <subNodes>
+          <li Class="RimPrison.JobGiver_Hostage" />
+          <li Class="JobGiver_IdleForever" />
+        </subNodes>
+      </li>
+      <li Class="ThinkNode_ConditionalMentalState">
+        <state>RP_Escaping</state>
+        <subNodes>
+          <li Class="RimPrison.JobGiver_EscapeAttempt" />
+          <li Class="JobGiver_WanderCurrentRoom"><maxDanger>Deadly</maxDanger></li>
+        </subNodes>
+      </li>
+    </value>
+  </Operation>
+</Patch>

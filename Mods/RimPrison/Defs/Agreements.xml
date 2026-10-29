@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Staff agreements (Staff/Agreements.cs): a promise to the staff, kept or broken. -->
+  <ThoughtDef>
+    <defName>RP_KeptTheirWord</defName>
+    <durationDays>8</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>kept their word</label><description>Management said it would put it right, and then it did. Nobody has to ask twice.</description><baseMoodEffect>6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_BrokenPromise</defName>
+    <durationDays>12</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>a broken promise</label><description>We were promised it would be put right. Then nothing, and the deadline came and went. Why would anyone believe them again?</description><baseMoodEffect>-10</baseMoodEffect></li></stages>
+  </ThoughtDef>
+</Defs>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Gang ranks, succession, and a way out (see Security/GangRanks.cs and Security/GangExit.cs). -->
+
+  <!-- A contested succession: two lieutenants want the post of a leader who is gone. No letter: the chronicle tells it once the gang is known. -->
+  <RimPrison.StoryArcDef>
+    <defName>RP_Arc_Succession</defName>
+    <label>succession</label>
+    <workerClass>RimPrison.SuccessionArc</workerClass>
+    <maxConcurrent>3</maxConcurrent>
+    <decisionHours>12</decisionHours>
+  </RimPrison.StoryArcDef>
+
+  <!-- The goal to leave a gang. It is formed from a doubt (a birth letter, a mentor, a program passed, a friend killed in a war); nothing rolls it at intake. -->
+  <RimPrison.InmateWantDef>
+    <defName>RP_Want_LeaveGang</defName>
+    <label>leave their gang</label>
+    <description>Wants out of the gang. It takes a session with the chaplain or a counsellor, and then they renounce it. The old gang will put out a green light on them: a threat, then a beating. The warden is asked what to do about it. Unless the gang is found out, the goal is not shown.</description>
+    <workerClass>RimPrison.WantWorker_LeaveGang</workerClass>
+    <rolled>false</rolled>
+    <priority>2</priority>
+    <durationDays>10</durationDays>
+    <maxRenewals>1</maxRenewals>
+    <tensionRelief>0.2</tensionRelief>
+  </RimPrison.InmateWantDef>
+
+  <RimPrison.PrisonDecisionDef>
+    <defName>RP_Decision_LeftGang</defName>
+    <label>left a gang</label>
+    <workerClass>RimPrison.LeftGangDecision</workerClass>
+    <urgent>true</urgent>
+  </RimPrison.PrisonDecisionDef>
+
+  <!-- The session: the chaplain (ministry) or a counsellor sits down with the inmate. -->
+  <JobDef>
+    <defName>RP_GangExitSession</defName>
+    <driverClass>RimPrison.JobDriver_GangExitSession</driverClass>
+    <reportString>hearing out TargetA.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RP_GangExitSession_Ministry</defName>
+    <label>hear out a gang member</label>
+    <giverClass>RimPrison.WorkGiver_GangExitSession</giverClass>
+    <workType>RP_Ministry</workType>
+    <verb>hear out</verb>
+    <gerund>hearing out</gerund>
+    <priorityInType>90</priorityInType>
+    <requiredCapacities><li>Talking</li></requiredCapacities>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RP_GangExitSession_Counselling</defName>
+    <label>hear out a gang member</label>
+    <giverClass>RimPrison.WorkGiver_GangExitSession</giverClass>
+    <workType>RP_Counselling</workType>
+    <verb>hear out</verb>
+    <gerund>hearing out</gerund>
+    <priorityInType>90</priorityInType>
+    <requiredCapacities><li>Talking</li></requiredCapacities>
+  </WorkGiverDef>
+
+  <!-- The old gang's hatred of an ex-member, for thirty days, held only by a member whose gang is on the warden's file: a grudge in the Social tab toward a known ex-member would otherwise point out every hidden member of the gang. -->
+  <ThoughtDef>
+    <defName>RP_ExMember</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>RimPrison.ThoughtWorker_ExMember</workerClass>
+    <stages>
+      <li><label>turncoat</label><baseOpinionOffset>-40</baseOpinionOffset></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_MarkedByGang</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>marked</label><description>I walked out on them, and they have let me know it. Every corner is a place they could be waiting.</description><baseMoodEffect>-5</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_BeatenForLeaving</defName>
+    <durationDays>8</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>beaten for leaving</label><description>They made their point with their fists. It was still the right thing to do. I have to believe it was.</description><baseMoodEffect>-6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+</Defs>

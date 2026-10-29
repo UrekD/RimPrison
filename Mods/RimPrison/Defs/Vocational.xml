@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Vocational training and prison industries: the tailoring course (classroom, then a tailor bench in the workshop) and the tailoring job it opens,
+       and the kitchen safety course the kitchen job asks for. See Programs/Vocation.cs and Labor/Tailoring.cs. -->
+
+  <!-- Kitchen safety is held in the canteen (a room every prison has from day one, idle in the work slot) by the counsellor, or by the cook, whose own work type
+       holds this giver, when there is none. -->
+  <WorkGiverDef>
+    <defName>RP_TeachKitchenSafety</defName>
+    <label>teach class</label>
+    <giverClass>RimPrison.WorkGiver_TeachClass</giverClass>
+    <workType>Cooking</workType>
+    <verb>teach</verb>
+    <gerund>teaching</gerund>
+    <priorityInType>200</priorityInType>
+    <emergency>true</emergency>
+  </WorkGiverDef>
+
+  <RimPrison.ProgramDef>
+    <defName>RP_KitchenSafety</defName>
+    <label>kitchen safety</label>
+    <description>Hygiene, knives and fire in the kitchen, taught in the canteen (at its dining chairs and stools, in the work hours when nobody is eating there) by the counsellor, or by the cook when there is none. Inmates must pass it to work in the kitchen, and a trained crew makes a food scare less likely: 15% less for each of them, up to four. It pays no grant.</description>
+    <zone>RP_Canteen</zone>
+    <teacherRoles><li>RP_Counsellor</li><li>RP_Cook</li></teacherRoles>
+    <seats><li>DiningChair</li><li>Stool</li></seats>
+    <sessions>2</sessions>
+    <costPerSession>30</costPerSession>
+    <passChance>0.7</passChance>
+    <examSkill>Cooking</examSkill>
+    <passChancePerSkillLevel>0.02</passChancePerSkillLevel>
+    <forJobs><li>RP_JobKitchen</li></forJobs>
+    <grantOnPass>0</grantOnPass>
+    <uiOrder>60</uiOrder>
+  </RimPrison.ProgramDef>
+
+  <RimPrison.ProgramDef>
+    <defName>RP_TailoringTheory</defName>
+    <label>tailoring, pattern and cut</label>
+    <description>The first part of the tailoring course, in the classroom: measuring, patterns, cutting. Taught by the counsellor, or a workman when there is none. It is no program of its own: passing it only opens the bench training.</description>
+    <teacherRoles><li>RP_Counsellor</li><li>RP_Workman</li></teacherRoles>
+    <sessions>3</sessions>
+    <costPerSession>40</costPerSession>
+    <passChance>0.65</passChance>
+    <examSkill>Crafting</examSkill>
+    <passChancePerSkillLevel>0.03</passChancePerSkillLevel>
+    <forJobs><li>RP_JobTailoring</li></forJobs>
+    <stage>true</stage>
+    <grantOnPass>0</grantOnPass>
+    <uiOrder>62</uiOrder>
+  </RimPrison.ProgramDef>
+  <RimPrison.ProgramDef>
+    <defName>RP_Tailoring</defName>
+    <label>tailoring</label>
+    <description>The second part of the tailoring course, in the workshop at a tailor bench (one inmate to a bench), taught by a workman. It needs the classroom part first. Passing it certifies a trade: a better chance of a job in place when they walk out on parole and a lower chance of reoffending. It opens tailoring work, which sews uniforms for the clean stock and for export.</description>
+    <zone>RP_Workshop</zone>
+    <teacherRoles><li>RP_Workman</li></teacherRoles>
+    <seats><li>HandTailoringBench</li><li>ElectricTailoringBench</li></seats>
+    <sessions>3</sessions>
+    <costPerSession>60</costPerSession>
+    <passChance>0.6</passChance>
+    <examSkill>Crafting</examSkill>
+    <passChancePerSkillLevel>0.03</passChancePerSkillLevel>
+    <requiresProgram>RP_TailoringTheory</requiresProgram>
+    <forJobs><li>RP_JobTailoring</li></forJobs>
+    <trade>true</trade>
+    <grantOnPass>250</grantOnPass>
+    <uiOrder>64</uiOrder>
+  </RimPrison.ProgramDef>
+
+  <RimPrison.InmateJobDef>
+    <defName>RP_JobTailoring</defName>
+    <label>tailoring</label>
+    <description>Sews prison uniforms at a tailor bench in the workshop. They go into the clean-uniform stock, so fewer are sent out to the laundry service, and what the prison does not need is sold at the export run. The cloth costs a little. Needs the tailoring course.</description>
+    <workerClass>RimPrison.InmateJobWorker_Tailoring</workerClass>
+    <zone>RP_Workshop</zone>
+    <allowedSecurity><li>RP_Minimum</li><li>RP_Medium</li></allowedSecurity>
+    <maxTension>55</maxTension>
+    <tensionPerHour>-3</tensionPerHour>
+    <wagePerHour>3</wagePerHour>
+    <skill>Crafting</skill>
+    <requiredProgram>RP_Tailoring</requiredProgram>
+    <uiOrder>11</uiOrder>
+  </RimPrison.InmateJobDef>
+
+  <JobDef>
+    <defName>RP_Sew</defName>
+    <driverClass>RimPrison.JobDriver_Sew</driverClass>
+    <reportString>sewing uniforms.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+</Defs>

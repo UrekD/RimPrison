@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <JobDef>
+    <defName>RP_UseFixture</defName>
+    <driverClass>RimPrison.JobDriver_UseFixture</driverClass>
+    <reportString>using TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <!-- Inmates: regime-driven behaviour, inserted before vanilla's prisoner branch. Always ends in a job, so the
+       vanilla escape/wander nodes below are never reached for managed inmates. -->
+  <ThinkTreeDef>
+    <defName>RP_InmateBehavior</defName>
+    <insertTag>Humanlike_PostDuty</insertTag>
+    <insertPriority>100</insertPriority>
+    <thinkRoot Class="RimPrison.ThinkNode_ConditionalInmate">
+      <subNodes>
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>RestingForMedicalReasons</tagToGive>
+          <subNodes>
+            <li Class="JobGiver_PatientGoToBed" />
+          </subNodes>
+        </li>
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>ChangingApparel</tagToGive>
+          <subNodes>
+            <li Class="JobGiver_PrisonerGetDressed" />
+          </subNodes>
+        </li>
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>SatisfyingNeeds</tagToGive>
+          <subNodes>
+            <li Class="RimPrison.JobGiver_InmateUrgentNeeds" />
+          </subNodes>
+        </li>
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Misc</tagToGive>
+          <subNodes>
+            <li Class="RimPrison.JobGiver_InmateRegime" />
+          </subNodes>
+        </li>
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Idle</tagToGive>
+          <subNodes>
+            <li Class="JobGiver_WanderCurrentRoom">
+              <maxDanger>Deadly</maxDanger>
+            </li>
+            <li Class="JobGiver_IdleForever" />
+          </subNodes>
+        </li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+</Defs>

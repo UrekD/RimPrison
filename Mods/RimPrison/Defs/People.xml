@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The outside world: where inmates come from, visitors live and released inmates go. Never hostile. -->
+  <FactionDef ParentName="FactionBase">
+    <defName>RP_Outside</defName>
+    <label>the outside</label>
+    <description>Civilians, families and the justice system beyond the prison walls.</description>
+    <pawnSingular>civilian</pawnSingular>
+    <pawnsPlural>civilians</pawnsPlural>
+    <categoryTag>Outlander</categoryTag>
+    <requiredCountAtGameStart>1</requiredCountAtGameStart>
+    <maxConfigurableAtWorldCreation>1</maxConfigurableAtWorldCreation>
+    <displayInFactionSelection>false</displayInFactionSelection>
+    <fixedName>the outside</fixedName>
+    <canGenerateQuestSites>false</canGenerateQuestSites>
+    <factionIconPath>World/WorldObjects/Expanding/Town</factionIconPath>
+    <techLevel>Industrial</techLevel>
+    <hidden>true</hidden>
+    <rescueesCanJoin>false</rescueesCanJoin>
+    <autoFlee>true</autoFlee>
+    <raidsForbidden>true</raidsForbidden>
+    <canStageAttacks>false</canStageAttacks>
+    <permanentEnemy>false</permanentEnemy>
+    <naturalEnemy>false</naturalEnemy>
+    <allowedCultures><li>Rustican</li></allowedCultures>
+    <classicIdeo>true</classicIdeo>
+    <xenotypeSet>
+      <xenotypeChances />
+    </xenotypeSet>
+    <colorSpectrum><li>(0.6, 0.6, 0.6)</li></colorSpectrum>
+    <backstoryFilters>
+      <li>
+        <categories><li>Outlander</li></categories>
+        <commonality>0.9</commonality>
+      </li>
+      <li>
+        <categories><li>Offworld</li></categories>
+        <commonality>0.1</commonality>
+      </li>
+    </backstoryFilters>
+    <basicMemberKind>RP_Inmate</basicMemberKind>
+  </FactionDef>
+
+  <PawnKindDef>
+    <defName>RP_Inmate</defName>
+    <label>inmate</label>
+    <race>Human</race>
+    <defaultFactionDef>RP_Outside</defaultFactionDef>
+    <combatPower>40</combatPower>
+    <isFighter>false</isFighter>
+    <chemicalAddictionChance>0.25</chemicalAddictionChance>
+    <backstoryCryptosleepCommonality>0</backstoryCryptosleepCommonality>
+    <apparelMoney>0~0</apparelMoney>
+    <weaponMoney>0~0</weaponMoney>
+    <techHediffsChance>0.02</techHediffsChance>
+    <apparelTags><li>IndustrialBasic</li></apparelTags>
+    <initialWillRange>2~6</initialWillRange>
+    <initialResistanceRange>15~30</initialResistanceRange>
+    <basePrisonBreakMtbDays>9999</basePrisonBreakMtbDays>
+  </PawnKindDef>
+</Defs>

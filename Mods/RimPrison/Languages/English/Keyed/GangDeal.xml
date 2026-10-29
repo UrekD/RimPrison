@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The shot-caller's deal (gap analysis 6, item 5). Only a gang the warden knows, with a leader the warden knows, is ever named here. -->
+
+  <!-- The warden's word -->
+  <RP_WardenWord_GangDeal>Keep your people quiet (a deal)</RP_WardenWord_GangDeal>
+  <RP_WardenWord_GangDealDesc>Offer the gang a quiet wing for {0} days, against one thing of the leader's pick. They may take it, or refuse and think the less of the warden. A deal is a mark against the prison (the inspector scores it {1} points lower while it runs, and the press may tell it).</RP_WardenWord_GangDealDesc>
+  <RP_WardenWord_GangDealTold>{0} sat down with {1} and put the terms on the table.</RP_WardenWord_GangDealTold>
+
+  <!-- Why not -->
+  <RP_GangDealWhy_Gone>the leader is not who they were</RP_GangDealWhy_Gone>
+  <RP_GangDealWhy_Running>a deal runs, {0} days left</RP_GangDealWhy_Running>
+  <RP_GangDealWhy_Cooldown>a new deal in {0} days</RP_GangDealWhy_Cooldown>
+  <RP_GangDealWhy_Away>{0} is out of reach</RP_GangDealWhy_Away>
+  <RP_GangDealWhy_Story>{0} is in another story</RP_GangDealWhy_Story>
+  <RP_GangDealWhy_War>the {0} are at war</RP_GangDealWhy_War>
+  <RP_GangDealWhy_NoWing>{0} sleeps in no wing</RP_GangDealWhy_NoWing>
+  <RP_GangDealWhy_NoPatch>no patch is free</RP_GangDealWhy_NoPatch>
+  <RP_GangDealWhy_NoVisits>no family, or no visitation room</RP_GangDealWhy_NoVisits>
+  <RP_GangDealWhy_NoJob>nobody fit for a free job</RP_GangDealWhy_NoJob>
+
+  <!-- The letter with the terms -->
+  <RP_GangDealOfferLabel>The {0}, a deal for a quiet wing</RP_GangDealOfferLabel>
+  <RP_GangDealOfferText>{0} leads the {1}. The warden can offer them a quiet wing for {2} days. Their members on {0}'s wing misbehave {3} less, they start no war and take in nobody, and the other gangs on that wing are wound up by it (the {1} run the yard). The price is that the inspector scores the prison {4} points lower while it runs, and the press may hear of it. A fight or an assault the {1} are seen in breaks it.\n\nThe leader wants one thing for it, the warden's pick of four. {0} takes the deal with a {5} chance, which their trust of the warden moves, and a refusal costs that trust.</RP_GangDealOfferText>
+  <RP_GangDeal_Turf>A patch of yard or common room, as turf</RP_GangDeal_Turf>
+  <RP_GangDeal_Visits>Two visits a week for its members</RP_GangDeal_Visits>
+  <RP_GangDeal_Commissary>The commissary open to its members</RP_GangDeal_Commissary>
+  <RP_GangDeal_Job>A job slot for a member the leader names</RP_GangDeal_Job>
+  <RP_GangDeal_NotNow>Not now</RP_GangDeal_NotNow>
+  <RP_GangDealTheWarden>the warden</RP_GangDealTheWarden>
+  <RP_GangDealRefused>{0} will not strike a deal for the {1}, and thinks the less of {2} for asking.</RP_GangDealRefused>
+
+  <!-- The terms in words -->
+  <RP_GangDealTerm_Turf>{0} kept as the {1}'s turf</RP_GangDealTerm_Turf>
+  <RP_GangDealTerm_Visits>two visits a week for its members</RP_GangDealTerm_Visits>
+  <RP_GangDealTerm_Commissary>the commissary open to its members</RP_GangDealTerm_Commissary>
+  <RP_GangDealTerm_Job>a job as {1} for {0}</RP_GangDealTerm_Job>
+  <RP_GangDealTermShort_Turf>turf</RP_GangDealTermShort_Turf>
+  <RP_GangDealTermShort_Visits>visits</RP_GangDealTermShort_Visits>
+  <RP_GangDealTermShort_Commissary>commissary</RP_GangDealTermShort_Commissary>
+  <RP_GangDealTermShort_Job>job</RP_GangDealTermShort_Job>
+  <RP_GangDealTurfGone>a patch that is gone</RP_GangDealTurfGone>
+
+  <!-- The chronicle, and its messages -->
+  <RP_Chr_GangDealStart>The warden struck a deal with {0} of the {1}, a quiet wing for {2} days against {3}.</RP_Chr_GangDealStart>
+  <RP_Chr_GangDealEnd_Lapsed>The deal with {0} of the {1} ran out. The terms are back to the usual rules.</RP_Chr_GangDealEnd_Lapsed>
+  <RP_Chr_GangDealEnd_Warden>The warden called off the deal with {0} of the {1}, who think the less of the warden for it.</RP_Chr_GangDealEnd_Warden>
+  <RP_Chr_GangDealEnd_Breach>The {1} broke the deal a second time and the warden called it off, to the displeasure of {0}.</RP_Chr_GangDealEnd_Breach>
+  <RP_Chr_GangDealEnd_Gone>The deal with {0} of the {1} fell through. The leader is gone, no longer leads, or is off the wing the deal was struck on.</RP_Chr_GangDealEnd_Gone>
+  <RP_Chr_GangDealOverlooked>The warden overlooked a breach of the deal with {0} of the {1}, this once.</RP_Chr_GangDealOverlooked>
+
+  <!-- A breach -->
+  <RP_GangDealBreachLabel>The {0} broke the deal</RP_GangDealBreachLabel>
+  <RP_GangDealBreachText>{0} of the {1} was seen in a fight, and the deal with {2} was for a quiet wing, against {3}.\n\nOverlook it, this once - the next breach ends the deal with no word.\nEnd the deal - the terms are taken back, and {2} will not forget it.</RP_GangDealBreachText>
+  <RP_GangDeal_Overlook>Overlook it, this once</RP_GangDeal_Overlook>
+  <RP_GangDeal_End>End the deal</RP_GangDeal_End>
+
+  <!-- The press, and what wound-up rivals say -->
+  <RP_PressTopicGangDeal>{0} of the {1} has the run of the wing, and the warden made it so.</RP_PressTopicGangDeal>
+  <RP_Press_Deal>Press: "The warden and the gang" (reputation {0}).</RP_Press_Deal>
+  <RP_Cause_Deal>a gang runs the yard</RP_Cause_Deal>
+  <RP_Cause_Deal_RP_Gang_Saints>the Saints run the yard</RP_Cause_Deal_RP_Gang_Saints>
+  <RP_Cause_Deal_RP_Gang_Ravens>the Ravens run the yard</RP_Cause_Deal_RP_Gang_Ravens>
+  <RP_Cause_Deal_RP_Gang_Brotherhood>the Brotherhood run the yard</RP_Cause_Deal_RP_Gang_Brotherhood>
+
+  <!-- Intel -->
+  <RP_IntelGangDeal>Deal - {0}, {1} days left, {2}</RP_IntelGangDeal>
+  <RP_IntelGangDealBreach>{0} breach</RP_IntelGangDealBreach>
+  <RP_IntelGangDealBreaches>{0} breaches</RP_IntelGangDealBreaches>
+  <RP_IntelGangDealFull>Deal - {0}, {1} days left, {2}.</RP_IntelGangDealFull>
+  <RP_IntelGangDealEnd>End it</RP_IntelGangDealEnd>
+  <RP_IntelTip_GangDeal>The warden's deal with the {0}'s leader. Its members on the leader's wing misbehave less, the gang starts no war and takes in nobody, and the inspector scores the prison lower while it runs. A second breach ends it.</RP_IntelTip_GangDeal>
+  <RP_IntelGangDealEndConfirm>End the warden's deal with {0} of the {1}? The terms are taken back, {0} thinks the less of the warden for it, and there is no new deal with the gang for {2} days.</RP_IntelGangDealEndConfirm>
+  <RP_IntelTip_GangDealEnd>End the deal now. The terms are taken back, the leader thinks the less of the warden, and no new deal with the gang for {0} days.</RP_IntelTip_GangDealEnd>
+</LanguageData>

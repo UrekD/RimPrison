@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Story beats about the people inside: a gang's leadership contested, an informant turned, a talent noticed. -->
+  <IncidentDef>
+    <defName>RP_GangChallenge</defName>
+    <label>gang leadership challenge</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_GangChallenge</workerClass>
+    <baseChance>0.6</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>2</drama>
+        <perPawnCooldownDays>4</perPawnCooldownDays>
+        <weights><li><metric>AvgTension</metric><curve><points><li>(10,0.3)</li><li>(40,1)</li><li>(70,1.6)</li></points></curve></li></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <RimPrison.StoryArcDef>
+    <defName>RP_Arc_GangChallenge</defName>
+    <label>leadership challenge</label>
+    <workerClass>RimPrison.GangChallengeArc</workerClass>
+    <maxConcurrent>2</maxConcurrent>
+    <decisionHours>12</decisionHours>
+    <urgent>true</urgent>
+  </RimPrison.StoryArcDef>
+
+  <IncidentDef>
+    <defName>RP_InformantRecruit</defName>
+    <label>possible informant</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_InformantRecruit</workerClass>
+    <baseChance>0.5</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>1</drama>
+        <perPawnCooldownDays>5</perPawnCooldownDays>
+        <weights><li><metric>RivalGangs</metric><curve><points><li>(0,0.6)</li><li>(1,1.4)</li></points></curve></li></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Informant</defName><label>possible informant</label><workerClass>RimPrison.InformantDecision</workerClass></RimPrison.PrisonDecisionDef>
+
+  <IncidentDef>
+    <defName>RP_Talent</defName>
+    <label>talent noticed</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_Talent</workerClass>
+    <baseChance>0.7</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>0</drama>
+        <perPawnCooldownDays>3</perPawnCooldownDays>
+        <weights></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Talent</defName><label>talent noticed</label><workerClass>RimPrison.TalentDecision</workerClass></RimPrison.PrisonDecisionDef>
+
+  <ThoughtDef>
+    <defName>RP_TalentNoticed</defName>
+    <durationDays>6</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>someone noticed what I can do</label><description>They put me on work I'm actually good at. First time in a while anyone asked.</description><baseMoodEffect>6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_BirthdayInside</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>birthday inside</label><description>Another year older, behind a door that locks from the outside. Nobody said a word.</description><baseMoodEffect>-5</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_BirthdayWithFriends</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>birthday with friends</label><description>A honey bun with a match in it and a bad song. Better than I expected.</description><baseMoodEffect>5</baseMoodEffect></li></stages>
+  </ThoughtDef>
+
+  <!-- Staff lives: burnout, money trouble, a veteran retiring. -->
+  <IncidentDef>
+    <defName>RP_StaffBurnout</defName>
+    <label>staff burnout</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_StaffBurnout</workerClass>
+    <baseChance>0.7</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>1</drama>
+        <weights><li><metric>StaffAvgMood</metric><curve><points><li>(0.25,2)</li><li>(0.45,1)</li><li>(0.65,0.2)</li></points></curve></li></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Burnout</defName><label>staff burnout</label><workerClass>RimPrison.BurnoutDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <IncidentDef>
+    <defName>RP_StaffDebt</defName>
+    <label>money trouble</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_StaffDebt</workerClass>
+    <baseChance>0.4</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>1</drama>
+        <weights></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <IncidentDef>
+    <defName>RP_FoodScare</defName>
+    <label>food scare</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_FoodScare</workerClass>
+    <baseChance>0.25</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>2</drama>
+        <weights></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <IncidentDef>
+    <defName>RP_Mentor</defName>
+    <label>mentor</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_Mentor</workerClass>
+    <baseChance>0.4</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>1</drama>
+        <perPawnCooldownDays>5</perPawnCooldownDays>
+        <weights></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Mentor</defName><label>mentorship</label><workerClass>RimPrison.MentorDecision</workerClass><standingOrderAllowed>true</standingOrderAllowed></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_Mentoring</defName>
+    <durationDays>10</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>looking out for a youngster</label><description>The kid reminds me of me, before. If I can keep one of them from making my mistakes, that's something.</description><baseMoodEffect>4</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_Mentored</defName>
+    <durationDays>10</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>someone showing me the ropes</label><description>One of the old hands has taken me under their wing. I know who to avoid now, and somebody has my back.</description><baseMoodEffect>5</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_MentorTurnedAway</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>told to keep my distance</label><description>I tried to help the kid and the warden decided I'm a bad influence. Years of keeping my head down, for that.</description><baseMoodEffect>-5</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_FoodScare</defName><label>food scare</label><workerClass>RimPrison.FoodScareDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_DebtCrisis</defName><label>debt crisis</label><urgent>true</urgent><workerClass>RimPrison.DebtCrisisDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_StaffDebt</defName><label>money trouble</label><workerClass>RimPrison.StaffDebtDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <IncidentDef>
+    <defName>RP_VeteranRetiring</defName>
+    <label>veteran retiring</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_VeteranRetiring</workerClass>
+    <baseChance>0.3</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>0</drama>
+        <weights></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Retire</defName><label>retirement</label><workerClass>RimPrison.RetireDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_ColleagueKilled</defName>
+    <durationDays>6</durationDays>
+    <stackLimit>2</stackLimit>
+    <stages><li><label>{0} is dead</label><description>{OTHERPAWN_labelShort} came to work and didn't go home. It could have been any of us.</description><baseMoodEffect>-6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_FamilyLookedAfter</defName>
+    <durationDays>5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>the prison looked after the family</label><description>When one of us died, the prison took care of the family. It matters, knowing that.</description><baseMoodEffect>5</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_PrisonDidNotCare</defName>
+    <durationDays>5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>the prison didn't care</label><description>One of us died on the job and the prison did nothing for the family. That's what we're worth to them.</description><baseMoodEffect>-5</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_StaffDeath</defName><label>a death on the staff</label><urgent>true</urgent><workerClass>RimPrison.StaffDeathDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_Shaken</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>3</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+    <stages><li><label>shaken by {0}</label><description>{OTHERPAWN_labelShort} put me on the floor. I keep seeing it. I'd rather not be the one who has to go near them again.</description><baseMoodEffect>-5</baseMoodEffect><baseOpinionOffset>-20</baseOpinionOffset></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_FacedDown</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>faced down {0}</label><description>I put the cuffs on {OTHERPAWN_labelShort}, the one who hurt me. I'm not afraid of them any more.</description><baseMoodEffect>5</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_ProperBreak</defName>
+    <durationDays>0.3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>a break in a shabby staff room</label><description>Ten minutes off my feet in that dump. Better than nothing.</description><baseMoodEffect>2</baseMoodEffect></li>
+      <li><label>a proper break</label><description>A seat, a cup of tea, a moan with the others. I can face the wings again.</description><baseMoodEffect>4</baseMoodEffect></li>
+      <li><label>a break in a fine staff room</label><description>They actually made the staff room nice. Feels like somebody cares about us.</description><baseMoodEffect>6</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_Trained</defName>
+    <durationDays>6</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>sent on a course</label><description>They paid for me to learn something. Somebody up there thinks I'm worth it.</description><baseMoodEffect>6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_Rested</defName>
+    <durationDays>6</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>a few days off</label><description>Three days without keys on my belt. I slept. I saw daylight.</description><baseMoodEffect>10</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_ManagementListened</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>management listened</label><description>Someone upstairs actually asked how I was doing.</description><baseMoodEffect>4</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_Valued</defName>
+    <durationDays>8</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>they asked me to stay</label><description>A bonus and a handshake. Maybe one more year.</description><baseMoodEffect>8</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_SendOff</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+    <durationDays>3</durationDays>
+    <stackLimit>3</stackLimit>
+    <stages><li><label>a colleague's send-off</label><description>Cake in the staff room, old stories, and one fewer familiar face on the wing.</description><baseMoodEffect>3</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_LeftToSink</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>left to sink</label><description>I told them I was struggling. Nothing changed.</description><baseMoodEffect>-6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+
+  <!-- An overdose on the wing. -->
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Overdose</defName><label>overdose</label><urgent>true</urgent><workerClass>RimPrison.OverdoseDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_SawOverdose</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>saw an overdose</label><description>Someone went grey and started shaking on the floor. The officers took too long.</description><baseMoodEffect>-4</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_GotHelp</defName>
+    <durationDays>5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>got help</label><description>Nobody wrote me up. Someone sat with me and talked about getting clean.</description><baseMoodEffect>6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+
+  <!-- Gang truces, rookie mistakes, flu outbreaks. -->
+  <IncidentDef>
+    <defName>RP_GangTruce</defName>
+    <label>gang truce</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_GangTruce</workerClass>
+    <baseChance>0.4</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>1</drama>
+        <weights><li><metric>RivalGangs</metric><curve><points><li>(0,0)</li><li>(1,1)</li></points></curve></li><li><metric>AvgTension</metric><curve><points><li>(10,0.4)</li><li>(40,1)</li><li>(70,1.6)</li></points></curve></li></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Truce</defName><label>gang truce</label><workerClass>RimPrison.TruceDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <IncidentDef>
+    <defName>RP_RookieConned</defName>
+    <label>rookie conned</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_RookieConned</workerClass>
+    <baseChance>0.5</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>1</drama>
+        <weights></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Rookie</defName><label>rookie mistake</label><workerClass>RimPrison.RookieDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <IncidentDef>
+    <defName>RP_Outbreak</defName>
+    <label>flu outbreak</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_Outbreak</workerClass>
+    <baseChance>0.25</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>2</drama>
+        <weights><li><metric>Inmates</metric><curve><points><li>(6,0.5)</li><li>(20,1)</li><li>(60,1.5)</li></points></curve></li></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Outbreak</defName><label>flu outbreak</label><workerClass>RimPrison.OutbreakDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_WrittenUp</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>written up</label><description>My first week and already a mark on my file. I should have known better.</description><baseMoodEffect>-4</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_TruceHeld</defName>
+    <durationDays>5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>a truce on the wing</label><description>For once nobody's watching their back in the yard.</description><baseMoodEffect>4</baseMoodEffect></li></stages>
+  </ThoughtDef>
+
+  <!-- Innocence claims. -->
+  <IncidentDef>
+    <defName>RP_InnocenceClaim</defName>
+    <label>innocence claim</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_InnocenceClaim</workerClass>
+    <baseChance>0.35</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>1</drama>
+        <perPawnCooldownDays>3</perPawnCooldownDays>
+        <weights></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Innocence</defName><label>innocence claim</label><workerClass>RimPrison.InnocenceDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_AppealDenied</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>appeal denied</label><description>The court read it and said no. Back to the count.</description><baseMoodEffect>-6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_BackedByWarden</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>the warden believes me</label><description>Someone on the other side of the bars wrote to the court for me.</description><baseMoodEffect>6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+
+  <!-- Announced inspections, the winter holiday. -->
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Inspection</defName><label>inspection notice</label><urgent>true</urgent><workerClass>RimPrison.InspectionDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Holiday</defName><label>winter holiday</label><workerClass>RimPrison.HolidayDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_HolidayMeal</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>holiday meal</label><description>Real turkey, a paper hat, and nobody started anything. For one day it almost felt normal.</description><baseMoodEffect>8</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_HolidayInside</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>the holidays inside</label><description>Everyone out there is home with their family today. I'm counting bricks.</description><baseMoodEffect>-5</baseMoodEffect></li></stages>
+  </ThoughtDef>
+
+  <!-- Medical emergencies, family days, officers too close to an inmate. -->
+  <IncidentDef>
+    <defName>RP_MedicalEmergency</defName>
+    <label>medical emergency</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_MedicalEmergency</workerClass>
+    <baseChance>0.3</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>2</drama>
+        <weights></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Medical</defName><label>medical emergency</label><workerClass>RimPrison.MedicalDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <IncidentDef>
+    <defName>RP_FamilyDay</defName>
+    <label>family day</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_FamilyDay</workerClass>
+    <baseChance>0.3</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>0</drama>
+        <weights></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_FamilyDay</defName><label>family day</label><workerClass>RimPrison.FamilyDayDecision</workerClass><standingOrderAllowed>true</standingOrderAllowed></RimPrison.PrisonDecisionDef>
+  <IncidentDef>
+    <defName>RP_TooClose</defName>
+    <label>officer too close to an inmate</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_TooClose</workerClass>
+    <baseChance>0.3</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>1</drama>
+        <weights></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_TooClose</defName><label>officer too close</label><workerClass>RimPrison.TooCloseDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_FamilyDay</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>family day</label><description>My kids ran across the visiting room. For an afternoon I wasn't a number.</description><baseMoodEffect>10</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_FamilyDayCancelled</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>no family day</label><description>Other prisons have family days. Ours said no.</description><baseMoodEffect>-3</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_SpecialAttention</defName>
+    <durationDays>5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>an officer looks out for me</label><description>One of the officers is on my side. That changes everything in here.</description><baseMoodEffect>6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+
+  <!-- Pastimes and pressures: the big match, a talent show, gang initiation. -->
+  <IncidentDef>
+    <defName>RP_BigMatch</defName>
+    <label>the big match</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_BigMatch</workerClass>
+    <baseChance>0.4</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>0</drama>
+        <weights></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_BigMatch</defName><label>the big match</label><workerClass>RimPrison.BigMatchDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <IncidentDef>
+    <defName>RP_TalentShow</defName>
+    <label>talent show</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_TalentShow</workerClass>
+    <baseChance>0.3</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>0</drama>
+        <weights></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_TalentShow</defName><label>talent show</label><workerClass>RimPrison.TalentShowDecision</workerClass><standingOrderAllowed>true</standingOrderAllowed></RimPrison.PrisonDecisionDef>
+  <IncidentDef>
+    <defName>RP_Initiation</defName>
+    <label>gang initiation</label>
+    <category>RP_StoryBeat</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimPrison.IncidentWorker_Initiation</workerClass>
+    <baseChance>0.5</baseChance>
+    <modExtensions>
+      <li Class="RimPrison.StoryExt">
+        <drama>1</drama>
+        <weights></weights>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Initiation</defName><label>gang initiation</label><workerClass>RimPrison.InitiationDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_BigMatch</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>listened to the big match</label><description>The whole wing yelling at a radio. Best night in months.</description><baseMoodEffect>5</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_MissedTheMatch</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>missed the big match</label><description>Lights out in the middle of the final. I'll hear the score from a guard tomorrow.</description><baseMoodEffect>-3</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_TalentShow</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>talent show</label><description>Someone sang, someone did card tricks, someone fell off the table. We laughed.</description><baseMoodEffect>4</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_StarOfTheShow</defName>
+    <durationDays>5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>star of the show</label><description>The whole prison clapped for me. People nod at me in the yard now.</description><baseMoodEffect>10</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_Initiated</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>joined a gang</label><description>I'm in. Nobody touches me now, and I owe them for it.</description><baseMoodEffect>3</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_PressuredToJoin</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>pressured to join a gang</label><description>They've made it clear: join, or find out what happens to people who don't.</description><baseMoodEffect>-6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+
+  <!-- Death row: the last request. -->
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_LastRequest</defName><label>last request</label><workerClass>RimPrison.LastRequestDecision</workerClass></RimPrison.PrisonDecisionDef>
+
+  <!-- Officer of the month. -->
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_OfficerOfMonth</defName><label>officer of the month</label><workerClass>RimPrison.OfficerOfMonthDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_OfficerOfTheMonth</defName>
+    <durationDays>10</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>officer of the month</label><description>My photo is on the staff room wall. Somebody noticed.</description><baseMoodEffect>10</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_ColleagueHonoured</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>a colleague honoured</label><description>Good to see the work in here recognised, even if it wasn't me this time.</description><baseMoodEffect>2</baseMoodEffect></li></stages>
+  </ThoughtDef>
+
+  <!-- Careers: a promotion offered, taken or put off. -->
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Promotion</defName><label>promotion</label><workerClass>RimPrison.PromotionDecision</workerClass></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_Promoted</defName>
+    <durationDays>8</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>promoted</label><description>A new stripe and a bigger pay cheque. They noticed the work.</description><baseMoodEffect>8</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_PassedOver</defName>
+    <durationDays>5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>passed over</label><description>The promotion was put off, after all the work they put in. Maybe next time.</description><baseMoodEffect>-4</baseMoodEffect></li></stages>
+  </ThoughtDef>
+</Defs>

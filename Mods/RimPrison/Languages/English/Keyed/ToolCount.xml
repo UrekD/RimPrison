@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Count the tools back in (Labor/ToolCount.cs). No capital after a colon: RimWorld capitalises the letter after ": ", so these use dashes and commas. -->
+
+  <RP_ToolShort>The count after work period {1} in the {0} - {2} tools issued, {3} counted back in, {4} short.{5}</RP_ToolShort>
+  <RP_ToolShortInAll>That makes {0} short in all, with the shortage that was already known.</RP_ToolShortInAll>
+  <RP_ToolNotCounted>Nobody came to count the tools of the {0} after work period {1} before the next one began, so they were not counted.</RP_ToolNotCounted>
+  <RP_ToolCountLabel>Tools short in the {0}</RP_ToolCountLabel>
+  <RP_ToolCountText>The tools of the {0} were counted back in at the end of work period {1}: {2} issued, {3} back in, {4} short.{9} Nobody knows where they went, and the count cannot say.\n\nA supervised re-count - a guard issues and takes back every tool, so nothing goes missing in the next period, which starts {7} hour(s) late.\nA search of the crew of the period - they are all frisked and the next period starts {8} hour(s) late; what is found is taken, and the room is whole again for each tool.\nCarry on short - no time lost, but the room's output is down {5} until the tools are replaced ({6} a tool, from Intel) or found. This is what happens if you do not answer.</RP_ToolCountText>
+  <RP_ToolCount_Recount>A supervised re-count</RP_ToolCount_Recount>
+  <RP_ToolCount_Search>Search the crew</RP_ToolCount_Search>
+  <RP_ToolCount_Short>Carry on short</RP_ToolCount_Short>
+  <RP_ToolCountStale>Already decided, or nothing is short any more.</RP_ToolCountStale>
+  <RP_ToolRecount>The {0} is counted again under a guard's eye. Its next work period starts {1} hour(s) late, and nothing can go missing in it.</RP_ToolRecount>
+  <RP_ToolSearch>The crew of the {0}, {1} of them, are to be searched. Its next work period starts {2} hour(s) late.</RP_ToolSearch>
+  <RP_ToolSearchDone>The search of the {0} crew is over: {1} tool(s) found.</RP_ToolSearchDone>
+
+  <RP_ToolSource_Pockets>a pat-down</RP_ToolSource_Pockets>
+  <RP_ToolSource_Stash>a cell stash</RP_ToolSource_Stash>
+  <RP_ToolSource_Tunnel>a tunnel that was found</RP_ToolSource_Tunnel>
+  <RP_ToolSource_Amnesty>the amnesty</RP_ToolSource_Amnesty>
+  <RP_ToolSource_Raid>the bust of a ring</RP_ToolSource_Raid>
+  <RP_ToolFound>A tool from the {0}, taken in work period {1}, turned up in {2}. {3}</RP_ToolFound>
+  <RP_ToolFoundStill>The room is still {0} short.</RP_ToolFoundStill>
+  <RP_ToolFoundWhole>Its supply is whole again.</RP_ToolFoundWhole>
+  <RP_ToolFoundReplaced>A tool from the {0}, taken in work period {1}, turned up in {2}. It had already been replaced, so it is only taken.</RP_ToolFoundReplaced>
+  <RP_ToolReplaceNote>{0} tools for the {1}</RP_ToolReplaceNote>
+
+  <RP_IntelTools>Tools</RP_IntelTools>
+  <RP_IntelHint_Tools>The workshop and the kitchen count their tools back in at the end of every work period. A shortage shows here once the staff have counted it.</RP_IntelHint_Tools>
+  <RP_IntelToolsUncounted>{0} - {1} tools, not counted back in yet{2}</RP_IntelToolsUncounted>
+  <RP_IntelToolsWhole>{0} - counted after period {1}, {2} h ago - all {3} back</RP_IntelToolsWhole>
+  <RP_IntelToolsShort>{0} - counted after period {1}, {2} h ago - {3} of {4} short, output down {5}</RP_IntelToolsShort>
+  <RP_IntelToolsDue>(count due)</RP_IntelToolsDue>
+  <RP_IntelToolsAsked>(waiting for your answer)</RP_IntelToolsAsked>
+  <RP_IntelToolsFound>The last tool of the {0} to turn up was taken in period {1}, in {2}.</RP_IntelToolsFound>
+  <RP_IntelToolsReplace>Replace {0}</RP_IntelToolsReplace>
+  <RP_IntelToolsReplaceTip>New tools for the {0} the staff counted short, {1} in all. A tool that turns up later is only taken.</RP_IntelToolsReplaceTip>
+  <RP_IntelTip_Tools>The staff count the tools back in at the end of each work period. What the line says is what they counted, not what is true - a tool taken since is not in it until the next count.</RP_IntelTip_Tools>
+</LanguageData>

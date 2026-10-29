@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- ================= Misconduct ================= -->
+  <RimPrison.MisconductDef>
+    <defName>RP_Insult</defName>
+    <label>verbal abuse</label>
+    <baseWeight>4</baseWeight>
+    <minTension>30</minTension>
+    <severity>1</severity>
+    <tensionRelief>8</tensionRelief>
+    <workerClass>RimPrison.MisconductWorker_Insult</workerClass>
+  </RimPrison.MisconductDef>
+  <RimPrison.MisconductDef>
+    <defName>RP_Fight</defName>
+    <label>fighting</label>
+    <baseWeight>3</baseWeight>
+    <minTension>45</minTension>
+    <severity>2</severity>
+    <punishmentHours>12</punishmentHours>
+    <loud>true</loud>
+    <assault>true</assault>
+    <danger>Fight</danger>
+    <tensionRelief>30</tensionRelief>
+    <workerClass>RimPrison.MisconductWorker_Fight</workerClass>
+  </RimPrison.MisconductDef>
+  <RimPrison.MisconductDef>
+    <defName>RP_Vandalism</defName>
+    <label>vandalism</label>
+    <baseWeight>2</baseWeight>
+    <minTension>45</minTension>
+    <severity>2</severity>
+    <punishmentHours>8</punishmentHours>
+    <loud>true</loud>
+    <tensionRelief>25</tensionRelief>
+    <workerClass>RimPrison.MisconductWorker_Vandalism</workerClass>
+  </RimPrison.MisconductDef>
+  <RimPrison.MisconductDef>
+    <defName>RP_AssaultStaff</defName>
+    <label>assaulting staff</label>
+    <baseWeight>1</baseWeight>
+    <minTension>65</minTension>
+    <severity>4</severity>
+    <punishmentHours>36</punishmentHours>
+    <chargeDays>10~20</chargeDays>
+    <loud>true</loud>
+    <assault>true</assault>
+    <danger>Assault</danger>
+    <tensionRelief>40</tensionRelief>
+    <letter>true</letter>
+    <workerClass>RimPrison.MisconductWorker_AssaultStaff</workerClass>
+  </RimPrison.MisconductDef>
+  <RimPrison.MisconductDef>
+    <defName>RP_EscapeAttempt</defName>
+    <label>escape attempt</label>
+    <baseWeight>0.6</baseWeight>
+    <minTension>60</minTension>
+    <severity>4</severity>
+    <punishmentHours>48</punishmentHours>
+    <tensionRelief>35</tensionRelief>
+    <letter>true</letter>
+    <workerClass>RimPrison.MisconductWorker_EscapeAttempt</workerClass>
+  </RimPrison.MisconductDef>
+  <RimPrison.MisconductDef>
+    <defName>RP_Riot</defName>
+    <label>inciting a riot</label>
+    <baseWeight>0.8</baseWeight>
+    <minTension>75</minTension>
+    <severity>5</severity>
+    <punishmentHours>48</punishmentHours>
+    <loud>true</loud>
+    <danger>Riot</danger>
+    <tensionRelief>50</tensionRelief>
+    <workerClass>RimPrison.MisconductWorker_Riot</workerClass>
+  </RimPrison.MisconductDef>
+
+  <RimPrison.MisconductDef>
+    <defName>RP_RiotJoined</defName>
+    <label>joining a riot</label>
+    <baseWeight>0</baseWeight>
+    <severity>3</severity>
+    <punishmentHours>24</punishmentHours>
+    <loud>true</loud>
+    <tensionRelief>30</tensionRelief>
+    <workerClass>RimPrison.MisconductWorker_Never</workerClass>
+  </RimPrison.MisconductDef>
+
+  <RimPrison.MisconductDef>
+    <defName>RP_Murder</defName>
+    <label>murder</label>
+    <baseWeight>0</baseWeight>
+    <severity>5</severity>
+    <punishmentHours>72</punishmentHours>
+    <loud>true</loud>
+    <tensionRelief>0</tensionRelief>
+    <workerClass>RimPrison.MisconductWorker_Never</workerClass>
+  </RimPrison.MisconductDef>
+
+  <!-- ================= Reputations ================= -->
+  <RimPrison.ReputationDef>
+    <defName>RP_Volatile</defName>
+    <label>volatile</label>
+    <description>Short fuse. Tension builds fast and boils over into violence.</description>
+    <commonality>1.2</commonality>
+    <tensionFactor>1.4</tensionFactor>
+    <misconductFactors>
+      <li><misconduct>RP_Fight</misconduct><factor>2</factor></li>
+      <li><misconduct>RP_Vandalism</misconduct><factor>1.5</factor></li>
+    </misconductFactors>
+    <conflictsWith><li>RP_ModelPrisoner</li></conflictsWith>
+  </RimPrison.ReputationDef>
+  <RimPrison.ReputationDef>
+    <defName>RP_Instigator</defName>
+    <label>instigator</label>
+    <description>Stirs up trouble. Everyone sharing a room with them gets more tense, and riots tend to start around them.</description>
+    <commonality>0.7</commonality>
+    <misconductFactors>
+      <li><misconduct>RP_Riot</misconduct><factor>4</factor></li>
+      <li><misconduct>RP_Insult</misconduct><factor>1.5</factor></li>
+    </misconductFactors>
+    <typicalFor><li>RP_Maximum</li><li>RP_Medium</li></typicalFor>
+    <conflictsWith><li>RP_ModelPrisoner</li></conflictsWith>
+  </RimPrison.ReputationDef>
+  <RimPrison.ReputationDef>
+    <defName>RP_Tough</defName>
+    <label>tough</label>
+    <description>Hard to restrain; guards need backup.</description>
+    <commonality>0.9</commonality>
+    <misconductFactors>
+      <li><misconduct>RP_AssaultStaff</misconduct><factor>1.5</factor></li>
+    </misconductFactors>
+    <typicalFor><li>RP_Maximum</li></typicalFor>
+  </RimPrison.ReputationDef>
+  <RimPrison.ReputationDef>
+    <defName>RP_EscapeArtist</defName>
+    <label>escape artist</label>
+    <description>Has broken out before. Watches for any weakness in the perimeter.</description>
+    <hidden>true</hidden>
+    <commonality>0.5</commonality>
+    <misconductFactors>
+      <li><misconduct>RP_EscapeAttempt</misconduct><factor>5</factor></li>
+    </misconductFactors>
+    <typicalFor><li>RP_Maximum</li><li>RP_Medium</li></typicalFor>
+  </RimPrison.ReputationDef>
+  <RimPrison.ReputationDef>
+    <defName>RP_Snitch</defName>
+    <label>snitch</label>
+    <description>Talks to staff. Useful as an informant, but if the others find out, they are in danger.</description>
+    <hidden>true</hidden>
+    <commonality>0.5</commonality>
+    <tensionFactor>0.9</tensionFactor>
+  </RimPrison.ReputationDef>
+  <RimPrison.ReputationDef>
+    <defName>RP_ModelPrisoner</defName>
+    <label>model prisoner</label>
+    <description>Keeps their head down and wants out early. Rarely causes trouble.</description>
+    <commonality>1</commonality>
+    <tensionFactor>0.6</tensionFactor>
+    <typicalFor><li>RP_Minimum</li></typicalFor>
+  </RimPrison.ReputationDef>
+
+  <RimPrison.ReputationDef>
+    <defName>RP_Dealer</defName>
+    <label>dealer</label>
+    <description>Runs drugs on the inside: sells smuggled yayo, flake and go-juice to addicts and anyone stressed enough, away from the guards. Their visitors bring stock.</description>
+    <hidden>true</hidden>
+    <commonality>0.6</commonality>
+    <typicalFor><li>RP_Medium</li><li>RP_Maximum</li></typicalFor>
+    <conflictsWith><li>RP_ModelPrisoner</li></conflictsWith>
+    <behaviorClass>RimPrison.ReputationBehavior_Dealer</behaviorClass>
+  </RimPrison.ReputationDef>
+  <RimPrison.ReputationDef>
+    <defName>RP_Extortionist</defName>
+    <label>extortionist</label>
+    <description>Leans on weaker inmates for their cash. Victims get tense, and some fight back.</description>
+    <hidden>true</hidden>
+    <commonality>0.5</commonality>
+    <typicalFor><li>RP_Maximum</li></typicalFor>
+    <conflictsWith><li>RP_ModelPrisoner</li></conflictsWith>
+    <behaviorClass>RimPrison.ReputationBehavior_Extortionist</behaviorClass>
+  </RimPrison.ReputationDef>
+  <RimPrison.ReputationDef>
+    <defName>RP_JailhouseLawyer</defName>
+    <label>jailhouse lawyer</label>
+    <description>Knows the law books by heart. Files appeals for themselves and others (the prison pays the court costs; some win) and sues the prison when conditions are bad.</description>
+    <commonality>0.4</commonality>
+    <behaviorClass>RimPrison.ReputationBehavior_Lawyer</behaviorClass>
+  </RimPrison.ReputationDef>
+
+  <RimPrison.MisconductDef>
+    <defName>RP_Dealing</defName>
+    <label>drug dealing</label>
+    <baseWeight>0</baseWeight>
+    <severity>2</severity>
+    <punishmentHours>24</punishmentHours>
+    <tensionRelief>0</tensionRelief>
+  </RimPrison.MisconductDef>
+  <RimPrison.MisconductDef>
+    <defName>RP_Extortion</defName>
+    <label>extortion</label>
+    <baseWeight>0</baseWeight>
+    <severity>2</severity>
+    <punishmentHours>12</punishmentHours>
+    <tensionRelief>5</tensionRelief>
+  </RimPrison.MisconductDef>
+  <ThoughtDef>
+    <defName>RP_Extorted</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>2</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackedEffectMultiplier>0.7</stackedEffectMultiplier>
+    <stages>
+      <li><label>extorted</label><description>They took my money and laughed about it.</description><baseMoodEffect>-6</baseMoodEffect><baseOpinionOffset>-30</baseOpinionOffset></li>
+    </stages>
+  </ThoughtDef>
+
+  <RimPrison.ReputationDef>
+    <defName>RP_ExCop</defName>
+    <label>ex-marshal</label>
+    <description>Used to wear the state's badge. Everyone in here has a reason to hate them, and they know it: they frighten easily and are a target.</description>
+    <commonality>0.25</commonality>
+    <vulnerable>true</vulnerable>
+    <tensionFactor>1.1</tensionFactor>
+    <conflictsWith><li>RP_Dealer</li><li>RP_Extortionist</li></conflictsWith>
+  </RimPrison.ReputationDef>
+
+  <ThoughtDef>
+    <defName>RP_FearThought</defName>
+    <workerClass>RimPrison.ThoughtWorker_Fear</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li><label>afraid</label><description>Someone in here wants to hurt me. I watch my back every minute.</description><baseMoodEffect>-6</baseMoodEffect></li>
+      <li><label>terrified</label><description>I am not safe here. I need to get away from them before something happens.</description><baseMoodEffect>-12</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- ================= Mental states ================= -->
+  <MentalStateDef ParentName="BaseMentalState">
+    <defName>RP_Rioting</defName>
+    <stateClass>RimPrison.MentalState_Rioting</stateClass>
+    <label>rioting</label>
+    <category>Aggro</category>
+    <blockRandomInteraction>true</blockRandomInteraction>
+    <blockNormalThoughts>true</blockNormalThoughts>
+    <moodRecoveryThought>Catharsis</moodRecoveryThought>
+    <nameColor>(0.95,0.3,0.2)</nameColor>
+    <minTicksBeforeRecovery>2500</minTicksBeforeRecovery>
+    <maxTicksBeforeRecovery>10000</maxTicksBeforeRecovery>
+    <recoveryMtbDays>0.1</recoveryMtbDays>
+    <recoveryMessage>{0} has stopped rioting.</recoveryMessage>
+    <baseInspectLine>Rioting</baseInspectLine>
+    <stateEffecter>Berserk</stateEffecter>
+    <recoverFromSleep>true</recoverFromSleep>
+  </MentalStateDef>
+  <MentalStateDef ParentName="BaseMentalState">
+    <defName>RP_Assaulting</defName>
+    <stateClass>RimPrison.MentalState_Assaulting</stateClass>
+    <label>assaulting staff</label>
+    <category>Aggro</category>
+    <blockRandomInteraction>true</blockRandomInteraction>
+    <nameColor>(0.95,0.3,0.2)</nameColor>
+    <minTicksBeforeRecovery>600</minTicksBeforeRecovery>
+    <maxTicksBeforeRecovery>3000</maxTicksBeforeRecovery>
+    <recoveryMtbDays>0.05</recoveryMtbDays>
+    <recoveryMessage>{0} has calmed down.</recoveryMessage>
+    <beginLetter>{0} has attacked a member of staff!</beginLetter>
+    <beginLetterDef>ThreatSmall</beginLetterDef>
+    <baseInspectLine>Assaulting staff</baseInspectLine>
+  </MentalStateDef>
+  <!-- The same assault on another inmate (feuds, gang business): no staff alarm letter. -->
+  <MentalStateDef ParentName="BaseMentalState">
+    <defName>RP_AttackingInmate</defName>
+    <stateClass>RimPrison.MentalState_Assaulting</stateClass>
+    <label>attacking an inmate</label>
+    <category>Aggro</category>
+    <blockRandomInteraction>true</blockRandomInteraction>
+    <nameColor>(0.95,0.5,0.2)</nameColor>
+    <minTicksBeforeRecovery>600</minTicksBeforeRecovery>
+    <maxTicksBeforeRecovery>3000</maxTicksBeforeRecovery>
+    <recoveryMtbDays>0.05</recoveryMtbDays>
+    <recoveryMessage>{0} has calmed down.</recoveryMessage>
+    <baseInspectLine>Attacking an inmate</baseInspectLine>
+  </MentalStateDef>
+  <MentalStateDef ParentName="BaseMentalState">
+    <defName>RP_Vandalizing</defName>
+    <stateClass>RimPrison.MentalState_Vandalizing</stateClass>
+    <label>vandalizing</label>
+    <category>Misc</category>
+    <blockRandomInteraction>true</blockRandomInteraction>
+    <minTicksBeforeRecovery>400</minTicksBeforeRecovery>
+    <maxTicksBeforeRecovery>1500</maxTicksBeforeRecovery>
+    <recoveryMtbDays>0.05</recoveryMtbDays>
+    <baseInspectLine>Vandalizing</baseInspectLine>
+  </MentalStateDef>
+  <MentalStateDef ParentName="BaseMentalState">
+    <defName>RP_Escaping</defName>
+    <stateClass>RimPrison.MentalState_Escaping</stateClass>
+    <label>escaping</label>
+    <category>Misc</category>
+    <blockRandomInteraction>true</blockRandomInteraction>
+    <nameColor>(0.95,0.8,0.2)</nameColor>
+    <minTicksBeforeRecovery>3000</minTicksBeforeRecovery>
+    <maxTicksBeforeRecovery>8000</maxTicksBeforeRecovery>
+    <recoveryMtbDays>0.1</recoveryMtbDays>
+    <recoveryMessage>{0} has given up escaping.</recoveryMessage>
+    <beginLetter>{0} is trying to escape!</beginLetter>
+    <beginLetterDef>ThreatSmall</beginLetterDef>
+    <baseInspectLine>Trying to escape</baseInspectLine>
+  </MentalStateDef>
+
+  <!-- ================= Guards ================= -->
+  <HediffDef>
+    <defName>RP_Restrained</defName>
+    <label>restrained</label>
+    <description>Handcuffed and shackled by staff.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.8, 0.8, 0.35)</defaultLabelColor>
+    <isBad>false</isBad>
+    <stages>
+      <li>
+        <capMods>
+          <li><capacity>Moving</capacity><setMax>0</setMax></li>
+          <li><capacity>Manipulation</capacity><offset>-0.6</offset></li>
+        </capMods>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>6000~6000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <JobDef>
+    <defName>RP_Subdue</defName>
+    <driverClass>RimPrison.JobDriver_Subdue</driverClass>
+    <reportString>restraining TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <checkOverrideOnDamage>Never</checkOverrideOnDamage>
+  </JobDef>
+  <JobDef>
+    <defName>RP_Patrol</defName>
+    <driverClass>RimPrison.JobDriver_Patrol</driverClass>
+    <reportString>patrolling.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>RP_RespondToTrouble</defName>
+    <label>respond to trouble</label>
+    <giverClass>RimPrison.WorkGiver_RespondToTrouble</giverClass>
+    <workType>Warden</workType>
+    <verb>restrain</verb>
+    <gerund>restraining</gerund>
+    <priorityInType>200</priorityInType>
+    <emergency>true</emergency>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RP_TakeToPunishment</defName>
+    <label>take to solitary</label>
+    <giverClass>RimPrison.WorkGiver_TakeToPunishment</giverClass>
+    <workType>Warden</workType>
+    <verb>take to solitary</verb>
+    <gerund>taking to solitary</gerund>
+    <priorityInType>195</priorityInType>
+    <emergency>true</emergency>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RP_RescueInmate</defName>
+    <label>rescue injured inmates</label>
+    <giverClass>RimPrison.WorkGiver_RescueInmate</giverClass>
+    <workType>Warden</workType>
+    <verb>rescue</verb>
+    <gerund>rescuing</gerund>
+    <priorityInType>190</priorityInType>
+    <emergency>true</emergency>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+  <!-- The doctors carry the downed too (they sit in the infirmary between patients; the guards are on patrol, in a fight or in a search, and a downed inmate lay on the floor for hours). Not an emergency, and under
+       vanilla's DoctorRescue (60) that carries a downed member of staff: staff come first, and an emergency giver would have a doctor carry every downed inmate before a downed cook. -->
+  <WorkGiverDef>
+    <defName>RP_RescueInmateDoctor</defName>
+    <label>rescue injured inmates</label>
+    <giverClass>RimPrison.WorkGiver_RescueInmate</giverClass>
+    <workType>Doctor</workType>
+    <verb>rescue</verb>
+    <gerund>rescuing</gerund>
+    <priorityInType>55</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RP_Patrol</defName>
+    <label>patrol</label>
+    <giverClass>RimPrison.WorkGiver_Patrol</giverClass>
+    <workType>Warden</workType>
+    <verb>patrol</verb>
+    <gerund>patrolling</gerund>
+    <priorityInType>1</priorityInType>
+  </WorkGiverDef>
+
+  <!-- ================= Solitary ================= -->
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_SolitaryZone</defName>
+    <label>solitary</label>
+    <description>Paint over small cells with a prisoner bed: they become solitary cells for punishment and are not used for intake.</description>
+    <color>(0.25, 0.25, 0.3)</color>
+    <inmateAccess>false</inmateAccess>
+    <uiOrder>45</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.RegimeActivityDef>
+    <defName>RP_Solitary</defName>
+    <label>solitary</label>
+    <description>Confined to a solitary cell as punishment.</description>
+    <color>(0.2, 0.2, 0.25)</color>
+    <lockup>true</lockup>
+    <paintable>false</paintable>
+    <workerClass>RimPrison.RegimeWorker_Lockup</workerClass>
+  </RimPrison.RegimeActivityDef>
+
+  <ThoughtDef>
+    <defName>RP_Sanctioned</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>2</stackLimit>
+    <stages>
+      <li><label>punished</label><description>They took something away from me for it. It stings, but it's not the hole.</description><baseMoodEffect>-3</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_Punished</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>3</stackLimit>
+    <stages>
+      <li><label>thrown in the hole</label><description>They locked me up alone. I won't forget it.</description><baseMoodEffect>-8</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+
+  <RimPrison.LedgerCategoryDef><defName>RP_Fines</defName><label>fines</label><uiOrder>80</uiOrder></RimPrison.LedgerCategoryDef>
+</Defs>

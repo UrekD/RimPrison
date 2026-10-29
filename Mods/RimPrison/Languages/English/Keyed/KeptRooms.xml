@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Rooms kept for a security level (ZoneGrid.SetKept, the Rooms tab). No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+  <RP_KeptFor>kept for {0}</RP_KeptFor>
+  <RP_KeptAll>all</RP_KeptAll>
+  <RP_KeptTip>Which security levels may use this patch. Inmates of other levels are not sent here for free time, meals, showers, classes or visits, and are counted out of place if they stand in it. Nothing set means every level. Exempt are inmates on assigned work (cleaning, the clerk's round, laundry, kitchen), and an urgent toilet or meal when no patch kept for the inmate's level has one they can reach, so that nobody starves. A patch of fewer than four cells is no patch and is open to all. A class runs in a room only for inmates who may use every kept patch it has seats in, and a visit ends when its visitor stands in a patch kept for another level.</RP_KeptTip>
+  <RP_KeptJumpTip>Click to look at this patch.</RP_KeptJumpTip>
+  <RP_KeptNobody>no inmate in the prison may use it</RP_KeptNobody>
+</LanguageData>

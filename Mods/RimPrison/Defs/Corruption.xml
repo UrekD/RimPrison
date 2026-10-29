@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Arrests on site -->
+  <DutyDef>
+    <defName>RP_ArrestSuspect</defName>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimPrison.JobGiver_ArrestSuspect" />
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+  <DutyDef>
+    <defName>RP_Detained</defName>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimPrison.JobGiver_Detained" />
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+  <JobDef>
+    <defName>RP_Cuff</defName>
+    <driverClass>RimPrison.JobDriver_Cuff</driverClass>
+    <reportString>arresting TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <PawnKindDef>
+    <defName>RP_PoliceOfficer</defName>
+    <label>state marshal</label>
+    <race>Human</race>
+    <defaultFactionDef>RP_Outside</defaultFactionDef>
+    <combatPower>40</combatPower>
+    <isFighter>false</isFighter>
+    <apparelMoney>0~0</apparelMoney>
+    <weaponMoney>0~0</weaponMoney>
+    <chemicalAddictionChance>0</chemicalAddictionChance>
+    <initialWillRange>0~1</initialWillRange>
+    <initialResistanceRange>10~15</initialResistanceRange>
+  </PawnKindDef>
+  <RimPrison.LedgerCategoryDef><defName>RP_Bounties</defName><label>bounties</label><income>true</income><uiOrder>35</uiOrder></RimPrison.LedgerCategoryDef>
+
+  <!-- Staff corruption -->
+  <RimPrison.MisconductDef>
+    <defName>RP_Bribery</defName>
+    <label>attempting to bribe staff</label>
+    <baseWeight>0</baseWeight>
+    <severity>2</severity>
+    <punishmentHours>12</punishmentHours>
+    <tensionRelief>0</tensionRelief>
+    <workerClass>RimPrison.MisconductWorker_Never</workerClass>
+  </RimPrison.MisconductDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_InternalAffairs</defName><label>internal affairs case</label><workerClass>RimPrison.PrisonDecisionWorker_InternalAffairs</workerClass></RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_SearchedAtWork</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>searched at work</label><description>Patted down like an inmate on the way in. They don't trust us.</description><baseMoodEffect>-3</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_ColleagueSacked</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>honest colleague sacked</label><description>They fired a good officer on a rumour. Any of us could be next.</description><baseMoodEffect>-4</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_FalselyAccused</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>falsely accused</label><description>Internal affairs thought I was on the take. After all these years.</description><baseMoodEffect>-6</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_Exonerated</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>cleared by internal affairs</label><description>The investigation cleared my name.</description><baseMoodEffect>3</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <JobDef>
+    <defName>RP_GoHome</defName>
+    <driverClass>RimPrison.JobDriver_GoHome</driverClass>
+    <reportString>going home after the shift.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+</Defs>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- A death inside (the dead go home on the shuttle, the family writes, the plot) and the danger map (gap analysis 4, sections 1.3 and 1.4). -->
+
+  <!-- The dead -->
+  <RP_BodiesSent>The state shuttle took {0} of the prison's dead home from the morgue.</RP_BodiesSent>
+  <RP_BodiesNoPlot>The burial plot could not take {0} of them (no free soil a workman can reach inside the grounds, or no workman), so they went home too.</RP_BodiesNoPlot>
+  <RP_Chr_BodySent>The body of {0} went home on the state shuttle.</RP_Chr_BodySent>
+  <RP_Chr_Buried>{0} had nobody to send for them and was buried in the prison plot.</RP_Chr_Buried>
+  <RP_FormerNews_Grave>{0} heard that {2}, a friend from inside, died there and was buried in the prison plot. They have asked for the name of the grave.</RP_FormerNews_Grave>
+
+  <RP_Mail_Condolence_Label>A letter about {0}</RP_Mail_Condolence_Label>
+  <RP_Mail_Condolence_Text>{0}'s {1} writes to the warden. The body came home on the state shuttle and has been laid to rest. They thank the prison for sending {0} back to them, and for the way it was done.</RP_Mail_Condolence_Text>
+  <RP_Mail_Condolence_StaffText>The family of {0}, of the prison's staff, writes to the warden. The body came home on the state shuttle and has been laid to rest. They thank the colleagues who carried {0} to it.</RP_Mail_Condolence_StaffText>
+  <RP_Mail_Chr_Condolence>The family of {0} wrote after the body came home.</RP_Mail_Chr_Condolence>
+
+  <RP_Mail_CondolenceBitter_Label>A bitter letter about {0}</RP_Mail_CondolenceBitter_Label>
+  <RP_Mail_CondolenceBitter_Text>{0}'s {1} writes to the warden. The body came home on the state shuttle. {0} died in the prison's care, and the family holds the prison to blame. They say they will tell anyone who asks.</RP_Mail_CondolenceBitter_Text>
+  <RP_Mail_CondolenceBitter_StaffText>The family of {0}, of the prison's staff, writes to the warden. The body came home on the state shuttle. {0} died with nobody looking out for them, and the family holds the prison to blame. They say they will tell anyone who asks.</RP_Mail_CondolenceBitter_StaffText>
+  <RP_Mail_Chr_CondolenceBitter>The family of {0} wrote after the body came home, and blamed the prison for the death.</RP_Mail_Chr_CondolenceBitter>
+
+  <RP_Stat_bodiesSent>Bodies sent home</RP_Stat_bodiesSent>
+  <RP_StatTip_bodiesSent>Bodies of inmates and staff that the state shuttle took home from the morgue.</RP_StatTip_bodiesSent>
+  <RP_Stat_buried>Buried in the prison plot</RP_Stat_buried>
+  <RP_StatTip_buried>Dead nobody would send for, buried by the workmen in the prison plot.</RP_StatTip_buried>
+  <RP_Stat_condolences>Families' letters</RP_Stat_condolences>
+  <RP_StatTip_condolences>Letters from the families of the dead, after their bodies went home.</RP_StatTip_condolences>
+
+  <!-- The danger map -->
+  <RP_ToggleDanger>Show the danger map - violence the staff saw in the last 30 days, fading with age, as a red glow on the ground and a letter on the spot. F a fight, S a stabbing (a fight with a weapon a guard or camera saw), A an assault on staff, R a riot starting, D a killing or a death from wounds (illness, age and hunger are not on it). A fight, an assault or a riot is loud enough to be marked wherever it happens; a weapon only where it was seen (the coverage map shows the blind spots). The Deployment tab names the three hottest patches.</RP_ToggleDanger>
+  <RP_DangerGlyph_Fight>F</RP_DangerGlyph_Fight>
+  <RP_DangerGlyph_Stabbing>S</RP_DangerGlyph_Stabbing>
+  <RP_DangerGlyph_Assault>A</RP_DangerGlyph_Assault>
+  <RP_DangerGlyph_Riot>R</RP_DangerGlyph_Riot>
+  <RP_DangerGlyph_Death>D</RP_DangerGlyph_Death>
+  <RP_DangerCount_Fight>{0} fight(s)</RP_DangerCount_Fight>
+  <RP_DangerCount_Stabbing>{0} stabbing(s)</RP_DangerCount_Stabbing>
+  <RP_DangerCount_Assault>{0} assault(s) on staff</RP_DangerCount_Assault>
+  <RP_DangerCount_Riot>{0} riot(s)</RP_DangerCount_Riot>
+  <RP_DangerCount_Death>{0} death(s)</RP_DangerCount_Death>
+  <RP_DeployDanger>Danger map, hottest patches</RP_DeployDanger>
+  <RP_DeployDangerNone>No violence the staff saw in the last 30 days.</RP_DeployDangerNone>
+  <RP_DeployDangerTip>Where the staff saw violence in the last 30 days (older counts for less), by patch of a painted zone. Post guards and cameras there. The danger map on the map's toggles shows each mark.</RP_DeployDangerTip>
+  <RP_DangerPlace>{0} at {1}, {2}</RP_DangerPlace>
+  <RP_DangerPlaceNone>Outside the zones at {0}, {1}</RP_DangerPlaceNone>
+  <RP_DangerRow>{0} ({1})</RP_DangerRow>
+</LanguageData>

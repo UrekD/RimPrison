@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The hostage crisis: a riot or an assault in the workshop or kitchen seizes a member of staff (see Story/Hostage.cs). -->
+  <RimPrison.StoryArcDef>
+    <defName>RP_Arc_Hostage</defName>
+    <label>hostage crisis</label>
+    <workerClass>RimPrison.HostageArc</workerClass>
+    <maxConcurrent>1</maxConcurrent>
+    <minRefireDays>2</minRefireDays>
+    <decisionHours>5</decisionHours>
+  </RimPrison.StoryArcDef>
+
+  <!-- The hostage is a real member of staff, kept in place by this state (a held job, no work, no commute) and marked by the hediff. -->
+  <MentalStateDef ParentName="BaseMentalState">
+    <defName>RP_BeingHeld</defName>
+    <stateClass>RimPrison.MentalState_BeingHeld</stateClass>
+    <label>held hostage</label>
+    <category>Misc</category>
+    <blockRandomInteraction>true</blockRandomInteraction>
+    <nameColor>(0.95,0.3,0.2)</nameColor>
+    <minTicksBeforeRecovery>999999999</minTicksBeforeRecovery>
+    <maxTicksBeforeRecovery>999999999</maxTicksBeforeRecovery>
+    <recoveryMtbDays>9999</recoveryMtbDays>
+    <recoverFromSleep>false</recoverFromSleep>
+    <recoverFromDowned>false</recoverFromDowned>
+    <baseInspectLine>Held hostage</baseInspectLine>
+  </MentalStateDef>
+
+  <HediffDef>
+    <defName>RP_Hostage</defName>
+    <label>held hostage</label>
+    <description>Held by rioters. Hands tied, watched, and told what will happen if the warden does nothing.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.9, 0.35, 0.3)</defaultLabelColor>
+    <isBad>true</isBad>
+    <stages>
+      <li>
+        <capMods>
+          <li><capacity>Manipulation</capacity><offset>-0.6</offset></li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <JobDef>
+    <defName>RP_HeldHostage</defName>
+    <driverClass>RimPrison.JobDriver_HeldHostage</driverClass>
+    <reportString>held hostage.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <checkOverrideOnDamage>Never</checkOverrideOnDamage>
+  </JobDef>
+
+  <JobDef>
+    <defName>RP_LeaveHeld</defName>
+    <driverClass>RimPrison.JobDriver_LeaveHeld</driverClass>
+    <reportString>leaving the held area.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <ThoughtDef>
+    <defName>RP_TakenHostage</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>25</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>taken hostage by {0}</label><description>{OTHERPAWN_labelShort} had me tied up in my own prison and I did not know if anyone was coming. I still hear the door lock.</description><baseMoodEffect>-8</baseMoodEffect><baseOpinionOffset>-30</baseOpinionOffset></li></stages>
+  </ThoughtDef>
+
+  <!-- Taking a member of staff is the gravest thing an inmate can do short of killing one. -->
+  <RimPrison.MisconductDef>
+    <defName>RP_HostageTaking</defName>
+    <label>taking a member of staff hostage</label>
+    <baseWeight>0</baseWeight>
+    <severity>5</severity>
+    <punishmentHours>72</punishmentHours>
+    <loud>true</loud>
+    <assault>true</assault>
+    <danger>Assault</danger>
+    <tensionRelief>0</tensionRelief>
+    <workerClass>RimPrison.MisconductWorker_Never</workerClass>
+  </RimPrison.MisconductDef>
+</Defs>

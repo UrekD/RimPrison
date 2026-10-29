@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Cells by conduct (Inmates/CellQuality.cs): cell grades, what inmates have earned, and the daily review's moves for it. -->
+  <RP_CellsByConduct>Cells by conduct</RP_CellsByConduct>
+  <RP_CellsByConductDesc>Every cell has a grade from 0 to {2} from how impressive its room is. Inmates earn a better grade with clean days (one step for every {0} of them, and one for a passed program) and lose {1} at once for a serious misconduct the staff saw. The daily review moves inmates who live two or more grades from what they have earned (at two reviews in a row, and not again for three days) to a free cell nearer it, as part of its two moves a day, after the inmates who clash with their cellmates. Such a move never makes the company worse and never goes in with a rival gang, a feud or an extortionist. It leaves alone the warden's own placements, protective custody, psychiatric care, solitary, death row and supermax.\n\nWith the switch off, the grade plays no part in where inmates are housed.</RP_CellsByConductDesc>
+  <RP_RoomsCellGrade>grade {0}</RP_RoomsCellGrade>
+  <RP_RoomsCellGradeTip>Grade {0} of {1}, from how impressive the room is (size, beauty, wealth and cleanliness). Inmates who have earned a better grade are moved here by the daily review when cells by conduct is on.</RP_RoomsCellGradeTip>
+  <RP_FileEntitlement>Entitled to a grade {0} cell, lives in grade {1} - {2}.</RP_FileEntitlement>
+  <RP_FileEntitlementNext>{0} clean day(s) to grade {1}, or a passed program</RP_FileEntitlementNext>
+  <RP_FileEntitlementTop>the top grade</RP_FileEntitlementTop>
+  <RP_Chr_CellMoveUp>{0} moved to a better cell - clean for {1} day(s).</RP_Chr_CellMoveUp>
+  <RP_Chr_CellMoveDown>{0} moved to a worse cell after {1}.</RP_Chr_CellMoveDown>
+  <RP_Chr_CellMoveDownPlain>{0} moved to a worse cell - above what they have earned.</RP_Chr_CellMoveDownPlain>
+</LanguageData>

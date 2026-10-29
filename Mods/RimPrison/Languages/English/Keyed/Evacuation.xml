@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Evacuating a wing and accounting for its people (Security/Evacuation.cs, the Deployment tab). No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+  <RP_DeployEvac>Evacuation</RP_DeployEvac>
+  <RP_DeployEvacTip>Mark up to two places to gather (a yard, a kept room or the holding patch) and which security levels each takes. When a fire reaches a wing with people in it (or a solitary cell beside it - the hole is evacuated with its wing) you are offered to evacuate it (here too, and nothing starts by itself) - minimum and medium inmates walk to a place on a route of their own, where the doors on it open for them and no other; maximum, supermax, the hole, death row, the downed and anyone with no way they may walk alone wait for a guard, who walks them out with the escort's pass or carries them. Supermax goes only to a cage of its own, one at a time, or waits in the cell. Nobody is sent into fire; with no place that can be reached they go to the nearest safe room they may enter. After an hour with no fire in the wing, or on your word, everyone goes back to their own bed. A drill runs the same without a fire, and a real fire takes over from it.</RP_DeployEvacTip>
+  <RP_EvacPointsNone>No assembly point marked - an evacuation needs one for the wing's level, or everyone goes to the nearest safe room.</RP_EvacPointsNone>
+  <RP_EvacPointGone>{0} (the patch is gone)</RP_EvacPointGone>
+  <RP_EvacPointRow>Point {0} - {1}, {2} cells</RP_EvacPointRow>
+  <RP_EvacPointLevels>Takes - {0}</RP_EvacPointLevels>
+  <RP_EvacPointNoLevels>nobody</RP_EvacPointNoLevels>
+  <RP_EvacPointLevelsTip>The security levels this point takes. A yard of its own (supermax) takes its own level only by default, and supermax is only ever sent to a yard of its own, one inmate at a time. A second point is where those kept apart (one of each keep-apart pair or feud), protective custody and the threatened (the gang's green light) go.</RP_EvacPointLevelsTip>
+  <RP_EvacMark>Mark an assembly point</RP_EvacMark>
+  <RP_EvacMarkSecond>Mark a second point, to keep people apart</RP_EvacMarkSecond>
+  <RP_EvacMarkTip>Pick a yard, a kept room or the holding patch as the place everyone gathers. Not visitation - the public comes in there, and it has a door to the outside.</RP_EvacMarkTip>
+  <RP_EvacMarkSecondTip>A second place, away from the first, for keep-apart pairs, protective custody and the threatened.</RP_EvacMarkSecondTip>
+  <RP_EvacMarkMenu>{0}, {1} cells ({2})</RP_EvacMarkMenu>
+  <RP_EvacMarkNone>No yard, kept room or holding patch is painted that is not marked already</RP_EvacMarkNone>
+  <RP_EvacMarkFailed>That patch cannot be marked.</RP_EvacMarkFailed>
+  <RP_EvacBurning>Fire in the wing</RP_EvacBurning>
+  <RP_EvacStart>Evacuate the {0}</RP_EvacStart>
+  <RP_EvacStartTip>Empty the {0} - walkers go to the assembly point by themselves, the rest wait for a guard to walk or carry them. Nobody is sent into fire.</RP_EvacStartTip>
+  <RP_EvacDrill>Drill</RP_EvacDrill>
+  <RP_EvacDrillTip>Run an evacuation of a wing without a fire, to find a bad route before a real emergency. It costs the guards their time and each inmate it moves a small mood memory for a day, and the letter at the end names the slowest arrival and any route that was blocked. One drill a day.</RP_EvacDrillTip>
+  <RP_EvacDrillMenuWhy>{0} - {1}</RP_EvacDrillMenuWhy>
+  <RP_EvacDrillNoWing>No wing is painted</RP_EvacDrillNoWing>
+  <RP_EvacNoWing>There is no wing to evacuate.</RP_EvacNoWing>
+  <RP_EvacAlready>An evacuation is running already - one at a time.</RP_EvacAlready>
+  <RP_EvacDrilledToday>The last drill began less than a day ago - one a day.</RP_EvacDrilledToday>
+  <RP_EvacDrillFire>The {0} is on fire - that is no drill.</RP_EvacDrillFire>
+  <RP_EvacNoPoint>No assembly point takes {0} inmates - mark one first.</RP_EvacNoPoint>
+  <RP_EvacNoOne>Nobody is in the {0} to move.</RP_EvacNoOne>
+  <RP_EvacStarted>Evacuating the {0} - {1} to move, {2} accounted for outside it.</RP_EvacStarted>
+  <RP_EvacDrillStarted>Evacuation drill in the {0} - {1} to move, {2} outside it.</RP_EvacDrillStarted>
+  <RP_EvacAllClear>All clear in the {0} - everyone goes back to their own bed.</RP_EvacAllClear>
+  <RP_EvacAllClearWarden>All clear given for the {0} - everyone goes back to their own bed.</RP_EvacAllClearWarden>
+  <RP_EvacDone>The evacuation of the {0} is over - {1} back in their beds, {2} accounted for outside it, {3} not back, {4} taken off the list.</RP_EvacDone>
+  <RP_Chr_Evacuation>Fire in the {0}. {1} inmates were evacuated.</RP_Chr_Evacuation>
+  <RP_Chr_EvacDrill>The warden ran an evacuation drill in the {0}, {1} inmates moved.</RP_Chr_EvacDrill>
+  <RP_Chr_EvacuationDone>The evacuation of the {0} ended - {1} back in their beds, {2} not (listed - {3}).</RP_Chr_EvacuationDone>
+  <RP_Chr_WingFire>A fire reached the {0} with {1} inmates in it.</RP_Chr_WingFire>
+  <RP_WingFireLabel>Fire in the {0}</RP_WingFireLabel>
+  <RP_WingFireText>A fire has reached the {0}, with {1} inmates in it ({2}). The staff are fighting it. Evacuate the wing, or leave them where they are? Nothing happens by itself, and nobody is moved into fire - the Deployment tab has the same button, and the roll call.</RP_WingFireText>
+  <RP_WingFire_Evacuate>Evacuate the wing</RP_WingFire_Evacuate>
+  <RP_WingFire_Fight>Fight the fire, keep them in</RP_WingFire_Fight>
+  <RP_EvacDrillLabel>Evacuation drill - the {0}</RP_EvacDrillLabel>
+  <RP_EvacDrillText>The drill in the {0} is over. {1} inmates were moved, {2} were outside the wing.</RP_EvacDrillText>
+  <RP_EvacDrillSlowest>The slowest to arrive was {0}, after {1} minutes.</RP_EvacDrillSlowest>
+  <RP_EvacDrillNoArrival>Nobody reached an assembly point.</RP_EvacDrillNoArrival>
+  <RP_EvacDrillBlocked>Route blocked for {0}.</RP_EvacDrillBlocked>
+  <RP_EvacDrillStill>Not at a place when it ended - {0}.</RP_EvacDrillStill>
+  <RP_EvacDrillTogether>{0} pairs the warden keeps apart stood at the same point.</RP_EvacDrillTogether>
+  <RP_EvacDrillClean>Every route was clear and everyone arrived.</RP_EvacDrillClean>
+  <RP_EvacRunning>Evacuating the {0}</RP_EvacRunning>
+  <RP_EvacRunningDrill>Drill - the {0}</RP_EvacRunningDrill>
+  <RP_EvacRunningBack>Back to the beds - the {0}</RP_EvacRunningBack>
+  <RP_EvacRunningDrillBack>Drill over, back to the beds - the {0}</RP_EvacRunningDrillBack>
+  <RP_EvacCountArrived>Arrived - {0} (of them {1} were outside the wing, {2} at a fallback room)</RP_EvacCountArrived>
+  <RP_EvacCountCarried>Being carried - {0}</RP_EvacCountCarried>
+  <RP_EvacCountWaiting>Waiting for an escort - {0}</RP_EvacCountWaiting>
+  <RP_EvacCountOnTheWay>On the way - {0}</RP_EvacCountOnTheWay>
+  <RP_EvacCountBlocked>Route blocked - {0}</RP_EvacCountBlocked>
+  <RP_EvacCountMissing>Missing - {0}</RP_EvacCountMissing>
+  <RP_EvacCountHome>Back in their beds - {0} of {1}</RP_EvacCountHome>
+  <RP_EvacCountBackWaiting>Still on the way back - {0}</RP_EvacCountBackWaiting>
+  <RP_EvacCountStayed>Staying at the point, no bed - {0}</RP_EvacCountStayed>
+  <RP_EvacTogether>{0} pairs kept apart stand at the same point</RP_EvacTogether>
+  <RP_EvacListRow>{0} - {1}</RP_EvacListRow>
+  <RP_EvacListMore>and {0} more</RP_EvacListMore>
+  <RP_EvacAllClearButton>All clear - send them back</RP_EvacAllClearButton>
+  <RP_EvacAllClearTip>End it now - everyone walks or is escorted back to their own bed, and the passes end. Not while the wing still burns, and a fire in it on the way back turns everyone out again. Anyone whose own cell burns (a cell outside the wing) waits where they are until it is out, and holds the end up to three hours. It ends by itself an hour after the last fire in the wing.</RP_EvacAllClearTip>
+  <RP_EvacAllClearBurning>The {0} still burns - the all-clear waits until the fire is out.</RP_EvacAllClearBurning>
+  <RP_EvacBackOut>Fire in the {0} again - the way back is called off and {1} are taken out again.</RP_EvacBackOut>
+  <RP_EvacBackOutDrill>Fire in the {0} as the drill ended - it is a real evacuation now, and {1} are taken out again.</RP_EvacBackOutDrill>
+  <RP_EvacStatusFallback>{0} (fallback)</RP_EvacStatusFallback>
+  <RP_EvacStatus_Planning>on the way</RP_EvacStatus_Planning>
+  <RP_EvacStatus_Walking>walking</RP_EvacStatus_Walking>
+  <RP_EvacStatus_WaitingEscort>waiting for an escort</RP_EvacStatus_WaitingEscort>
+  <RP_EvacStatus_Escorted>with a guard</RP_EvacStatus_Escorted>
+  <RP_EvacStatus_Carried>being carried</RP_EvacStatus_Carried>
+  <RP_EvacStatus_Blocked>route blocked</RP_EvacStatus_Blocked>
+  <RP_EvacStatus_Arrived>arrived</RP_EvacStatus_Arrived>
+  <RP_EvacStatus_Missing>missing</RP_EvacStatus_Missing>
+  <RP_EvacStatus_Outside>outside the wing</RP_EvacStatus_Outside>
+  <RP_EvacStatus_Home>home</RP_EvacStatus_Home>
+  <RP_EvacStatus_Stayed>no bed, staying</RP_EvacStatus_Stayed>
+  <RP_EvacStatus_Dropped>off the list</RP_EvacStatus_Dropped>
+  <RP_EvacDrillLockdown>The wing is locked down - no drill during a lockdown.</RP_EvacDrillLockdown>
+  <RP_EvacDrillRiot>A riot is going on - no drill now.</RP_EvacDrillRiot>
+  <RP_EvacDrillCalledOff>The drill in the {0} is called off - a real fire comes first.</RP_EvacDrillCalledOff>
+  <RP_EvacCountRescued>Carried to a bed outside the wing - {0}</RP_EvacCountRescued>
+  <RP_EvacStatus_Rescued>in a bed outside the wing</RP_EvacStatus_Rescued>
+</LanguageData>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The adjudication sheet (Security/Adjudication.cs, UI/AdjudicationUI.cs): serious offences decided case by case. No capital after a colon: RimWorld capitalises the letter after ": " (a dash or a comma instead). -->
+
+  <!-- The policy. -->
+  <RP_AdjudicateLabel>Adjudicate the serious</RP_AdjudicateLabel>
+  <RP_AdjudicateOn>On</RP_AdjudicateOn>
+  <RP_AdjudicateOff>Off</RP_AdjudicateOff>
+  <RP_AdjudicateDesc>With this on, a seen offence of severity {0} and over (an assault on staff, an escape attempt, a riot's ringleader) takes no sanction from the table. It becomes a case, and one letter a day at the first morning hour lists yesterday's cases (at most {1}; more wait for the next day), each with its evidence, for you to decide - the policy's sanction, loss of remission, days added (up to {2}) or, for an armed assault on staff, a charge. A case left unanswered takes the policy's sanction. Days added are days of pay from the state, and the inspector notices when they pile up.</RP_AdjudicateDesc>
+  <RP_AdjudicateOpen>Open the sheet - {0} case(s) waiting</RP_AdjudicateOpen>
+
+  <!-- The letter. -->
+  <RP_AdjudicationLabel>The adjudication sheet - {0} case(s)</RP_AdjudicationLabel>
+  <RP_AdjudicationText>{0} serious case(s) from yesterday wait for your decision.\n\n{1}\n\nFor each one - the policy's sanction; loss of remission (the clean days they earned are wiped and the days come back onto the sentence); days added, up to {2} (only what an officer or a camera saw stands, and a jailhouse lawyer in the prison appeals the rest and has it struck out, at {3} in court costs to the prison); or, for an assault on staff with a weapon, a charge, and the state's court sits for it as it does for a murder, with a shorter sentence. Days added are days of pay from the state, and more than {4} in {5} days is what the inspector writes down.\n\nLeft unanswered, a case takes the policy's sanction.</RP_AdjudicationText>
+  <RP_AdjudicationLine>{0} - {1} ({2})</RP_AdjudicationLine>
+  <RP_Adjudication_Open>Decide the cases</RP_Adjudication_Open>
+  <RP_Adjudication_Policy>The policy's sanction for all of them</RP_Adjudication_Policy>
+  <RP_AdjEvidence_Officer>{0} saw it</RP_AdjEvidence_Officer>
+  <RP_AdjEvidence_OfficerUnnamed>an officer saw it</RP_AdjEvidence_OfficerUnnamed>
+  <RP_AdjEvidence_Camera>a camera covered the spot</RP_AdjEvidence_Camera>
+  <RP_AdjEvidence_Weapon>the weapon was in hand</RP_AdjEvidence_Weapon>
+  <RP_AdjEvidence_Record>{0} serious offence(s) on the file already</RP_AdjEvidence_Record>
+  <RP_AdjEvidence_None>nobody who can swear to it</RP_AdjEvidence_None>
+
+  <!-- The window. -->
+  <RP_AdjWindowTitle>The adjudication sheet</RP_AdjWindowTitle>
+  <RP_AdjWindowHint>Decide each case. Days added go up to {0}, five at a time with the arrows (one with shift). A case you leave takes the policy's sanction at the next morning's sheet.</RP_AdjWindowHint>
+  <RP_AdjWindowNone>Nothing waits for you.</RP_AdjWindowNone>
+  <RP_AdjWindowDecided>{0} - {1} - {2}</RP_AdjWindowDecided>
+  <RP_AdjCaseTitle>{0} - {1}, {2} hours ago</RP_AdjCaseTitle>
+  <RP_AdjBtn_Policy>Policy - {0}, {1} h</RP_AdjBtn_Policy>
+  <RP_AdjBtn_PolicyWarning>Policy - a warning</RP_AdjBtn_PolicyWarning>
+  <RP_AdjBtn_Remission>Lose remission ({0} d)</RP_AdjBtn_Remission>
+  <RP_AdjBtn_Days>Add {0} days</RP_AdjBtn_Days>
+  <RP_AdjBtn_Charge>Charge</RP_AdjBtn_Charge>
+  <RP_AdjTip_Policy>The sanction the policy gives for this offence, as it would have without the sheet.</RP_AdjTip_Policy>
+  <RP_AdjTip_Remission>The days they earned for good behaviour come back onto the sentence, and the clean run starts again.</RP_AdjTip_Remission>
+  <RP_AdjTip_DaysEvidenced>Adds the days to the sentence (up to {0}). An officer or a camera saw it, so the days stand.</RP_AdjTip_DaysEvidenced>
+  <RP_AdjTip_DaysUnevidenced>Adds the days to the sentence (up to {0}). Nobody saw it. A jailhouse lawyer in the prison appeals and the days are struck out, at {1} in court costs to you. Without one the days stand, and the wing calls it unfair.</RP_AdjTip_DaysUnevidenced>
+  <RP_AdjTip_Charge>The state's court sits for it as for a murder, with the witnesses the scene gave and the same odds. A conviction adds days to the sentence. Only an assault on staff with a weapon can be charged.</RP_AdjTip_Charge>
+  <RP_AdjRefused_Remission>They have earned no remission to take away, or are not on the remission scheme.</RP_AdjRefused_Remission>
+  <RP_AdjRefused_Days>A lifer, or a prisoner on death row, has no sentence to add days to.</RP_AdjRefused_Days>
+  <RP_AdjRefused_Charge>Only an assault on staff with a weapon can be charged.</RP_AdjRefused_Charge>
+  <RP_AdjRefused_ChargeLife>A conviction would add nothing to a life sentence or a death sentence.</RP_AdjRefused_ChargeLife>
+  <RP_AdjRefused_Victim>The officer they hit is no longer here to testify.</RP_AdjRefused_Victim>
+
+  <!-- What came of a case. -->
+  <RP_AdjAnswered_Policy>the policy's sanction</RP_AdjAnswered_Policy>
+  <RP_AdjAnswered_Remission>remission lost, {0} days back on the sentence</RP_AdjAnswered_Remission>
+  <RP_AdjAnswered_Days>{0} days added</RP_AdjAnswered_Days>
+  <RP_AdjAnswered_Struck>{0} days added, struck out on appeal</RP_AdjAnswered_Struck>
+  <RP_AdjAnswered_Charge>charged, and the court sits for it</RP_AdjAnswered_Charge>
+  <RP_AdjAnswered_Lapsed>no longer here</RP_AdjAnswered_Lapsed>
+  <RP_FileAdjudication>Adjudicated, {0} - {1}.</RP_FileAdjudication>
+  <RP_FileServedAdded>served {0} of {1} days ({2} added)</RP_FileServedAdded>
+  <RP_Chr_AdjRemission>{0} lost the remission they had earned for {1}, and {2} days went back onto the sentence.</RP_Chr_AdjRemission>
+  <RP_Chr_AdjDays>{2} days were added to {0}'s sentence for {1}. It stands at {3} days.</RP_Chr_AdjDays>
+  <RP_Chr_AdjStruck>{2} days added to {0}'s sentence for {1} were struck out on {3}'s appeal.</RP_Chr_AdjStruck>
+  <RP_Chr_AdjCharge>{0} was charged for {1} against {2}, and the court sits {3}.</RP_Chr_AdjCharge>
+  <RP_AdjRemissionMessage>{0} loses the remission earned. {2} days go back onto the sentence for {1}.</RP_AdjRemissionMessage>
+  <RP_AdjDaysMessage>{1} days are added to {0}'s sentence for {3}. It stands at {2} days now, and the state pays for every one of them.</RP_AdjDaysMessage>
+  <RP_AdjStruckMessage>{0} appeals for {1}. Nobody saw the {3}, and the {2} days added are struck out. Court costs {4}.</RP_AdjStruckMessage>
+  <RP_AdjChargeLabel>Charged - {0}</RP_AdjChargeLabel>
+  <RP_AdjChargeText>The state charges {0} with {1} against {2}. The court sits {3}, as it does for a murder - the witnesses the scene gave, the same odds - and a conviction adds days to the sentence. Until then {0} is on remand, so not released, with no sentence served and no parole hearing.{4}</RP_AdjChargeText>
+  <RP_Cause_Unfair>a punishment they call unfair</RP_Cause_Unfair>
+
+  <!-- The inspector. -->
+  <RP_Finding_added>{0} days were added to sentences in the last {1} days - the state pays for every one, and wants no more than {2}. Stop adding them on the sheet</RP_Finding_added>
+
+  <!-- The statistics. -->
+  <RP_Stat_adjudicated>Cases adjudicated</RP_Stat_adjudicated>
+  <RP_Stat_daysAddedGiven>Days added to sentences</RP_Stat_daysAddedGiven>
+  <RP_Stat_daysStruckOut>Days struck out on appeal</RP_Stat_daysStruckOut>
+  <RP_Stat_remissionWiped>Remission wiped</RP_Stat_remissionWiped>
+  <RP_Stat_chargesBrought>Charges brought</RP_Stat_chargesBrought>
+  <RP_StatTip_adjudicated>Serious cases the adjudication sheet decided, one way or another.</RP_StatTip_adjudicated>
+  <RP_StatTip_daysAddedGiven>Days added to sentences by the sheet (not the ones struck out on appeal).</RP_StatTip_daysAddedGiven>
+  <RP_StatTip_daysStruckOut>Days added without an officer's or a camera's evidence that a jailhouse lawyer's appeal struck out.</RP_StatTip_daysStruckOut>
+  <RP_StatTip_remissionWiped>Cases where the sheet took away the remission an inmate had earned.</RP_StatTip_remissionWiped>
+  <RP_StatTip_chargesBrought>Offences the sheet put to the state's court.</RP_StatTip_chargesBrought>
+
+  <!-- A charge in the court (Story/Trials.cs reads these in place of the murder trial's words: the same arguments). -->
+  <RP_TrialAssembledText_Charge>The prosecution has assembled its case against {0} for the armed assault on {1}. The trial is set for {2}.\n\n{3}\n\nOn what the prosecution has, the case looks {4}. Witnesses can still be got at before the day, and a case can still be made stronger.</RP_TrialAssembledText_Charge>
+  <RP_Chr_TrialMoot_Charge>The case against {0} for the armed assault on {1} was closed, as {0} is no longer here.</RP_Chr_TrialMoot_Charge>
+  <RP_Chr_TrialTransferred_Charge>{0} was shipped out before the trial for the armed assault on {1}, and the case lapsed.</RP_Chr_TrialTransferred_Charge>
+  <RP_TrialTransferredPress_Charge>{0} was shipped out before the trial for the armed assault on {1}. The press asks how a prison lets a case against someone who attacked its officers lapse. Your reputation takes a hit.</RP_TrialTransferredPress_Charge>
+  <RP_Chr_TrialFled_Charge>{0} escaped before the trial for the armed assault on {1}. The case waits for their recapture.</RP_Chr_TrialFled_Charge>
+  <RP_TrialResumed_Charge>{0} is back in custody. The trial for the armed assault on {1} is now set for {2}.</RP_TrialResumed_Charge>
+  <RP_Chr_TrialResumed_Charge>{0} was recaptured. The trial for the armed assault on {1} is set for {2}.</RP_Chr_TrialResumed_Charge>
+  <RP_TrialConvictedText_Charge>The trial of {0} for the armed assault on {1} was held {2}. {0} was found guilty. The sentence is now {3}.\n\nWhat came out in court\n{4}</RP_TrialConvictedText_Charge>
+  <RP_Chr_TrialConvicted_Charge>{0} was convicted of the armed assault on {1}, and the sentence is now {2}.</RP_Chr_TrialConvicted_Charge>
+  <RP_TrialAcquittedText_Charge>The trial of {0} for the armed assault on {1} was held {2}. {0} was acquitted. Nothing is added to their sentence.\n\nWhat came out in court\n{3}</RP_TrialAcquittedText_Charge>
+  <RP_Chr_TrialAcquitted_Charge>{0} was acquitted of the armed assault on {1}.</RP_Chr_TrialAcquitted_Charge>
+  <RP_FileTrial_Charge>Charged with the armed assault on {0} - the trial is set for {1}.</RP_FileTrial_Charge>
+  <RP_TrialTomorrow_Charge>The court sits tomorrow on the armed assault on {1}, with {0} in the dock, from {2}:00.</RP_TrialTomorrow_Charge>
+  <RP_TrialSitsText_Charge>{0} has been taken to court for the armed assault on {1}. The verdict comes this afternoon. As far as you know, those who will speak are {2}.</RP_TrialSitsText_Charge>
+  <RP_TrialKnown_Record_Charge>{0} serious offence(s) on the accused's file already.</RP_TrialKnown_Record_Charge>
+  <RP_TrialNoRelease_Charge>{0} is on remand for the armed assault on {1}, so they cannot be released until the court has sat.</RP_TrialNoRelease_Charge>
+  <RP_IntelTrialLine2_Charge>{0} for the armed assault on {1}</RP_IntelTrialLine2_Charge>
+  <RP_IntelTip_Trial_Charge>{0} is accused of the armed assault on {1}, and the court sits {2}. Until then the accused is on remand, so not released, with no sentence served and no parole hearing.</RP_IntelTip_Trial_Charge>
+</LanguageData>

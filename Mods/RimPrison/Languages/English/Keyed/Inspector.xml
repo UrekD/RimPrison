@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The inspector who itemises (Story/Inspector.cs): what the inspector writes down, the to-do lines, the re-inspection. No capital after a colon: RimWorld capitalises the letter after ": " (a dash or a comma instead). -->
+  <RP_Finding_body>bodies lie outside the morgue and nothing takes them ({0})</RP_Finding_body>
+  <RP_Finding_unlit>{0} is unlit, and a fight there goes unseen</RP_Finding_unlit>
+  <RP_Finding_night>the nights are thinly guarded - every night hour needs {0} on duty</RP_Finding_night>
+  <RP_Finding_grade0>inmates who have earned better live in bare, cheerless cells ({0} cells graded 0)</RP_Finding_grade0>
+  <RP_Finding_noZone>there is no {0}</RP_Finding_noZone>
+  <RP_Finding_noStove>the kitchen has no stove</RP_Finding_noStove>
+  <RP_Finding_noShowers>there are no showers</RP_Finding_noShowers>
+  <RP_Finding_noToilets>there are no toilets</RP_Finding_noToilets>
+  <RP_InspectorOneDay>within a day</RP_InspectorOneDay>
+  <RP_InspectorDays>within {0} days</RP_InspectorDays>
+  <RP_InspectorLine>- {0}, {1}</RP_InspectorLine>
+  <RP_InspectorReport>The inspector walked a wing, the canteen, the kitchen and the yard, and wrote down what only the warden can put right:\n{0}\n\nThe inspector comes back in {1} days - {2} for each item put right and kept so through the last day, {3} fine for each one that is not.</RP_InspectorReport>
+  <RP_InspectorReportNone>The inspector walked a wing, the canteen, the kitchen and the yard, and found nothing to write down.</RP_InspectorReportNone>
+  <RP_InspectorReportBribed>The inspector walked the prison, took the envelope and wrote nothing down.</RP_InspectorReportBribed>
+  <RP_InspectorTodo>Inspector - {0}, {1}</RP_InspectorTodo>
+  <RP_InspectorTimeLeft>{0} left</RP_InspectorTimeLeft>
+  <RP_InspectorOverdue>overdue</RP_InspectorOverdue>
+  <RP_InspectorLineFixed>- put right and kept so - {0}</RP_InspectorLineFixed>
+  <RP_InspectorLineOpen>- still open - {0}</RP_InspectorLineOpen>
+  <RP_ReinspectionLabel>Re-inspection</RP_ReinspectionLabel>
+  <RP_ReinspectionText>The inspector came back to see what was done.\n\n{0}\n\nPut right - {1}, and the state pays {2}. Still open - {3}, and the fine is {4}.</RP_ReinspectionText>
+  <RP_InspectorGrantNote>re-inspection, items put right</RP_InspectorGrantNote>
+  <RP_InspectorFineNote>re-inspection, items not put right</RP_InspectorFineNote>
+  <RP_Chr_Reinspection>Re-inspection - {0} put right, {1} still open.</RP_Chr_Reinspection>
+  <RP_InspectorBribeHidden>What the inspector left out of the report, and was paid to:\n{0}</RP_InspectorBribeHidden>
+  <RP_InspectorBribeHiddenLine>- {0}</RP_InspectorBribeHiddenLine>
+  <RP_InspectorBribeHiddenNone>The inspector had nothing to leave out - the prison was in order, and the envelope bought nothing.</RP_InspectorBribeHiddenNone>
+</LanguageData>

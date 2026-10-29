@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Inmates are not recruited in a prison: no "inspired recruitment". -->
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/InspirationDef[defName="Inspired_Recruitment"]</xpath>
+    <value><baseCommonality>0</baseCommonality></value>
+  </Operation>
+</Patch>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Drug testing (see Programs/DrugTesting.cs): the policy sets who is tested, a day doctor takes an inmate aside with a kit, and a positive (or a refusal) goes on the record. -->
+
+  <!-- Seen when a test finds a drug used in the last two days (an addiction alone is treated, not punished). Confinement to the cell by default, the lightest sanction that is more than a word on the record. Never chosen by tension: only the test writes it. -->
+  <RimPrison.MisconductDef>
+    <defName>RP_DrugUse</defName>
+    <label>drug use</label>
+    <baseWeight>0</baseWeight>
+    <severity>1</severity>
+    <defaultSanction>CellConfinement</defaultSanction>
+    <punishmentHours>4</punishmentHours>
+    <tensionRelief>0</tensionRelief>
+  </RimPrison.MisconductDef>
+  <RimPrison.MisconductDef>
+    <defName>RP_RefusedTest</defName>
+    <label>refusing a drug test</label>
+    <baseWeight>0</baseWeight>
+    <severity>1</severity>
+    <punishmentHours>4</punishmentHours>
+    <tensionRelief>0</tensionRelief>
+  </RimPrison.MisconductDef>
+
+  <!-- The kit: bought through the supply company, carried by the doctor, used up by a test. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RP_DrugTestKit</defName>
+    <label>drug test kit</label>
+    <description>A sealed kit for a urine drug test: a cup, a strip and a form. One kit is one test; a doctor takes it to the inmate on a testing round.</description>
+    <graphicData>
+      <texPath>Things/Item/RP_DrugTestKit</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <socialPropernessMatters>false</socialPropernessMatters>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <MarketValue>8</MarketValue>
+      <Mass>0.05</Mass>
+      <Flammability>0.7</Flammability>
+    </statBases>
+    <thingCategories><li>Items</li></thingCategories>
+    <techLevel>Industrial</techLevel>
+  </ThingDef>
+
+  <!-- The testing round: pick up a kit, walk to the inmate, take them aside for a few hundred ticks, read the strip. -->
+  <JobDef>
+    <defName>RP_DrugTest</defName>
+    <driverClass>RimPrison.JobDriver_DrugTest</driverClass>
+    <reportString>testing TargetA for drugs.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+    <!-- Not put aside and resumed (a vomit, a forced wait): the resumed job would have a new driver and a job count already used up; the round ends instead and the work giver offers it again. -->
+    <suspendable>false</suspendable>
+  </JobDef>
+  <!-- The inmate's side of it: standing by for the doctor. It belongs to the round (targetA is the doctor) and ends with it. -->
+  <JobDef>
+    <defName>RP_DrugTestWait</defName>
+    <driverClass>RimPrison.JobDriver_DrugTestWait</driverClass>
+    <reportString>being tested for drugs.</reportString>
+    <!-- A regime change does not end a test in progress (an emergency lockdown still does), and what the inmate carries stays in their hands, as with a vanilla wait. -->
+    <casualInterruptible>false</casualInterruptible>
+    <dropThingBeforeJob>false</dropThingBeforeJob>
+    <carryThingAfterJob>true</carryThingAfterJob>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RP_DrugTest</defName>
+    <label>drug tests</label>
+    <giverClass>RimPrison.WorkGiver_DrugTest</giverClass>
+    <workType>Doctor</workType>
+    <verb>test</verb>
+    <gerund>testing</gerund>
+    <priorityInType>40</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+</Defs>

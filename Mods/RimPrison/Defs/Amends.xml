@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- A restorative meeting with the victim's family (see Story/Amends.cs): the counsellor's letter, the counsellor at the table, what it leaves the inmate with. -->
+  <RimPrison.PrisonDecisionDef>
+    <defName>RP_Decision_Amends</defName>
+    <label>restorative meeting</label>
+    <workerClass>RimPrison.PrisonDecisionWorker_Amends</workerClass>
+  </RimPrison.PrisonDecisionDef>
+
+  <WorkGiverDef>
+    <defName>RP_AttendAmends</defName>
+    <label>sit in on a restorative meeting</label>
+    <giverClass>RimPrison.WorkGiver_AttendAmends</giverClass>
+    <workType>RP_Counselling</workType>
+    <verb>sit in on</verb>
+    <gerund>sitting in on</gerund>
+    <priorityInType>90</priorityInType>
+    <emergency>true</emergency>
+  </WorkGiverDef>
+  <JobDef>
+    <defName>RP_AttendAmends</defName>
+    <driverClass>RimPrison.JobDriver_AttendAmends</driverClass>
+    <reportString>sitting in on a restorative meeting.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <ThoughtDef>
+    <defName>RP_MadeAmends</defName>
+    <durationDays>10</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>faced the victim's family</label><description>I sat across from them and said it. They listened. I don't know if they forgave me, but something is lighter now.</description><baseMoodEffect>8</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_AmendsRefused</defName>
+    <durationDays>6</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>the victim's family turned on me</label><description>I tried to say I was sorry and they threw it back in my face. What was the point?</description><baseMoodEffect>-8</baseMoodEffect></li></stages>
+  </ThoughtDef>
+</Defs>

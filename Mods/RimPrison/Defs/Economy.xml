@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimPrison.LedgerCategoryDef><defName>RP_InmatePayments</defName><label>inmate payments</label><income>true</income><uiOrder>10</uiOrder></RimPrison.LedgerCategoryDef>
+  <RimPrison.LedgerCategoryDef><defName>RP_IntakeGrants</defName><label>intake grants</label><income>true</income><uiOrder>20</uiOrder></RimPrison.LedgerCategoryDef>
+  <RimPrison.LedgerCategoryDef><defName>RP_ExportSales</defName><label>export sales</label><income>true</income><uiOrder>30</uiOrder></RimPrison.LedgerCategoryDef>
+  <RimPrison.LedgerCategoryDef><defName>RP_Wages</defName><label>wages</label><uiOrder>40</uiOrder></RimPrison.LedgerCategoryDef>
+  <RimPrison.LedgerCategoryDef><defName>RP_Construction</defName><label>construction</label><uiOrder>50</uiOrder></RimPrison.LedgerCategoryDef>
+  <RimPrison.LedgerCategoryDef><defName>RP_Supplies</defName><label>supplies</label><uiOrder>60</uiOrder></RimPrison.LedgerCategoryDef>
+  <RimPrison.LedgerCategoryDef><defName>RP_Utilities</defName><label>utilities</label><uiOrder>45</uiOrder></RimPrison.LedgerCategoryDef>
+  <RimPrison.LedgerCategoryDef><defName>RP_StateLoan</defName><label>state loan</label><income>true</income><uiOrder>35</uiOrder></RimPrison.LedgerCategoryDef>
+  <RimPrison.LedgerCategoryDef><defName>RP_LoanRepayment</defName><label>loan repayment</label><uiOrder>75</uiOrder></RimPrison.LedgerCategoryDef>
+  <RimPrison.LedgerCategoryDef><defName>RP_Hiring</defName><label>hiring</label><uiOrder>70</uiOrder></RimPrison.LedgerCategoryDef>
+  <RimPrison.LedgerCategoryDef><defName>RP_Bureaucracy</defName><label>bureaucracy</label><uiOrder>72</uiOrder></RimPrison.LedgerCategoryDef>
+  <RimPrison.LedgerCategoryDef><defName>RP_Land</defName><label>land</label><uiOrder>73</uiOrder></RimPrison.LedgerCategoryDef>
+
+  <RimPrison.SupplyCatalogDef>
+    <defName>RP_SupplyCatalog</defName>
+    <markup>1.1</markup>
+    <entries>
+      <li><thing>WoodLog</thing><packSize>75</packSize><defaultStock>100</defaultStock><stockPerInmate>4</stockPerInmate></li>
+      <li><thing>Steel</thing><packSize>75</packSize></li>
+      <li><thing>BlocksGranite</thing><packSize>75</packSize></li>
+      <li><thing>ComponentIndustrial</thing><packSize>5</packSize></li>
+      <li><thing>Cloth</thing><packSize>50</packSize></li>
+      <li><thing>RawPotatoes</thing><packSize>75</packSize><defaultStock>300</defaultStock><stockPerInmate>60</stockPerInmate></li>
+      <li><thing>RawRice</thing><packSize>75</packSize></li>
+      <li><thing>Meat_Cow</thing><packSize>50</packSize></li>
+      <li><thing>MealSimple</thing><packSize>10</packSize></li>
+      <li><thing>Chocolate</thing><packSize>20</packSize><defaultStock>20</defaultStock><stockPerInmate>1</stockPerInmate></li>
+      <li><thing>RP_Cigarettes</thing><packSize>20</packSize><defaultStock>20</defaultStock><stockPerInmate>1</stockPerInmate></li>
+      <li><thing>MedicineIndustrial</thing><packSize>10</packSize><defaultStock>10</defaultStock><stockPerInmate>0.4</stockPerInmate></li>
+      <li><thing>RP_Antipsychotic</thing><packSize>10</packSize></li>
+      <li><thing>RP_DrugTestKit</thing><packSize>10</packSize></li>
+    </entries>
+  </RimPrison.SupplyCatalogDef>
+</Defs>

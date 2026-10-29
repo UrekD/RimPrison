@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Parole as a scene (see Story/ParoleScene.cs): an inmate called to the hearing room, walked in by a guard, sitting before the board; and life on parole (Story/ParoleLife.cs). -->
+  <JobDef>
+    <defName>RP_AttendHearing</defName>
+    <driverClass>RimPrison.JobDriver_AttendHearing</driverClass>
+    <reportString>appearing before the parole board.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <JobDef>
+    <defName>RP_EscortToHearing</defName>
+    <driverClass>RimPrison.JobDriver_EscortToHearing</driverClass>
+    <reportString>escorting TargetA to a parole hearing.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+  <JobDef>
+    <defName>RP_SitBoard</defName>
+    <driverClass>RimPrison.JobDriver_SitBoard</driverClass>
+    <reportString>sitting on the parole board.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RP_EscortToHearing_WorkGiver</defName>
+    <label>escort to a parole hearing</label>
+    <giverClass>RimPrison.WorkGiver_EscortToHearing</giverClass>
+    <workType>Warden</workType>
+    <verb>escort</verb>
+    <gerund>escorting</gerund>
+    <priorityInType>150</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RP_SitBoard_WorkGiver</defName>
+    <label>sit on the parole board</label>
+    <giverClass>RimPrison.WorkGiver_SitBoard</giverClass>
+    <workType>RP_Administration</workType>
+    <verb>sit</verb>
+    <gerund>sitting on the parole board at</gerund>
+    <priorityInType>150</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+
+  <ThoughtDef>
+    <defName>RP_LetterParolee</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>word from a parolee</label><description>Somebody who left on parole is keeping to the terms and getting on. A hearing can lead somewhere.</description><baseMoodEffect>3</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <RimPrison.MailKindDef>
+    <defName>RP_Mail_Parolee</defName>
+    <label>a letter from a parolee</label>
+    <weight>0.8</weight>
+    <workerClass>RimPrison.MailKindWorker_Parolee</workerClass>
+    <thought>RP_LetterParolee</thought>
+    <tension>-4</tension>
+    <familyNeed>0.05</familyNeed>
+    <chronicleKey>RP_Mail_Chr_Parolee</chronicleKey>
+    <fromFamily>false</fromFamily>
+    <minFamily>0</minFamily>
+  </RimPrison.MailKindDef>
+</Defs>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- An inmate in a crisis (the watch list) keeps to the room they are in, in the critical mental state subtree. -->
+  <Operation Class="PatchOperationInsert">
+    <xpath>Defs/ThinkTreeDef[defName="MentalStateCritical"]/thinkRoot/subNodes/li[1]</xpath>
+    <order>Prepend</order>
+    <value>
+      <li Class="ThinkNode_ConditionalMentalState">
+        <state>RP_Crisis</state>
+        <subNodes>
+          <li Class="JobGiver_WanderCurrentRoom"><maxDanger>Deadly</maxDanger></li>
+          <li Class="JobGiver_IdleForever" />
+        </subNodes>
+      </li>
+    </value>
+  </Operation>
+</Patch>

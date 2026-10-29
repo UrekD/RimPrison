@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Asks to see the warden (Staff/WardenAsks.cs): who asks, why, and the answer in person. No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+  <RP_Ask_Reason_Witness>a witness in {0}'s case, has something to say</RP_Ask_Reason_Witness>
+  <RP_Ask_Reason_WitnessGone>a witness, has something to say</RP_Ask_Reason_WitnessGone>
+  <RP_Ask_Reason_Debtor>beaten over a debt to {0}</RP_Ask_Reason_Debtor>
+  <RP_Ask_Reason_DebtorGone>beaten over a debt</RP_Ask_Reason_DebtorGone>
+  <RP_Ask_Reason_DoubterKnown>having doubts about the {0}</RP_Ask_Reason_DoubterKnown>
+  <RP_Ask_Reason_HungerStrike>on hunger strike, wants to be heard</RP_Ask_Reason_HungerStrike>
+  <RP_Ask_Reason_StepDown>{0} clean days in supermax, asks about the step-down</RP_Ask_Reason_StepDown>
+  <RP_Ask_Reason_CellRequest>asks about a change of cell</RP_Ask_Reason_CellRequest>
+  <RP_Ask_Reason_Rumour>about the talk on the wing - "{0}"</RP_Ask_Reason_Rumour>
+  <RP_Ask_Reason_RumourGone>about the talk on the wing</RP_Ask_Reason_RumourGone>
+  <RP_Ask_Reason_Other>wants a word with the warden</RP_Ask_Reason_Other>
+  <RP_TrialWitnessToldWarden>{0} told {2}, the warden, that someone has threatened them over what they saw {1} do.</RP_TrialWitnessToldWarden>
+  <RP_Chr_TrialThreatWarden>{0} told {2}, the warden, they were threatened over their evidence against {1}.</RP_Chr_TrialThreatWarden>
+  <RP_Ask_Answered>{1} had asked to see the warden ({2}), and {0} heard them out.</RP_Ask_Answered>
+  <RP_Chr_AskAnswered>{0} heard {1} out ({2}).</RP_Chr_AskAnswered>
+  <RP_Ask_RumourFalse>They say the talk ("{1}") started with {0}, and there is nothing in it.</RP_Ask_RumourFalse>
+  <RP_Ask_RumourTrue>They say the talk ("{1}") started with {0}, and it holds.</RP_Ask_RumourTrue>
+  <RP_Ask_CannotTalk>{0} cannot be talked to now.</RP_Ask_CannotTalk>
+  <RP_Ask_TipLine>{0} - {1} ({2} h left)</RP_Ask_TipLine>
+  <RP_Ask_TipMore>and {0} more</RP_Ask_TipMore>
+  <RP_HudAsks>{0} ask to see you</RP_HudAsks>
+  <RP_HudAsksOne>1 asks to see you</RP_HudAsksOne>
+  <RP_HudAsksNone>Nobody asks to see you</RP_HudAsksNone>
+  <RP_HudAsksTip>Inmates who ask to see the warden. Each request lapses {0} hours after it was made. The warden's word with them, or a walk that meets them, answers it, and does more than a word or a walk alone. Click for the Intel screen.</RP_HudAsksTip>
+  <RP_IntelAsks>Asking to see you</RP_IntelAsks>
+  <RP_IntelHint_Asks>Nobody asks to see the warden. A witness who was got at, a debtor after a beating, a gang member with doubts, a hunger striker, a step-down candidate, a cell request or the talk of a false rumour on a wing can bring an inmate to ask. A request lapses after a day.</RP_IntelHint_Asks>
+  <RP_IntelAskHours>{0} h</RP_IntelAskHours>
+  <RP_IntelTip_Ask>{0} asks to see the warden - {1}. The request lapses in {2} hours. Click the name to find them.</RP_IntelTip_Ask>
+  <RP_IntelAskGo>Go</RP_IntelAskGo>
+  <RP_IntelAskGoWordTip>The warden goes to {0} for a word (choose what to say). Whatever is said answers the request, with more trust and calm than the word alone, and what they asked about.</RP_IntelAskGoWordTip>
+  <RP_IntelAskGoWalkTip>The warden walks {0}'s wing. Meeting them on the walk answers the request, with twice the walk's trust, and they say who started the talk and whether it holds.</RP_IntelAskGoWalkTip>
+</LanguageData>

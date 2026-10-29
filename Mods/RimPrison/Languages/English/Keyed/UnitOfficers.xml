@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Unit officers (Staff/UnitOfficers.cs): one guard named to know one wing. No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+  <RP_Unit_Header>Unit officers</RP_Unit_Header>
+  <RP_Unit_HeaderTip>Name one guard to each wing. They patrol it when free and get to know its inmates day by day - the inmates come to trust them, they notice what goes on, and fewer complaints are filed against them there. The longer they stay, the more the wing's fixers count on knowing them. Moving them to another wing, or taking them off, starts the days again.</RP_Unit_HeaderTip>
+  <RP_Unit_RowTip>The unit officer of the {0}.
+
+- Each day, every inmate of the wing who was near them gives them {1} points of trust (one restraint costs {2}), never past {3} from that alone. Being around makes acquaintances, not forgiveness - an inmate who resents them gains nothing until the grudge has faded, so a brutal officer stays hated.
+- Each day, a chance of {4}% rising to {5}% (after ten days) that they bring one hidden fact about the wing to the desk, as an informant's tip would.
+- Complaints against them from the wing are filed up to {6}% less often as they get to know it (not by an inmate who resents them).
+- A fixer on the wing finds them up to {7} points likelier to say yes, growing with the days in post.
+
+An officer on days leaves the nights uncovered, and the other way round. On leave or suspended the slot is vacant until they are back (their days are kept, and do not grow while they are away), and naming someone else meanwhile ends their post. While the state's chief deploys the guards the officers' effects wait.</RP_Unit_RowTip>
+  <RP_Unit_None>None</RP_Unit_None>
+  <RP_Unit_NoWings>No wing has cells yet - paint a wing over cells to give it a unit officer.</RP_Unit_NoWings>
+  <RP_Unit_MenuTitle>Unit officer of the {0}</RP_Unit_MenuTitle>
+  <RP_Unit_MenuNone>None</RP_Unit_MenuNone>
+  <RP_Unit_MenuNoneTake>None (take {0} off the wing)</RP_Unit_MenuNoneTake>
+  <RP_Unit_MenuGuard>{0}, {1}</RP_Unit_MenuGuard>
+  <RP_Unit_MenuWhy>{0} (cannot - {1})</RP_Unit_MenuWhy>
+  <RP_Unit_MenuMoves>{0} (moves from the {1}, the days start again)</RP_Unit_MenuMoves>
+  <RP_Unit_MenuKin>{0} (has kin on this wing)</RP_Unit_MenuKin>
+  <RP_Unit_MenuReplacesAway>{0} (replaces {1}, who is away - their post ends)</RP_Unit_MenuReplacesAway>
+
+  <!-- Why a guard cannot be named. -->
+  <RP_Unit_WhyNotGuard>not a guard</RP_Unit_WhyNotGuard>
+  <RP_Unit_WhyProtected>not the warden's to post</RP_Unit_WhyProtected>
+  <RP_Unit_WhyCallout>called in for a few hours only</RP_Unit_WhyCallout>
+  <RP_Unit_WhyNoWing>no such wing</RP_Unit_WhyNoWing>
+  <RP_Unit_WhyAlready>already the unit officer here</RP_Unit_WhyAlready>
+  <RP_Unit_WhyKin>kept off this wing, their kin is held on it</RP_Unit_WhyKin>
+  <RP_Unit_WhyAway>away, on leave or suspended</RP_Unit_WhyAway>
+
+  <!-- The warden's messages. -->
+  <RP_Unit_Refused>{0} cannot be the unit officer of the {1} - {2}.</RP_Unit_Refused>
+  <RP_Unit_Named>{0} is now the unit officer of the {1}, and patrols it.</RP_Unit_Named>
+  <RP_Unit_Replaced>{0} is no longer the unit officer of the {1}, someone else was named.</RP_Unit_Replaced>
+  <RP_Unit_TakenOff>{0} is no longer the unit officer of the {1}.</RP_Unit_TakenOff>
+  <RP_Unit_OffByPatrol>{0} is no longer the unit officer of the {1} - their patrol was moved.</RP_Unit_OffByPatrol>
+  <RP_Unit_KinVacated>{0} is no longer the unit officer of the {1} - they are kept off the wing where their kin is held.</RP_Unit_KinVacated>
+
+  <!-- The tip. -->
+  <RP_Unit_TipLabel>Unit officer's word</RP_Unit_TipLabel>
+  <RP_Unit_TipText>{0}, unit officer of the {1} ({2}), brought something to the desk.
+
+{3}
+
+Nobody inside told them, so acting on it gives nobody away.</RP_Unit_TipText>
+  <RP_Unit_TenureNew>new to the wing</RP_Unit_TenureNew>
+  <RP_Unit_TenureDay>a day on the wing</RP_Unit_TenureDay>
+  <RP_Unit_TenureDays>{0} days on the wing</RP_Unit_TenureDays>
+
+  <!-- The screens. -->
+  <RP_Unit_WorksDays>works days, nights uncovered</RP_Unit_WorksDays>
+  <RP_Unit_WorksNights>works nights, days uncovered</RP_Unit_WorksNights>
+  <RP_Unit_SlotVacant>Vacant - nobody knows this wing.</RP_Unit_SlotVacant>
+  <RP_Unit_SlotAway>{0} is away, the slot is vacant until they are back ({1} days in post kept) - naming someone else ends their post.</RP_Unit_SlotAway>
+  <RP_Unit_SlotChief>{0} days in post - the state's chief deploys the guards, the officer's effects wait.</RP_Unit_SlotChief>
+  <RP_Unit_SlotLine>{0} days in post, {1}.</RP_Unit_SlotLine>
+  <RP_Unit_RecordLine>Unit officer of the {0} - {1} days in post, {2}</RP_Unit_RecordLine>
+  <RP_Unit_RecordAway>(away, the slot is vacant until they are back)</RP_Unit_RecordAway>
+
+  <!-- The statistics screen. -->
+  <RP_Stat_unitTips>Unit officer tips</RP_Stat_unitTips>
+  <RP_StatTip_unitTips>Hidden facts about their wing that unit officers brought to the desk.</RP_StatTip_unitTips>
+  <RP_Unit_RecordChief>(waiting while the state's chief deploys the guards)</RP_Unit_RecordChief>
+</LanguageData>

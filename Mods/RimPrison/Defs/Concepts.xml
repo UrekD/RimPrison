@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The learning helper's notes for the deep systems (UI/Concepts.cs): each appears the first time its system matters. -->
+
+  <ConceptDef Abstract="True" Name="RP_ConceptBase">
+    <priority>50</priority>
+    <needsOpportunity>true</needsOpportunity>
+  </ConceptDef>
+
+  <ConceptDef ParentName="RP_ConceptBase">
+    <defName>RP_Concept_Pad</defName>
+    <label>The shuttle pad</label>
+    <helpText>The state's shuttle brings the day's inmates and the supplies you order, and takes away the released. It lands on a shuttle pad (Architect, Prison). Without one it sets down on whatever clear ground it finds near holding, and the released wait out in the open.\n\nKeep the pad unroofed and clear, with a way to holding.</helpText>
+    <highlightTags>
+      <li>MainTab-RP_Rooms-Closed</li>
+    </highlightTags>
+  </ConceptDef>
+
+  <ConceptDef ParentName="RP_ConceptBase">
+    <defName>RP_Concept_Holding</defName>
+    <label>Holding</label>
+    <helpText>New inmates are walked from the shuttle to holding, where a guard searches them for contraband before they go to a cell. Paint a room by the gate as Holding in Rooms. Without one they wait wherever they stepped off.\n\nGuards must be free to escort them, and the way in must be open.</helpText>
+    <highlightTags>
+      <li>MainTab-RP_Rooms-Closed</li>
+    </highlightTags>
+  </ConceptDef>
+
+  <ConceptDef ParentName="RP_ConceptBase">
+    <defName>RP_Concept_Kitchen</defName>
+    <label>The kitchen and its meal bill</label>
+    <helpText>Paint a room as Kitchen in Rooms and put a stove in it. The stove gets a standing meal bill by itself, sized to your cell beds, and your cooks (and inmates on kitchen duty) cook from the food you keep in the kitchen.\n\nChange or delete the bill on the stove like any other. The prison makes it only once.</helpText>
+    <highlightTags>
+      <li>MainTab-RP_Rooms-Closed</li>
+    </highlightTags>
+  </ConceptDef>
+
+  <ConceptDef ParentName="RP_ConceptBase">
+    <defName>RP_Concept_Bureaucracy</defName>
+    <label>Bureaucracy</label>
+    <helpText>Projects in the Office screen unlock rooms, buildings, staff and security levels. Each costs money to start and then hours of paperwork by an administrator at an office desk.\n\nWith no administrator on the staff, or no desk, nothing moves, and Start is off.</helpText>
+    <highlightTags>
+      <li>MainTab-RP_Office-Closed</li>
+    </highlightTags>
+  </ConceptDef>
+
+  <ConceptDef ParentName="RP_ConceptBase">
+    <defName>RP_Concept_HearingRoom</defName>
+    <label>The hearing room</label>
+    <helpText>A hearing room (an office desk and chairs, in a staff-only room, painted in Rooms) lets the parole board and the murder trials sit inside the prison. The board is called in with an escort, and a trial is heard by video instead of sending the accused away for the day.</helpText>
+    <highlightTags>
+      <li>MainTab-RP_Rooms-Closed</li>
+    </highlightTags>
+  </ConceptDef>
+
+  <ConceptDef ParentName="RP_ConceptBase">
+    <defName>RP_Concept_Trial</defName>
+    <label>A murder trial</label>
+    <helpText>A killing inside leads to a trial some days later. The prosecution builds its case from who was in sight, a camera over the spot and the weapon, and you are told what it has. The killer's gang may get at the witnesses, and protective custody keeps them safe.\n\nThe Intel screen lists the open cases and how each looks.</helpText>
+    <highlightTags>
+      <li>MainTab-RP_Intel-Closed</li>
+    </highlightTags>
+  </ConceptDef>
+
+  <ConceptDef ParentName="RP_ConceptBase">
+    <defName>RP_Concept_Complaint</defName>
+    <label>Complaints against officers</label>
+    <helpText>An inmate who is hurt by an officer, or says so, may complain. The letter says who and what, and never whether it is true. Dismiss it, investigate it (a few hours, with the officer stood down) or settle it.\n\nA true complaint dismissed, and a pattern of them, ends in lawsuits. The Intel screen can reopen the letter while it waits.</helpText>
+    <highlightTags>
+      <li>MainTab-RP_Intel-Closed</li>
+    </highlightTags>
+  </ConceptDef>
+
+  <ConceptDef ParentName="RP_ConceptBase">
+    <defName>RP_Concept_Ring</defName>
+    <label>Smuggling rings</label>
+    <helpText>Contraband comes in through rings. An outside supplier, sometimes an officer, couriers and a dealer inside. Finds, tips, phone taps and the psychologist show the links one at a time.\n\nBust a ring to break it, or turn a link to learn more. The Intel screen shows what is known and how hot the ring is.</helpText>
+    <highlightTags>
+      <li>MainTab-RP_Intel-Closed</li>
+    </highlightTags>
+  </ConceptDef>
+
+  <ConceptDef ParentName="RP_ConceptBase">
+    <defName>RP_Concept_Debt</defName>
+    <label>Debts</label>
+    <helpText>Inmates borrow, gamble and owe each other. An overdue debt is collected with threats and then a beating, and a debtor in trouble is a risk to everyone around them.\n\nA tip, a search or a beating brings a debt to light. The Intel screen lists the ones you know of.</helpText>
+    <highlightTags>
+      <li>MainTab-RP_Intel-Closed</li>
+    </highlightTags>
+  </ConceptDef>
+
+  <ConceptDef ParentName="RP_ConceptBase">
+    <defName>RP_Concept_Turf</defName>
+    <label>Gang turf</label>
+    <helpText>Gangs claim places: the yard, the canteen, a corner of the block. Rival gangs fighting over the same patch start wars. A gang you know of shows its turf in Rooms and on the Intel screen.</helpText>
+    <highlightTags>
+      <li>MainTab-RP_Intel-Closed</li>
+    </highlightTags>
+  </ConceptDef>
+
+  <ConceptDef ParentName="RP_ConceptBase">
+    <defName>RP_Concept_Want</defName>
+    <label>Inmates' goals</label>
+    <helpText>Inmates want things: parole, a clean record, a diploma, their family, a score to settle, a debt paid. A goal on track calms them, and one that slips costs them heart.\n\nThe inmate list has a Want column and a filter for the goals that are slipping.</helpText>
+    <highlightTags>
+      <li>MainTab-RP_Reports-Closed</li>
+    </highlightTags>
+  </ConceptDef>
+
+  <ConceptDef ParentName="RP_ConceptBase">
+    <defName>RP_Concept_Measures</defName>
+    <label>Special measures</label>
+    <helpText>When the prison goes badly (days graded below the state's line, too many deaths and escapes in a week, a loan in default) the state steps in: an overseer, a deadline, and limits on new inmates and on payments.\n\nMeet its targets within the term to have them lifted. The difficulty sets how strict it is.</helpText>
+    <highlightTags>
+      <li>MainTab-RP_Reports-Closed</li>
+    </highlightTags>
+  </ConceptDef>
+
+  <ConceptDef ParentName="RP_ConceptBase">
+    <defName>RP_Concept_Flagship</defName>
+    <label>The flagship</label>
+    <helpText>A prison graded A for days on end becomes the state's flagship, with better grants and the occasional legendary transfer. A slump loses it again.</helpText>
+    <highlightTags>
+      <li>MainTab-RP_Reports-Closed</li>
+    </highlightTags>
+  </ConceptDef>
+
+  <ConceptDef ParentName="RP_ConceptBase">
+    <defName>RP_Concept_Morgue</defName>
+    <label>The dead</label>
+    <helpText>The bodies of inmates and staff lie where they fell, and rot in front of everybody. Paint a morgue (a staff-only room) in Rooms, and guards, cooks, workmen and janitors will carry them there. The state shuttle takes the bodies home when it leaves and the family writes to you. Paint a burial plot on bare ground for the dead who have nobody, and the workmen bury them there.</helpText>
+    <highlightTags>
+      <li>MainTab-RP_Rooms-Closed</li>
+    </highlightTags>
+  </ConceptDef>
+
+  <ConceptDef ParentName="RP_ConceptBase">
+    <defName>RP_Concept_Grounds</defName>
+    <label>The grounds</label>
+    <helpText>The prison owns only the land inside the yellow line: you can build and paint rooms there, and nowhere else. Staff, visitors and the shuttle's crew still walk wherever they like.\n\nBuy the next strip of land from the state on the Land tab of the Office screen (north, east, south or west). Each costs more than the one before, and the state sells nothing while special measures run.</helpText>
+    <highlightTags>
+      <li>MainTab-RP_Office-Closed</li>
+    </highlightTags>
+  </ConceptDef>
+
+  <ConceptDef ParentName="RP_ConceptBase">
+    <defName>RP_Concept_Warden</defName>
+    <label>The warden on the floor</label>
+    <helpText>The warden is a member of staff you play on the floor: select them. They can address the canteen (calm, or firm), walk a wing (inmates who are calm trust them more, those who are wound up resent it; a snitch near may tell them something, and a complaint that has not reached the desk is said to their face) and have a word with an inmate (back a goal you know of, sound them out as an informant, tell them where they stand before a hearing). Each takes time, and then has to wait its cooldown.\n\nThey are never let go or sent home, they sleep in a cot of their own, and they are the one a riot goes for: a crisis over the warden is the worst there is. If the warden dies the state names another after two days.</helpText>
+  </ConceptDef>
+
+</Defs>

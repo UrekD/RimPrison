@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <DesignationCategoryDef>
+    <defName>RP_Prison</defName>
+    <label>prison</label>
+    <description>Prison fixtures: toilets, showers, serving counters.</description>
+    <order>950</order>
+    <specialDesignatorClasses>
+      <li>Designator_Cancel</li>
+      <li>Designator_Deconstruct</li>
+    </specialDesignatorClasses>
+  </DesignationCategoryDef>
+  <DesignationCategoryDef>
+    <defName>RP_PrisonZones</defName>
+    <label>prison zones</label>
+    <description>Paint prison zones: canteen, yard, showers, holding, staff areas, deliveries. Zones decide where the regime sends inmates and which doors they may use.</description>
+    <order>949</order>
+  </DesignationCategoryDef>
+
+  <ThingDef ParentName="BuildingBase" Name="RP_FixtureBase" Abstract="True">
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>30</pathCost>
+    <fillPercent>0.3</fillPercent>
+    <rotatable>true</rotatable>
+    <defaultPlacingRot>South</defaultPlacingRot>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <designationCategory>RP_Prison</designationCategory>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <canOverlapZones>false</canOverlapZones>
+    <building>
+      <isEdifice>true</isEdifice>
+    </building>
+    <placeWorkers>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <ThingDef ParentName="RP_FixtureBase">
+    <defName>RP_Toilet</defName>
+    <label>toilet</label>
+    <description>A steel prison toilet. One per cell keeps inmates from soiling themselves (and the floor).</description>
+    <graphicData>
+      <texPath>Things/Building/RP_Toilet</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <costList><Steel>25</Steel></costList>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <WorkToBuild>800</WorkToBuild>
+      <Mass>15</Mass>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <comps>
+      <li Class="RimPrison.CompProperties_Fixture">
+        <need>RP_Bladder</need>
+        <gainPerTick>0.004</gainPerTick>
+        <maxUseTicks>300</maxUseTicks>
+        <useReport>using {0}.</useReport>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RP_FixtureBase">
+    <defName>RP_Shower</defName>
+    <label>shower</label>
+    <description>A communal shower. Inmates wash here during shower time; staff may use it too.</description>
+    <graphicData>
+      <texPath>Things/Building/RP_Shower</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <interactionCellOffset>(0,0,0)</interactionCellOffset>
+    <hasInteractionCell>false</hasInteractionCell>
+    <passability>Standable</passability>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <costList><Steel>35</Steel><ComponentIndustrial>1</ComponentIndustrial></costList>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>1200</WorkToBuild>
+      <Mass>20</Mass>
+      <Cleanliness>1</Cleanliness>
+    </statBases>
+    <comps>
+      <li Class="RimPrison.CompProperties_Fixture">
+        <need>RP_Hygiene</need>
+        <gainPerTick>0.0012</gainPerTick>
+        <maxUseTicks>900</maxUseTicks>
+        <useInteractionCell>false</useInteractionCell>
+        <useReport>showering.</useReport>
+      </li>
+    </comps>
+    <placeWorkers Inherit="False" />
+  </ThingDef>
+
+  <ThingDef ParentName="FurnitureBase">
+    <defName>RP_ServingCounter</defName>
+    <label>serving counter</label>
+    <description>A steel counter that holds meals for the canteen. Cooks stock it; inmates take a tray at meal times.</description>
+    <thingClass>Building_Storage</thingClass>
+    <designationCategory>RP_Prison</designationCategory>
+    <graphicData>
+      <texPath>Things/Building/RP_ServingCounter</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,1)</drawSize>
+    </graphicData>
+    <size>(3,1)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.4</fillPercent>
+    <pathCost>50</pathCost>
+    <rotatable>false</rotatable>
+    <surfaceType>Item</surfaceType>
+    <canOverlapZones>false</canOverlapZones>
+    <costList><Steel>60</Steel></costList>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <WorkToBuild>1000</WorkToBuild>
+      <Mass>30</Mass>
+    </statBases>
+    <building>
+      <preventDeteriorationOnTop>true</preventDeteriorationOnTop>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <maxItemsInCell>3</maxItemsInCell>
+      <blueprintClass>Blueprint_Storage</blueprintClass>
+      <fixedStorageSettings>
+        <filter>
+          <categories><li>FoodMeals</li></categories>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <categories><li>FoodMeals</li></categories>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <inspectorTabs>
+      <li>ITab_Storage</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <!-- A heavy steel door for perimeters, cells and staff areas: takes a long time to bash through. -->
+  <ThingDef ParentName="DoorBase">
+    <defName>RP_SecurityDoor</defName>
+    <label>security door</label>
+    <description>A heavy reinforced steel door. Slow to open, but it takes an inmate hours to bash through one. Use it on cells, staff areas and the perimeter.</description>
+    <designationCategory>RP_Prison</designationCategory>
+    <statBases>
+      <WorkToBuild>2000</WorkToBuild>
+      <MaxHitPoints>900</MaxHitPoints>
+      <DoorOpenSpeed>0.7</DoorOpenSpeed>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/RP_SecurityDoor</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(1, 1, 1)</color>
+      <damageData>
+        <enabled>false</enabled>
+      </damageData>
+    </graphicData>
+    <uiIconPath>Things/Building/Door/DoorSimple_MenuIcon</uiIconPath>
+    <stuffCategories Inherit="False" />
+    <costStuffCount>0</costStuffCount>
+    <useStuffTerrainAffordance>false</useStuffTerrainAffordance>
+    <costList>
+      <Steel>80</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <building>
+      <isStuffableAirtight>false</isStuffableAirtight>
+    </building>
+  </ThingDef>
+</Defs>

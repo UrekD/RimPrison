@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The warden's desk explains itself: why a grade moved, the wing block, the kitchen line, the panel's counts. No capital letter may follow a colon here (the game capitalises it): a dash or a new sentence. -->
+  <RP_DeskNone>no</RP_DeskNone>
+  <RP_DeskViolentIncident>violent incident</RP_DeskViolentIncident>
+  <RP_DeskDeath>death</RP_DeskDeath>
+  <RP_DeskInmate>inmate</RP_DeskInmate>
+  <RP_DeskEscape>escape</RP_DeskEscape>
+  <RP_DeskContrabandItem>contraband item</RP_DeskContrabandItem>
+  <RP_DeskRing>smuggling ring</RP_DeskRing>
+  <RP_DeskSafety>{0} and {1} among {2}</RP_DeskSafety>
+  <RP_DeskSecurity>{0}, {1} smuggled in ({2} found) and {3} broken up</RP_DeskSecurity>
+  <RP_DeskHealth>{0} of {1} hurt or down now, and {2} today</RP_DeskHealth>
+  <RP_DeskConditions>an average mood of {0}% among {1}</RP_DeskConditions>
+  <RP_DeskOrder>the inmates were where the regime wanted them in {0}% of today's {1} hourly checks</RP_DeskOrder>
+  <RP_DeskOrderNoSamples>no hourly check yet today, so it stands at {0}</RP_DeskOrderNoSamples>
+  <RP_DeskReformNoParole>{0} of {1} at work, {2} with a program passed, no paroles in the last two weeks, and {3}</RP_DeskReformNoParole>
+  <RP_DeskReform>{0} of {1} at work, {2} with a program passed, {3}% of the last two weeks' releases on parole, and {4}</RP_DeskReform>
+  <RP_DeskStayedOut>{0}% of all those released have stayed out</RP_DeskStayedOut>
+  <RP_DeskNobodyReleased>nobody released yet (the stay-out share counts as half)</RP_DeskNobodyReleased>
+  <RP_DeskUp>up {0}</RP_DeskUp>
+  <RP_DeskDown>down {0}</RP_DeskDown>
+  <RP_DeskSame>unchanged</RP_DeskSame>
+  <RP_DeskLine>{0} {1} - {2}.</RP_DeskLine>
+  <RP_DeskLineMoved>{0} {1}, {2} since the last card - {3}.</RP_DeskLineMoved>
+  <RP_DeskNoDetail>No detail was kept for this day.</RP_DeskNoDetail>
+
+  <RP_DeskKitchen>Kitchen - cooked today {0} · eaten by inmates today {1} · on the serving counters {2} · inmates hungry now {3} · cooks on duty {4}</RP_DeskKitchen>
+  <RP_DeskKitchenTip>Meals the stoves finished today (the staff cooks' and the inmate cooks'), meals inmates ate today, meals waiting on the serving counters now, inmates whose food is under {0} (nutrient paste counts among the meals eaten; inmates on the way out are not counted), and the staff cooks at work now (not at home, on strike or on a break).</RP_DeskKitchenTip>
+
+  <RP_DeskWings>Wings</RP_DeskWings>
+  <RP_DeskShowWings>Show wings</RP_DeskShowWings>
+  <RP_DeskShowNeeds>Show needs and complaints</RP_DeskShowNeeds>
+  <RP_DeskWingsTip>Switch this part of the screen between the needs and complaints and one row per security level that holds inmates.</RP_DeskWingsTip>
+  <RP_DeskColInmates>Inmates</RP_DeskColInmates>
+  <RP_DeskColTension>Mean tension</RP_DeskColTension>
+  <RP_DeskColTense>Tense</RP_DeskColTense>
+  <RP_DeskColThumb>Under the thumb</RP_DeskColThumb>
+  <RP_DeskColMisconduct>Misconduct today</RP_DeskColMisconduct>
+  <RP_DeskColGuards>Guards now</RP_DeskColGuards>
+  <RP_DeskWingsMore>and {0} more levels not shown here</RP_DeskWingsMore>
+  <RP_DeskWingTip>{0} - {1} inmates, mean tension {2}, {3} tense (tension {4} or more), {5} misconduct today, {6} on-duty guards standing in the wing's zones now. Counted every few seconds.</RP_DeskWingTip>
+
+  <RP_HudTense>tense {0}</RP_HudTense>
+  <RP_HudTenseTip>Inmates at tension {0} or more. Click for the Intel screen, whose list of the tense starts lower, at 50, to show who is getting there.</RP_HudTenseTip>
+  <RP_HudLetters>letters {0}</RP_HudLetters>
+  <RP_HudLettersTip>Prison decision letters on the letter stack that nobody has answered yet. (Those the day's budget holds back until tomorrow are not counted.)</RP_HudLettersTip>
+
+  <RP_DeskWingThumbTip>{0} held down (suppression over {1} - shut out of programs, no riot to join, slow to calm), mean suppression {2}. Punishment and the warden's firm word put it on; it wears off by itself.</RP_DeskWingThumbTip>
+</LanguageData>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The morning after (Security/RiotReview.cs). No capital after a colon: RimWorld capitalises the letter after ": ", so these use dashes and commas. -->
+
+  <RP_RiotReviewLabel>The riot on the {0} wing</RP_RiotReviewLabel>
+  <RP_RiotReviewText>The incident report on the riot on the {0} wing, which started on {1} and lasted {2}.\n\n{3}\n\nYou may give up to {5} answers, or amnesty alone.\n{4}\n\nLeft unanswered, there is no reckoning.</RP_RiotReviewText>
+  <RP_RiotReviewAnswers>Restrict the wing for 1, 2 or 3 days - the yard is off and lockup comes early each day, and the wing riots less while it lasts. Each day served holds it down more ({6} suppression a day, counted as each day ends, less for a part of one), and a wing held down past the line is shut out of its programs. The tension it held down lands when it ends ({0} a day on each inmate), and the inspector counts the days. Lifting the yard order or the early lockup ends it.\nShip the ringleader out - {1}, a little reputation and the payment they bring; their gang loses its leader. Only if the ringleader was seen.\nCharge what was seen - the inmates named above go on the adjudication sheet as cases, except anyone sanctioned or put on the sheet for this riot already (a riot is heard all over the prison, and the sanction policy deals with the rioters as it starts).\nMake restitution - the {2} bill comes out of the named inmates' cash, as far as it goes.\nMeet the grievance - a promise to fix their {3} within {4} hours, as a negotiation makes one.\nAmnesty - tension down on the wing and a little reputation lost, and for {5} days the wing riots more readily. It is the only answer, and the sanctions given as the riot started stand.</RP_RiotReviewAnswers>
+  <RP_RiotReviewMoreLabel>The riot on the {0} wing - a second answer</RP_RiotReviewMoreLabel>
+  <RP_RiotReviewMoreText>Answered so far - {0}. You may give one more answer, or leave it there.</RP_RiotReviewMoreText>
+  <RP_RiotReviewAgainLabel>The riot on the {0} wing - your answer</RP_RiotReviewAgainLabel>
+  <RP_RiotReviewAgainText>Nothing is answered yet. You may choose again, or leave it there (no reckoning).</RP_RiotReviewAgainText>
+  <RP_RiotReviewPromiseOpen>A promise of better {0} is open now. Meeting this grievance replaces it, and the inmate it was made to feels made a fool of.</RP_RiotReviewPromiseOpen>
+
+  <RP_RiotReport_Ringleader>The ringleader - {0}, seen by staff or a camera.</RP_RiotReport_Ringleader>
+  <RP_RiotReport_RingleaderUnseen>The ringleader - nobody saw who started it.</RP_RiotReport_RingleaderUnseen>
+  <RP_RiotReport_Joined>Seen joining in - {0}.</RP_RiotReport_Joined>
+  <RP_RiotReport_Others>And about {0} others nobody saw.</RP_RiotReport_Others>
+  <RP_RiotReport_OthersOnly>About {0} others joined in, and nobody saw who.</RP_RiotReport_OthersOnly>
+  <RP_RiotReport_NobodyElse>Nobody else was seen joining in.</RP_RiotReport_NobodyElse>
+  <RP_RiotReport_Hurt>Hurt - {0} staff, {1} inmates.</RP_RiotReport_Hurt>
+  <RP_RiotReport_Dead>Dead - {0}.</RP_RiotReport_Dead>
+  <RP_RiotReport_DeadAndUnseen>Dead - {0}, and {1} rioter(s) nobody saw.</RP_RiotReport_DeadAndUnseen>
+  <RP_RiotReport_DeadUnseen>Dead - {0} rioter(s) nobody saw.</RP_RiotReport_DeadUnseen>
+  <RP_RiotReport_Damage>The damage bill - {0} of the prison's property broken.</RP_RiotReport_Damage>
+  <RP_RiotReport_NoDamage>The damage bill - nothing of value was broken.</RP_RiotReport_NoDamage>
+  <RP_RiotReport_Yesterday>yesterday the wing missed {0} meals and spent {1} hours locked in</RP_RiotReport_Yesterday>
+  <RP_RiotReport_GrievanceReal>The grievance shouted was {0}, and it was real - the inmates' {0} stands at {1}% on average, and {2}.</RP_RiotReport_GrievanceReal>
+  <RP_RiotReport_GrievanceNot>The grievance shouted was {0}, and it does not hold up - the inmates' {0} stands at {1}% on average, and {2}.</RP_RiotReport_GrievanceNot>
+  <RP_RiotReport_Rumour>The talk before it began - the {0} wing was saying "{1}" ({2}).</RP_RiotReport_Rumour>
+  <RP_RiotReport_Negotiated>The riot ended in a deal - you promised better {0}.</RP_RiotReport_Negotiated>
+  <RP_RiotReport_Lacked>What the prison lacked at the start - {0}.</RP_RiotReport_Lacked>
+  <RP_RiotLacked_NoGuard>no guard on the floor</RP_RiotLacked_NoGuard>
+  <RP_RiotLacked_GuardFar>no guard within {0} cells of the ringleader (the nearest was {1} away)</RP_RiotLacked_GuardFar>
+  <RP_RiotLacked_Dark>the spot was unlit</RP_RiotLacked_Dark>
+  <RP_RiotLacked_Roster>{0} guards on the roster for the hour against {1} inmates on the wing</RP_RiotLacked_Roster>
+
+  <RP_RiotReview_Restrict1>Restrict the wing for a day</RP_RiotReview_Restrict1>
+  <RP_RiotReview_Restrict2>Restrict the wing for 2 days</RP_RiotReview_Restrict2>
+  <RP_RiotReview_Restrict3>Restrict the wing for 3 days</RP_RiotReview_Restrict3>
+  <RP_RiotReview_ShipOut>Ship the ringleader out</RP_RiotReview_ShipOut>
+  <RP_RiotReview_Charge>Charge the seen not yet sanctioned</RP_RiotReview_Charge>
+  <RP_RiotReview_Restitution>Make restitution</RP_RiotReview_Restitution>
+  <RP_RiotReview_Grievance>Meet the grievance</RP_RiotReview_Grievance>
+  <RP_RiotReview_Amnesty>Amnesty</RP_RiotReview_Amnesty>
+  <RP_RiotReview_None>No reckoning</RP_RiotReview_None>
+  <RP_RiotReview_Enough>That is all</RP_RiotReview_Enough>
+
+  <RP_RiotRefused_Done>Already answered.</RP_RiotRefused_Done>
+  <RP_RiotRefused_Given>Already given.</RP_RiotRefused_Given>
+  <RP_RiotRefused_AmnestyAlone>An amnesty is the only answer, and another has been given.</RP_RiotRefused_AmnestyAlone>
+  <RP_RiotRefused_NoWing>There is no wing to restrict.</RP_RiotRefused_NoWing>
+  <RP_RiotRefused_Restricted>The {0} wing is under a restriction already.</RP_RiotRefused_Restricted>
+  <RP_RiotRefused_RingleaderUnseen>Nobody saw who the ringleader was.</RP_RiotRefused_RingleaderUnseen>
+  <RP_RiotRefused_RingleaderGone>{0} is no longer here.</RP_RiotRefused_RingleaderGone>
+  <RP_RiotRefused_NobodySeen>Nobody was seen in the riot, or the ones seen are gone.</RP_RiotRefused_NobodySeen>
+  <RP_RiotRefused_DealtWith>Everyone seen was sanctioned or put on the adjudication sheet for this riot already.</RP_RiotRefused_DealtWith>
+  <RP_RiotRefused_Changed>Things have changed since the letter came.</RP_RiotRefused_Changed>
+  <RP_RiotRefused_NothingBroken>Nothing of value was broken.</RP_RiotRefused_NothingBroken>
+  <RP_RiotRefused_Negotiated>Already promised in the negotiation.</RP_RiotRefused_Negotiated>
+  <RP_RiotRefused_NoGrievance>No grievance was named.</RP_RiotRefused_NoGrievance>
+  <RP_RiotAnswerNotGiven>That answer could not be given. {0}</RP_RiotAnswerNotGiven>
+
+  <RP_Cause_RiotRingleader>leading a riot</RP_Cause_RiotRingleader>
+  <RP_RiotCharged>{0} inmate(s) seen in the riot go on the adjudication sheet.</RP_RiotCharged>
+  <RP_RiotRestitution>Restitution - {0} of the {1} bill taken from the cash of {2} inmate(s) seen in the riot.</RP_RiotRestitution>
+  <RP_RiotRestitutionNote>restitution for the riot on the {0} wing</RP_RiotRestitutionNote>
+  <RP_RiotRestrictOver>The restriction on the {0} wing is over after {1} day(s). The tension it held down comes back, {2} on each of {3} inmate(s).</RP_RiotRestrictOver>
+
+  <RP_Chr_RiotOver>The riot on the {0} wing is over ({1} took part, for {2}).</RP_Chr_RiotOver>
+  <RP_Chr_RiotRestrict>After the riot, the {0} wing is restricted for {1} day(s).</RP_Chr_RiotRestrict>
+  <RP_Chr_RestrictionGoesOn>Midnight - the restriction on {0} goes on ({1}), {2} day(s) left.</RP_Chr_RestrictionGoesOn>
+  <RP_Chr_RiotRestrictOver>The restriction on the {0} wing ended after {1} day(s), and its tension came back ({2} each).</RP_Chr_RiotRestrictOver>
+  <RP_Chr_RiotCharged>After the riot on the {1} wing, {0} inmate(s) seen in it were charged.</RP_Chr_RiotCharged>
+  <RP_Chr_RiotRestitution>Restitution for a riot - {0} of a {1} bill, from {2} inmate(s).</RP_Chr_RiotRestitution>
+  <RP_Chr_RiotGrievance>After the riot, the warden promised better {0} within {1} hours.</RP_Chr_RiotGrievance>
+  <RP_Chr_RiotAmnesty>An amnesty for the riot on the {0} wing.</RP_Chr_RiotAmnesty>
+
+  <RP_RiotAnswered_Restrict>restricted {0} day(s)</RP_RiotAnswered_Restrict>
+  <RP_RiotAnswered_ShipOut>{0} shipped out</RP_RiotAnswered_ShipOut>
+  <RP_RiotAnswered_Charge>{0} charged</RP_RiotAnswered_Charge>
+  <RP_RiotAnswered_Restitution>{0} in restitution</RP_RiotAnswered_Restitution>
+  <RP_RiotAnswered_Grievance>better {0} promised</RP_RiotAnswered_Grievance>
+  <RP_RiotAnswered_Amnesty>amnesty</RP_RiotAnswered_Amnesty>
+  <RP_RiotAnswered_None>nothing yet</RP_RiotAnswered_None>
+  <RP_RiotState_Open>still going</RP_RiotState_Open>
+  <RP_RiotState_Due>the report comes at {0}:00</RP_RiotState_Due>
+  <RP_RiotState_Waiting>waiting for your answer</RP_RiotState_Waiting>
+  <RP_RiotState_NoReckoning>no reckoning</RP_RiotState_NoReckoning>
+  <RP_RiotState_MoreToCome>(one more answer open)</RP_RiotState_MoreToCome>
+  <RP_RiotState_Negotiated>negotiated, {0}</RP_RiotState_Negotiated>
+
+  <RP_IntelRiots>Riots</RP_IntelRiots>
+  <RP_IntelHint_Riots>No riots yet. After a riot, the next morning brings its incident report and your answers, and the last ten riots are listed here with what was answered.</RP_IntelHint_Riots>
+  <RP_IntelRiotLine>{0}, {1} - {2}</RP_IntelRiotLine>
+  <RP_IntelRiotWho>{0} and {1} more</RP_IntelRiotWho>
+  <RP_IntelRiotWhoUnseen>{0} rioters, the ringleader unseen</RP_IntelRiotWhoUnseen>
+  <RP_IntelTip_Riot>{0}\n\nAnswered - {1}.</RP_IntelTip_Riot>
+</LanguageData>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The first hour (gap analysis 4, sections 3 and 2): what a new player is told and shown. -->
+
+  <!-- The overview's to-do band, the Rooms list -->
+  <RP_Problem_NoStove>The kitchen is painted but has no stove, so build one inside it (a stove in the kitchen zone gets a meal bill by itself).</RP_Problem_NoStove>
+  <RP_KitchenFineNoCook>The new {0} cooks simple meals. The menu is fine meals, but nobody on the staff has Cooking {1} for them. Hire or train a cook, and the stove changes to fine meals by itself once somebody can cook them.</RP_KitchenFineNoCook>
+  <RP_KitchenFineNoCookNow>The kitchen cooks simple meals, as the menu is fine meals but nobody on the staff has Cooking {0} for them. Hire or train a cook, and the stoves change to fine meals by themselves once somebody can cook them.</RP_KitchenFineNoCookNow>
+  <RP_KitchenFineCookBack>{0} can cook fine meals, so the kitchen's stoves are on the fine menu again.</RP_KitchenFineCookBack>
+  <RP_ProblemsMore>and {0} more (see the alerts on the right)</RP_ProblemsMore>
+  <RP_ProblemOpenTip>Click to open {0}.</RP_ProblemOpenTip>
+  <RP_RoomsNotPainted>not painted</RP_RoomsNotPainted>
+  <RP_RoomsNotPaintedEssential>essential, not painted</RP_RoomsNotPaintedEssential>
+  <!-- The report card of an empty prison, one tooltip per tile -->
+  <RP_OverviewGradeNone>no inmates</RP_OverviewGradeNone>
+  <RP_OverviewGradeTip>Today's grade - the six areas below, weighted as shown on each tile. The state reads it at midnight.</RP_OverviewGradeTip>
+  <RP_OverviewGradeNoneTip>There are no inmates to grade yet, and a grade appears once the first shuttle has brought some.</RP_OverviewGradeNoneTip>
+  <RP_GradeTip_Safety>Safety - fights, assaults and deaths today, counted against the number of inmates (at least five). Keep guards where the tension is and quiet the tense.</RP_GradeTip_Safety>
+  <RP_GradeTip_Security>Security - escapes today, and what was smuggled in, less what the searches found; a smuggling ring broken whole lifts it.</RP_GradeTip_Security>
+  <RP_GradeTip_Health>Health - the share of inmates hurt or down right now, and deaths today. A doctor and a bed for the sick keep it up.</RP_GradeTip_Health>
+  <RP_GradeTip_Conditions>Conditions - the inmates' average mood. Food, showers, a bed of their own, exercise, visits and a clean cell lift it.</RP_GradeTip_Conditions>
+  <RP_GradeTip_Order>Order - how many inmates are where the regime wants them, sampled every hour. Doors, escorts and the timetable decide it.</RP_GradeTip_Order>
+  <RP_GradeTip_Reform>Reform - inmates at work, programs passed, paroles of the last two weeks, and how many of the released stay out.</RP_GradeTip_Reform>
+
+  <!-- Emergency buttons ask first -->
+  <RP_LockdownConfirm>Nothing is happening right now. Lock the whole prison down for 6 hours anyway?\n\nEvery inmate is confined to their cell, with no work, no meals in the canteen, no showers, no yard, and the tension rises. Use it against a riot, an escape or a hostage crisis.</RP_LockdownConfirm>
+  <RP_ShakedownConfirm>Start a shakedown? The prison is locked down for {0} hours while the guards search every inmate and cell. Everybody's tension goes up by 10, the inmates resent it, and the next shakedown cannot be called for {1} days.</RP_ShakedownConfirm>
+
+  <!-- Deployment -->
+  <RP_ArmedLockedTip>No guard is armed yet, so there is nothing to give an order to. It needs the bureaucracy project "{0}" (the Office button).</RP_ArmedLockedTip>
+
+  <!-- The new prison dialog -->
+  <RP_DifficultyLevers>Here it sets the pace of incidents and story beats inside the walls ({0}% of the usual), the grade below which the state counts a day as bad ({1} points; three bad days in a row bring special measures), the week's limit of deaths and escapes before the state steps in ({2}% of the usual) the funds you start with ({3}) and what the state asks for land ({5}% of the usual). The game's own mood setting for the level shifts everybody's mood, inmates and staff alike, by {4} points.</RP_DifficultyLevers>
+  <RP_Difficulty_Peaceful>A quiet prison. Less goes wrong (things still happen, at 60% of the usual rate), the state is patient and the budget is generous. For learning how it all fits together.</RP_Difficulty_Peaceful>
+  <RP_Difficulty_Easy>A forgiving first term. Trouble is rare and the state gives you time to learn.</RP_Difficulty_Easy>
+  <RP_Difficulty_Medium>Some trouble and some slack. The state notices a poor record, but late.</RP_Difficulty_Medium>
+  <RP_Difficulty_Rough>The intended prison. Things happen regularly, and the state steps in after three days graded below a C.</RP_Difficulty_Rough>
+  <RP_Difficulty_Hard>A hard posting. More happens, the state expects better and the funds are thinner.</RP_Difficulty_Hard>
+  <RP_Difficulty_Extreme>The state expects an exemplary prison and the board never leaves you alone. Funds are scarce, and one bad week brings special measures.</RP_Difficulty_Extreme>
+  <RP_State_On>on</RP_State_On>
+  <RP_State_Off>off</RP_State_Off>
+  <RP_NewPrisonSettings>Two mod settings change how you build, blueprints paid when placed ({0}), and power from the mains instead of grids ({1}).</RP_NewPrisonSettings>
+  <RP_NewPrisonSettingsButton>Open mod settings</RP_NewPrisonSettingsButton>
+
+  <!-- Bureaucracy: Start is off while nobody could work on the project -->
+  <RP_BureaucracyStalledBoth>Nobody can work on a project yet. It needs an administrator on the staff and an office desk to work at. Hire one in the Staff screen and build the desk in a staff-only office.</RP_BureaucracyStalledBoth>
+  <RP_BureaucracyStalledNoAdmin>Nobody can work on a project yet - no administrator is on the staff. Hire one in the Staff screen.</RP_BureaucracyStalledNoAdmin>
+  <RP_BureaucracyStalledNoDesk>Nobody can work on a project yet. There is no office desk. Build one in a staff-only office.</RP_BureaucracyStalledNoDesk>
+  <!-- The welcome letter: one lead, the next steps of the start that was chosen, one tail -->
+  <RP_IntroLead>You are the warden of {0}, out on the rim. The state is the penal authority of the settled worlds, and it has no prisons of its own out here, so it needs yours. Every day at {1}:00 the state's shuttle brings convicts (pirates, raiders, slavers, yayo and flake smugglers, plain thieves) and the state pays for each one (a grant on arrival, then a daily payment while they are with you).</RP_IntroLead>
+  <RP_IntroSteps_Inherited>The prison is built and running - eight cells, a canteen and kitchen, showers, a yard with a small chapel, a classroom, a workshop and a library, visitation, holding by the gate with two solitary cells, an office for your administrator, and the shuttle's landing pad outside the gate. The prison owns the land inside the yellow line on the map; more is for sale in Office, under Land. Your next steps:\n• Open Reports, Overview. It shows the grade and what needs fixing, a line at a time.\n• Open Office. Your administrator works at the desk in reception on the bureaucracy projects that unlock more of the prison (a project costs money first).\n• Open Policy to set how many inmates the shuttle brings for each security level, and add cells before it brings more than the beds hold (Architect, Prison, and Rooms to paint a wing).\n• Open Staff. Seven people are on the payroll (a janitor among them, who keeps the kitchen clean). Hire more guards as the cells fill.</RP_IntroSteps_Inherited>
+  <RP_IntroSteps_Penitentiary>The penitentiary is built and fully staffed - over forty people at their posts, about forty inmates in their wings (a few beds are free for the shuttle's first arrivals), two canteens with their kitchens, an infirmary, a chapel, a library, classrooms, a workshop, visitation, a control room, and the shuttle's landing area outside the gate. Most of the bureaucracy is done. The prison owns the land inside the yellow line on the map; more is for sale in Office, under Land. Your next steps:\n• Open Reports, Overview. It shows the grade and what needs fixing, a line at a time.\n• Open Policy to set how many inmates the shuttle brings for each security level, and watch the free beds per wing in Deployment before it brings more than they hold (Architect, Prison, and Rooms to paint a new wing).\n• Open Staff. The payroll is large, and it is most of what you spend. Guards are posted by wing; watch where the tension is and where the cover is thin.\n• Open Office. The bureaucracy projects still open, and the grants the state offers.</RP_IntroSteps_Penitentiary>
+  <RP_IntroSteps_New>You start with an empty plot, six staff and some funds. You can build only on the land inside the yellow line (more is for sale in Office, under Land). Blueprints are paid for when you place them, and the state shuttle brings the materials. The first shuttle comes at {0}:00, so build in this order (the Overview, under Reports, lists what is still missing):\n1. A shuttle pad (Architect, Prison) for the shuttle to land on.\n2. Holding - a room by the gate, painted as Holding in Rooms, where the new inmates wait.\n3. Cells - walled rooms with a bed set for prisoners and a toilet. Paint each as a wing in Rooms.\n4. The canteen with serving counters and tables, and the kitchen next to it with a stove. Paint the kitchen in Rooms and the stove cooks by itself (it gets a standing meal bill).\n5. Showers and a yard.\n6. An office with a desk and an administrator (hire one in Staff) for the bureaucracy that unlocks the rest of the prison.</RP_IntroSteps_New>
+  <RP_IntroTail>Where to look (the buttons along the bottom):\n• Rooms - paint the prison's zones (cells by wing, canteen, yard, showers, a staff room for their breaks...). A room needs the right furniture to count.\n• Deployment - wings and their free beds, every door and who may pass it, guard patrols, lockdowns.\n• Regime - each security level's daily timetable (sleep, meals, work, free time, lockup).\n• Policy - intake per level, programs, visits, searches, punishments, the kitchen menu, good behaviour remission.\n• Staff - hire and watch the people who run the place. Guards keep order; cooks, janitors, doctors and counsellors keep it running. Unhappy staff do worse work; a staff member's record can send them on a training course.\n• Logistics - food and supplies, which the state shuttle brings to the pad (or the Deliveries zone).\n• Intel - who is tense and why, gangs, informants, feuds, appeals; declare a contraband amnesty.\n• Office - grants and the bureaucracy that unlocks more of the prison.\n• Reports - the daily grade and what to fix, the chronicle of everything that happened, inmates and money (with any state loan or export contract).\n• Your warden - the one in the red uniform among the staff (select them on the map). They address the canteen, walk a wing and have a word with an inmate, and they are never sent home.\n\nThings will happen - fights, visits, inspections, strikes, stories. Decisions come as letters like this one; one left unanswered decides itself when it runs out. The alerts on the right say what needs attention now, and the first time something new happens a short note says what it is.\n\nThe state watches how the prison does. Three days in a row graded {0}, too many deaths and escapes in a week, or a state loan in default, and it steps in with special measures (always on, and how strict it is depends on the difficulty) - an overseer, a deadline, and limits on the shuttle's new inmates and on payments until the prison puts itself right. A prison graded A for days on end becomes the state's flagship instead.</RP_IntroTail>
+
+  <!-- The dead -->
+  <RP_Problem_NoPad>No shuttle pad - the shuttle sets down on open ground. Build a pad (Architect, Prison) for it to land on, by the gate.</RP_Problem_NoPad>
+  <RP_Problem_BodiesStuck>{0} dead inmate(s) or staff have lain outside the morgue for over an hour. It is full or out of reach, or the body is forbidden (vanilla forbids a body outside the home area). Paint more morgue cells in Rooms, or allow the body.</RP_Problem_BodiesStuck>
+  <RP_Problem_Bodies>{0} dead inmate(s) or staff lie where they fell and rot in front of everybody. Paint a morgue in Rooms (a staff-only room) and the guards will carry them there.</RP_Problem_Bodies>
+
+  <!-- The Intel screen: what starts each kind of entry, tooltips, the next column, reopening a letter -->
+  <RP_IntelHint_Tense>Nobody is tense enough to list (50 or more). Crowding, hunger, enemies in the cell block and abuse raise tension, and every inmate's file shows theirs.</RP_IntelHint_Tense>
+  <RP_IntelHint_Feuds>No feud. Two inmates who are enemies and keep ending up near each other start one, and it grows until a guard steps in.</RP_IntelHint_Feuds>
+  <RP_IntelHint_Debts>No debt known. Inmates run up debts at cards and on credit, and a tip, a search or a beating brings one to light.</RP_IntelHint_Debts>
+  <RP_IntelHint_Trials>No case before the courts. A killing in the prison opens one. The case is built over a day and the court sits some days later.</RP_IntelHint_Trials>
+  <RP_IntelHint_Complaints>No complaint waiting. An inmate hurt by an officer, or who says so, files one, and it reaches your desk as a letter.</RP_IntelHint_Complaints>
+  <RP_IntelHint_Suspects>Nobody is suspected. A tip, a search or a visitor's find marks an inmate here, and so do an ordered cell search and a known tunnel.</RP_IntelHint_Suspects>
+  <RP_IntelHint_Staff>No officer is under suspicion. Suspicion builds when an officer is seen near contraband or favours an inmate, and internal affairs looks into it.</RP_IntelHint_Staff>
+  <RP_IntelTip_Tense>{0} - tension {1} of 100 (50 and up is listed here). The main cause is {2}. Click to look at them.</RP_IntelTip_Tense>
+  <RP_IntelTip_Gang>The {0}, with {1} members known to you and {2} as their leader. Gang members back each other in fights, and rivals fight when they meet.</RP_IntelTip_Gang>
+  <RP_IntelTip_GangRivals>Rival gangs are both in the prison. Keep them apart (different wings and cells) or a war may start.</RP_IntelTip_GangRivals>
+  <RP_IntelTip_Feud>{0} and {1} have a feud. It grows until a guard steps in or one of them is hurt. Click to look at one of them.</RP_IntelTip_Feud>
+  <RP_IntelTip_Debt>{0} owes {1} {2} ({3}), {4}. A debt gone overdue is collected with threats and then a beating. Click to look at the debtor.</RP_IntelTip_Debt>
+  <RP_IntelTip_Trial>{0} is accused of the murder of {1}, and the court sits {2}. Until then the accused is on remand, so not released, with no sentence served and no parole hearing.</RP_IntelTip_Trial>
+  <RP_IntelTip_TrialBands>The case as it looks on what you know is {0}. Weak means the court never convicts. Leaning to an acquittal or to a conviction means the court rolls, and the odds run from nothing to certain across the two halves. Strong means it convicts. What you do not know yet, a witness who is got at or an officer who forgot, can still change it.</RP_IntelTip_TrialBands>
+  <RP_IntelTip_TrialUnknown>The prosecution is still building the case, and you will be told what it has.</RP_IntelTip_TrialUnknown>
+  <RP_IntelTip_Complaint>{0} complains of {1}, and it is {2}. Waiting means it needs your decision (the letter, reopened with the button), and what is decided is on the inmate's file.</RP_IntelTip_Complaint>
+  <RP_IntelTip_Suspect>{0} - {1}. Suspects are searched when a guard is free. Click to look at them.</RP_IntelTip_Suspect>
+  <RP_IntelTip_Informant>{0} talks to the guards. While nobody finds out, they tell you what happens in the wings. Click to look at them.</RP_IntelTip_Informant>
+  <RP_IntelTip_InformantExposed>{0} has been found out and is in danger from the others. Protective custody keeps them alive. Click to look at them.</RP_IntelTip_InformantExposed>
+  <RP_IntelTip_Staff>{0} - {1}. Internal affairs works from suspicion, and a corrupt officer is suspended and arrested. Click to look at them.</RP_IntelTip_Staff>
+  <RP_IntelTip_RingHeat>Heat {0} of {1}. At {1} or more the case is put to you as a letter (at most once in {2} days), when there is something to act on. Finds and taps raise the heat and time lowers it.</RP_IntelTip_RingHeat>
+  <RP_IntelRingHeatOf>heat {0}/{1}</RP_IntelRingHeatOf>
+  <RP_IntelTrialLine2>{0} for the murder of {1}</RP_IntelTrialLine2>
+  <RP_IntelComplaintLine2>{0} against {1}</RP_IntelComplaintLine2>
+  <RP_IntelNextCourt>court {0}</RP_IntelNextCourt>
+  <RP_IntelNextAnswer>answer in {0} h</RP_IntelNextAnswer>
+  <RP_IntelNextReport>report in {0} h</RP_IntelNextReport>
+  <RP_IntelReopen>Letter</RP_IntelReopen>
+  <RP_IntelReopenTip>Reopens the letter, which is still waiting for your answer (it decides itself when it runs out).</RP_IntelReopenTip>
+  <RP_IntelReopenRingTip>Reopens the letter that put this ring's case to you, which is still waiting for your answer (it decides itself when it runs out).</RP_IntelReopenRingTip>
+  <RP_IntelReopenHeldTip>The letter is held back. Today's decisions are used up, and it reaches your desk at midnight.</RP_IntelReopenHeldTip>
+  <RP_IntelReopenGoneTip>There is no letter waiting for an answer.</RP_IntelReopenGoneTip>
+  <RP_TrialBand_LeanAcquit>uncertain, leaning to an acquittal</RP_TrialBand_LeanAcquit>
+  <RP_TrialBand_LeanConvict>uncertain, leaning to a conviction</RP_TrialBand_LeanConvict>
+
+  <!-- The inmate list: a want column and a filter for the goals that are slipping -->
+  <RP_Col_Want>Want</RP_Col_Want>
+  <RP_InmatesFilter_Slipping>slipping</RP_InmatesFilter_Slipping>
+  <RP_InmatesFilterTip_Slipping>Only inmates whose goal you know of and that is slipping (a missed deadline or a setback is near), the ones worth a word before they lose heart.</RP_InmatesFilterTip_Slipping>
+  <RP_Week_Wants>Goals nearest their deadline - {0}.</RP_Week_Wants>
+  <RP_Week_WantItem>{0} - {1}, {2}, {3} days left</RP_Week_WantItem>
+
+  <!-- The trial's pace: the evening before, and the day it sits -->
+  <RP_TrialTomorrow>The court sits tomorrow on the murder of {1}, with {0} in the dock, from {2}:00.</RP_TrialTomorrow>
+  <RP_TrialSitsLabel>Court sits: {0}</RP_TrialSitsLabel>
+  <RP_TrialSitsText>{0} has been taken to court for the murder of {1}. The verdict comes this afternoon. As far as you know, those who will speak are {2}.</RP_TrialSitsText>
+  <RP_TrialSitsNobody>nobody the prosecution has named to you</RP_TrialSitsNobody>
+
+  <!-- One letter for the case: the witnesses and the informant are choices in it -->
+  <RP_TrialCase_Both>Move the witnesses to protective custody and ask the informant to testify</RP_TrialCase_Both>
+  <RP_TrialCase_Protect>Move the witnesses to protective custody</RP_TrialCase_Protect>
+  <RP_TrialCase_Ask>Ask the informant to testify (they are exposed)</RP_TrialCase_Ask>
+  <RP_TrialCase_Neither>Leave things as they are</RP_TrialCase_Neither>
+
+  <!-- A cargo run says it once -->
+  <RP_ShuttleCargoLanded>A cargo shuttle has landed on the pad with supplies.</RP_ShuttleCargoLanded>
+  <RP_ShuttleCargoLandedNoPad>A cargo shuttle has set down on open ground with supplies. Build a shuttle pad for it.</RP_ShuttleCargoLandedNoPad>
+
+  <!-- A decision letter held back for the next day (the day's budget of decisions) -->
+  <RP_IntelNextTomorrow>letter tomorrow</RP_IntelNextTomorrow>
+</LanguageData>

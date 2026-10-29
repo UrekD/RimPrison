@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The warden on the floor (gap analysis 4, section 1.5). Nothing here names a gang, a goal or a snitch the warden has not learned: a word offers only what the warden knows. -->
+
+  <!-- The post -->
+  <RP_StaffWarden>The warden on the floor - never let go, sent home or retrained</RP_StaffWarden>
+  <RP_WardenCannotFire>{0} is the warden. They stay.</RP_WardenCannotFire>
+  <RP_TrainingWarden>The warden does not go on courses.</RP_TrainingWarden>
+  <RP_Chr_WardenRetired>{0} came back to a post that {1} holds, and was let go.</RP_Chr_WardenRetired>
+  <RP_InquiryProtected>{0} cannot be suspended.</RP_InquiryProtected>
+  <RP_Chr_WardenAppointed>{0} was named the prison's warden on the floor.</RP_Chr_WardenAppointed>
+  <RP_WardenNamedLabel>A warden for the floor</RP_WardenNamedLabel>
+  <RP_WardenNamedText>The state has named {0} to walk the floor as the prison's warden. They are among the staff. They can address the canteen, walk a wing and have a word with an inmate, and they are never sent home. They are also the one a riot would like to get its hands on.</RP_WardenNamedText>
+
+  <RP_StaffStatus_Resting>resting</RP_StaffStatus_Resting>
+
+  <!-- Why not -->
+  <RP_WardenWhy_Away>The warden is not on the floor.</RP_WardenWhy_Away>
+  <RP_WardenWhy_Held>The warden is being held.</RP_WardenWhy_Held>
+  <RP_WardenWhy_Down>The warden is hurt or not themselves.</RP_WardenWhy_Down>
+  <RP_WardenWhy_Busy>The warden is busy with something else.</RP_WardenWhy_Busy>
+  <RP_WardenWhy_Cooldown>Ready again in {0} h.</RP_WardenWhy_Cooldown>
+  <RP_WardenWhy_NoCanteen>There is no canteen to speak in.</RP_WardenWhy_NoCanteen>
+  <RP_WardenWhy_NoWing>There is no wing to walk.</RP_WardenWhy_NoWing>
+  <RP_WardenWord_Gone>{0} did not have that word with {1}. It was not so any more.</RP_WardenWord_Gone>
+  <RP_WardenWhy_Cannot>{0} cannot do that now.</RP_WardenWhy_Cannot>
+  <RP_WardenWhy_SpokenToday>you spoke with {0} today</RP_WardenWhy_SpokenToday>
+
+  <!-- Address the canteen -->
+  <RP_WardenAddressGizmo>Address the canteen</RP_WardenAddressGizmo>
+  <RP_WardenAddressGizmoDesc>The warden goes to the canteen and speaks to everyone in it.\n\nCalm - tension down {0} for each of them, and their suppression eases by {1}.\nFirm - suppression up {2} (fewer outbursts boil over), but tension then creeps up {3} an hour for {4} hours.\n\nNobody in the canteen, nothing happens. Ready again {5} h after.</RP_WardenAddressGizmoDesc>
+  <RP_WardenAddressCalm>Calm - ease them down</RP_WardenAddressCalm>
+  <RP_WardenAddressFirm>Firm - lay down the law</RP_WardenAddressFirm>
+  <RP_WardenAddressedCalm>{0} spoke plainly to the canteen. Inmates heard: {1}, and eased.</RP_WardenAddressedCalm>
+  <RP_WardenAddressedFirm>{0} laid down the law in the canteen. Inmates heard: {1}, and they went quiet.</RP_WardenAddressedFirm>
+  <RP_WardenAddressNobody>{0} found nobody in the canteen to speak to.</RP_WardenAddressNobody>
+  <RP_Chr_WardenAddressCalm>{0} spoke calmly to the canteen (inmates heard: {1}).</RP_Chr_WardenAddressCalm>
+  <RP_Chr_WardenAddressFirm>{0} laid down the law in the canteen (inmates heard: {1}).</RP_Chr_WardenAddressFirm>
+  <RP_Cause_WardenFirm>sore from the warden's word</RP_Cause_WardenFirm>
+
+  <!-- Walk the wing -->
+  <RP_WardenWalkGizmo>Walk the wing</RP_WardenWalkGizmo>
+  <RP_WardenWalkGizmoDesc>The warden walks a wing, stopping along it. Inmates in earshot who are calm trust the warden a little more; those who are wound up resent being watched. A snitch who is near may pass on something in person, and anyone with a complaint that has not reached the desk yet says it to the warden's face.\n\nReady again {0} h after.</RP_WardenWalkGizmoDesc>
+  <RP_WardenWalked>{0} walked the {1}. Inmates met: {2}, warmer: {3}, resentful: {4}.</RP_WardenWalked>
+  <RP_Chr_WardenWalked>{0} walked the {1} (inmates met: {2}).</RP_Chr_WardenWalked>
+
+  <!-- A word with an inmate -->
+  <RP_WardenWordGizmo>A word with an inmate</RP_WardenWordGizmo>
+  <RP_WardenWordGizmoDesc>Pick an inmate. The warden goes to them and talks, about their goal if the warden knows of one, about informing, about where they stand before a hearing, or just a few words. One word with each inmate a day. Ready again {0} h after.</RP_WardenWordGizmoDesc>
+  <RP_WardenWord_Chat>A few words</RP_WardenWord_Chat>
+  <RP_WardenWord_ChatDesc>Trust, and a little calm.</RP_WardenWord_ChatDesc>
+  <RP_WardenWord_Goal>Back their goal to {0}</RP_WardenWord_Goal>
+  <RP_WardenWord_GoalDesc>Three more days to make it (a slipping goal is lifted); a call home counts for a family goal; a grudge may be talked down (it may not take - they resent being told how to feel).</RP_WardenWord_GoalDesc>
+  <RP_WardenWord_Informant>Sound them out as an informant ({0} a day)</RP_WardenWord_Informant>
+  <RP_WardenWord_InformantDesc>They may agree, more likely if they are afraid, broke and wound up, or trust the warden. Asking and being refused costs trust.</RP_WardenWord_InformantDesc>
+  <RP_WardenWord_Hearing>Tell them where they stand before the hearing</RP_WardenWord_Hearing>
+  <RP_WardenWord_HearingDesc>They calm down and go in prepared. The board's odds are a little better for a few days.</RP_WardenWord_HearingDesc>
+  <RP_WardenWord_ChatTold>{0} had a few words with the warden.</RP_WardenWord_ChatTold>
+  <RP_WardenWord_HearingTold>{0} was told how the hearing stands, with the board's odds at {1}, and what is in the way, {2}.</RP_WardenWord_HearingTold>
+  <RP_WardenWord_InformantYes>{0} will keep the warden informed, for {1} a day.</RP_WardenWord_InformantYes>
+  <RP_WardenWord_InformantNo>{0} would not be drawn, and thinks the less of the warden for asking.</RP_WardenWord_InformantNo>
+  <RP_Want_Need_Nothing>nothing much</RP_Want_Need_Nothing>
+  <RP_Want_Backed>The warden backed {0}'s goal to {1} - three more days to make it.</RP_Want_Backed>
+  <RP_Want_Backed_Family>The warden let {0} make the call home. It counts toward their goal to {1}.</RP_Want_Backed_Family>
+  <RP_Want_Backed_Score>The warden talked {0} out of their goal to {1}.</RP_Want_Backed_Score>
+  <RP_Want_Backed_Score_Failed>{0} would not be talked out of their goal to {1}, and thinks the less of the warden for trying.</RP_Want_Backed_Score_Failed>
+  <RP_Want_Reason_Talked>the warden talked them out of it</RP_Want_Reason_Talked>
+  <RP_Chr_WardenBacked>{0} backed {1}'s goal to {2}.</RP_Chr_WardenBacked>
+
+  <!-- The risk -->
+  <RP_Chr_WardenStruck>{1} struck {0}, the warden.</RP_Chr_WardenStruck>
+  <RP_WardenStruckLabel>{0} was struck</RP_WardenStruckLabel>
+  <RP_WardenStruckText>{1} laid hands on {0}, the warden, on the floor. The guards will deal with it; the wing knows.</RP_WardenStruckText>
+  <RP_WardenDiedLabel>{0}, the warden, is dead</RP_WardenDiedLabel>
+  <RP_WardenDiedText>{0}, the warden on the floor, died. {1}\n\nThe post is empty. The state will name another within {2} days.</RP_WardenDiedText>
+  <RP_HostageWardenLabel>Hostage crisis - the warden, {0}, is held</RP_HostageWardenLabel>
+  <RP_HostageWardenNote>It is the warden they have. {0} was the one they wanted. The stand-off is shorter, they will not talk for less, and if this goes wrong the prison's name will not recover soon.</RP_HostageWardenNote>
+
+  <!-- Statistics -->
+  <RP_Stat_wardenAddresses>Canteen addresses</RP_Stat_wardenAddresses>
+  <RP_Stat_wardenWalks>Wings walked by the warden</RP_Stat_wardenWalks>
+  <RP_Stat_wardenWords>Words with inmates</RP_Stat_wardenWords>
+  <RP_Stat_wardenStruck>Times the warden was struck</RP_Stat_wardenStruck>
+</LanguageData>

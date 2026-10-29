@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="BaseMeleeWeapon_Sharp">
+    <defName>RP_Shiv</defName>
+    <label>shiv</label>
+    <description>A sharpened scrap of metal with a taped handle. Contraband.</description>
+    <graphicData>
+      <texPath>Things/Item/RP_Shiv</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <recipeMaker IsNull="True" />
+    <costList><Steel>2</Steel></costList>
+    <statBases>
+      <MarketValue>5</MarketValue>
+      <Mass>0.2</Mass>
+    </statBases>
+    <equippedAngleOffset>-65</equippedAngleOffset>
+    <tools>
+      <li>
+        <label>point</label>
+        <capacities><li>Stab</li></capacities>
+        <power>11</power>
+        <cooldownTime>1.6</cooldownTime>
+      </li>
+    </tools>
+    <modExtensions>
+      <li Class="RimPrison.ContrabandExtension">
+        <kind>Weapon</kind>
+        <metal>true</metal>
+        <smuggleWeight>1</smuggleWeight>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RP_Cellphone</defName>
+    <label>cellphone</label>
+    <description>A smuggled phone. Inmates use them to organise escapes, deals and riots. Contraband.</description>
+    <graphicData>
+      <texPath>Things/Item/RP_Cellphone</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <tradeability>None</tradeability>
+    <preventSpawningInResourcePod>true</preventSpawningInResourcePod>
+    <stackLimit>5</stackLimit>
+    <statBases>
+      <MarketValue>40</MarketValue>
+      <Mass>0.2</Mass>
+    </statBases>
+    <thingCategories><li>Items</li></thingCategories>
+    <modExtensions>
+      <li Class="RimPrison.ContrabandExtension">
+        <kind>Phone</kind>
+        <metal>true</metal>
+        <smuggleWeight>0.7</smuggleWeight>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RP_Tools</defName>
+    <label>stolen tools</label>
+    <description>A screwdriver, a sharpened spoon, a bit of wire. In the wrong hands: a key, a weapon, a tunnel. Contraband.</description>
+    <graphicData>
+      <texPath>Things/Item/RP_Tools</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <tradeability>None</tradeability>
+    <preventSpawningInResourcePod>true</preventSpawningInResourcePod>
+    <stackLimit>5</stackLimit>
+    <statBases>
+      <MarketValue>8</MarketValue>
+      <Mass>0.3</Mass>
+    </statBases>
+    <thingCategories><li>Items</li></thingCategories>
+    <modExtensions>
+      <li Class="RimPrison.ContrabandExtension">
+        <kind>Tool</kind>
+        <metal>true</metal>
+        <smuggleWeight>0.6</smuggleWeight>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- Made inside: kitchen fruit, mashed in a cell stash, is hooch two days on (Contraband/Brewing.cs). Neither is ever smuggled in (smuggleWeight 0). -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RP_HoochMash</defName>
+    <label>fruit mash</label>
+    <description>Stolen kitchen fruit, mashed in a tin under a cloth and left to work. Two days in a cell stash and it is hooch. Contraband.</description>
+    <graphicData>
+      <texPath>Things/Item/RP_HoochMash</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <tradeability>None</tradeability>
+    <preventSpawningInResourcePod>true</preventSpawningInResourcePod>
+    <stackLimit>5</stackLimit>
+    <statBases>
+      <MarketValue>2</MarketValue>
+      <Mass>0.5</Mass>
+    </statBases>
+    <thingCategories><li>Items</li></thingCategories>
+    <comps>
+      <li Class="RimPrison.CompProperties_HoochMash" />
+    </comps>
+    <modExtensions>
+      <li Class="RimPrison.ContrabandExtension">
+        <kind>Brew</kind>
+        <smuggleWeight>0</smuggleWeight>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="DrugBase">
+    <defName>RP_Hooch</defName>
+    <label>hooch</label>
+    <description>Rough liquor brewed from fruit stolen from the kitchen, in a jug that was never meant for it. It does what beer does, and worse. Contraband.</description>
+    <descriptionHyperlinks>
+      <HediffDef>AlcoholHigh</HediffDef>
+      <HediffDef>AlcoholTolerance</HediffDef>
+      <HediffDef>Hangover</HediffDef>
+      <HediffDef>AlcoholAddiction</HediffDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Item/RP_Hooch</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <rotatable>false</rotatable>
+    <stackLimit>25</stackLimit>
+    <tradeability>None</tradeability>
+    <statBases>
+      <DeteriorationRate>0.5</DeteriorationRate>
+      <MarketValue>4</MarketValue>
+      <Mass>0.3</Mass>
+      <Flammability>0.5</Flammability>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Fluid, Processed, Liquor</foodType>
+      <joyKind>Chemical</joyKind>
+      <joy>0.2</joy>
+      <nurseable>true</nurseable>
+      <drugCategory>Social</drugCategory>
+      <ingestSound>Ingest_Beer</ingestSound>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <canAutoSelectAsFoodForCaravan>false</canAutoSelectAsFoodForCaravan>
+      <tableDesired>false</tableDesired>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>AlcoholHigh</hediffDef>
+          <severity>0.2</severity>
+          <toleranceChemical>Alcohol</toleranceChemical>
+        </li>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>AlcoholTolerance</hediffDef>
+          <toleranceChemical>Alcohol</toleranceChemical>
+          <severity>0.02</severity>
+          <divideByBodySize>true</divideByBodySize>
+          <multiplyByGeneToleranceFactors>true</multiplyByGeneToleranceFactors>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Drug">
+        <chemical>Alcohol</chemical>
+        <addictiveness>0.015</addictiveness>
+        <minToleranceToAddict>0.25</minToleranceToAddict>
+        <existingAddictionSeverityOffset>0.20</existingAddictionSeverityOffset>
+        <needLevelOffset>0.9</needLevelOffset>
+        <listOrder>11</listOrder>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimPrison.ContrabandExtension">
+        <kind>Drug</kind>
+        <smuggleWeight>0</smuggleWeight>
+        <stackCount>2</stackCount>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <RimPrison.MisconductDef>
+    <defName>RP_ContrabandPossession</defName>
+    <label>possession of contraband</label>
+    <baseWeight>0</baseWeight>
+    <minTension>999</minTension>
+    <severity>2</severity>
+    <punishmentHours>12</punishmentHours>
+    <tensionRelief>0</tensionRelief>
+    <workerClass>RimPrison.MisconductWorker_Never</workerClass>
+  </RimPrison.MisconductDef>
+
+  <JobDef>
+    <defName>RP_Frisk</defName>
+    <driverClass>RimPrison.JobDriver_Frisk</driverClass>
+    <reportString>searching TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RP_Frisk_WorkGiver</defName>
+    <label>search inmates</label>
+    <giverClass>RimPrison.WorkGiver_Frisk</giverClass>
+    <workType>Warden</workType>
+    <verb>search</verb>
+    <gerund>searching</gerund>
+    <priorityInType>60</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RP_MetalDetector</defName>
+    <label>metal detector</label>
+    <description>A walk-through metal detector. Inmates carrying shivs, phones or tools set it off and are searched by guards. Place it in doorways inmates use: after the workshop, the visitation room, the yard gate.</description>
+    <thingClass>Building</thingClass>
+    <designationCategory>RP_Prison</designationCategory>
+    <graphicData>
+      <texPath>Things/Building/RP_MetalDetector</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0.1</fillPercent>
+    <pathCost>10</pathCost>
+    <tickerType>Normal</tickerType>
+    <rotatable>true</rotatable>
+    <costList><Steel>50</Steel><ComponentIndustrial>3</ComponentIndustrial></costList>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <WorkToBuild>1500</WorkToBuild>
+      <Mass>40</Mass>
+    </statBases>
+    <comps>
+      <li><compClass>RimPrison.CompMetalDetector</compClass></li>
+    </comps>
+  </ThingDef>
+</Defs>

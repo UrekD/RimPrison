@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Suppression made legible: the file's date, the policy tooltip, the Programs blocker, the weekly report and the lid that comes off. -->
+  <RP_Supp_ClearDay>clear in {0} day</RP_Supp_ClearDay>
+  <RP_Supp_ClearDays>clear in {0} days</RP_Supp_ClearDays>
+  <RP_FileSuppressedBarDated>suppressed {0} - {1}</RP_FileSuppressedBarDated>
+  <RP_FileSuppressedTip>How beaten down they are. Above {0} they cannot take a program or join a riot and calm at half speed (fewer incidents is what it buys). It wears off by about {1} a day, so the date is when it is back under {0} if nothing adds to it.</RP_FileSuppressedTip>
+
+  <RP_Supp_TipRate>Each hour served adds {0} suppression.</RP_Supp_TipRate>
+  <RP_Supp_TipRateSolitary>Each hour served in the hole adds {0} suppression ({1} if it is served in a cell for want of a solitary bed).</RP_Supp_TipRateSolitary>
+  <RP_Supp_TipOver>These {0} hours put {1} on a clean file, over the {2} line, and the file is {3} once the sentence is served.</RP_Supp_TipOver>
+  <RP_Supp_TipUnder>These {0} hours put {1} on a clean file, under the {2} line, so it costs no programs by itself (a second sentence on top of it can).</RP_Supp_TipUnder>
+  <RP_Supp_TipEffects>Above {0} an inmate is shut out of programs, cannot join a riot and calms at half speed. It wears off by about {1} a day.</RP_Supp_TipEffects>
+
+  <RP_Supp_WingCount>{0} {1}</RP_Supp_WingCount>
+  <RP_Week_ThumbOne>Under the thumb - 1 inmate held down (suppression over {2}), shut out of programs and slow to calm ({1}).</RP_Week_ThumbOne>
+  <RP_Week_Thumb>Under the thumb - {0} inmates held down (suppression over {2}), shut out of programs and slow to calm ({1}).</RP_Week_Thumb>
+  <RP_ProgramStatusSuppressed>Nobody can attend - {0} who would attend are held down (suppression over {1}), see their files for the day it clears.</RP_ProgramStatusSuppressed>
+
+  <RP_LidLabel>The lid on {0}</RP_LidLabel>
+  <RP_LidText>{0} is being held down, and the lid is about to come off: {1} of its {2} inmates fall back under {4} suppression within the day, and the wing is tense (mean tension {3}). On {6} the lid is off, and for that whole day riots in {0} are about {5} times as likely. Ease the tension, put guards on the wing or hold back what adds to the load before then. This is the one warning for the wing, and it is not repeated for five days.</RP_LidText>
+  <RP_ProgramStatusSuppressedOne>Waiting - one student, and {0} more who would attend are held down (suppression over {1}); a class needs two or a referral.</RP_ProgramStatusSuppressedOne>
+  <RP_LidNoted>Noted</RP_LidNoted>
+  <RP_Chr_LidComing>The lid is about to come off {0} - {1} of {2} inmates falling back under the line within the day, tension {3}.</RP_Chr_LidComing>
+</LanguageData>

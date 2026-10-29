@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The adjudication sheet (Security/Adjudication.cs): one letter a day for yesterday's serious cases. Not urgent: the day's budget of decisions holds it like any other. -->
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Adjudication</defName><label>the adjudication sheet</label><workerClass>RimPrison.PrisonDecisionWorker_Adjudication</workerClass><standingOrderAllowed>true</standingOrderAllowed><standingOrderOptions><li>RP_Adjudication_Policy</li></standingOrderOptions></RimPrison.PrisonDecisionDef>
+</Defs>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Kin across the wall (Story/Kin.cs): the officer's request, asked once of a guard with kin inside. -->
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Kin</defName><label>officer with kin inside</label><workerClass>RimPrison.KinDecision</workerClass></RimPrison.PrisonDecisionDef>
+</Defs>

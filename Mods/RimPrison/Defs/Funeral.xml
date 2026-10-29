@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The funeral (gap analysis 6, item 8; see Story/Funerals.cs): a letter when a body is laid in the morgue - a quiet burial (what an unanswered letter is) or a funeral. A budgeted letter, never urgent. -->
+  <RimPrison.PrisonDecisionDef>
+    <defName>RP_Decision_Funeral</defName>
+    <label>funeral or quiet burial</label>
+    <workerClass>RimPrison.FuneralDecision</workerClass>
+    <standingOrderAllowed>true</standingOrderAllowed>
+  </RimPrison.PrisonDecisionDef>
+
+  <!-- Stand at the funeral (an inmate sent by the regime, a guard who escorts, a colleague). Not casual: nothing but a lockdown or the end of the service takes them away. -->
+  <JobDef>
+    <defName>RP_AttendFuneral</defName>
+    <driverClass>RimPrison.JobDriver_AttendFuneral</driverClass>
+    <reportString>at a funeral.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <!-- The chaplain's service at a funeral: the lead-a-service driver in its funeral mode. -->
+  <JobDef>
+    <defName>RP_LeadFuneral</defName>
+    <driverClass>RimPrison.JobDriver_LeadService</driverClass>
+    <reportString>leading a funeral.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <ThoughtDef>
+    <defName>RP_SaidGoodbye</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>said goodbye</label><description>We stood there for them. It mattered that somebody did.</description><baseMoodEffect>4</baseMoodEffect></li>
+      <li><label>said goodbye, the chaplain spoke</label><description>The chaplain said it properly, and for an hour nobody here was just a number.</description><baseMoodEffect>7</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_StaffFarewell</defName>
+    <durationDays>5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>a colleague was seen off</label><description>They held a funeral for one of ours. I was on the floor, but it was done right.</description><baseMoodEffect>2</baseMoodEffect></li>
+      <li><label>saw a colleague off</label><description>We stood at the grave together, one of us fewer.</description><baseMoodEffect>5</baseMoodEffect></li>
+      <li><label>saw a colleague off, the warden spoke</label><description>The warden stood up and spoke for them in front of us all. It is a job, but not only a job.</description><baseMoodEffect>8</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+</Defs>

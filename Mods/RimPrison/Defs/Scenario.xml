@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ScenPartDef>
+    <defName>RP_PrisonStart</defName>
+    <label>prison facility</label>
+    <category>Fixed</category>
+    <scenPartClass>RimPrison.ScenPart_PrisonStart</scenPartClass>
+    <summaryPriority>900</summaryPriority>
+    <canBeRandomlyAdded>false</canBeRandomlyAdded>
+  </ScenPartDef>
+
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>RP_NewPrison</defName>
+    <label>Rim Prison: new facility</label>
+    <description>You have been contracted to build and run a private prison on an empty plot. The government pays for every inmate you take in. Hire staff, build cells, set the regime, and keep the lid on.</description>
+    <scenario>
+      <!-- Not in vanilla's New colony list (any storyteller could be picked there, and the colony pages do not make a prison): the New prison dialog loads them by defName. -->
+      <showInUI>false</showInUI>
+      <summary>Build and run a prison. Six staff and your warden on the floor, starting funds, an empty plot. Materials are bought as you place blueprints.</summary>
+      <parts>
+        <!-- Anomaly: no void monolith next to a prison. -->
+        <li Class="ScenPart_MonolithGeneration" MayRequire="Ludeon.RimWorld.Anomaly">
+          <def>ScenPart_MonolithGeneration</def>
+          <method>Disabled</method>
+        </li>
+        <li Class="ScenPart_ConfigPage_ConfigureStartingPawns">
+          <def>ConfigPage_ConfigureStartingPawns</def>
+          <pawnCount>6</pawnCount>
+          <pawnChoiceCount>10</pawnChoiceCount>
+        </li>
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+          <visible>false</visible>
+        </li>
+        <li Class="RimPrison.ScenPart_PrisonStart">
+          <def>RP_PrisonStart</def>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealSimple</thingDef>
+          <count>40</count>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineIndustrial</thingDef>
+          <count>20</count>
+        </li>
+      </parts>
+    </scenario>
+  </ScenarioDef>
+
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>RP_InheritedPrison</defName>
+    <label>Rim Prison: inherited facility</label>
+    <description>The state has handed you a small, working prison, walled round with a gate: a cell block of eight cells along a corridor with its guard station, a walled yard with a small chapel, the canteen with its kitchen, showers, a common room and a library, visitation, a classroom and a workshop, reception with an administrator's office, and holding by the gate with two solitary cells. Make it pay, then make it bigger: there is room all round it.</description>
+    <scenario>
+      <!-- Not in vanilla's New colony list (any storyteller could be picked there, and the colony pages do not make a prison): the New prison dialog loads them by defName. -->
+      <showInUI>false</showInUI>
+      <summary>Start with a small working prison (about eight cells, a chapel, two solitary cells), seven staff, an administrator among them, and your warden on the floor.</summary>
+      <parts>
+        <!-- Anomaly: no void monolith next to a prison. -->
+        <li Class="ScenPart_MonolithGeneration" MayRequire="Ludeon.RimWorld.Anomaly">
+          <def>ScenPart_MonolithGeneration</def>
+          <method>Disabled</method>
+        </li>
+        <li Class="ScenPart_ConfigPage_ConfigureStartingPawns">
+          <def>ConfigPage_ConfigureStartingPawns</def>
+          <pawnCount>7</pawnCount>
+          <pawnChoiceCount>10</pawnChoiceCount>
+        </li>
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+          <visible>false</visible>
+        </li>
+        <li Class="RimPrison.ScenPart_PrisonStart">
+          <def>RP_PrisonStart</def>
+          <starterFacility>true</starterFacility>
+          <!-- A seventh on top of the six (the janitor stays, nobody else cleans): an administrator, the facility has an office with a desk. -->
+          <seventhRole>RP_Administrator</seventhRole>
+          <unlocked>
+            <li>RP_Bur_Foreman</li>
+            <li>RP_Bur_Commissary</li>
+            <li>RP_Bur_Visitation</li>
+            <li>RP_Bur_Reform</li>
+            <!-- The library and the chapel are built and painted: they must not read as rooms that need a project. -->
+            <li>RP_Bur_Library</li>
+            <li>RP_Bur_Chaplaincy</li>
+          </unlocked>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MealSimple</thingDef>
+          <count>40</count>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineIndustrial</thingDef>
+          <count>20</count>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>RawPotatoes</thingDef>
+          <count>150</count>
+        </li>
+      </parts>
+    </scenario>
+  </ScenarioDef>
+
+  <ScenarioDef ParentName="ScenarioBase">
+    <defName>RP_StatePenitentiary</defName>
+    <label>Rim Prison: state penitentiary</label>
+    <description>A large, fully fitted state penitentiary: a perimeter wall with a tower in every corner, a gatehouse, reception and intake, a staff wing, housing wings by security level (dormitory, medium, maximum, protective custody, segregation with a small supermax unit, death row), two canteens, a walled yard, an infirmary, a chapel, a library, classrooms, a workshop and visitation. Over forty staff are at their posts and about forty inmates are in their wings. A landing area outside the gate waits for the shuttle.</description>
+    <scenario>
+      <!-- Not in vanilla's New colony list (any storyteller could be picked there, and the colony pages do not make a prison): the New prison dialog loads them by defName. -->
+      <showInUI>false</showInUI>
+      <summary>Start with a large, fully working penitentiary: staff at their posts and your warden on the floor, inmates in every wing, the bureaucracy done. Needs a plot of 200 or more.</summary>
+      <parts>
+        <!-- Anomaly: no void monolith next to a prison. -->
+        <li Class="ScenPart_MonolithGeneration" MayRequire="Ludeon.RimWorld.Anomaly">
+          <def>ScenPart_MonolithGeneration</def>
+          <method>Disabled</method>
+        </li>
+        <li Class="ScenPart_ConfigPage_ConfigureStartingPawns">
+          <def>ConfigPage_ConfigureStartingPawns</def>
+          <pawnCount>6</pawnCount>
+          <pawnChoiceCount>10</pawnChoiceCount>
+        </li>
+        <li Class="ScenPart_PlayerPawnsArriveMethod">
+          <def>PlayerPawnsArriveMethod</def>
+          <method>Standing</method>
+          <visible>false</visible>
+        </li>
+        <li Class="RimPrison.ScenPart_PrisonStart">
+          <def>RP_PrisonStart</def>
+          <starterFacility>true</starterFacility>
+          <facility>Penitentiary</facility>
+          <unlocked>
+            <li>RP_Bur_Foreman</li>
+            <li>RP_Bur_Commissary</li>
+            <li>RP_Bur_Visitation</li>
+            <li>RP_Bur_Reform</li>
+            <li>RP_Bur_Library</li>
+            <li>RP_Bur_Security</li>
+            <li>RP_Bur_Tasers</li>
+            <li>RP_Bur_RiotGear</li>
+            <li>RP_Bur_K9</li>
+            <li>RP_Bur_PhoneTaps</li>
+            <li>RP_Bur_MaxSecurity</li>
+            <li>RP_Bur_Supermax</li>
+            <li>RP_Bur_Armed</li>
+            <li>RP_Bur_DeathRow</li>
+            <li>RP_Bur_Chaplaincy</li>
+            <li>RP_Bur_Psychology</li>
+            <li>RP_Bur_PsychWing</li>
+          </unlocked>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>MedicineIndustrial</thingDef>
+          <count>60</count>
+        </li>
+        <li Class="ScenPart_StartingThing_Defined">
+          <def>StartingThing_Defined</def>
+          <thingDef>RP_Antipsychotic</thingDef>
+          <count>12</count>
+        </li>
+      </parts>
+    </scenario>
+  </ScenarioDef>
+
+  <StorytellerDef ParentName="BaseStoryteller">
+    <defName>RP_TheBoard</defName>
+    <label>The Board</label>
+    <description>The prison board. No raiders, no traders, no wandering monsters: only what happens inside the walls.</description>
+    <portraitLarge>UI/HeroArt/Storytellers/PhoebeFriendly</portraitLarge>
+    <portraitTiny>UI/HeroArt/Storytellers/PhoebeFriendlyTiny</portraitTiny>
+    <listOrder>1</listOrder>
+    <!-- Listed (the in-game storyteller page draws its difficulty buttons only for a listed storyteller); a new colony's list hides it (StorytellerList.cs), the New prison dialog picks it by defName. -->
+    <comps Inherit="False">
+      <li Class="StorytellerCompProperties_CategoryMTB">
+        <compClass>RimPrison.StorytellerComp_PrisonEvents</compClass>
+        <category>RP_PrisonEvent</category>
+        <allowedTargetTags><li>Map_PlayerHome</li></allowedTargetTags>
+        <minDaysPassed>1</minDaysPassed>
+        <mtbDays>1.5</mtbDays>
+      </li>
+      <li Class="RimPrison.StorytellerCompProperties_PrisonLife">
+        <category>RP_StoryBeat</category>
+        <allowedTargetTags><li>Map_PlayerHome</li></allowedTargetTags>
+        <minDaysPassed>0.5</minDaysPassed>
+        <mtbDaysAt20Inmates>0.6</mtbDaysAt20Inmates>
+      </li>
+      <li Class="StorytellerCompProperties_Disease">
+        <category>DiseaseHuman</category>
+        <minDaysPassed>12</minDaysPassed>
+      </li>
+    </comps>
+  </StorytellerDef>
+</Defs>

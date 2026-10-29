@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Smuggling rings: one per active dealer, a background story arc (it keeps nobody out of other stories). Its links are hidden from the warden until found or told (see Security/SmugglingRing.cs). -->
+  <RimPrison.StoryArcDef>
+    <defName>RP_Arc_SmugglingRing</defName>
+    <label>smuggling ring</label>
+    <workerClass>RimPrison.SmugglingRingArc</workerClass>
+    <maxConcurrent>6</maxConcurrent>
+    <minRefireDays>0</minRefireDays>
+    <decisionHours>24</decisionHours>
+    <occupiesCast>false</occupiesCast>
+  </RimPrison.StoryArcDef>
+</Defs>

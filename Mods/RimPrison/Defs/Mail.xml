@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_Mailroom</defName>
+    <label>mailroom</label>
+    <description>Where the post is sorted. Put a table here. A guard (or a trusted minimum security inmate on mailroom duty, through an Auto door into the room) sorts the day's letters at it and searches them as the mail policy says. Without a mailroom and someone to sort, letters pile up, nothing is delivered and the family need falls. Inmates cannot enter.</description>
+    <color>(0.65, 0.6, 0.85)</color>
+    <inmateAccess>false</inmateAccess>
+    <staffOnly>true</staffOnly>
+    <uiOrder>56</uiOrder>
+  </RimPrison.PrisonZoneDef>
+
+  <JobDef>
+    <defName>RP_SortMail</defName>
+    <driverClass>RimPrison.JobDriver_SortMail</driverClass>
+    <reportString>sorting the post.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RP_SortMail_WorkGiver</defName>
+    <label>sort mail</label>
+    <giverClass>RimPrison.WorkGiver_SortMail</giverClass>
+    <workType>Warden</workType>
+    <verb>sort</verb>
+    <gerund>sorting</gerund>
+    <priorityInType>58</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+
+  <RimPrison.InmateJobDef>
+    <defName>RP_JobMailroom</defName>
+    <label>mailroom</label>
+    <description>Sorts the post in the mailroom, a little less sharp-eyed than an officer. Needs a mailroom with a table behind an Auto door. Minimum security only.</description>
+    <workerClass>RimPrison.InmateJobWorker_Mailroom</workerClass>
+    <zone>RP_Mailroom</zone>
+    <allowedSecurity><li>RP_Minimum</li></allowedSecurity>
+    <maxTension>35</maxTension>
+    <tensionPerHour>-2</tensionPerHour>
+    <wagePerHour>2</wagePerHour>
+    <uiOrder>16</uiOrder>
+  </RimPrison.InmateJobDef>
+
+  <!-- ================= Letters ================= -->
+  <ThoughtDef>
+    <defName>RP_LetterOrdinary</defName>
+    <durationDays>1.5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>letter from home</label><description>A page of ordinary news. Nothing much has happened, and that is exactly what I wanted to hear.</description><baseMoodEffect>3</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_LetterGood</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>good news from home</label><description>Things are looking up out there. Somebody got a job, somebody got better.</description><baseMoodEffect>6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_LetterPhoto</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>photos of the kids</label><description>They have grown. I have put the photos where I can see them from the bunk.</description><baseMoodEffect>5</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_LetterCellmate</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>word from an old cellmate</label><description>Somebody who did their time in here is getting on with their life. It can be done.</description><baseMoodEffect>3</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_LetterLawyer</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>lawyer's letter</label><description>A letter on heavy paper. Somebody is working on my case, and even a form letter is a comfort.</description><baseMoodEffect>4</baseMoodEffect></li></stages>
+  </ThoughtDef>
+
+  <RimPrison.MailKindDef>
+    <defName>RP_Mail_Ordinary</defName>
+    <label>news from home</label>
+    <weight>10</weight>
+    <thought>RP_LetterOrdinary</thought>
+    <tension>-3</tension>
+    <familyNeed>0.1</familyNeed>
+  </RimPrison.MailKindDef>
+  <RimPrison.MailKindDef>
+    <defName>RP_Mail_Good</defName>
+    <label>good news</label>
+    <weight>3</weight>
+    <thought>RP_LetterGood</thought>
+    <tension>-6</tension>
+    <familyNeed>0.15</familyNeed>
+  </RimPrison.MailKindDef>
+  <RimPrison.MailKindDef>
+    <defName>RP_Mail_Photo</defName>
+    <label>photos of the kids</label>
+    <weight>2</weight>
+    <thought>RP_LetterPhoto</thought>
+    <tension>-6</tension>
+    <familyNeed>0.18</familyNeed>
+    <requiresKinAny><li>RP_Kin_Daughter</li><li>RP_Kin_Son</li><li>RP_Kin_Grandchild</li></requiresKinAny>
+  </RimPrison.MailKindDef>
+  <RimPrison.MailKindDef>
+    <defName>RP_Mail_Birth</defName>
+    <label>a birth in the family</label>
+    <weight>1</weight>
+    <workerClass>RimPrison.MailKindWorker_Birth</workerClass>
+    <thought>RP_NewInFamily</thought>
+    <tension>-5</tension>
+    <familyNeed>0.25</familyNeed>
+    <chronicleKey>RP_Mail_Chr_Birth</chronicleKey>
+  </RimPrison.MailKindDef>
+  <RimPrison.MailKindDef>
+    <defName>RP_Mail_Death</defName>
+    <label>a death in the family</label>
+    <weight>0.3</weight>
+    <workerClass>RimPrison.MailKindWorker_Death</workerClass>
+    <thought>RP_FamilyDied</thought>
+    <tension>30</tension>
+    <cause>RP_Cause_Grief</cause>
+    <familyNeed>-0.1</familyNeed>
+    <chronicleKey>RP_Mail_Chr_Death</chronicleKey>
+    <importance>2</importance>
+    <warden>true</warden>
+    <minFamily>2</minFamily>
+  </RimPrison.MailKindDef>
+  <RimPrison.MailKindDef>
+    <defName>RP_Mail_DearJohn</defName>
+    <label>a Dear John letter</label>
+    <weight>0.3</weight>
+    <workerClass>RimPrison.MailKindWorker_DearJohn</workerClass>
+    <thought>RP_PartnerLeft</thought>
+    <tension>25</tension>
+    <cause>RP_Cause_Heartbreak</cause>
+    <familyNeed>-0.1</familyNeed>
+    <chronicleKey>RP_Mail_Chr_DearJohn</chronicleKey>
+    <importance>2</importance>
+    <warden>true</warden>
+    <requiresKinAny><li>RP_Kin_Partner</li></requiresKinAny>
+  </RimPrison.MailKindDef>
+  <RimPrison.MailKindDef>
+    <defName>RP_Mail_Cellmate</defName>
+    <label>a letter from a former inmate</label>
+    <weight>1.5</weight>
+    <workerClass>RimPrison.MailKindWorker_Cellmate</workerClass>
+    <thought>RP_LetterCellmate</thought>
+    <tension>-3</tension>
+    <familyNeed>0.05</familyNeed>
+    <chronicleKey>RP_Mail_Chr_Cellmate</chronicleKey>
+    <requiresFormerInmate>true</requiresFormerInmate>
+    <fromFamily>false</fromFamily>
+    <minFamily>0</minFamily>
+  </RimPrison.MailKindDef>
+  <RimPrison.MailKindDef>
+    <defName>RP_Mail_Lawyer</defName>
+    <label>a lawyer's letter</label>
+    <weight>3</weight>
+    <thought>RP_LetterLawyer</thought>
+    <tension>-4</tension>
+    <requiresReputation>RP_JailhouseLawyer</requiresReputation>
+    <fromFamily>false</fromFamily>
+    <minFamily>0</minFamily>
+  </RimPrison.MailKindDef>
+
+  <!-- The family's letter to the warden about one of the dead (never post for an inmate: the worker says no to every one; see CondolenceSystem). -->
+  <RimPrison.MailKindDef>
+    <defName>RP_Mail_Condolence</defName>
+    <label>a family's condolence letter</label>
+    <weight>0</weight>
+    <workerClass>RimPrison.MailKindWorker_Condolence</workerClass>
+    <chronicleKey>RP_Mail_Chr_Condolence</chronicleKey>
+    <minFamily>0</minFamily>
+  </RimPrison.MailKindDef>
+  <RimPrison.MailKindDef>
+    <defName>RP_Mail_CondolenceBitter</defName>
+    <label>a family's bitter letter</label>
+    <weight>0</weight>
+    <workerClass>RimPrison.MailKindWorker_Condolence</workerClass>
+    <chronicleKey>RP_Mail_Chr_CondolenceBitter</chronicleKey>
+    <importance>2</importance>
+    <reputation>-1</reputation>
+    <minFamily>0</minFamily>
+  </RimPrison.MailKindDef>
+</Defs>

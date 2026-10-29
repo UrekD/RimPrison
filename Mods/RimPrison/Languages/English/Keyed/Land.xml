@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The grounds and buying land (Core/Grounds.cs, UI/LandTab.cs) -->
+  <RP_Tab_Land>Land</RP_Tab_Land>
+  <RP_Side_North>north</RP_Side_North>
+  <RP_Side_East>east</RP_Side_East>
+  <RP_Side_South>south</RP_Side_South>
+  <RP_Side_West>west</RP_Side_West>
+  <RP_OutsideGrounds>Outside the prison's grounds - buy the land first (Office, Land).</RP_OutsideGrounds>
+  <RP_Problem_OutsideGrounds>You tried to build outside the grounds. The prison owns only the land inside the yellow line - buy more on the Land tab of the Office screen.</RP_Problem_OutsideGrounds>
+  <RP_Problem_OutsideGroundsMeasures>You tried to build outside the grounds. The prison owns only the land inside the yellow line, and the state sells no land while special measures run.</RP_Problem_OutsideGroundsMeasures>
+  <RP_ToggleGrounds>Toggle the prison's grounds (the line round the land it owns)</RP_ToggleGrounds>
+
+  <RP_LandHelp>The prison owns only the land inside the yellow line on the map, so build and paint rooms there and nowhere else (staff, visitors and the shuttle's crew walk wherever they like). The state sells more as a strip {0} cells deep along one side at a time.</RP_LandHelp>
+  <RP_LandPriceNote>The price is by area and rises with the land the prison already owns. The state asks {0} of its usual price (the difficulty the game started on), and it sells nothing while special measures run.</RP_LandPriceNote>
+  <RP_LandSize>The grounds are {0} x {1} cells ({2} cells, {3} of the plot).</RP_LandSize>
+  <RP_LandWholeMapSize>The whole plot ({0} x {1} cells) is yours. This save is from before land was sold.</RP_LandWholeMapSize>
+  <RP_LandBoughtSoFar>Parcels bought so far - {0} ({1} cells).</RP_LandBoughtSoFar>
+  <RP_LandParcelSize>{0} x {1} cells ({2} in all), asking {3}</RP_LandParcelSize>
+  <RP_LandNoParcel>Nothing to buy on this side.</RP_LandNoParcel>
+  <RP_LandBuy>Buy ({0})</RP_LandBuy>
+  <RP_LandBuyTip>Buys the strip of land along the {2} side: {0} cells for {1}. It joins the grounds at once.</RP_LandBuyTip>
+  <RP_LandWholeMap>The whole map is already yours (this save is from before land was sold).</RP_LandWholeMap>
+  <RP_LandEdge>The grounds reach the edge of the land that can be built on, on this side (the last {0} cells of the map are kept clear).</RP_LandEdge>
+  <RP_LandMeasures>The state sells no land while special measures run.</RP_LandMeasures>
+  <RP_LandWages>Buying for {0} would leave less than tonight's wages ({1}).</RP_LandWages>
+  <RP_LandNote>Land, {0} side ({1} cells)</RP_LandNote>
+  <RP_Chr_LandBought>Bought a strip of land on the {0} side, {1} cells for {2}. The grounds are now {3} x {4} cells.</RP_Chr_LandBought>
+
+  <!-- Dev mode -->
+  <RP_LandDev>Dev mode - move a side by cells, for nothing. Shrinking removes nothing. What stands outside stays and works, only new building there is refused.</RP_LandDev>
+  <RP_LandWholeMapButton>Whole map</RP_LandWholeMapButton>
+  <RP_LandStartingButton>Starting grounds</RP_LandStartingButton>
+  <RP_NewPrisonDevMargins>Dev - land beyond the facility, in cells (north, east, south, west)</RP_NewPrisonDevMargins>
+
+  <!-- The statistics screen -->
+  <RP_Stat_landParcels>Parcels of land bought</RP_Stat_landParcels>
+  <RP_StatTip_landParcels>Strips of land bought from the state to widen the grounds.</RP_StatTip_landParcels>
+  <RP_Stat_landCells>Cells of land bought</RP_Stat_landCells>
+  <RP_StatTip_landCells>The area of the land bought from the state, in cells.</RP_StatTip_landCells>
+</LanguageData>

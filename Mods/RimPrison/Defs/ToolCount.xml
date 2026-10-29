@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Count the tools back in (gap analysis 6, item 4; see Labor/ToolCount.cs): the workshop's and the kitchen's tools are counted back in at the end of each work period, and a shortage is put to the warden. A budgeted letter, never urgent; unanswered it is "carry on short". -->
+  <RimPrison.PrisonDecisionDef>
+    <defName>RP_Decision_ToolCount</defName>
+    <label>tools short</label>
+    <workerClass>RimPrison.ToolCountDecision</workerClass>
+  </RimPrison.PrisonDecisionDef>
+
+  <JobDef>
+    <defName>RP_CountTools</defName>
+    <driverClass>RimPrison.JobDriver_CountTools</driverClass>
+    <reportString>counting the tools back in.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+  <!-- A guard's count (the warden's work, just under the headcount) and a workman's (the hauling, over the rest of it): one class, the work type says who. -->
+  <WorkGiverDef>
+    <defName>RP_CountTools</defName>
+    <label>count the tools back in</label>
+    <giverClass>RimPrison.WorkGiver_CountTools</giverClass>
+    <workType>Warden</workType>
+    <verb>count</verb>
+    <gerund>counting the tools</gerund>
+    <priorityInType>95</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RP_CountToolsWorkman</defName>
+    <label>count the tools back in</label>
+    <giverClass>RimPrison.WorkGiver_CountTools</giverClass>
+    <workType>Hauling</workType>
+    <verb>count</verb>
+    <gerund>counting the tools</gerund>
+    <priorityInType>100</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+</Defs>

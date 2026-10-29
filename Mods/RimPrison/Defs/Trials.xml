@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- A murder trial (Story/Trials.cs) and complaints against officers (Story/Complaints.cs). -->
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_TrialCase</defName><label>the case against a killer</label><urgent>true</urgent><workerClass>RimPrison.PrisonDecisionWorker_TrialCase</workerClass></RimPrison.PrisonDecisionDef>
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_Complaint</defName><label>complaint against an officer</label><workerClass>RimPrison.PrisonDecisionWorker_Complaint</workerClass></RimPrison.PrisonDecisionDef>
+
+  <!-- Staff after a trial for the killing of one of their own. -->
+  <ThoughtDef>
+    <defName>RP_TrialJustice</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>justice for a colleague</label><description>The court found their killer guilty. It is not much, but it is something.</description><baseMoodEffect>4</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_TrialAcquitted</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>our colleague's killer walked</label><description>The court let them off. After what we saw.</description><baseMoodEffect>-6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+
+  <!-- A complaint against an officer: what each side feels about the way the warden answered it (the same whatever was true). -->
+  <ThoughtDef>
+    <defName>RP_ComplaintUpheldOnMe</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>disciplined over a complaint</label><description>An inmate complained and the warden took their side. It is on my record.</description><baseMoodEffect>-5</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_ComplaintColleague</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>a colleague was disciplined</label><description>A guard was written up on an inmate's word. We all watch what we do now.</description><baseMoodEffect>-2</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_ComplaintDismissedOfficer</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>the warden backed me</label><description>An inmate complained about me and nothing came of it.</description><baseMoodEffect>2</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_WardenListened</defName>
+    <durationDays>5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>the warden listened</label><description>I made a complaint and something was done. Maybe this place is not all rotten.</description><baseMoodEffect>6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_WardenListensWing</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>the warden listens</label><description>Someone on the wing complained about an officer and was heard. Good to know.</description><baseMoodEffect>2</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_WardenIgnored</defName>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>the warden ignored my complaint</label><description>I told them what happened. They waved it away.</description><baseMoodEffect>-6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+
+  <!-- Found out lying about an officer. -->
+  <RimPrison.MisconductDef>
+    <defName>RP_FalseComplaint</defName>
+    <label>a false complaint against an officer</label>
+    <baseWeight>0</baseWeight>
+    <severity>2</severity>
+    <punishmentHours>6</punishmentHours>
+    <tensionRelief>0</tensionRelief>
+    <workerClass>RimPrison.MisconductWorker_Never</workerClass>
+  </RimPrison.MisconductDef>
+</Defs>

@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_Theft</defName>
+    <label>theft</label>
+    <sentenceDays>4~10</sentenceDays>
+    <lifeChance>0</lifeChance>
+    <violent>false</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_Fraud</defName>
+    <label>fraud</label>
+    <sentenceDays>6~14</sentenceDays>
+    <lifeChance>0</lifeChance>
+    <violent>false</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_Vandalism</defName>
+    <label>vandalism</label>
+    <sentenceDays>3~7</sentenceDays>
+    <lifeChance>0</lifeChance>
+    <violent>false</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_DrugPossession</defName>
+    <label>drug possession</label>
+    <sentenceDays>4~10</sentenceDays>
+    <lifeChance>0</lifeChance>
+    <violent>false</violent>
+    <drugRelated>true</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_DrugDealing</defName>
+    <label>drug dealing</label>
+    <sentenceDays>10~25</sentenceDays>
+    <lifeChance>0</lifeChance>
+    <violent>false</violent>
+    <drugRelated>true</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_Burglary</defName>
+    <label>burglary</label>
+    <sentenceDays>8~16</sentenceDays>
+    <lifeChance>0</lifeChance>
+    <violent>false</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_Assault</defName>
+    <label>assault</label>
+    <sentenceDays>8~18</sentenceDays>
+    <lifeChance>0</lifeChance>
+    <violent>true</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_ArmedRobbery</defName>
+    <label>armed robbery</label>
+    <sentenceDays>15~35</sentenceDays>
+    <lifeChance>0.02</lifeChance>
+    <violent>true</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_Arson</defName>
+    <label>arson</label>
+    <sentenceDays>12~30</sentenceDays>
+    <lifeChance>0.02</lifeChance>
+    <violent>true</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_Manslaughter</defName>
+    <label>manslaughter</label>
+    <sentenceDays>20~45</sentenceDays>
+    <lifeChance>0.05</lifeChance>
+    <violent>true</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_Murder</defName>
+    <label>murder</label>
+    <sentenceDays>40~80</sentenceDays>
+    <lifeChance>0.35</lifeChance>
+    <violent>true</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_Racketeering</defName>
+    <label>racketeering</label>
+    <sentenceDays>20~40</sentenceDays>
+    <lifeChance>0.05</lifeChance>
+    <violent>false</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_Kidnapping</defName>
+    <label>kidnapping</label>
+    <sentenceDays>25~50</sentenceDays>
+    <lifeChance>0.1</lifeChance>
+    <violent>true</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_LevyEvasion</defName>
+    <label>levy evasion</label>
+    <description>Dodging the state levy: hidden stockpiles, false tallies, a caravan that never reached the tax post.</description>
+    <sentenceDays>3~8</sentenceDays>
+    <lifeChance>0</lifeChance>
+    <violent>false</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_Poaching</defName>
+    <label>poaching</label>
+    <description>Hunting protected beasts on state land.</description>
+    <sentenceDays>3~8</sentenceDays>
+    <lifeChance>0</lifeChance>
+    <violent>false</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_Desertion</defName>
+    <label>desertion</label>
+    <description>Walked out of a colonial militia or a mercenary contract before it ran out.</description>
+    <sentenceDays>4~10</sentenceDays>
+    <lifeChance>0</lifeChance>
+    <violent>false</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_YayoPossession</defName>
+    <label>yayo possession</label>
+    <description>Caught with yayo on the way to the market.</description>
+    <sentenceDays>4~10</sentenceDays>
+    <lifeChance>0</lifeChance>
+    <violent>false</violent>
+    <drugRelated>true</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_SmokeleafGrowing</defName>
+    <label>smokeleaf growing</label>
+    <description>An unlicensed smokeleaf patch behind the colony.</description>
+    <sentenceDays>4~10</sentenceDays>
+    <lifeChance>0</lifeChance>
+    <violent>false</violent>
+    <drugRelated>true</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_MechSalvageTheft</defName>
+    <label>mechanoid salvage theft</label>
+    <description>Stripped a downed mechanoid or a ship wreck that the state had claimed.</description>
+    <sentenceDays>8~18</sentenceDays>
+    <lifeChance>0</lifeChance>
+    <violent>false</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_WargearDealing</defName>
+    <label>wargear dealing</label>
+    <description>Sold rifles, armour and charge weapons without a state licence.</description>
+    <sentenceDays>10~22</sentenceDays>
+    <lifeChance>0</lifeChance>
+    <violent>false</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_GoJuiceSmuggling</defName>
+    <label>go-juice smuggling</label>
+    <description>Ran go-juice between settlements past the state inspectors.</description>
+    <sentenceDays>10~24</sentenceDays>
+    <lifeChance>0</lifeChance>
+    <violent>false</violent>
+    <drugRelated>true</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_FlakeTrafficking</defName>
+    <label>flake trafficking</label>
+    <description>Moved flake in bulk and kept a string of dealers.</description>
+    <sentenceDays>12~28</sentenceDays>
+    <lifeChance>0</lifeChance>
+    <violent>false</violent>
+    <drugRelated>true</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_CaravanBanditry</defName>
+    <label>caravan banditry</label>
+    <description>Held up traders on the road and took their goods.</description>
+    <sentenceDays>12~28</sentenceDays>
+    <lifeChance>0.02</lifeChance>
+    <violent>true</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_Piracy</defName>
+    <label>piracy</label>
+    <description>Raided trade ships and orbital cargo.</description>
+    <sentenceDays>25~55</sentenceDays>
+    <lifeChance>0.08</lifeChance>
+    <violent>true</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_Raiding</defName>
+    <label>raiding a settlement</label>
+    <description>Led or joined a raid on a settlement: burned, looted and killed.</description>
+    <sentenceDays>25~55</sentenceDays>
+    <lifeChance>0.1</lifeChance>
+    <violent>true</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_Slaving</defName>
+    <label>slaving</label>
+    <description>Took people captive and sold them.</description>
+    <sentenceDays>25~50</sentenceDays>
+    <lifeChance>0.1</lifeChance>
+    <violent>true</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_Sedition</defName>
+    <label>sedition</label>
+    <description>Plotted against the state: stirred up a colony, sold out a garrison.</description>
+    <sentenceDays>30~55</sentenceDays>
+    <lifeChance>0.15</lifeChance>
+    <violent>false</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_OrganHarvesting</defName>
+    <label>organ harvesting</label>
+    <description>Cut organs from living captives for sale.</description>
+    <sentenceDays>35~70</sentenceDays>
+    <lifeChance>0.25</lifeChance>
+    <violent>true</violent>
+    <drugRelated>false</drugRelated>
+  </RimPrison.CrimeDef>
+  <RimPrison.CrimeDef>
+    <defName>RP_Crime_CapitalMurder</defName>
+    <label>capital murder</label>
+    <description>Sentenced to death by the state.</description>
+    <sentenceDays>0</sentenceDays>
+    <lifeChance>1</lifeChance>
+    <violent>true</violent>
+  </RimPrison.CrimeDef>
+
+  <RimPrison.SecurityLevelDef>
+    <defName>RP_Minimum</defName>
+    <labelShort>minimum</labelShort>
+    <label>minimum security</label>
+    <description>Low-risk offenders. Cheap to keep, pay little, rarely violent.</description>
+    <color>(0.55, 0.55, 0.6)</color>
+    <intakeGrant>300</intakeGrant>
+    <dailyPayment>80</dailyPayment>
+    <defaultIntakePerDay>2</defaultIntakePerDay>
+    <dangerFactor>0.5</dangerFactor>
+    <uiOrder>10</uiOrder>
+    <demoteTo>RP_Medium</demoteTo>
+    <defaultRegime>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_ShowerTime</li>
+      <li>RP_Eat</li>
+      <li>RP_Work</li>
+      <li>RP_Work</li>
+      <li>RP_Work</li>
+      <li>RP_Work</li>
+      <li>RP_Eat</li>
+      <li>RP_FreeTime</li>
+      <li>RP_FreeTime</li>
+      <li>RP_FreeTime</li>
+      <li>RP_FreeTime</li>
+      <li>RP_Work</li>
+      <li>RP_FreeTime</li>
+      <li>RP_FreeTime</li>
+      <li>RP_FreeTime</li>
+      <li>RP_Eat</li>
+      <li>RP_Lockup</li>
+      <li>RP_Sleep</li>
+    </defaultRegime>
+    <crimes>
+      <li>RP_Crime_Theft</li>
+      <li>RP_Crime_Theft</li>
+      <li>RP_Crime_Fraud</li>
+      <li>RP_Crime_Fraud</li>
+      <li>RP_Crime_Vandalism</li>
+      <li>RP_Crime_Vandalism</li>
+      <li>RP_Crime_DrugPossession</li>
+      <li>RP_Crime_YayoPossession</li>
+      <li>RP_Crime_SmokeleafGrowing</li>
+      <li>RP_Crime_Desertion</li>
+      <li>RP_Crime_Poaching</li>
+      <li>RP_Crime_LevyEvasion</li>
+    </crimes>
+  </RimPrison.SecurityLevelDef>
+  <RimPrison.SecurityLevelDef>
+    <defName>RP_Medium</defName>
+    <labelShort>medium</labelShort>
+    <label>medium security</label>
+    <description>Standard inmates. The backbone of most prisons.</description>
+    <color>(0.95, 0.5, 0.1)</color>
+    <intakeGrant>500</intakeGrant>
+    <dailyPayment>120</dailyPayment>
+    <defaultIntakePerDay>2</defaultIntakePerDay>
+    <dangerFactor>1.0</dangerFactor>
+    <uiOrder>20</uiOrder>
+    <promoteTo>RP_Minimum</promoteTo>
+    <demoteTo>RP_Maximum</demoteTo>
+    <defaultRegime>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_ShowerTime</li>
+      <li>RP_Eat</li>
+      <li>RP_Work</li>
+      <li>RP_Work</li>
+      <li>RP_Work</li>
+      <li>RP_Work</li>
+      <li>RP_Eat</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_FreeTime</li>
+      <li>RP_FreeTime</li>
+      <li>RP_Work</li>
+      <li>RP_FreeTime</li>
+      <li>RP_FreeTime</li>
+      <li>RP_FreeTime</li>
+      <li>RP_Eat</li>
+      <li>RP_Lockup</li>
+      <li>RP_Sleep</li>
+    </defaultRegime>
+    <crimes>
+      <li>RP_Crime_Burglary</li>
+      <li>RP_Crime_Burglary</li>
+      <li>RP_Crime_Fraud</li>
+      <li>RP_Crime_Fraud</li>
+      <li>RP_Crime_MechSalvageTheft</li>
+      <li>RP_Crime_WargearDealing</li>
+      <li>RP_Crime_DrugDealing</li>
+      <li>RP_Crime_FlakeTrafficking</li>
+      <li>RP_Crime_GoJuiceSmuggling</li>
+      <li>RP_Crime_Assault</li>
+      <li>RP_Crime_Assault</li>
+      <li>RP_Crime_Arson</li>
+      <li>RP_Crime_Arson</li>
+      <li>RP_Crime_CaravanBanditry</li>
+      <li>RP_Crime_CaravanBanditry</li>
+    </crimes>
+  </RimPrison.SecurityLevelDef>
+  <RimPrison.SecurityLevelDef>
+    <defName>RP_Maximum</defName>
+    <labelShort>maximum</labelShort>
+    <label>maximum security</label>
+    <description>Violent and dangerous offenders. Well paid, but they fight, smuggle and plan escapes.</description>
+    <color>(0.85, 0.15, 0.12)</color>
+    <intakeGrant>900</intakeGrant>
+    <dailyPayment>200</dailyPayment>
+    <defaultIntakePerDay>0</defaultIntakePerDay>
+    <dangerFactor>2.0</dangerFactor>
+    <uiOrder>30</uiOrder>
+    <promoteTo>RP_Medium</promoteTo>
+    <promoteAfterCleanDays>7</promoteAfterCleanDays>
+    <promoteMaxTension>25</promoteMaxTension>
+    <defaultRegime>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Lockup</li>
+      <li>RP_Eat</li>
+      <li>RP_ShowerTime</li>
+      <li>RP_Work</li>
+      <li>RP_Work</li>
+      <li>RP_Lockup</li>
+      <li>RP_Eat</li>
+      <li>RP_FreeTime</li>
+      <li>RP_FreeTime</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_ShowerTime</li>
+      <li>RP_Lockup</li>
+      <li>RP_FreeTime</li>
+      <li>RP_Eat</li>
+      <li>RP_Lockup</li>
+      <li>RP_Sleep</li>
+    </defaultRegime>
+    <crimes>
+      <li>RP_Crime_ArmedRobbery</li>
+      <li>RP_Crime_ArmedRobbery</li>
+      <li>RP_Crime_Manslaughter</li>
+      <li>RP_Crime_Murder</li>
+      <li>RP_Crime_Murder</li>
+      <li>RP_Crime_Kidnapping</li>
+      <li>RP_Crime_Piracy</li>
+      <li>RP_Crime_Piracy</li>
+      <li>RP_Crime_Raiding</li>
+      <li>RP_Crime_Raiding</li>
+      <li>RP_Crime_Slaving</li>
+      <li>RP_Crime_OrganHarvesting</li>
+      <li>RP_Crime_Racketeering</li>
+      <li>RP_Crime_Racketeering</li>
+      <li>RP_Crime_Sedition</li>
+    </crimes>
+  </RimPrison.SecurityLevelDef>
+  <RimPrison.SecurityLevelDef>
+    <defName>RP_Supermax</defName>
+    <wingOnly>true</wingOnly>
+    <cellMeals>true</cellMeals>
+    <escortOnly>true</escortOnly>
+    <yardAlone>true</yardAlone>
+    <labelShort>supermax</labelShort>
+    <label>supermax security</label>
+    <description>Where the worst go: staff killers, convicted murderers, hostage-takers. Locked in a single cell (a room with one bed) all day, meals brought to the cell, and never out of it without a guard: a walk to a shower with no one else in it, and an hour alone in a yard of their own, in the hours the regime sets aside for them (several, so that a unit of a few cells has them all; each patch of the yard takes one inmate at a time). A guard brings back anyone who is out of the cell with nobody. Housed only in supermax wing cells. No parole from here. Well paid when the rules sent them (a staff killer, a conviction, a hostage ringleader), at the maximum rate when it was your order, and a long stay wears people down. Not sent by the state: you move inmates here, and the court and the hostage crisis do. After ten clean days you are asked whether to step them down to maximum.</description>
+    <color>(0.6, 0.25, 0.75)</color>
+    <intakeGrant>0</intakeGrant>
+    <dailyPayment>500</dailyPayment>
+    <defaultIntakePerDay>0</defaultIntakePerDay>
+    <dangerFactor>3.0</dangerFactor>
+    <uiOrder>32</uiOrder>
+    <defaultRegime>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Lockup</li>
+      <li>RP_ShowerTime</li>
+      <li>RP_Lockup</li>
+      <li>RP_YardAlone</li>
+      <li>RP_Lockup</li>
+      <li>RP_YardAlone</li>
+      <li>RP_ShowerTime</li>
+      <li>RP_Lockup</li>
+      <li>RP_YardAlone</li>
+      <li>RP_Lockup</li>
+      <li>RP_YardAlone</li>
+      <li>RP_ShowerTime</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+    </defaultRegime>
+  </RimPrison.SecurityLevelDef>
+  <RimPrison.SecurityLevelDef>
+    <defName>RP_Protective</defName>
+    <wingOnly>true</wingOnly>
+    <labelShort>protective</labelShort>
+    <label>protective custody</label>
+    <description>Inmates who are not safe among the others: informants, ex-marshals, notorious targets. Kept apart on their own schedule: they eat, shower and exercise while general population works or is locked up, and do not work alongside them. Not sent by the state: you move inmates here.</description>
+    <color>(0.3, 0.75, 0.8)</color>
+    <intakeGrant>0</intakeGrant>
+    <dailyPayment>100</dailyPayment>
+    <defaultIntakePerDay>0</defaultIntakePerDay>
+    <dangerFactor>0.6</dangerFactor>
+    <uiOrder>40</uiOrder>
+    <defaultRegime>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Lockup</li>
+      <li>RP_Eat</li>
+      <li>RP_Lockup</li>
+      <li>RP_FreeTime</li>
+      <li>RP_ShowerTime</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Eat</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_FreeTime</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_ShowerTime</li>
+      <li>RP_Lockup</li>
+      <li>RP_Eat</li>
+      <li>RP_FreeTime</li>
+      <li>RP_Sleep</li>
+    </defaultRegime>
+  </RimPrison.SecurityLevelDef>
+  <RimPrison.SecurityLevelDef>
+    <defName>RP_DeathRow</defName>
+    <labelShort>death row</labelShort>
+    <label>death row</label>
+    <description>Condemned by the state. Housed only in death row wing cells, never overcrowded, locked in all day with meals brought to the cell. Each appeal hearing may commute the sentence to life; when appeals run out an execution date is set, and you need an execution room to carry it out. Some are innocent.</description>
+    <color>(0.45, 0.1, 0.15)</color>
+    <intakeGrant>1500</intakeGrant>
+    <dailyPayment>350</dailyPayment>
+    <defaultIntakePerDay>0</defaultIntakePerDay>
+    <dangerFactor>2.5</dangerFactor>
+    <uiOrder>35</uiOrder>
+    <wingOnly>true</wingOnly>
+    <cellMeals>true</cellMeals>
+    <defaultRegime>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Sleep</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Lockup</li>
+      <li>RP_Sleep</li>
+    </defaultRegime>
+    <crimes>
+      <li>RP_Crime_CapitalMurder</li>
+    </crimes>
+    <modExtensions>
+      <li Class="RimPrison.DeathRowExtension">
+        <commuteTo>RP_Maximum</commuteTo>
+      </li>
+    </modExtensions>
+  </RimPrison.SecurityLevelDef>
+
+  <!-- The warden's notice that a wing's lid is about to come off (see Suppression). -->
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_LidComesOff</defName><label>the lid comes off</label><workerClass>RimPrison.PrisonDecisionWorker_Notice</workerClass></RimPrison.PrisonDecisionDef>
+</Defs>

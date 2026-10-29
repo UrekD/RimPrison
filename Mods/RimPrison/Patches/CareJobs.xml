@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Carrying a meal to an inmate, spooning it into a downed one and carrying a wounded one to a bed are not "casual" jobs. Every system that frees a member of staff (a class calling its teacher, the end of the shift sending them home,
+       a staff break) cuts a casually interruptible job short, and for these two it left the meal dropped where the cook stood, or the downed inmate lying where they fell, with the claim on their bed undone:
+       the cell-meal inmates, the punished and the downed who starved in the evening and the night. Feeding a downed inmate by hand (FeedPatient) was the one left out: the hour's commute pass sent a guard
+       home in the middle of it, as the end of a shift sends anyone home whose job may be cut short. Vanilla reads the flag only to keep pawns on such a job from chatting. -->
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/JobDef[defName="DeliverFood" or defName="FeedPatient" or defName="TakeWoundedPrisonerToBed" or defName="EscortPrisonerToBed"]</xpath>
+    <value>
+      <casualInterruptible>false</casualInterruptible>
+    </value>
+  </Operation>
+</Patch>

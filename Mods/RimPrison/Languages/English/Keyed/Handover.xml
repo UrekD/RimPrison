@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The handover (Story/Handover.cs, UI/NewPrison.cs): the prison you were given has a past. No capital after a colon: RimWorld capitalises the letter after ": " (a dash or a comma instead). -->
+
+  <!-- The new prison dialog's choice. -->
+  <RP_NewPrisonHandover>Inherit the old warden's problems</RP_NewPrisonHandover>
+  <RP_NewPrisonHandoverTip>The prison you take over has a past. A few secrets are already at work in the wings and on the payroll, and the old warden left a note about them that is right about some of them. Off, the prison starts clean.</RP_NewPrisonHandoverTip>
+
+  <!-- The welcome letter of a prison with a past: the old warden's note (it takes the lead's place), then this paragraph, then the next steps and the tail as ever. {0} is the hour of the state's shuttle. -->
+  <RP_HandoverPractical>The state's shuttle brings convicts every day at {0}:00, and the state pays for each one (a grant on arrival, then a daily payment while they are with you).</RP_HandoverPractical>
+
+  <!-- The old warden's note. {0} is the prison's name. -->
+  <RP_HandoverNote_Lead>To whoever has the keys now,\n\nThe state tells me my time at {0} is over, so I am writing down what I would want to know in your place. I have run it for the last quadrum and I am tired, and a tired person is wrong now and then - but I was right about most of it.</RP_HandoverNote_Lead>
+  <!-- A file open on a guard ({0}). A suspicion only. -->
+  <RP_HandoverHint_File>• I opened a file on {0} and never closed it. It is a suspicion and nothing I could put on paper - who {0} talks to, and for how long.</RP_HandoverHint_File>
+  <!-- A crew to watch ({0}: the job's name, such as kitchen). -->
+  <RP_HandoverHint_Crew>• Watch the {0} crew. Things go missing from there and I never caught who.</RP_HandoverHint_Crew>
+  <!-- A wing that is too quiet at night ({0}: the security level, such as maximum). -->
+  <RP_HandoverHint_Dig>• Walk the {0} wing at night before you trust it. The officers there tell me it is quiet, and I have not been able to enjoy that. I never had the cells turned over.</RP_HandoverHint_Dig>
+  <!-- Two men who do not belong in a room together ({0}: the security level). -->
+  <RP_HandoverHint_Feud>• Two of the men in the {0} wing do not belong in the same room, and I never found the time to move either of them.</RP_HandoverHint_Feud>
+  <RP_HandoverNote_Sign>I wish you luck. You will need less of it than I did, I hope.\n\nYours, the old warden</RP_HandoverNote_Sign>
+
+  <!-- The chronicle before the game: the old warden's milestones, in the old warden's words. -->
+  <RP_ChronicleBefore>Before you - the old warden's last weeks</RP_ChronicleBefore>
+  <RP_ChronicleWhenBefore>{0} days before day 1, {1}h</RP_ChronicleWhenBefore>
+  <RP_Handover_Chr_Intake>I signed for the quarter's big intake from the state. The wings are as full as I have ever had them, and I told the state so.</RP_Handover_Chr_Intake>
+  <RP_Handover_Chr_Pension>The state offered me a pension and a seat in the capital. I took the pension.</RP_Handover_Chr_Pension>
+  <RP_Handover_Chr_Lockdown>I locked the yard down for an afternoon after a scuffle. Nobody would say what it was about.</RP_Handover_Chr_Lockdown>
+  <RP_Handover_Chr_Sergeant>I lost my night sergeant to a transfer and gave the post to a guard from the floor. I hope it was the right call.</RP_Handover_Chr_Sergeant>
+  <RP_Handover_Chr_Yard>The yard has the same faces in it every afternoon now. I put it down to habit.</RP_Handover_Chr_Yard>
+  <RP_Handover_Chr_Books>I closed the quarter's books in the black, just, with the grant money and not a day to spare.</RP_Handover_Chr_Books>
+  <RP_Handover_Chr_Inspector>The state's inspector came and went with a nod and a page of small print.</RP_Handover_Chr_Inspector>
+  <RP_Handover_Chr_Replaced>The state wrote that a new warden is on the way. I began my note that night.</RP_Handover_Chr_Replaced>
+</LanguageData>

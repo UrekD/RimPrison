@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- A restorative meeting with the victim's family (Story/Amends.cs). No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+  <RP_AmendsLabel>Restorative meeting for {0}?</RP_AmendsLabel>
+  <RP_AmendsText>{0}, the counsellor, proposes a restorative meeting for {1}, inside for {2}. The family of the one they hurt would come to the visitation room (searched at the gate like any visitor), {1} would be brought to them as for a visit, and a counsellor would sit with them. It takes about {3} hours of the counsellor's day and costs {4}.\n\nWhy now - {5}.\n\nThe odds it goes well - about {6} ({7}). That is with {0} at the table; whichever counsellor sits in counts {16} for each level of their own Social skill. Should no counsellor make it to the table, about {8}.{15}\n\nIf it goes well, the family withdraws its letter to the parole board (a letter worth {9} at a hearing), or even speaks for them ({10}). {1}'s tension falls by {11} and their chance of reoffending drops a band.\nIf it goes badly, the family leaves hostile and writes against them at every hearing, the press may hear of it ({13} of the time, -{14} reputation), and their tension rises by {12}.\n\nIt can be tried once in a stay. Left unanswered, the letter is a no.</RP_AmendsText>
+  <RP_AmendsSearchedPart>Visitors are searched thoroughly at the gate now - should the family be strip-searched, the odds drop by {0} (to about {1}).</RP_AmendsSearchedPart>
+  <RP_AmendsWhy_Programs>they have passed {0} program(s), and the counsellor thinks they are ready</RP_AmendsWhy_Programs>
+  <RP_AmendsWhy_Want>they have asked to face the family themselves</RP_AmendsWhy_Want>
+  <RP_AmendsOdds_Tension>tension {0}</RP_AmendsOdds_Tension>
+  <RP_AmendsOdds_Counsellor>{0} at the table, Social {1}</RP_AmendsOdds_Counsellor>
+  <RP_AmendsOdds_NoCounsellor>no counsellor at the table</RP_AmendsOdds_NoCounsellor>
+  <RP_AmendsOdds_Programs>{0} program(s) passed</RP_AmendsOdds_Programs>
+  <RP_AmendsOdds_Want>they asked for it</RP_AmendsOdds_Want>
+  <RP_AmendsOdds_Searched>a thorough search at the gate put the family on edge</RP_AmendsOdds_Searched>
+  <RP_Amends_Approve>Approve the meeting</RP_Amends_Approve>
+  <RP_Amends_Decline>Not now</RP_Amends_Decline>
+  <RP_AmendsNote>restorative meeting for {0}</RP_AmendsNote>
+  <RP_AmendsRefundNote>restorative meeting for {0} did not happen, refunded</RP_AmendsRefundNote>
+  <RP_AmendsApproved>The restorative meeting for {0} is approved. The family will come in visiting hours, when a counsellor is on site.</RP_AmendsApproved>
+  <RP_AmendsNoLonger>The restorative meeting for {0} can no longer be held.</RP_AmendsNoLonger>
+  <RP_AmendsLapsed>The family never came for {0}'s restorative meeting. The {1} is refunded; the counsellor may propose it again in a few days.</RP_AmendsLapsed>
+  <RP_AmendsLeftRefunded>{0} left before the restorative meeting could be held. The {1} is refunded.</RP_AmendsLeftRefunded>
+  <RP_AmendsVisitorArrived>{0}, of the victim's family, is coming to meet {1}.</RP_AmendsVisitorArrived>
+  <RP_AmendsWith>with {0} at the table</RP_AmendsWith>
+  <RP_AmendsWithNobody>with no counsellor at the table</RP_AmendsWithNobody>
+  <RP_AmendsGoodLabel>{0} made amends</RP_AmendsGoodLabel>
+  <RP_AmendsWithdrawnText>{0} met the family of the one they hurt, {1} (the odds were {2}). It went well. The family withdraws its letter to the parole board (no longer {4} at a hearing), {0}'s tension falls by {3}, and their chance of reoffending drops a band.</RP_AmendsWithdrawnText>
+  <RP_AmendsSupportsText>{0} met the family of the one they hurt, {1} (the odds were {2}). It went better than anyone hoped. The family withdraws its letter to the parole board (no longer {4} at a hearing) and will speak for them instead ({5}). {0}'s tension falls by {3}, and their chance of reoffending drops a band.</RP_AmendsSupportsText>
+  <RP_AmendsBadLabel>{0}'s meeting went badly</RP_AmendsBadLabel>
+  <RP_AmendsHostileText>{0} met the family of the one they hurt, {1} (the odds were {2}). It went badly. The family left angry and will write against them at every hearing, and {0}'s tension rises by {3}. {4}</RP_AmendsHostileText>
+  <RP_AmendsPress>The press heard of it (-{0} reputation).</RP_AmendsPress>
+  <RP_AmendsNoPress>The press has not heard of it.</RP_AmendsNoPress>
+  <RP_Chr_AmendsWithdrawn>{0} met the family of the one they hurt, {1}. The family withdrew its letter to the parole board.</RP_Chr_AmendsWithdrawn>
+  <RP_Chr_AmendsSupports>{0} met the family of the one they hurt, {1}. The family will speak for them at the parole board.</RP_Chr_AmendsSupports>
+  <RP_Chr_AmendsHostile>{0} met the family of the one they hurt, {1}. It went badly, and the family left angry.</RP_Chr_AmendsHostile>
+  <RP_Chr_AmendsHostilePress>{0} met the family of the one they hurt, {1}. It went badly, the family left angry, and the press heard of it.</RP_Chr_AmendsHostilePress>
+  <RP_Cause_AmendsWentBadly>a meeting with the victim's family went badly</RP_Cause_AmendsWentBadly>
+  <RP_ParoleAgainst_VictimWithdrawn>not the victim's family - they withdrew their letter after a restorative meeting</RP_ParoleAgainst_VictimWithdrawn>
+  <RP_ParoleFor_Victim>the victim's family, after a restorative meeting ({0})</RP_ParoleFor_Victim>
+  <RP_FileAmends_Proposed>A restorative meeting with the victim's family is proposed - the counsellor's letter waits for your answer.</RP_FileAmends_Proposed>
+  <RP_FileAmends_Approved>A restorative meeting with the victim's family is approved - waiting for the family and a counsellor (until day {0}).</RP_FileAmends_Approved>
+  <RP_FileAmends_Meeting>The victim's family is here for the restorative meeting.</RP_FileAmends_Meeting>
+  <RP_FileAmends_Declined>You declined a restorative meeting on day {0}.</RP_FileAmends_Declined>
+  <RP_FileAmends_Lapsed>The restorative meeting approved on day {0} never happened.</RP_FileAmends_Lapsed>
+  <RP_FileAmends_Withdrawn>Met the victim's family on day {0} - they withdrew their letter to the parole board; the chance of reoffending is a band lower.</RP_FileAmends_Withdrawn>
+  <RP_FileAmends_Supports>Met the victim's family on day {0} - they will speak for them at the parole board; the chance of reoffending is a band lower.</RP_FileAmends_Supports>
+  <RP_FileAmends_Hostile>Met the victim's family on day {0} - it went badly, and they will write against them at every hearing.</RP_FileAmends_Hostile>
+  <RP_AmendsNo_Away>not an active inmate the counsellor can see</RP_AmendsNo_Away>
+  <RP_AmendsNo_NotViolent>not inside for a violent crime</RP_AmendsNo_NotViolent>
+  <RP_AmendsNo_Held>already met the family this stay</RP_AmendsNo_Held>
+  <RP_AmendsNo_Open>a meeting is already proposed or approved</RP_AmendsNo_Open>
+  <RP_AmendsNo_Lately>declined or lapsed lately</RP_AmendsNo_Lately>
+  <RP_AmendsNo_NotReady>no program passed and no wish to make amends</RP_AmendsNo_NotReady>
+  <RP_AmendsNo_NoTable>their level is not visited across a table</RP_AmendsNo_NoTable>
+  <RP_AmendsNo_NoRoom>the prison has no visitation room</RP_AmendsNo_NoRoom>
+  <RP_AmendsNo_Banned>banned from visits</RP_AmendsNo_Banned>
+  <RP_AmendsNo_Remand>on remand, awaiting trial for a killing inside</RP_AmendsNo_Remand>
+  <RP_AmendsNo_Hearing>a parole hearing is within a day</RP_AmendsNo_Hearing>
+  <RP_Want_Reason_AmendsDeclined>the warden turned the meeting down</RP_Want_Reason_AmendsDeclined>
+  <RP_Want_Reason_AmendsRefused>the victim's family turned on them</RP_Want_Reason_AmendsRefused>
+  <RP_Want_Amends_Detail_None>The counsellor has to propose a meeting with the victim's family (the counsellor on site, visits across a table, no hearing within a day); the warden approves it ({0}).</RP_Want_Amends_Detail_None>
+  <RP_Want_Amends_Detail_Proposed>The counsellor has proposed the meeting - it waits for the warden's answer.</RP_Want_Amends_Detail_Proposed>
+  <RP_Want_Amends_Detail_Approved>The meeting is approved - the family comes in visiting hours, when a counsellor is on site.</RP_Want_Amends_Detail_Approved>
+  <RP_Want_Amends_Detail_Meeting>The victim's family is here.</RP_Want_Amends_Detail_Meeting>
+  <RP_Want_Amends_Detail_Declined>The warden turned the meeting down; the counsellor may propose it again in a few days.</RP_Want_Amends_Detail_Declined>
+  <RP_Want_Amends_Detail_Lapsed>The family never came; the counsellor may propose it again in a few days.</RP_Want_Amends_Detail_Lapsed>
+  <RP_Want_Amends_Detail_Withdrawn>The family withdrew its letter.</RP_Want_Amends_Detail_Withdrawn>
+  <RP_Want_Amends_Detail_Supports>The family will speak for them.</RP_Want_Amends_Detail_Supports>
+  <RP_Want_Amends_Detail_Hostile>The family turned on them.</RP_Want_Amends_Detail_Hostile>
+</LanguageData>

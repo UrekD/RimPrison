@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimPrison.GrantDef>
+    <defName>RP_Grant_Basics</defName>
+    <label>basic detention facility</label>
+    <description>Show the state you can hold inmates decently: cells, a canteen, showers and a yard.</description>
+    <advance>1000</advance>
+    <reward>4000</reward>
+    <uiOrder>10</uiOrder>
+    <conditions>
+      <li Class="RimPrison.GrantCondition_CellBeds"><count>8</count></li>
+      <li Class="RimPrison.GrantCondition_Zone"><zone>RP_Canteen</zone><cells>20</cells></li>
+      <li Class="RimPrison.GrantCondition_Zone"><zone>RP_Shower</zone><cells>8</cells></li>
+      <li Class="RimPrison.GrantCondition_Zone"><zone>RP_Yard</zone><cells>60</cells></li>
+      <li Class="RimPrison.GrantCondition_Buildings"><thing>RP_Toilet</thing><count>8</count></li>
+    </conditions>
+  </RimPrison.GrantDef>
+  <RimPrison.GrantDef>
+    <defName>RP_Grant_Administration</defName>
+    <label>administration</label>
+    <description>Set up an office: hire an administrator and give them a desk. Bureaucracy projects unlock workshops, reform programs, visitation and higher security contracts.</description>
+    <advance>500</advance>
+    <reward>1500</reward>
+    <uiOrder>15</uiOrder>
+    <conditions>
+      <li Class="RimPrison.GrantCondition_Staff"><role>RP_Administrator</role><count>1</count></li>
+      <li Class="RimPrison.GrantCondition_Buildings"><thing>RP_OfficeDesk</thing><count>1</count></li>
+    </conditions>
+  </RimPrison.GrantDef>
+  <RimPrison.GrantDef>
+    <defName>RP_Grant_Staffing</defName>
+    <label>fully staffed</label>
+    <description>Hire a proper team: three guards, a cook, a doctor and a janitor.</description>
+    <reward>2500</reward>
+    <uiOrder>20</uiOrder>
+    <prerequisites><li>RP_Grant_Basics</li></prerequisites>
+    <conditions>
+      <li Class="RimPrison.GrantCondition_Staff"><role>RP_Guard</role><count>3</count></li>
+      <li Class="RimPrison.GrantCondition_Staff"><role>RP_Cook</role><count>1</count></li>
+      <li Class="RimPrison.GrantCondition_Staff"><role>RP_Doctor</role><count>1</count></li>
+      <li Class="RimPrison.GrantCondition_Staff"><role>RP_Janitor</role><count>1</count></li>
+    </conditions>
+  </RimPrison.GrantDef>
+  <RimPrison.GrantDef>
+    <defName>RP_Grant_Industry</defName>
+    <label>prison industry</label>
+    <description>Put inmates to work: run two license plate presses in a workshop and export the product.</description>
+    <advance>1500</advance>
+    <reward>3500</reward>
+    <uiOrder>30</uiOrder>
+    <prerequisites><li>RP_Grant_Basics</li></prerequisites>
+    <conditions>
+      <li Class="RimPrison.GrantCondition_Buildings"><thing>RP_LicensePlatePress</thing><count>2</count><inZone>RP_Workshop</inZone></li>
+      <li Class="RimPrison.GrantCondition_StatGain"><stat>itemsExported</stat><amount>60</amount></li>
+    </conditions>
+  </RimPrison.GrantDef>
+  <RimPrison.GrantDef>
+    <defName>RP_Grant_Reform</defName>
+    <label>reform pilot</label>
+    <description>Run reform programs: a classroom with four desks, a counsellor, and five graduates.</description>
+    <advance>1000</advance>
+    <reward>5000</reward>
+    <uiOrder>40</uiOrder>
+    <prerequisites><li>RP_Grant_Basics</li></prerequisites>
+    <conditions>
+      <li Class="RimPrison.GrantCondition_Buildings"><thing>RP_SchoolDesk</thing><count>4</count><inZone>RP_Classroom</inZone></li>
+      <li Class="RimPrison.GrantCondition_Staff"><role>RP_Counsellor</role><count>1</count></li>
+      <li Class="RimPrison.GrantCondition_StatGain"><stat>programsPassed</stat><amount>5</amount></li>
+    </conditions>
+  </RimPrison.GrantDef>
+  <RimPrison.GrantDef>
+    <defName>RP_Grant_FamilyTies</defName>
+    <label>family ties</label>
+    <description>Keep inmates connected to the outside: a visitation room and ten family visits.</description>
+    <reward>3000</reward>
+    <uiOrder>45</uiOrder>
+    <prerequisites><li>RP_Grant_Basics</li></prerequisites>
+    <conditions>
+      <li Class="RimPrison.GrantCondition_Zone"><zone>RP_Visitation</zone><cells>12</cells></li>
+      <li Class="RimPrison.GrantCondition_StatGain"><stat>visits</stat><amount>10</amount></li>
+    </conditions>
+  </RimPrison.GrantDef>
+  <RimPrison.GrantDef>
+    <defName>RP_Grant_Expansion</defName>
+    <label>expansion</label>
+    <description>The state needs beds. Grow the prison to twenty cell beds and fill them.</description>
+    <advance>3000</advance>
+    <reward>8000</reward>
+    <uiOrder>50</uiOrder>
+    <prerequisites><li>RP_Grant_Staffing</li></prerequisites>
+    <conditions>
+      <li Class="RimPrison.GrantCondition_CellBeds"><count>20</count></li>
+      <li Class="RimPrison.GrantCondition_Inmates"><count>18</count></li>
+    </conditions>
+  </RimPrison.GrantDef>
+  <RimPrison.GrantDef>
+    <defName>RP_Grant_Surveillance</defName>
+    <label>surveillance</label>
+    <description>Install CCTV: six cameras watching the inmates.</description>
+    <reward>2500</reward>
+    <uiOrder>55</uiOrder>
+    <prerequisites><li>RP_Grant_Staffing</li></prerequisites>
+    <conditions>
+      <li Class="RimPrison.GrantCondition_Buildings"><thing>RP_SecurityCamera</thing><count>6</count></li>
+    </conditions>
+  </RimPrison.GrantDef>
+  <RimPrison.GrantDef>
+    <defName>RP_Grant_Secure</defName>
+    <label>secure perimeter</label>
+    <description>Prove the walls hold: no escapes for five days while holding at least fifteen inmates.</description>
+    <reward>6000</reward>
+    <uiOrder>60</uiOrder>
+    <prerequisites><li>RP_Grant_Expansion</li></prerequisites>
+    <conditions>
+      <li Class="RimPrison.GrantCondition_Inmates"><count>15</count></li>
+      <li Class="RimPrison.GrantCondition_NoEscapes"><days>5</days></li>
+    </conditions>
+  </RimPrison.GrantDef>
+  <RimPrison.GrantDef>
+    <defName>RP_Grant_MaxSecurity</defName>
+    <label>maximum security contract</label>
+    <description>The state will send its most dangerous convicts if you can hold them: house six maximum security inmates.</description>
+    <advance>4000</advance>
+    <reward>10000</reward>
+    <uiOrder>70</uiOrder>
+    <prerequisites><li>RP_Grant_Secure</li></prerequisites>
+    <conditions>
+      <li Class="RimPrison.GrantCondition_Inmates"><security>RP_Maximum</security><count>6</count></li>
+    </conditions>
+  </RimPrison.GrantDef>
+  <RimPrison.GrantDef>
+    <defName>RP_Grant_ModelPrison</defName>
+    <label>model prison</label>
+    <description>Become the state's showcase: hold a B grade or better for five days in a row with twenty inmates.</description>
+    <reward>15000</reward>
+    <uiOrder>80</uiOrder>
+    <prerequisites><li>RP_Grant_Reform</li><li>RP_Grant_Expansion</li></prerequisites>
+    <conditions>
+      <li Class="RimPrison.GrantCondition_Inmates"><count>20</count></li>
+      <li Class="RimPrison.GrantCondition_GradeDays"><minGrade>70</minGrade><days>5</days></li>
+    </conditions>
+  </RimPrison.GrantDef>
+</Defs>

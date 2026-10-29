@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimPrison.StaffRoleDef>
+    <defName>RP_ArmedGuard</defName>
+    <label>armed guard</label>
+    <description>Carries a firearm. Patrols and mans towers like a guard, and opens fire on escapees and rioters according to the armed response policy. Shots kill; deaths in custody hurt your grade.</description>
+    <dailyWage>90</dailyWage>
+    <hireCost>600</hireCost>
+    <workTypes><li>Warden</li></workTypes>
+    <keySkills><li>Shooting</li></keySkills>
+    <uniformColor>(0.12, 0.12, 0.15)</uniformColor>
+    <uiOrder>15</uiOrder>
+    <requiresViolence>true</requiresViolence>
+    <weapon>Gun_PumpShotgun</weapon>
+    <guardDuties>true</guardDuties>
+    <barGroup>Security</barGroup>
+  </RimPrison.StaffRoleDef>
+
+  <RimPrison.StaffRoleDef>
+    <defName>RP_DogHandler</defName>
+    <label>dog handler</label>
+    <description>A guard with a trained K9 dog. The dog follows its handler on patrol, smells drugs on inmates it passes and fresh digging in cells (flagging them for a search), and defends its handler.</description>
+    <dailyWage>75</dailyWage>
+    <hireCost>500</hireCost>
+    <workTypes><li>Warden</li><li>Hauling</li></workTypes>
+    <keySkills><li>Animals</li><li>Melee</li></keySkills>
+    <uniformColor>(0.25, 0.3, 0.2)</uniformColor>
+    <uiOrder>12</uiOrder>
+    <requiresViolence>true</requiresViolence>
+    <guardDuties>true</guardDuties>
+    <companion>Husky</companion>
+    <barGroup>Security</barGroup>
+  </RimPrison.StaffRoleDef>
+
+  <JobDef>
+    <defName>RP_ArmedResponse</defName>
+    <driverClass>RimPrison.JobDriver_ArmedResponse</driverClass>
+    <reportString>firing on TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <alwaysShowWeapon>true</alwaysShowWeapon>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RP_ArmedResponse</defName>
+    <label>armed response</label>
+    <giverClass>RimPrison.WorkGiver_ArmedResponse</giverClass>
+    <workType>Warden</workType>
+    <verb>shoot</verb>
+    <gerund>shooting</gerund>
+    <priorityInType>210</priorityInType>
+    <emergency>true</emergency>
+    <requiredCapacities><li>Manipulation</li><li>Sight</li></requiredCapacities>
+  </WorkGiverDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RP_GuardTower</defName>
+    <label>guard tower</label>
+    <description>A raised platform with a searchlight. A guard manning it watches every inmate within range, over walls (like a guard standing next to them). Armed guards shoot from it.</description>
+    <thingClass>Building</thingClass>
+    <designationCategory>RP_Prison</designationCategory>
+    <graphicData>
+      <texPath>Things/Building/RP_GuardTower</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <size>(2,2)</size>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <pathCost>10</pathCost>
+    <rotatable>false</rotatable>
+    <costList><Steel>150</Steel><WoodLog>80</WoodLog><ComponentIndustrial>2</ComponentIndustrial></costList>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+      <WorkToBuild>4000</WorkToBuild>
+      <Mass>150</Mass>
+    </statBases>
+    <comps>
+      <li Class="RimPrison.CompProperties_GuardTower">
+        <radius>16</radius>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>9</glowRadius>
+        <glowColor>(240,230,180,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+  <JobDef>
+    <defName>RP_ManTower</defName>
+    <driverClass>RimPrison.JobDriver_ManTower</driverClass>
+    <reportString>manning TargetA.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RP_ManTower</defName>
+    <label>man guard towers</label>
+    <giverClass>RimPrison.WorkGiver_ManTower</giverClass>
+    <workType>Warden</workType>
+    <verb>man</verb>
+    <gerund>manning</gerund>
+    <priorityInType>5</priorityInType>
+  </WorkGiverDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RP_ExecutionTable</defName>
+    <label>execution table</label>
+    <description>Where death sentences are carried out. On the day, guards restrain the condemned in their cell, carry them here and carry out the sentence. Put it in a staff-only room.</description>
+    <thingClass>Building</thingClass>
+    <designationCategory>RP_Prison</designationCategory>
+    <graphicData>
+      <texPath>Things/Building/RP_ExecutionTable</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,2)</drawSize>
+    </graphicData>
+    <size>(1,2)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <pathCost>30</pathCost>
+    <rotatable>true</rotatable>
+    <costList><Steel>120</Steel><ComponentIndustrial>3</ComponentIndustrial></costList>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>3000</WorkToBuild>
+      <Mass>60</Mass>
+    </statBases>
+  </ThingDef>
+  <JobDef>
+    <defName>RP_CarryOutExecution</defName>
+    <driverClass>RimPrison.JobDriver_CarryOutExecution</driverClass>
+    <reportString>carrying out the sentence on TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RP_CarryOutExecution</defName>
+    <label>carry out executions</label>
+    <giverClass>RimPrison.WorkGiver_CarryOutExecution</giverClass>
+    <workType>Warden</workType>
+    <verb>execute</verb>
+    <gerund>carrying out a sentence on</gerund>
+    <priorityInType>150</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+
+  <HediffDef>
+    <defName>RP_K9</defName>
+    <label>K9 trained</label>
+    <description>A prison K9 dog: works with its handler, eats at the kennel.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <defaultLabelColor>(0.6, 0.8, 1)</defaultLabelColor>
+  </HediffDef>
+
+  <WorkGiverDef>
+    <defName>RP_DeliverCellMeal</defName>
+    <label>deliver cell meals</label>
+    <giverClass>RimPrison.WorkGiver_DeliverCellMeal</giverClass>
+    <workType>Warden</workType>
+    <verb>feed</verb>
+    <gerund>bringing a meal to</gerund>
+    <priorityInType>70</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>RP_FeedInjuredInmate</defName>
+    <label>feed injured inmates</label>
+    <giverClass>RimPrison.WorkGiver_FeedInjuredInmate</giverClass>
+    <workType>Warden</workType>
+    <verb>feed</verb>
+    <gerund>feeding</gerund>
+    <priorityInType>72</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+
+  <!-- Doctors feed injured inmates in bed and cooks bring meals to confined inmates, so a busy guard shift does not
+       leave anyone starving. -->
+  <WorkGiverDef>
+    <defName>RP_FeedInjuredInmateDoctor</defName>
+    <label>feed injured inmates</label>
+    <giverClass>RimPrison.WorkGiver_FeedInjuredInmate</giverClass>
+    <workType>Doctor</workType>
+    <verb>feed</verb>
+    <gerund>feeding</gerund>
+    <priorityInType>85</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RP_DeliverCellMealCook</defName>
+    <label>deliver cell meals</label>
+    <giverClass>RimPrison.WorkGiver_DeliverCellMeal</giverClass>
+    <workType>Cooking</workType>
+    <verb>feed</verb>
+    <gerund>bringing a meal to</gerund>
+    <priorityInType>110</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+</Defs>

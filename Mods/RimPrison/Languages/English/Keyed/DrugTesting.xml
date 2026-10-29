@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Drug testing (gap analysis 6, item 4; Programs/DrugTesting.cs): the policy row, the doctors' testing round, the file line, the parole reason. No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+  <RP_DrugTestLabel>Drug testing</RP_DrugTestLabel>
+  <RP_DrugTest_Off>none</RP_DrugTest_Off>
+  <RP_DrugTest_Targeted>targeted</RP_DrugTest_Targeted>
+  <RP_DrugTest_TargetedAndRandom>targeted and random</RP_DrugTest_TargetedAndRandom>
+  <RP_DrugTestDesc>Whether a doctor tests inmates for drugs. Targeted tests an inmate after a contraband find on them or in their cell, a tip naming them, an overdose they survived, and in the two days before the inmate's next parole hearing or trial (each reason at most once in two days, a hearing or a trial once). Targeted and random adds a few inmates picked at random each day, and being searched again wears on the tempers of those picked.
+
+A doctor of the day shift takes the inmate aside for about {0} ticks and uses up a drug test kit (bought through the supply company). Never the night doctor, never the only doctor on site, and no more than {1} tests an hour in the prison. An inmate in the hole, in supermax, in a hostage situation, a riot, a class or at an appointment is tested at the next hour.
+
+A positive is a drug used in the last two days. It means a seen drug use on the record (confinement to the cell by default), a referral to substance abuse treatment, lower parole odds and, for a customer of a dealer, the chance to trace the dealer. An addiction with no use in the last two days is a positive for dependence - the referral, the file line and the parole odds, but no misconduct and no punishment. A refusal is a seen misconduct of its own (four hours in the hole by default) and, like a positive, counts against them with the parole board for five days. A riot or a hostage situation stops the round at once.</RP_DrugTestDesc>
+  <RP_DrugTestPerDay>Random tests a day - {0}</RP_DrugTestPerDay>
+  <RP_DrugTestStatus>Kits in stock {0}. Yesterday {1} tests, {2} positive.</RP_DrugTestStatus>
+  <RP_DrugTestNoKits>No kits - no tests.</RP_DrugTestNoKits>
+  <RP_DrugTestCrisis>A riot or a hostage situation - no tests.</RP_DrugTestCrisis>
+  <RP_DrugTestNoDoctor>No second doctor on site - no tests.</RP_DrugTestNoDoctor>
+  <RP_DrugTestPositive>{0} tested positive for drugs.</RP_DrugTestPositive>
+  <RP_DrugTestDependence>{0} tested positive for drugs - dependence, no recent use.</RP_DrugTestDependence>
+  <RP_DrugTestRefused>{0} refused a drug test.</RP_DrugTestRefused>
+  <RP_DrugTestResult_Negative>negative</RP_DrugTestResult_Negative>
+  <RP_DrugTestResult_Positive>positive</RP_DrugTestResult_Positive>
+  <RP_DrugTestResult_Dependence>positive (dependence)</RP_DrugTestResult_Dependence>
+  <RP_DrugTestResult_Refused>refused</RP_DrugTestResult_Refused>
+  <RP_DrugTestResult_None>never tested</RP_DrugTestResult_None>
+  <RP_FileDrugTest>Drug test {1} days ago - {0}.</RP_FileDrugTest>
+  <RP_FileDrugTestAddicted>Addiction - {0}.</RP_FileDrugTestAddicted>
+  <RP_ParoleWhy_Drugs>a failed or refused drug test</RP_ParoleWhy_Drugs>
+  <RP_Cause_SearchedAgain>searched again, a drug test</RP_Cause_SearchedAgain>
+  <RP_Stat_drugTests>Drug tests</RP_Stat_drugTests>
+  <RP_Stat_drugPositives>Positive drug tests</RP_Stat_drugPositives>
+  <RP_StatTip_drugTests>Drug tests the doctors completed (a refusal is not one).</RP_StatTip_drugTests>
+  <RP_StatTip_drugPositives>Tests that found a drug used in the last two days or an addiction (a dependence).</RP_StatTip_drugPositives>
+</LanguageData>

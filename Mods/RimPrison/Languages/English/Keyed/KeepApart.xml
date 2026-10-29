@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Keep-apart orders (Inmates/KeepApart.cs): the warden's list of inmates who are not to be put together. No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+  <RP_KeepApartWhy_warden>the warden's order</RP_KeepApartWhy_warden>
+  <RP_KeepApartWhy_feud>a feud</RP_KeepApartWhy_feud>
+  <RP_KeepApartWhy_trial>a murder case</RP_KeepApartWhy_trial>
+  <RP_KeepApartWhy_debt>a debt</RP_KeepApartWhy_debt>
+  <RP_KeepApartWhy_gang>a gang they left</RP_KeepApartWhy_gang>
+  <RP_KeepApartWhy_request>a request for another cell</RP_KeepApartWhy_request>
+  <RP_KeepApartFull>The prison keeps no more than {0} inmates apart at once. Lift an order first.</RP_KeepApartFull>
+  <RP_KeepApartSet>{0} and {1} are kept apart from now on.</RP_KeepApartSet>
+  <RP_KeepApartLiftedMsg>{0} and {1} are no longer kept apart.</RP_KeepApartLiftedMsg>
+  <RP_Chr_KeepApart>{0} and {1} are kept apart - {2}.</RP_Chr_KeepApart>
+  <RP_Chr_KeepApartLifted>{0} and {1} are no longer kept apart.</RP_Chr_KeepApartLifted>
+  <RP_Chr_CellMoveApartCell>{0} was moved to another cell to keep them apart from {1}.</RP_Chr_CellMoveApartCell>
+  <RP_Chr_CellMoveApartWing>{0} was moved to another wing to keep them apart from {1}.</RP_Chr_CellMoveApartWing>
+  <RP_MoveCellKeptApart>Cell {0} - {1} lives there, and you keep them apart</RP_MoveCellKeptApart>
+
+  <!-- What stands in the way of an order today (the file and Intel). -->
+  <RP_KeepApartNoCell>No bed for {0} in another cell.</RP_KeepApartNoCell>
+  <RP_KeepApartNoWing>No bed for {0} on another wing.</RP_KeepApartNoWing>
+  <RP_KeepApartNoCellEither>No bed for {0} or {1} in another cell.</RP_KeepApartNoCellEither>
+  <RP_KeepApartNoWingEither>No bed for {0} or {1} on another wing.</RP_KeepApartNoWingEither>
+  <RP_KeepApartBreach>Both in one patch of the {0} at {1}:00.</RP_KeepApartBreach>
+  <RP_KeepApartSameJob>Both work in the {0}.</RP_KeepApartSameJob>
+  <RP_KeepApartFileLine>Kept apart from {0}, since day {1} - {2}.</RP_KeepApartFileLine>
+  <RP_KeepApartIntelLine>{0} and {1} - since day {2}, {3}</RP_KeepApartIntelLine>
+
+  <!-- The buttons and the window. -->
+  <RP_KeepApartButton>Keep apart</RP_KeepApartButton>
+  <RP_KeepApartLiftShort>Lift</RP_KeepApartLiftShort>
+  <RP_KeepApartPairTip>Keep {0} and {1} apart. They are never put in one cell, in different wings when a bed allows, not in the same patch of a yard, a canteen or another shared room, and not in the same class or workshop.</RP_KeepApartPairTip>
+  <RP_KeepApartLiftTip>Lift the order that keeps {0} and {1} apart.</RP_KeepApartLiftTip>
+  <RP_KeepApartTrialTip>Keep a witness apart from {0}, or lift the order that does.</RP_KeepApartTrialTip>
+  <RP_KeepApartOption>Keep {0} apart from {1}</RP_KeepApartOption>
+  <RP_KeepApartLiftOption>Lift the order that keeps {0} apart from {1}</RP_KeepApartLiftOption>
+  <RP_KeepApartTitle>Keep {0} apart from</RP_KeepApartTitle>
+  <RP_KeepApartHint>The prison puts the two in different cells, in different wings when a bed allows, not in the same patch of a yard, a canteen or another shared room, and not in the same class or workshop. It cannot always manage it, and the file and Intel say so then.</RP_KeepApartHint>
+  <RP_FileKeepApart>Keep apart...</RP_FileKeepApart>
+  <RP_FileKeepApartTip>Pick another inmate to keep {0} from, or lift an order that is there.</RP_FileKeepApartTip>
+  <RP_IntelApart>Kept apart</RP_IntelApart>
+  <RP_IntelHint_Apart>No orders. Use the Keep apart button on a feud, a trial or a debt here, or on an inmate's file.</RP_IntelHint_Apart>
+  <RP_IntelTip_Apart>{0} and {1} are kept apart. The placement honours it where it can, and a line under the order says when it cannot.</RP_IntelTip_Apart>
+
+  <!-- The letters. -->
+  <RP_TrialApartText>Or keep them apart from {0} - the prison puts them in other cells and wings where the beds allow, and the order says when it cannot.</RP_TrialApartText>
+  <RP_TrialCase_Apart>Keep the witnesses apart from the accused</RP_TrialCase_Apart>
+  <RP_TrialNoApart>Every witness here is kept apart from the accused already, or the accused is gone.</RP_TrialNoApart>
+  <RP_TrialKeptApart>{0} witness(es) are kept apart from {1}.</RP_TrialKeptApart>
+  <RP_LeftGang_Apart>Keep them apart from the gang's highest-ranked member</RP_LeftGang_Apart>
+  <RP_LeftGang_NoBoss>You know of nobody from the old gang in the prison.</RP_LeftGang_NoBoss>
+  <RP_LeftGang_AlreadyApart>They are kept apart from {0} already.</RP_LeftGang_AlreadyApart>
+  <RP_BedOnlyWithPartner>{0} cannot be moved to the {1} wing - the only bed free there is in a cell with someone you keep them apart from.</RP_BedOnlyWithPartner>
+  <RP_BedOnlyWithPartnerStays>{0} is moved to the {1} wing on paper and stays where they are - the only bed free there is in a cell with someone you keep them apart from. The hourly pass moves them when another bed is free.</RP_BedOnlyWithPartnerStays>
+  <RP_Debt_Apart>Keep them apart</RP_Debt_Apart>
+  <RP_DebtApartGone>One of them is gone.</RP_DebtApartGone>
+  <RP_DebtApartAlready>They are kept apart from {0} already.</RP_DebtApartAlready>
+</LanguageData>

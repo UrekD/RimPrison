@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_Canteen</defName>
+    <label>canteen</label>
+    <description>Where inmates eat during meal times. Needs tables, chairs and food (cooks put meals here: place a stockpile or serving counter in the canteen).</description>
+    <color>(0.95, 0.75, 0.25)</color>
+    <gangTurf>true</gangTurf>
+    <uiOrder>10</uiOrder>
+    <keepable>true</keepable>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_Yard</defName>
+    <label>yard</label>
+    <description>Outdoor free-time area inside the perimeter. Inmates spend free time here: fresh air, recreation, socializing.</description>
+    <color>(0.35, 0.8, 0.35)</color>
+    <gangTurf>true</gangTurf>
+    <uiOrder>20</uiOrder>
+    <keepable>true</keepable>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_CommonRoom</defName>
+    <label>common room</label>
+    <description>Indoor free-time area with recreation. Used for free time when there is no yard, or alongside it.</description>
+    <color>(0.55, 0.85, 0.75)</color>
+    <gangTurf>true</gangTurf>
+    <uiOrder>25</uiOrder>
+    <keepable>true</keepable>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_Shower</defName>
+    <label>showers</label>
+    <description>Shower block. Inmates wash here during shower time.</description>
+    <color>(0.35, 0.65, 0.95)</color>
+    <uiOrder>30</uiOrder>
+    <keepable>true</keepable>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_Holding</defName>
+    <label>holding</label>
+    <description>Where guards walk new inmates from the state shuttle, to wait for a search before they are sent to their cells.</description>
+    <color>(0.9, 0.5, 0.2)</color>
+    <uiOrder>40</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_Kitchen</defName>
+    <label>kitchen</label>
+    <description>Staff-only cooking area. Inmates cannot enter.</description>
+    <color>(0.85, 0.4, 0.4)</color>
+    <inmateAccess>false</inmateAccess>
+    <staffOnly>true</staffOnly>
+    <uiOrder>50</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_StaffRoom</defName>
+    <label>staff room</label>
+    <description>Where staff on site take their shift breaks: somewhere to sit (any seat; a table to sit at is better), a cup of tea, a chat away from the wings. Staff come back from a break here in better spirits, the more so the better the room (impressiveness). Inmates cannot enter.</description>
+    <color>(0.75, 0.45, 0.75)</color>
+    <inmateAccess>false</inmateAccess>
+    <staffOnly>true</staffOnly>
+    <uiOrder>55</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_Morgue</defName>
+    <label>morgue</label>
+    <description>Staff-only room where the prison's dead are put. Guards, cooks, workmen and janitors carry the body of an inmate or a staff member here, instead of leaving it where it fell to rot in front of everybody. Inmates cannot enter.</description>
+    <color>(0.5, 0.55, 0.6)</color>
+    <inmateAccess>false</inmateAccess>
+    <staffOnly>true</staffOnly>
+    <uiOrder>57</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_BurialPlot</defName>
+    <label>burial plot</label>
+    <description>A staff-only patch of bare ground (soil, not a floor) where the prison buries the dead nobody will send for. Workmen carry the body of an inmate with no family in touch, or of a member of staff with none, here from the morgue and dig a grave (each takes two cells). With no plot, a body with no family goes home on the state shuttle with the others and nobody writes about it. The dead who have a family always go home on the shuttle, and the family writes to the warden. Inmates cannot enter.</description>
+    <color>(0.45, 0.6, 0.4)</color>
+    <inmateAccess>false</inmateAccess>
+    <staffOnly>true</staffOnly>
+    <uiOrder>58</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_HearingRoom</defName>
+    <label>hearing room</label>
+    <description>Where the parole board sits. Needs an office desk (the board's) and at least one chair for the inmate. With one, inmates who are due a hearing are called here between 9:00 and 17:00, walked in by a guard, and sit before the board (an administrator if there is one, else the warden's chair); the board decides on what is in their file and who speaks for or against them, and the decision letter lists them. Every chair is one hearing an hour; the rest are decided by the board at midnight. Without a hearing room the board decides at midnight, unseen.</description>
+    <color>(0.85, 0.7, 0.35)</color>
+    <requiredThings><li>RP_OfficeDesk</li><li>DiningChair</li></requiredThings>
+    <uiOrder>57</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_StaffOnly</defName>
+    <label>staff only</label>
+    <description>Offices, staff rooms, storage, armoury. Inmates cannot enter; doors into it are staff-only for them.</description>
+    <color>(0.6, 0.3, 0.6)</color>
+    <inmateAccess>false</inmateAccess>
+    <staffOnly>true</staffOnly>
+    <uiOrder>60</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_Deliveries</defName>
+    <label>deliveries</label>
+    <description>Where the state shuttle's crew sets down the supplies it brings, instead of on the pad. Keep it outside the perimeter, near the shuttle pad.</description>
+    <color>(0.75, 0.75, 0.75)</color>
+    <inmateAccess>false</inmateAccess>
+    <staffOnly>true</staffOnly>
+    <uiOrder>70</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_Exports</defName>
+    <label>exports</label>
+    <description>Goods left here (prison industry output) are loaded on the state shuttle before it lifts off, and sold. Keep it near the shuttle pad.</description>
+    <color>(0.45, 0.45, 0.45)</color>
+    <inmateAccess>false</inmateAccess>
+    <staffOnly>true</staffOnly>
+    <uiOrder>80</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_WingMinimum</defName>
+    <label>minimum security wing</label>
+    <description>Paint over cells: their beds take only minimum security inmates.</description>
+    <color>(0.6, 0.6, 0.65)</color>
+    <security>RP_Minimum</security>
+    <uiOrder>1</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_WingMedium</defName>
+    <label>medium security wing</label>
+    <description>Paint over cells: their beds take only medium security inmates.</description>
+    <color>(0.95, 0.55, 0.15)</color>
+    <security>RP_Medium</security>
+    <uiOrder>2</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_WingMaximum</defName>
+    <label>maximum security wing</label>
+    <description>Paint over cells: their beds take only maximum security inmates.</description>
+    <color>(0.85, 0.2, 0.15)</color>
+    <security>RP_Maximum</security>
+    <uiOrder>3</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_WingProtective</defName>
+    <label>protective custody wing</label>
+    <description>Paint over cells: their beds take only inmates in protective custody.</description>
+    <color>(0.3, 0.75, 0.8)</color>
+    <security>RP_Protective</security>
+    <uiOrder>4</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_WingDeathRow</defName>
+    <label>death row wing</label>
+    <description>Paint over cells: their beds take only death row inmates. Death row inmates are only housed here.</description>
+    <color>(0.35, 0.1, 0.12)</color>
+    <security>RP_DeathRow</security>
+    <uiOrder>5</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_WingSupermax</defName>
+    <label>supermax security wing</label>
+    <description>Paint over cells: their beds take only supermax inmates, who leave them only with a guard. A cell with more than one bed takes none. Paint the shower room of the wing with it too (supermax inmates are walked to a shower that has no one else in it, the wing's own before any other), and give it a supermax yard.</description>
+    <color>(0.6, 0.25, 0.75)</color>
+    <security>RP_Supermax</security>
+    <uiOrder>6</uiOrder>
+  </RimPrison.PrisonZoneDef>
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_SupermaxYard</defName>
+    <label>supermax yard</label>
+    <description>A small yard of the supermax wing, at least four cells. A guard walks one supermax inmate out to it for their hour alone; no one else's free time ever goes here, and the hour is skipped while another inmate is in the patch. Wall it off from everything else: the doors of the wing open to an inmate only on the guard's walk, but a yard that opens on the general yard would not be alone. Several inmates need several patches or the hours of the regime: a message at midnight names who missed the yard.</description>
+    <color>(0.7, 0.5, 0.85)</color>
+    <yardFor>RP_Supermax</yardFor>
+    <uiOrder>7</uiOrder>
+  </RimPrison.PrisonZoneDef>
+</Defs>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Release preparation and supervision (Story/ReleasePrep.cs). No capital after a colon: RimWorld capitalises the letter after ": " (a dash or a comma instead). -->
+  <RP_LodgingFunded>The lodging for {0} is booked and paid for ({1}).</RP_LodgingFunded>
+  <RP_LodgingUnfunded>The lodging promised to {0} could not be paid for ({1}) and was not booked. A promise nobody has funded changes nothing.</RP_LodgingUnfunded>
+  <RP_LodgingNote>Lodging booked for {0}</RP_LodgingNote>
+  <RP_InterviewWon>{0} had the interview arranged for them and got the job, in the trade they learned inside ({1}).</RP_InterviewWon>
+  <RP_InterviewLost>{0} had the interview arranged for them, but did not get the job ({1}).</RP_InterviewLost>
+  <RP_SetbackLabel>{0} - a setback</RP_SetbackLabel>
+  <RP_SetbackJobText>Word has reached the release office that {0}, who left {1} days ago, has lost their job. They are reviewed again in {2} days. A payment of {3} toward getting them back to work may help, and may not - nothing is promised, and nothing paid can undo a new offence. The Intake tab has the case.</RP_SetbackJobText>
+  <RP_SetbackAddressText>Word has reached the release office that {0}, who left {1} days ago, has lost the address they were living at. They are reviewed again in {2} days. A payment of {3} toward a place to stay may help, and may not - nothing is promised, and nothing paid can undo a new offence. The Intake tab has the case.</RP_SetbackAddressText>
+  <RP_Chr_SetbackJob>News - {0}, released lately, lost their job.</RP_Chr_SetbackJob>
+  <RP_Chr_SetbackAddress>News - {0}, released lately, lost their address.</RP_Chr_SetbackAddress>
+  <RP_SetbackMended>{0} is back on their feet - the setback is mended.</RP_SetbackMended>
+  <RP_Chr_SetbackMended>News - {0} mended the setback and is getting on again.</RP_Chr_SetbackMended>
+  <RP_SupervisionDone>{0} came through {1} days of review without trouble.</RP_SupervisionDone>
+  <RP_Chr_SupervisionDone>{0} completed {1} days of review after release without trouble.</RP_Chr_SupervisionDone>
+  <RP_HelpNoSetback>Only a setback that is open can be helped, and nothing paid mends a new offence.</RP_HelpNoSetback>
+  <RP_HelpAlready>Help has been given for this setback already, once.</RP_HelpAlready>
+  <RP_HelpNoFunds>There is not enough money for the help.</RP_HelpNoFunds>
+  <RP_HelpNote>Help for {0} after a setback</RP_HelpNote>
+  <RP_HelpOffered>Help of {1} is offered to {0}. It is paid whatever comes of it.</RP_HelpOffered>
+  <RP_Chr_HelpOffered>The warden offered {0} help of {1} after a setback.</RP_Chr_HelpOffered>
+  <RP_PrepNoHandler>There is no administrator or counsellor to handle the case.</RP_PrepNoHandler>
+  <RP_PrepNoCapacity>Every administrator and counsellor already has all the cases they can handle.</RP_PrepNoCapacity>
+  <RP_PrepNotYet>Not within five days of a release or a hearing.</RP_PrepNotYet>
+  <RP_PrepHoused>They have a family to go home to.</RP_PrepHoused>
+  <RP_PrepNoQualification>They hold no certificate from the vocational courses to interview on.</RP_PrepNoQualification>
+  <RP_PrepHasJob>They have a job waiting already.</RP_PrepHasJob>
+  <RP_PrepJobWaiting>a job is waiting</RP_PrepJobWaiting>
+  <RP_PrepJobTrade>certified in {0}, no job known</RP_PrepJobTrade>
+  <RP_PrepJobNone>no job known</RP_PrepJobNone>
+  <RP_PrepJobHeld>in work</RP_PrepJobHeld>
+  <RP_PrepJobInterview>in work (interview)</RP_PrepJobInterview>
+  <RP_PrepHousingFamily>family ({0})</RP_PrepHousingFamily>
+  <RP_PrepHousingNone>no address known</RP_PrepHousingNone>
+  <RP_PrepHousingHeld>housed</RP_PrepHousingHeld>
+  <RP_PrepHousingLodged>in paid lodging</RP_PrepHousingLodged>
+  <RP_PrepSupportLodging>lodging ({0})</RP_PrepSupportLodging>
+  <RP_PrepSupportInterview>a job interview</RP_PrepSupportInterview>
+  <RP_PrepSupportNone>nothing beyond what they have</RP_PrepSupportNone>
+  <RP_PrepHearingDue>a hearing is due</RP_PrepHearingDue>
+  <RP_PrepHearingIn>hearing in {0} days</RP_PrepHearingIn>
+  <RP_PrepReleaseIn>release in {0} days</RP_PrepReleaseIn>
+  <RP_PrepLater>nothing within five days</RP_PrepLater>
+  <RP_FilePrep>Release planning - {0}. Job - {1}. Housing - {2}. Arranged - {3}. Cases handled {4} of {5}.</RP_FilePrep>
+  <RP_CaseSupportPromised>Promised - {0}.</RP_CaseSupportPromised>
+  <RP_CaseSupportDone>Done - {0}.</RP_CaseSupportDone>
+  <RP_CaseSupportUnfunded>Promised but not funded - {0}.</RP_CaseSupportUnfunded>
+  <RP_CaseAwaiting>{0} is released and waiting for the shuttle.</RP_CaseAwaiting>
+  <RP_CaseReviewing>{0} - review {1} of {2}, job - {3}, housing - {4}.</RP_CaseReviewing>
+  <RP_CaseSetbackJob>Lost their job, reviewed in {0} review(s). {1}</RP_CaseSetbackJob>
+  <RP_CaseSetbackAddress>Lost their address, reviewed in {0} review(s). {1}</RP_CaseSetbackAddress>
+  <RP_CaseHelped>Help given.</RP_CaseHelped>
+  <RP_CaseNotHelped>No help yet.</RP_CaseNotHelped>
+  <RP_CaseStayedOut>{0} stayed out for the {1} days of review.</RP_CaseStayedOut>
+  <RP_CaseRearrested>{0} was arrested again for {1}.</RP_CaseRearrested>
+  <RP_CaseVoided>{0} - the case was closed with nobody to review (they died, never left, are back inside or work for the prison now).</RP_CaseVoided>
+  <RP_PrepPromiseDropped>What was arranged for {0} ({1}) no longer made sense when they were released, and was dropped - the handler's place is free again.</RP_PrepPromiseDropped>
+  <RP_ParoleLetter_Lodging>staying in the lodging the prison paid for</RP_ParoleLetter_Lodging>
+  <RP_PrepHeader>Release planning</RP_PrepHeader>
+  <RP_PrepHeaderTip>Inmates within five days of release or of a hearing. For each the warden can fund lodging, arrange a job interview on a vocational certificate, or leave them to what they have. Lodging is paid when they leave, if the money is there; a promise nobody funds does nothing. After they leave they are reviewed once a day, and the outcome (stayed out or arrested again) is counted only when it is seen.</RP_PrepHeaderTip>
+  <RP_PrepCapacityLine>Cases handled {0} of {1} - {2} administrator(s) and counsellor(s), {3} cases each at once.</RP_PrepCapacityLine>
+  <RP_PrepNoRows>Nobody is within five days of a release or a hearing.</RP_PrepNoRows>
+  <RP_PrepRowLine>{0} - {1} - job {2}, housing {3}</RP_PrepRowLine>
+  <RP_PrepBtnLodging>Fund lodging ({0})</RP_PrepBtnLodging>
+  <RP_PrepBtnInterview>Arrange an interview</RP_PrepBtnInterview>
+  <RP_PrepBtnNone>Leave to existing support</RP_PrepBtnNone>
+  <RP_PrepBtnHelp>Offer help ({0})</RP_PrepBtnHelp>
+  <RP_PrepCohortLine>After release - {0} under review (no outcome yet, not counted as stayed out or reoffended), {1} stayed out, {2} arrested again.</RP_PrepCohortLine>
+  <RP_PrepCasesHeader>Cases under review</RP_PrepCasesHeader>
+  <RP_PrepHelpTip>Bounded help for the setback - paid whatever comes of it, once. It mends the setback about {0} of the time. It cannot undo a new offence.</RP_PrepHelpTip>
+  <RP_PrepMore>...and {0} more.</RP_PrepMore>
+  <RP_Stat_supervisionStarted>Releases put under review</RP_Stat_supervisionStarted>
+  <RP_StatTip_supervisionStarted>Releases whose review began when the inmate physically left.</RP_StatTip_supervisionStarted>
+  <RP_Stat_supervisionStayedOut>Reviews ended, stayed out</RP_Stat_supervisionStayedOut>
+  <RP_StatTip_supervisionStayedOut>Released inmates who came through their whole review without being arrested again.</RP_StatTip_supervisionStayedOut>
+  <RP_Stat_supervisionRearrested>Reviews ended, arrested again</RP_Stat_supervisionRearrested>
+  <RP_StatTip_supervisionRearrested>Released inmates arrested again during their review (also counted under reoffended, when the arrest was found).</RP_StatTip_supervisionRearrested>
+  <RP_Stat_supervisionSetbacks>Setbacks reported</RP_Stat_supervisionSetbacks>
+  <RP_StatTip_supervisionSetbacks>Jobs lost and addresses withdrawn after release.</RP_StatTip_supervisionSetbacks>
+  <RP_Stat_supervisionHelped>Help offered after a setback</RP_Stat_supervisionHelped>
+  <RP_StatTip_supervisionHelped>Setbacks the warden paid to help with (it does not always work).</RP_StatTip_supervisionHelped>
+  <RP_Stat_supervisionLodged>Lodging paid for</RP_Stat_supervisionLodged>
+  <RP_StatTip_supervisionLodged>Released inmates whose promised lodging was actually paid for when they left.</RP_StatTip_supervisionLodged>
+  <RP_Stat_supervisionInterviews>Job interviews held</RP_Stat_supervisionInterviews>
+  <RP_StatTip_supervisionInterviews>Interviews the warden arranged that were held after release (won or not).</RP_StatTip_supervisionInterviews>
+</LanguageData>

@@ -1,0 +1,19 @@
+# RimWorld game install (Ludeon Studios files), in case the repo is laid over an install. Never commit them.
+/Data/
+/MonoBleedingEdge/
+/RimWorldWin64_Data/
+/RimWorldWin64.exe
+/UnityPlayer.dll
+/Source/
+
+# Local tool state and scratch (decompiled game code goes in .work/ and must never be committed)
+/.serena/
+/graphify-out/
+/.work/
+worktrees/
+
+# Build outputs
+bin/
+obj/
+/Mods/RimPrison/Assemblies/
+/dist/

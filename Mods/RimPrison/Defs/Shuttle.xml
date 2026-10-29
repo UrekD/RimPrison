@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The state shuttle (see Shuttle/*.cs). Only Core things: ShuttleBase and ShuttleSkyfallerBase are Core defs, the sounds are Core's, the texture is
+       Core's Things/Building/Misc/Shuttle. Royalty's ShuttleIncoming/ShuttleLeaving skyfallers, its TransportShipDef and its landing beacon are not used, so the
+       mod needs no DLC. The shuttle is the state's, not the colony's: no transporter, no pilot, no gizmos. -->
+
+  <!-- Landed: a plain building on the pad (the state's colours over Core's hull), holding the arrivals until they step off. -->
+  <ThingDef ParentName="ShuttleBase">
+    <defName>RP_StateShuttle</defName>
+    <label>state shuttle</label>
+    <description>The state's penal shuttle: it brings new inmates and the prison's supplies, and takes released inmates and exported goods away. It lands on the shuttle pad, waits a couple of hours, and leaves whether or not everybody boarded.</description>
+    <thingClass>RimPrison.Building_StateShuttle</thingClass>
+    <graphicData>
+      <color>(96,136,232)</color>
+    </graphicData>
+    <useHitPoints>false</useHitPoints>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <comps Inherit="False">
+      <li Class="CompProperties_AmbientSound">
+        <sound>ShuttleIdle_Ambience</sound>
+      </li>
+    </comps>
+    <inspectorTabs Inherit="False" />
+    <killedLeavings Inherit="False" />
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <forceDebugSpawnable>false</forceDebugSpawnable>
+  </ThingDef>
+
+  <!-- In the air: Core's shuttle skyfaller base, with Royalty's flight curves (copied, not referenced) and Core's sounds. -->
+  <ThingDef ParentName="ShuttleSkyfallerBase">
+    <defName>RP_ShuttleIncoming</defName>
+    <label>state shuttle (incoming)</label>
+    <thingClass>RimPrison.StateShuttleIncoming</thingClass>
+    <graphicData>
+      <color>(96,136,232)</color>
+    </graphicData>
+    <skyfaller>
+      <anticipationSound>Shuttle_Landing</anticipationSound>
+      <anticipationSoundTicks>250</anticipationSoundTicks>
+      <ticksToImpactRange>200~250</ticksToImpactRange>
+      <angleCurve>
+        <points>
+          <li>(0,-60)</li>
+          <li>(1,-90)</li>
+        </points>
+      </angleCurve>
+      <rotationCurve>
+        <points>
+          <li>(0,30)</li>
+          <li>(0.5,5)</li>
+          <li>(0.9,-5)</li>
+          <li>(0.95,0)</li>
+        </points>
+      </rotationCurve>
+      <zPositionCurve>
+        <points>
+          <li>(0.95,2.5)</li>
+          <li>(1,0)</li>
+        </points>
+      </zPositionCurve>
+      <speedCurve>
+        <points>
+          <li>(0.6,0.6)</li>
+          <li>(0.95,0.1)</li>
+        </points>
+      </speedCurve>
+    </skyfaller>
+  </ThingDef>
+
+  <ThingDef ParentName="ShuttleSkyfallerBase">
+    <defName>RP_ShuttleLeaving</defName>
+    <label>state shuttle (leaving)</label>
+    <thingClass>RimPrison.StateShuttleLeaving</thingClass>
+    <graphicData>
+      <color>(96,136,232)</color>
+    </graphicData>
+    <skyfaller>
+      <reversed>true</reversed>
+      <anticipationSound>Shuttle_Leaving</anticipationSound>
+      <anticipationSoundTicks>-10</anticipationSoundTicks>
+      <ticksToImpactRange>-40~-15</ticksToImpactRange>
+      <moteSpawnTime>0.05</moteSpawnTime>
+      <shadow>Things/Skyfaller/SkyfallerShadowRectangle</shadow>
+      <shadowSize>(5.5,3.5)</shadowSize>
+      <motesPerCell>1</motesPerCell>
+      <angleCurve>
+        <points>
+          <li>(0,90)</li>
+          <li>(1,70)</li>
+        </points>
+      </angleCurve>
+      <rotationCurve>
+        <points>
+          <li>(0,0)</li>
+          <li>(0.15,10)</li>
+          <li>(0.5,-5)</li>
+        </points>
+      </rotationCurve>
+      <zPositionCurve>
+        <points>
+          <li>(0,0)</li>
+          <li>(0.08,2)</li>
+        </points>
+      </zPositionCurve>
+      <speedCurve>
+        <points>
+          <li>(0,0.2)</li>
+          <li>(0.4,0.7)</li>
+        </points>
+      </speedCurve>
+    </skyfaller>
+  </ThingDef>
+
+  <!-- The pad the warden builds: flat concrete with painted lines, walkable, nothing to wipe (it is not an edifice, so the shuttle lands over it and leaves it standing). -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RP_ShuttlePad</defName>
+    <label>shuttle pad</label>
+    <description>A flat concrete pad with painted lines, nine cells by seven. The state's shuttle lands on it every day and waits for a couple of hours: new inmates walk down the ramp, supplies are unloaded around it, released inmates board here. Keep it clear of people and things, outside the perimeter near the gate. Without a pad the shuttle sets down on the nearest clear ground.</description>
+    <designationCategory>RP_Prison</designationCategory>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <size>(9,7)</size>
+    <rotatable>false</rotatable>
+    <fillPercent>0</fillPercent>
+    <canOverlapZones>true</canOverlapZones>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <graphicData>
+      <texPath>Things/Building/RP_ShuttlePad</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(9,7)</drawSize>
+    </graphicData>
+    <costList><Steel>45</Steel></costList>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+      <WorkToBuild>900</WorkToBuild>
+      <Flammability>0</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <claimable>false</claimable>
+    </building>
+    <placeWorkers>
+      <li>PlaceWorker_NotUnderRoof</li>
+      <li>RimPrison.PlaceWorker_ShuttlePad</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <!-- Jobs -->
+  <JobDef>
+    <defName>RP_BoardShuttle</defName>
+    <driverClass>RimPrison.JobDriver_BoardShuttle</driverClass>
+    <reportString>boarding the shuttle.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <!-- (The two escorts are not cut short by a casual interruption, a staff break at the hour's change among them: the supermax and the parole escorts are not either. A guard on a break halfway to the ramp left the inmate there.) -->
+  <JobDef>
+    <defName>RP_EscortArrival</defName>
+    <driverClass>RimPrison.JobDriver_EscortArrival</driverClass>
+    <reportString>escorting TargetA from the shuttle.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <JobDef>
+    <defName>RP_EscortTransfer</defName>
+    <driverClass>RimPrison.JobDriver_EscortTransfer</driverClass>
+    <reportString>escorting TargetA to the shuttle.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <JobDef>
+    <defName>RP_PadDuty</defName>
+    <driverClass>RimPrison.JobDriver_PadDuty</driverClass>
+    <reportString>on pad duty.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>RP_EscortArrival_WorkGiver</defName>
+    <label>meet the shuttle</label>
+    <giverClass>RimPrison.WorkGiver_EscortArrival</giverClass>
+    <workType>Warden</workType>
+    <verb>escort</verb>
+    <gerund>escorting</gerund>
+    <priorityInType>140</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RP_EscortTransfer_WorkGiver</defName>
+    <label>escort transfers</label>
+    <giverClass>RimPrison.WorkGiver_EscortTransfer</giverClass>
+    <workType>Warden</workType>
+    <verb>escort</verb>
+    <gerund>escorting</gerund>
+    <priorityInType>138</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RP_PadDuty_WorkGiver</defName>
+    <label>pad duty</label>
+    <giverClass>RimPrison.WorkGiver_PadDuty</giverClass>
+    <workType>Warden</workType>
+    <verb>guard</verb>
+    <gerund>guarding</gerund>
+    <priorityInType>130</priorityInType>
+  </WorkGiverDef>
+
+  <!-- Released, paroled and transferred inmates: to the shuttle if it is down, else they see to their needs and wait for it (in holding, or in reception by the pad). Inserted before vanilla's "exit the map if released". -->
+  <ThinkTreeDef>
+    <defName>RP_Outbound</defName>
+    <insertTag>Humanlike_PostDuty</insertTag>
+    <insertPriority>200</insertPriority>
+    <thinkRoot Class="RimPrison.ThinkNode_ConditionalOutbound">
+      <subNodes>
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Misc</tagToGive>
+          <subNodes>
+            <li Class="RimPrison.JobGiver_Outbound" />
+          </subNodes>
+        </li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+</Defs>

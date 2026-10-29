@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Vanilla drugs are contraband inside: smuggled by visitors, used to cope, found by searches. -->
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/ThingDef[defName="SmokeleafJoint"]</xpath>
+    <value><li Class="RimPrison.ContrabandExtension"><kind>Drug</kind><smuggleWeight>3</smuggleWeight><stackCount>3</stackCount></li></value>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/ThingDef[defName="Beer"]</xpath>
+    <value><li Class="RimPrison.ContrabandExtension"><kind>Drug</kind><smuggleWeight>2</smuggleWeight><stackCount>2</stackCount></li></value>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/ThingDef[defName="Yayo"]</xpath>
+    <value><li Class="RimPrison.ContrabandExtension"><kind>Drug</kind><smuggleWeight>1</smuggleWeight><stackCount>2</stackCount></li></value>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/ThingDef[defName="Flake"]</xpath>
+    <value><li Class="RimPrison.ContrabandExtension"><kind>Drug</kind><smuggleWeight>0.7</smuggleWeight><stackCount>2</stackCount></li></value>
+  </Operation>
+</Patch>

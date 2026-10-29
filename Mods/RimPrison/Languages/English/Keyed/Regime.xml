@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The regime pulled (Regime/RegimeFeedback.cs, Regime/RegimeOrders.cs, Events/Demands.cs, Story/Inspector.cs): the strip under each regime row, today's orders, the demands that name the timetable and the inspector's line on hours locked up. No capital after a colon: RimWorld capitalises the letter after ": " (a dash or a comma instead). -->
+
+  <!-- The strip: yesterday, hour by hour. -->
+  <RP_RegimeFeedbackNone>{0}:00 - no numbers for this hour of yesterday. They are not saved, so a game that was loaded since has none for the hours before the load, and a level with nobody in it has none. A day fills them in.</RP_RegimeFeedbackNone>
+  <RP_RegimeFeedbackLine>{0}:00 {1} - {2}% in place (of {3} inmates)</RP_RegimeFeedbackLine>
+  <RP_RegimeFeedbackIncident>1 incident</RP_RegimeFeedbackIncident>
+  <RP_RegimeFeedbackIncidents>{0} incidents</RP_RegimeFeedbackIncidents>
+  <RP_RegimeFeedbackMissed>{0} missed the meal</RP_RegimeFeedbackMissed>
+  <RP_RegimeFeedbackHelp>The thin bars under each row are yesterday. The height is the share of the level who stood where the slot wanted them, a red dot is a misconduct in the hour and an orange one a meal missed. Hover an hour for the numbers. They are not kept across a load.</RP_RegimeFeedbackHelp>
+
+  <!-- Today's orders. -->
+  <RP_OrdersBtn>Today...</RP_OrdersBtn>
+  <RP_OrdersBtnTip>Today's orders for {0} - call the yard off, lock up early or give a second shower, for the rest of today only. The timetable is back at midnight.</RP_OrdersBtnTip>
+  <RP_OrderMenu_YardOff>Call off the yard today</RP_OrderMenu_YardOff>
+  <RP_OrderMenu_EarlyLockup>Lock up early today</RP_OrderMenu_EarlyLockup>
+  <RP_OrderMenu_DoubleShower>A second shower today</RP_OrderMenu_DoubleShower>
+  <RP_OrderMenuOn>{0} - ordered, click to withdraw</RP_OrderMenuOn>
+  <RP_OrderTag_YardOff>No yard</RP_OrderTag_YardOff>
+  <RP_OrderTag_EarlyLockup>Early lockup</RP_OrderTag_EarlyLockup>
+  <RP_OrderTag_DoubleShower>Extra shower</RP_OrderTag_DoubleShower>
+  <RP_OrderTagMany>{0} orders</RP_OrderTagMany>
+  <RP_OrderTagTip>Today's orders for {0} - {1}.\n\nThey lapse at midnight, in {2} hours (or less), and the timetable is back.</RP_OrderTagTip>
+  <RP_OrderAt_EarlyLockup>early lockup from {0}:00</RP_OrderAt_EarlyLockup>
+  <RP_OrderAt_DoubleShower>a second shower at {0}:00</RP_OrderAt_DoubleShower>
+  <RP_Order_YardOff>the yard called off</RP_Order_YardOff>
+  <RP_Order_EarlyLockup>early lockup</RP_Order_EarlyLockup>
+  <RP_Order_DoubleShower>a second shower</RP_Order_DoubleShower>
+  <RP_OrderTip_YardOff>Call the yard off for {0} for the rest of today. Its free time (and the supermax yard hour) is spent in the cells until midnight, when the timetable is back. Free time is one slot, so this also stops visits whose next hour is free time, the free-time programs and the common rooms; a supermax yard escort already under way finishes its walk. The hours that do not run are not counted for a promise of more of them.</RP_OrderTip_YardOff>
+  <RP_OrderTip_EarlyLockup>Lock {0} up early. From {1}:00, or from now if that is later, everything but sleep, meals and showers is a lockup, until midnight, when the timetable is back.</RP_OrderTip_EarlyLockup>
+  <RP_OrderTip_DoubleShower>Give {0} a second shower today. The next hour of the day that is not sleep, a meal or a shower becomes one, until midnight.</RP_OrderTip_DoubleShower>
+  <RP_OrderTipOn>Ordered for {0} today - {1}. Click to withdraw it. It ends at midnight in any case.</RP_OrderTipOn>
+  <RP_OrderNoHourLeft>no hour left today that is not sleep, a meal or a shower</RP_OrderNoHourLeft>
+  <RP_RegimeOrderCell>Today's order - {0} instead of {1}.</RP_RegimeOrderCell>
+  <RP_Chr_Order_YardOff>Today's order for {0} - the yard is called off.</RP_Chr_Order_YardOff>
+  <RP_Chr_Order_EarlyLockup>Today's order for {0} - locked up early, from {1}:00.</RP_Chr_Order_EarlyLockup>
+  <RP_Chr_Order_DoubleShower>Today's order for {0} - a second shower at {1}:00.</RP_Chr_Order_DoubleShower>
+  <RP_Chr_OrderLifted_YardOff>The order for {0} withdrawn - the yard is open again.</RP_Chr_OrderLifted_YardOff>
+  <RP_Chr_OrderLifted_EarlyLockup>The order for {0} withdrawn - no early lockup.</RP_Chr_OrderLifted_EarlyLockup>
+  <RP_Chr_OrderLifted_DoubleShower>The order for {0} withdrawn - no second shower.</RP_Chr_OrderLifted_DoubleShower>
+  <RP_Chr_OrdersLapsed>Midnight - the day's orders for {0} lapse ({1}), and the timetable is back.</RP_Chr_OrdersLapsed>
+
+  <!-- Demands that name the timetable. -->
+  <RP_DemandSlot_Yard>yard hour</RP_DemandSlot_Yard>
+  <RP_DemandSlot_YardAlone>yard hour alone</RP_DemandSlot_YardAlone>
+  <RP_DemandSlot_First>a {0}</RP_DemandSlot_First>
+  <RP_DemandSlot_Second>a second {0}</RP_DemandSlot_Second>
+  <RP_DemandSlot_Third>a third {0}</RP_DemandSlot_Third>
+  <RP_DemandSlot_More>yet another {0} ({1} a day)</RP_DemandSlot_More>
+  <RP_DemandSlotText>{2} has come to the warden on behalf of the inmates of {4}. They are cooped up - their {0} is being neglected, and many of them are suffering for it.\n\nThey ask for {3} for {4}. Promise it within {1} hours (the hour has to be on the timetable, and run, through the last day of the promise)? Keep the promise and things calm down; break it and they will not forget. Refuse, and they resent it now.\n\nNo answer is a refusal.</RP_DemandSlotText>
+  <RP_DemandSlotPromised>The warden promised {0} for {1} within {2} hours.</RP_DemandSlotPromised>
+  <RP_DemandSlotMetText>The promise about the inmates' {0} was kept - the timetable of {1} ran {2} of the {3} hours promised in the last day. Tension eases and word gets around.</RP_DemandSlotMetText>
+  <RP_DemandSlotBrokenText>The warden promised more hours for the inmates' {0}, and the timetable of {1} ran {2} of the {3} promised in the last day. They are furious.</RP_DemandSlotBrokenText>
+
+  <!-- The inspector. -->
+  <RP_Finding_orders>{0} was kept in by day orders (the yard called off, an early lockup) on {1} of the last {2} days - the state wants no more than {3}. Put it on the timetable, or stop ordering</RP_Finding_orders>
+  <RP_Week_OrdersLevel>{0} ({1} days)</RP_Week_OrdersLevel>
+  <RP_Week_Orders>Kept in by day orders on more than {2} of the last {1} days - {0}. An order is for the day, not for the week - the timetable is where it belongs.</RP_Week_Orders>
+  <RP_Finding_locked>{0} is locked up {1} hours a day and is out of the cells for {2} - the state wants at least {3}</RP_Finding_locked>
+</LanguageData>

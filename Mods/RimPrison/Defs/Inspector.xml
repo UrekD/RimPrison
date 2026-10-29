@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The state's inspector, who walks the prison and writes down what has to be put right: see Story/Inspector.cs. -->
+  <RimPrison.StaffRoleDef>
+    <defName>RP_Inspector</defName>
+    <label>state inspector</label>
+    <description>A state inspector, in the prison for the length of a visit. Walks a wing, the canteen, the kitchen and the yard, and writes down what has to be put right. Does no work here and is not on the payroll.</description>
+    <dailyWage>0</dailyWage>
+    <hireCost>0</hireCost>
+    <uniformColor>(0.2, 0.2, 0.15)</uniformColor>
+    <uiOrder>996</uiOrder>
+    <hireable>false</hireable>
+    <visitor>true</visitor>
+  </RimPrison.StaffRoleDef>
+</Defs>

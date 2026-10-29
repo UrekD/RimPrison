@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Class bookings (Programs tab, Programs/ClassBookings.cs). No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+  <RP_BookButton>Book</RP_BookButton>
+  <RP_BookButtonN>Booked ({0} h)</RP_BookButtonN>
+  <RP_BookButtonTip>Reserve hours of the day for this class. A booked class is tried first when its hour comes, in the room you choose, before the fullest class would take the room and the teacher. When it cannot run, the hour is kept as a miss with its reason; nothing is cancelled and nothing is charged. Who attends and what it costs is the session's, as always.</RP_BookButtonTip>
+  <RP_BookRow>Booked {0}</RP_BookRow>
+  <RP_BookRowRoom>Booked {0} in the room at {1}</RP_BookRowRoom>
+  <RP_BookWarn>Missed {0} hours in a row - see why, or change the booking. It is not cancelled.</RP_BookWarn>
+  <RP_BookMissed>missed at {0} - {1}</RP_BookMissed>
+  <RP_BookMissTip>Missed hours, newest last</RP_BookMissTip>
+  <RP_BookMiss_Stopped>the program is stopped</RP_BookMiss_Stopped>
+  <RP_BookMiss_NoTeacher>no {0} on duty</RP_BookMiss_NoTeacher>
+  <RP_BookMiss_TeacherBusy>the {0} is teaching another class</RP_BookMiss_TeacherBusy>
+  <RP_BookMiss_NoRoom>no room of the {0} with seats</RP_BookMiss_NoRoom>
+  <RP_BookMiss_VenueGone>the booked room is gone (rebuilt, repainted or its seats taken out)</RP_BookMiss_VenueGone>
+  <RP_BookMiss_VenueClosed>the room is not open to the inmates who could attend (kept for other levels)</RP_BookMiss_VenueClosed>
+  <RP_BookMiss_VenueBusy>the room holds another class</RP_BookMiss_VenueBusy>
+  <RP_BookMiss_ZoneInUse>the regime has inmates in the {0} (a meal)</RP_BookMiss_ZoneInUse>
+  <RP_BookMiss_NoSlot>no eligible inmate has a {0} hour now (a meal, lockup or another activity)</RP_BookMiss_NoSlot>
+  <RP_BookMiss_NobodyEligible>no eligible inmate free for it</RP_BookMiss_NobodyEligible>
+  <RP_BookMiss_TooFew>only one student, and a class needs two - refer them to run it for one</RP_BookMiss_TooFew>
+  <RP_BookMiss_NoFunds>not enough funds for the session</RP_BookMiss_NoFunds>
+  <!-- The booking window. -->
+  <RP_BookTitle>Book {0}</RP_BookTitle>
+  <RP_BookInfo>Taught by the {0}, in the {1}, in the {2} slot of the regime.</RP_BookInfo>
+  <RP_BookHelp>Click an hour to book or free it. Green hours have eligible inmates whose regime gives them this class's slot; red ones have none (a meal, lockup or other activity instead); an orange bar marks an hour another booked class wants the same room or teacher in (the higher priority goes first). A booked class that cannot run is a miss with its reason, and the automatic scheduler fills the room as it would have.</RP_BookHelp>
+  <RP_BookNew>New booking</RP_BookNew>
+  <RP_BookNewFull>Every hour is booked</RP_BookNewFull>
+  <RP_BookRemove>Remove</RP_BookRemove>
+  <RP_BookPriority>Priority {0}</RP_BookPriority>
+  <RP_BookPriorityTip>Of two booked classes that want the same room or teacher in an hour, the higher goes first.</RP_BookPriorityTip>
+  <RP_BookAnyRoom>any room of the {0}</RP_BookAnyRoom>
+  <RP_BookRoomAt>the room at {0}</RP_BookRoomAt>
+  <RP_BookRoomOption>the room at {0} - {1} places</RP_BookRoomOption>
+  <RP_BookRoomGone>the room at {0} is gone - repaint it or book another</RP_BookRoomGone>
+  <RP_BookRoomNote>{0} places, admits {1} of the {2} who could attend</RP_BookRoomNote>
+  <RP_BookRoomNoteNone>no room of the zone has seats</RP_BookRoomNoteNone>
+  <RP_BookHourHeld>{0} - held by another booking of this class</RP_BookHourHeld>
+  <RP_BookHourNobody>{0} - no inmate would take it</RP_BookHourNobody>
+  <RP_BookHourSome>{0} - {1} of the {2} who could attend have its {3} slot</RP_BookHourSome>
+  <RP_BookHourNone>{0} - none of the {1} who could attend has its {2} slot, most have {3}</RP_BookHourNone>
+  <RP_BookHourNow>this hour has begun - a booking of it is first tried from tomorrow</RP_BookHourNow>
+  <RP_BookHourClash>also booked at this hour - {0}, which wants the same room or teacher</RP_BookHourClash>
+</LanguageData>

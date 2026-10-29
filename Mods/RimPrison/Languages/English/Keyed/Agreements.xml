@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Staff agreements (Staff/Agreements.cs). No capital after a colon: RimWorld capitalises the letter after ": ". -->
+  <RP_StaffAsk>they want a bonus of {0}, one day of wages,</RP_StaffAsk>
+  <RP_StaffAskNoBonus>they want it put right,</RP_StaffAskNoBonus>
+  <RP_StaffOffer>{0} speaks for them. You can pay the bonus, agree to fix it ({1}), or refuse.</RP_StaffOffer>
+  <RP_StaffOfferNoBonus>You broke your word to them over this before, and they will not be bought off. {0} speaks for them - agree to fix it ({1}) or refuse.</RP_StaffOfferNoBonus>
+  <RP_StaffOfferNoRep>{0}, so there is no promise to make. Pay them?</RP_StaffOfferNoRep>
+  <RP_StaffOfferNoRepNoBonus>You broke your word to them over this before, they will not be bought off, and {0}, so there is no promise to make.</RP_StaffOfferNoRepNoBonus>
+  <RP_NoRepBecause>nobody who is not the state's own can speak for them</RP_NoRepBecause>
+  <RP_NoGuardsBecause>there are no guards to speak for them</RP_NoGuardsBecause>
+  <RP_StaffStrike_Pay>Pay the bonus</RP_StaffStrike_Pay>
+  <RP_StaffStrike_Agree>Agree to fix it</RP_StaffStrike_Agree>
+  <RP_StaffStrike_Refuse>Refuse</RP_StaffStrike_Refuse>
+  <RP_AgreementOneAtATime>A promise to the staff is already running - one at a time.</RP_AgreementOneAtATime>
+  <RP_AgreementRiseStands>The {0} already have a rise.</RP_AgreementRiseStands>
+  <RP_Grievance_Understaffed>understaffing</RP_Grievance_Understaffed>
+  <RP_Grievance_Safety>safety</RP_Grievance_Safety>
+  <RP_Grievance_Nights>nights</RP_Grievance_Nights>
+  <RP_Grievance_Pay>pay</RP_Grievance_Pay>
+  <RP_AgreementTerm_Understaffed>one more guard on duty on site than the roster had when this was written, at every hour of the day, in at least {0} of the {1} hours of the next {2} days</RP_AgreementTerm_Understaffed>
+  <RP_AgreementTerm_Nights>no more than half of the staff on the night shift, wherever they are at the hour (moving guards to days or hiring day staff does it, another night guard does not), looked at every hour, in at least {0} of the {1} hours of the next {2} days</RP_AgreementTerm_Nights>
+  <RP_AgreementTerm_Safety>nobody on the staff hurt by an inmate in the next {0} days</RP_AgreementTerm_Safety>
+  <RP_AgreementTerm_Pay>a rise of {0} for the {1}, paid at each midnight settlement for the next {2} days and after - taking it back at any time ends the peace over pay, and within {3} days of agreeing (the term and the peace after it) it breaks the promise</RP_AgreementTerm_Pay>
+  <RP_AgreementMade>{0} has the warden's word, for the staff, that it will be put right - {1}.</RP_AgreementMade>
+  <RP_AgreementKept>The promise to the staff over {0} was kept ({1} spoke for them). No demand over it for a while.</RP_AgreementKept>
+  <RP_AgreementBroken>The promise to the staff over {0} was broken ({1} spoke for them). They will remember it.</RP_AgreementBroken>
+  <RP_Chr_AgreementMade>Promised the staff to put right {0}, through {1} - {2}.</RP_Chr_AgreementMade>
+  <RP_AgreementRiseTakenBack>The rise for the {0} was taken back, which breaks the promise to the staff over pay. They will remember it.</RP_AgreementRiseTakenBack>
+  <RP_Chr_RiseTakenBack>Took back the rise for the {0}, breaking the promise to the staff over pay.</RP_Chr_RiseTakenBack>
+  <RP_Chr_AgreementKept>Kept the promise to the staff over {0} ({1} spoke for them).</RP_Chr_AgreementKept>
+  <RP_Chr_AgreementBroken>Broke the promise to the staff over {0} ({1} spoke for them).</RP_Chr_AgreementBroken>
+  <RP_AgreementLine>Promise over {0}, through {1} - {2}. {3}, {4} days left.</RP_AgreementLine>
+  <RP_AgreementLineShort>Promise - {0}, {1}, {2}, {3} days left</RP_AgreementLineShort>
+  <RP_AgreementShort_Hours>{0}/{1} hours</RP_AgreementShort_Hours>
+  <RP_AgreementShort_Safe>nobody hurt so far</RP_AgreementShort_Safe>
+  <RP_AgreementShort_Hurt>somebody hurt, broken</RP_AgreementShort_Hurt>
+  <RP_AgreementShort_Paid>paid {0}/{1} settlements</RP_AgreementShort_Paid>
+  <RP_AgreementProgress_Hours>{0} of {1} needed hours met so far ({2} measured)</RP_AgreementProgress_Hours>
+  <RP_AgreementProgress_Safe>nobody hurt so far</RP_AgreementProgress_Safe>
+  <RP_AgreementProgress_Hurt>somebody was hurt - it is broken</RP_AgreementProgress_Hurt>
+  <RP_AgreementProgress_Paid>paid at {0} of {1} settlements</RP_AgreementProgress_Paid>
+  <RP_PayRiseLine>The {0} have a {1} rise, kept.</RP_PayRiseLine>
+  <RP_PayRiseLineBinding>The {0} have a {1} rise - taking it back in the next {2} days breaks the promise.</RP_PayRiseLineBinding>
+  <RP_PayRiseShort>Rise - {0} +{1}, kept</RP_PayRiseShort>
+  <RP_PayRiseShortBinding>Rise - {0} +{1}, take back within {2} days breaks the promise</RP_PayRiseShortBinding>
+  <RP_TakeBackRise>Take back the rise</RP_TakeBackRise>
+  <RP_TakeBackRiseTip>Wages go back to what they were at the next midnight settlement. It ends the peace over pay, and so any newer peace of another role.</RP_TakeBackRiseTip>
+  <RP_TakeBackRiseConfirm>Taking the rise back breaks the promise to the {0} - they will remember it, no bonus will be offered next time, and there is no peace over pay. Take it back?</RP_TakeBackRiseConfirm>
+</LanguageData>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/ThingDef[defName="Chocolate"]</xpath>
+    <value>
+      <li Class="RimPrison.CommissaryItemExtension">
+        <price>6</price>
+        <thought>RP_BoughtTreat</thought>
+      </li>
+    </value>
+  </Operation>
+</Patch>

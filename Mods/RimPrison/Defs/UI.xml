@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <MainButtonDef>
+    <defName>RP_Rooms</defName>
+    <label>rooms</label>
+    <description>Paint rooms and wings: canteen, yard, showers, cells... and see what each still needs.</description>
+    <tabWindowClass>RimPrison.MainTabWindow_Rooms</tabWindowClass>
+    <workerClass>RimPrison.MainButtonWorker_PrisonTab</workerClass>
+    <order>2</order>
+    <canBeTutorDenied>false</canBeTutorDenied>
+  </MainButtonDef>
+  <MainButtonDef>
+    <defName>RP_Regime</defName>
+    <label>regime</label>
+    <description>The daily timetable of each security level.</description>
+    <tabWindowClass>RimPrison.MainTabWindow_Regime</tabWindowClass>
+    <workerClass>RimPrison.MainButtonWorker_PrisonTab</workerClass>
+    <order>4</order>
+    <canBeTutorDenied>false</canBeTutorDenied>
+  </MainButtonDef>
+  <MainButtonDef>
+    <defName>RP_Policy</defName>
+    <label>policy</label>
+    <description>Intake (who the state sends and when), programs, rules, punishments, visits and searches.</description>
+    <tabWindowClass>RimPrison.MainTabWindow_Policy</tabWindowClass>
+    <workerClass>RimPrison.MainButtonWorker_PrisonTab</workerClass>
+    <order>5</order>
+    <canBeTutorDenied>false</canBeTutorDenied>
+  </MainButtonDef>
+  <MainButtonDef>
+    <defName>RP_Staff</defName>
+    <label>staff</label>
+    <description>Hire and manage staff; work priorities and clothing rules.</description>
+    <tabWindowClass>RimPrison.MainTabWindow_Staff</tabWindowClass>
+    <workerClass>RimPrison.MainButtonWorker_PrisonTab</workerClass>
+    <order>6</order>
+    <canBeTutorDenied>false</canBeTutorDenied>
+  </MainButtonDef>
+  <MainButtonDef>
+    <defName>RP_Logistics</defName>
+    <label>logistics</label>
+    <description>Supplies: what the shuttle brings and what is kept in stock.</description>
+    <tabWindowClass>RimPrison.MainTabWindow_Logistics</tabWindowClass>
+    <workerClass>RimPrison.MainButtonWorker_PrisonTab</workerClass>
+    <order>7</order>
+    <canBeTutorDenied>false</canBeTutorDenied>
+  </MainButtonDef>
+  <MainButtonDef>
+    <defName>RP_Office</defName>
+    <label>office</label>
+    <description>Grants from the state, the bureaucracy projects that unlock more, and land to buy.</description>
+    <tabWindowClass>RimPrison.MainTabWindow_Office</tabWindowClass>
+    <workerClass>RimPrison.MainButtonWorker_PrisonTab</workerClass>
+    <order>9</order>
+    <canBeTutorDenied>false</canBeTutorDenied>
+  </MainButtonDef>
+  <MainButtonDef>
+    <defName>RP_Reports</defName>
+    <label>reports</label>
+    <description>The report card, the prison chronicle, the inmate list and finances.</description>
+    <tabWindowClass>RimPrison.MainTabWindow_Reports</tabWindowClass>
+    <workerClass>RimPrison.MainButtonWorker_PrisonTab</workerClass>
+    <order>10</order>
+    <canBeTutorDenied>false</canBeTutorDenied>
+  </MainButtonDef>
+  <MainButtonDef>
+    <defName>RP_Intel</defName>
+    <label>intel</label>
+    <description>What you know about trouble brewing: tense inmates, gangs, feuds, suspects, informants and internal affairs.</description>
+    <tabWindowClass>RimPrison.MainTabWindow_Intel</tabWindowClass>
+    <workerClass>RimPrison.MainButtonWorker_PrisonTab</workerClass>
+    <order>8</order>
+    <canBeTutorDenied>false</canBeTutorDenied>
+  </MainButtonDef>
+  <MainButtonDef>
+    <defName>RP_Deployment</defName>
+    <label>deployment</label>
+    <description>Security wings, doors (who may pass), guard patrols, armed response and wing lockdowns.</description>
+    <tabWindowClass>RimPrison.MainTabWindow_Deployment</tabWindowClass>
+    <workerClass>RimPrison.MainButtonWorker_PrisonTab</workerClass>
+    <order>3</order>
+    <canBeTutorDenied>false</canBeTutorDenied>
+  </MainButtonDef>
+</Defs>

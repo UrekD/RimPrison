@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The inmate economy: debts, card games and protection (see Economy/InmateDebts.cs). Hidden from the warden until a tip, a search or an event. -->
+  <RimPrison.StoryArcDef>
+    <defName>RP_Arc_Debt</defName>
+    <label>debt</label>
+    <workerClass>RimPrison.DebtArc</workerClass>
+    <maxConcurrent>3</maxConcurrent>
+    <minRefireDays>0.25</minRefireDays>
+    <decisionHours>12</decisionHours>
+  </RimPrison.StoryArcDef>
+
+  <!-- Gambling is never rolled as an act of its own: card games record it. -->
+  <RimPrison.MisconductDef>
+    <defName>RP_Gambling</defName>
+    <label>gambling</label>
+    <baseWeight>0</baseWeight>
+    <severity>1</severity>
+    <punishmentHours>6</punishmentHours>
+    <tensionRelief>5</tensionRelief>
+  </RimPrison.MisconductDef>
+
+  <RimPrison.InmateWantDef>
+    <defName>RP_Want_Debt</defName>
+    <label>clear a debt</label>
+    <description>Owes another inmate (drugs on credit, a lost card game) and wants it cleared before it turns ugly. Progress is the share paid. A beating is a setback, and a goal given up after enough of them turns into a grudge against the one who did it. On track, they steer clear of serious trouble.</description>
+    <workerClass>RimPrison.WantWorker_Debt</workerClass>
+    <rolled>false</rolled>
+    <priority>1</priority>
+    <durationDays>6</durationDays>
+    <maxRenewals>2</maxRenewals>
+    <tensionRelief>0</tensionRelief>
+    <flipTo>RP_Want_Score</flipTo>
+    <keepsUntilGivenUp>true</keepsUntilGivenUp>
+  </RimPrison.InmateWantDef>
+
+  <!-- The memories read as something generic until the warden knows (Economy/EconomyThoughts.cs): the stage text here is what anyone sees; what it is about is in the keyed strings RP_Thought_<defName>_Label / _Description. -->
+  <ThoughtDef>
+    <defName>RP_DebtThreatened</defName>
+    <thoughtClass>RimPrison.Thought_EconomyMemorySocial</thoughtClass>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+    <stages>
+      <li><label>a bad feeling</label><description>Something is wrong, and I do not feel safe.</description><baseMoodEffect>-5</baseMoodEffect><baseOpinionOffset>-15</baseOpinionOffset></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_BeatenForDebt</defName>
+    <thoughtClass>RimPrison.Thought_EconomyMemorySocial</thoughtClass>
+    <durationDays>8</durationDays>
+    <stackLimit>1</stackLimit>
+    <stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+    <stages>
+      <li><label>beaten up</label><description>They beat me. I will not forget it.</description><baseMoodEffect>-8</baseMoodEffect><baseOpinionOffset>-30</baseOpinionOffset></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_DebtSettled</defName>
+    <thoughtClass>RimPrison.Thought_EconomyMemory</thoughtClass>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>a weight off</label><description>Something that was bothering me is over. I can sleep.</description><baseMoodEffect>4</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_DebtLeftToIt</defName>
+    <thoughtClass>RimPrison.Thought_EconomyMemory</thoughtClass>
+    <durationDays>4</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>nobody helped</label><description>I was beaten and the warden did nothing. I am on my own in here.</description><baseMoodEffect>-4</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_WonAtCards</defName>
+    <thoughtClass>RimPrison.Thought_EconomyMemory</thoughtClass>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>a good night</label><description>Things went my way tonight.</description><baseMoodEffect>3</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_LostAtCards</defName>
+    <thoughtClass>RimPrison.Thought_EconomyMemorySocial</thoughtClass>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+    <stages>
+      <li><label>rubbed the wrong way</label><description>A bad night, and they were smirking.</description><baseMoodEffect>-3</baseMoodEffect><baseOpinionOffset>-10</baseOpinionOffset></li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_Protected</defName>
+    <thoughtClass>RimPrison.Thought_EconomyMemorySocial</thoughtClass>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+    <stages>
+      <li><label>at ease</label><description>I feel safe in here, for now.</description><baseMoodEffect>3</baseMoodEffect><baseOpinionOffset>5</baseOpinionOffset></li>
+    </stages>
+  </ThoughtDef>
+</Defs>

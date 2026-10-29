@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <HediffDef>
+    <defName>RP_SupervisedDetox</defName>
+    <label>supervised detox</label>
+    <description>Coming off drugs under a doctor's eye: the worst of the withdrawal is eased, and the addiction fades faster. Lasts a day after the doctor's last check.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55, 0.8, 0.95)</defaultLabelColor>
+    <isBad>false</isBad>
+    <stages>
+      <li>
+        <socialFightChanceFactor>0.6</socialFightChanceFactor>
+        <capMods>
+          <li><capacity>Consciousness</capacity><offset>0.1</offset></li>
+          <li><capacity>Moving</capacity><offset>0.15</offset></li>
+          <li><capacity>Manipulation</capacity><offset>0.1</offset></li>
+        </capMods>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>65000~65000</disappearsAfterTicks>
+        <showRemainingTime>false</showRemainingTime>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <ThoughtDef>
+    <defName>RP_GotClean</defName>
+    <durationDays>6</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>got clean</label>
+        <description>Off the drugs, for the first time in a long while. It was hard, and I did it.</description>
+        <baseMoodEffect>6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

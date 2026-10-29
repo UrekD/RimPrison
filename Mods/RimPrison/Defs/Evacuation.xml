@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Evacuating a wing and accounting for its people (Security/Evacuation.cs, Security/EvacuationWork.cs, the Deployment tab). -->
+
+  <!-- A guard walks an inmate who may not walk alone out of a wing that burns (the supermax escort's walk and pass), and back to the bed after the all-clear. Not interruptible by a break: a guard who walks off mid-walk leaves the inmate outside the cell. -->
+  <JobDef>
+    <defName>RP_EvacuateInmate</defName>
+    <driverClass>RimPrison.JobDriver_EvacuateInmate</driverClass>
+    <reportString>evacuating TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <!-- A downed inmate carried out to the place planned for them. -->
+  <JobDef>
+    <defName>RP_CarryEvacuee</defName>
+    <driverClass>RimPrison.JobDriver_CarryEvacuee</driverClass>
+    <reportString>carrying TargetA out.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <!-- Ordinary emergency warden work: under the restraint of rioters (200) and the carry to solitary (195), over the rescue (190) and every routine care job. -->
+  <WorkGiverDef>
+    <defName>RP_Evacuate_WorkGiver</defName>
+    <label>evacuate inmates</label>
+    <giverClass>RimPrison.WorkGiver_EvacuateInmate</giverClass>
+    <workType>Warden</workType>
+    <verb>evacuate</verb>
+    <gerund>evacuating</gerund>
+    <priorityInType>192</priorityInType>
+    <emergency>true</emergency>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+  <!-- The doctors carry the downed out too, as they carry them to a bed: not an emergency, and over the rescue's own doctor giver (55). -->
+  <WorkGiverDef>
+    <defName>RP_EvacuateDoctor_WorkGiver</defName>
+    <label>carry injured inmates out</label>
+    <giverClass>RimPrison.WorkGiver_EvacuateInmate</giverClass>
+    <workType>Doctor</workType>
+    <verb>carry out</verb>
+    <gerund>carrying out</gerund>
+    <priorityInType>56</priorityInType>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+
+  <!-- The drill costs each inmate it moves a small memory. -->
+  <ThoughtDef>
+    <defName>RP_EvacuationDrill</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li><label>evacuation drill</label><description>They marched us out of the wing for nothing, with the guards shouting. Nobody told me it was only practice until we got there.</description><baseMoodEffect>-2</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- An inmate who is being moved in an evacuation follows it before anything the regime has for them (and before the bed a patient goes to): inserted over the regime's own tree (100), under the new arrivals' (200). -->
+  <ThinkTreeDef>
+    <defName>RP_InmateEvacuation</defName>
+    <insertTag>Humanlike_PostDuty</insertTag>
+    <insertPriority>150</insertPriority>
+    <thinkRoot Class="RimPrison.ThinkNode_ConditionalEvacuee">
+      <subNodes>
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Misc</tagToGive>
+          <subNodes>
+            <li Class="RimPrison.JobGiver_Evacuate" />
+          </subNodes>
+        </li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+  <!-- A fire has reached a wing with people in it. -->
+  <RimPrison.PrisonDecisionDef>
+    <defName>RP_Decision_WingFire</defName>
+    <label>fire in a wing</label>
+    <urgent>true</urgent>
+    <workerClass>RimPrison.WingFireDecision</workerClass>
+  </RimPrison.PrisonDecisionDef>
+</Defs>

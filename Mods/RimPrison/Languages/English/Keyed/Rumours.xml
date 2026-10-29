@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The rumour mill (Security/Rumours.cs): what a wing is saying, and the warden's answers. No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+  <RP_Cause_Rumour>a rumour going round the wing</RP_Cause_Rumour>
+  <RP_Cause_RumourOf>a rumour - {0}</RP_Cause_RumourOf>
+
+  <!-- What the wing says: the thing as it was (_True) and the version the wing made of it (_False). The words are not the truth of it: a guard did kill some, and an order lifted makes the plain words false. {0} is who it is about, where there is someone. -->
+  <RP_Rumour_CellSearch_True>the guards turned over {0}'s cell</RP_Rumour_CellSearch_True>
+  <RP_Rumour_CellSearch_False>the guards are planting things in cells to fill the hole</RP_Rumour_CellSearch_False>
+  <RP_Rumour_Transfer_True>{0} was shipped out to another prison</RP_Rumour_Transfer_True>
+  <RP_Rumour_Transfer_False>they're shipping the whole wing out, one by one</RP_Rumour_Transfer_False>
+  <RP_Rumour_Death_True>{0} died on the wing</RP_Rumour_Death_True>
+  <RP_Rumour_Death_False>the guards killed {0}</RP_Rumour_Death_False>
+  <RP_Rumour_YardOff_True>the yard is off today</RP_Rumour_YardOff_True>
+  <RP_Rumour_YardOff_False>the yard is being closed for good</RP_Rumour_YardOff_False>
+  <RP_Rumour_EarlyLockup_True>lockup comes early tonight</RP_Rumour_EarlyLockup_True>
+  <RP_Rumour_EarlyLockup_False>the wing is going into lockdown for a week</RP_Rumour_EarlyLockup_False>
+  <RP_Rumour_Restriction_True>the wing is on restriction</RP_Rumour_Restriction_True>
+  <RP_Rumour_Restriction_False>no more visits, for anyone</RP_Rumour_Restriction_False>
+  <RP_Rumour_FoodScare_True>the kitchen made {0} sick</RP_Rumour_FoodScare_True>
+  <RP_Rumour_FoodScare_False>they're putting something in the food</RP_Rumour_FoodScare_False>
+  <RP_Rumour_Strike_True>the staff walked out</RP_Rumour_Strike_True>
+  <RP_Rumour_Strike_False>no guards are coming back, they're leaving us locked in</RP_Rumour_Strike_False>
+  <RP_Rumour_Supermax_True>{0} was sent to supermax</RP_Rumour_Supermax_True>
+  <RP_Rumour_Supermax_False>they're shipping the whole wing to supermax</RP_Rumour_Supermax_False>
+
+  <RP_Rumour_BandFaint>faint</RP_Rumour_BandFaint>
+  <RP_Rumour_BandSpreading>spreading</RP_Rumour_BandSpreading>
+  <RP_Rumour_BandEverywhere>all over the wing</RP_Rumour_BandEverywhere>
+  <RP_Rumour_True>true</RP_Rumour_True>
+  <RP_Rumour_False>false</RP_Rumour_False>
+  <RP_Rumour_Unknown>true or false?</RP_Rumour_Unknown>
+  <RP_Rumour_EndedLive>still going</RP_Rumour_EndedLive>
+  <RP_Rumour_EndedBurntOut>burnt out</RP_Rumour_EndedBurntOut>
+  <RP_Rumour_EndedCalmed>ended by the warden's word</RP_Rumour_EndedCalmed>
+  <RP_Rumour_EndedReplaced>overtaken by worse news</RP_Rumour_EndedReplaced>
+  <RP_Rumour_EndedEmptied>nobody left to tell it</RP_Rumour_EndedEmptied>
+
+  <!-- The chronicle and the messages. {0} the wing, {1} what it says. -->
+  <RP_Chr_RumourStarted>Word went round the {0} wing - {1}.</RP_Chr_RumourStarted>
+  <RP_Rumour_FirmSticks>The firm word only made it stick. The {0} wing will be saying "{1}" for {2} more day(s).</RP_Rumour_FirmSticks>
+  <RP_Rumour_FirmAgain>The {0} wing has had the firm word about "{1}" already. Saying it again makes it stick no longer.</RP_Rumour_FirmAgain>
+  <RP_Rumour_AddressMissed>The talk on the {0} wing went unanswered. Fewer than {1} of the wing were in the canteen to hear the warden.</RP_Rumour_AddressMissed>
+  <RP_Chr_RumourFirm>The warden's firm word made the talk on the {0} wing stick ("{1}").</RP_Chr_RumourFirm>
+  <RP_Rumour_CalmEnds>The warden's calm word put an end to the talk on the {0} wing. It was not true ("{1}").</RP_Rumour_CalmEnds>
+  <RP_Chr_RumourCalmed>The warden showed the talk on the {0} wing up for what it was ("{1}").</RP_Chr_RumourCalmed>
+  <RP_Rumour_CalmTrue>The talk on the {0} wing is true ("{1}") and cannot be talked away. The calm word took the heat out of it by half.</RP_Rumour_CalmTrue>
+  <RP_Chr_RumourCalmTrue>The warden spoke to the {0} wing about what is true ("{1}"). It goes on, quieter.</RP_Chr_RumourCalmTrue>
+  <RP_Rumour_WalkNames>On the walk the {0} wing let slip who started the talk ("{1}") - {2}.</RP_Rumour_WalkNames>
+  <RP_Chr_RumourOrigin>The talk on the {0} wing ("{1}") was traced to {2}.</RP_Chr_RumourOrigin>
+  <RP_TipRumourTrue>The talk on the {2} wing ("{1}") started with {0}. It is true, as far as it goes.</RP_TipRumourTrue>
+  <RP_TipRumourFalse>The talk on the {2} wing ("{1}") started with {0}. There is nothing in it.</RP_TipRumourFalse>
+  <RP_Rumour_RiotLine>Before it began the {0} wing was saying "{1}" ({2}).</RP_Rumour_RiotLine>
+
+  <!-- Intel and the file. -->
+  <RP_IntelRumours>Rumours</RP_IntelRumours>
+  <RP_IntelHint_Rumours>No rumours. A cell search, a transfer, a death, the yard called off or an early lockup, a restriction, a food scare, a strike or a send to supermax can start talk on the wing it touches, and talk spreads at meals and in the yard.</RP_IntelHint_Rumours>
+  <RP_Rumour_IntelLine>{0} wing - "{1}" ({2}, {3})</RP_Rumour_IntelLine>
+  <RP_IntelTip_Rumour>The {0} wing is saying "{1}" ({2}). Strength {3}%, how much of the wing has heard it as it fades over {4} days.
+
+Every inmate of the wing is wound up by it while it runs, a twisted version more than the plain facts. A calm address in the wing's canteen (heard by at least two of the wing) ends a false rumour at once and halves a true one (a true rumour is never talked away). A firm address makes either stick for {5} more day(s), once. Walking the wing finds who started it, and a known informant may tell you. Or let it burn out.</RP_IntelTip_Rumour>
+  <RP_Rumour_StartedBy>started by {0}</RP_Rumour_StartedBy>
+  <RP_Rumour_StartedByUnknown>who started it is not known</RP_Rumour_StartedByUnknown>
+  <RP_IntelRumourCalm>Calm</RP_IntelRumourCalm>
+  <RP_IntelRumourFirm>Firm</RP_IntelRumourFirm>
+  <RP_IntelRumourWalk>Walk</RP_IntelRumourWalk>
+  <RP_IntelRumourCalmTip>The warden goes to the canteen where the {0} wing is and speaks calmly to whoever is there. A false rumour ends at once, a true one loses half its strength.</RP_IntelRumourCalmTip>
+  <RP_IntelRumourFirmTip>The warden goes to the canteen where the {0} wing is and speaks firmly. The quiet is bought, and the rumour sticks for {1} more day(s).</RP_IntelRumourFirmTip>
+  <RP_IntelRumourWalkTip>The warden walks the {0} wing. Those met say who started the talk.</RP_IntelRumourWalkTip>
+  <RP_Rumour_NoWarden>No warden in post.</RP_Rumour_NoWarden>
+  <RP_Rumour_NoWingZone>The {0} wing is not painted, so there is nowhere to walk.</RP_Rumour_NoWingZone>
+  <RP_Rumour_FileLine>The wing is saying "{0}" ({1})</RP_Rumour_FileLine>
+  <RP_Rumour_FileOrigin>- they started it</RP_Rumour_FileOrigin>
+</LanguageData>
