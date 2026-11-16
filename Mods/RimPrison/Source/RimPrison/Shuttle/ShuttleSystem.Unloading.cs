@@ -69,38 +69,68 @@ namespace RimPrison
             int n = Mathf.Min(o.count, o.thing.stackLimit);
             Thing t = o.thing.MadeFromStuff ? ThingMaker.MakeThing(o.thing, GenStuff.DefaultStuffFor(o.thing)) : ThingMaker.MakeThing(o.thing);
             t.stackCount = n;
-            IntVec3 spot = CargoSpot(map, shuttle);
             CellRect keepClear = KeepClear(shuttle.InteractionCell);
+            CellRect hull = shuttle.OccupiedRect();
+            // With no Deliveries zone the crates go down on the pad's own cells (the free ones outside the margin kept clear round the hull); only when the pad has none left do they go on the nearest clear ground.
+            List<IntVec3> padCells = PadCargoCells(map, shuttle, keepClear, hull);
+            IntVec3 spot = CargoSpot(map, shuttle, padCells);
             Thing placed = null;
-            if (PlaceCrateFailsForTests || !GenPlace.TryPlaceThing(t, spot, map, ThingPlaceMode.Near, out placed, null, c => !keepClear.Contains(c) && !shuttle.OccupiedRect().Contains(c)))
+            if (PlaceCrateFailsForTests && PlaceCrateMergesFirstForTests > 0 && PlaceCrateMergesFirstForTests < n)
             {
-                // No clear ground to set it down on: it stays aboard, paid for, and goes back with the shuttle (the order is not touched), instead of being lost; the unloading gives up on the
+                // (The tests' partial merge: part of the crate goes down for real, then the rest finds no room, as when GenPlace stacks part of it onto a leftover and then runs out of cells.)
+                Thing part = t.SplitOff(PlaceCrateMergesFirstForTests);
+                if (!GenPlace.TryPlaceThing(part, spot, map, ThingPlaceMode.Near, out placed)) part.Destroy();
+            }
+            bool set = !PlaceCrateFailsForTests && (padCells != null && padCells.Count > 0 && GenPlace.TryPlaceThing(t, spot, map, ThingPlaceMode.Near, out placed, null, c => padCells.Contains(c))
+                || GenPlace.TryPlaceThing(t, spot, map, ThingPlaceMode.Near, out placed, null, c => !keepClear.Contains(c) && !hull.Contains(c)));
+            // A failed placement can still have stacked part of the crate onto a stack on the ground (it keeps what it could not place in t): those units are down, only the rest stays aboard.
+            int down = set ? n : Mathf.Max(0, n - (t.Destroyed ? 0 : t.stackCount));
+            if (!set)
+            {
+                // No clear ground to set the rest down on: it stays aboard, paid for, and goes back with the shuttle (the order is not touched beyond what was set down), instead of being lost; the unloading gives up on the
                 // rest rather than trying again at every step and holding the shuttle up for it.
-                t.Destroy();
+                if (!t.Destroyed) t.Destroy();
                 v.cargoBlocked = true;
-                return;
+                if (down == 0) return;
             }
             // What is set down is paid for, what is still aboard is not: a cancelled blueprint refunds only the crates that were not unloaded.
-            int paid = o.count > n ? Mathf.RoundToInt(o.cost * (n / (float)o.count)) : o.cost;
+            int paid = o.count > down ? Mathf.RoundToInt(o.cost * (down / (float)o.count)) : o.cost;
             o.cost -= paid;
-            o.count -= n;
+            o.count -= down;
             if (o.count <= 0) v.cargo.RemoveAt(0);
             v.cargoStacks++;
-            v.cargoUnits += n;
-            game.shuttle.unloadedThings.Add(placed);
+            v.cargoUnits += down;
+            if (placed != null) game.shuttle.unloadedThings.Add(placed);
         }
 
         /// <summary>The tests' switch: no crate can be set down (the ground is not clear anywhere).</summary>
         public static bool PlaceCrateFailsForTests;
 
+        /// <summary>The tests' switch with the one above: this many units of the crate are set down first (a partial merge), and the rest finds no room.</summary>
+        public static int PlaceCrateMergesFirstForTests;
+
         /// <summary>The things set down this stay (for the message that points at them and the tests).</summary>
         public readonly List<Thing> unloadedThings = new List<Thing>();
 
-        /// <summary>Where the crates go: the Deliveries zone if there is one (the crew carries them there), else the pad's own cells at the side of the margin kept clear round the ramp.</summary>
-        private static IntVec3 CargoSpot(Map map, Building_StateShuttle shuttle)
+        /// <summary>The cells of the pad under the shuttle that crates may be set down on (outside the margin kept clear round the hull and the ramp, walkable): null when there is a Deliveries zone, or no pad under the hull.</summary>
+        private static List<IntVec3> PadCargoCells(Map map, Building_StateShuttle shuttle, CellRect keepClear, CellRect hull)
+        {
+            if (PrisonMap.Of(map)?.zones.CellsOf(RPDefOf.RP_Deliveries) is { Count: > 0 }) return null;
+            Thing pad = shuttle.Position.GetThingList(map).Find(t => t.def == RPShuttleDefOf.RP_ShuttlePad);
+            if (pad == null) return null;
+            var cells = new List<IntVec3>();
+            foreach (IntVec3 c in pad.OccupiedRect())
+                if (c.InBounds(map) && !keepClear.Contains(c) && !hull.Contains(c) && c.Walkable(map)) cells.Add(c);
+            return cells;
+        }
+
+        /// <summary>Where the crates go: the Deliveries zone if there is one (the crew carries them there), else a pad cell with no item on it (<paramref name="padCells"/>; a leftover on the cell picked would send the crate to the nearest cell, off the pad's edge), else the old spot beside the ramp.</summary>
+        private static IntVec3 CargoSpot(Map map, Building_StateShuttle shuttle, List<IntVec3> padCells)
         {
             List<IntVec3> zone = PrisonMap.Of(map)?.zones.CellsOf(RPDefOf.RP_Deliveries);
             if (zone != null && zone.Count > 0) return zone.RandomElement();
+            if (padCells != null && padCells.Where(c => c.GetFirstItem(map) == null).TryRandomElement(out IntVec3 free)) return free;
+            if (padCells != null && padCells.Count > 0) return padCells.RandomElement();
             IntVec3 ramp = shuttle.InteractionCell;
             return ramp + new IntVec3(Rand.Bool ? 4 : -4, 0, Rand.RangeInclusive(-1, 3));
         }

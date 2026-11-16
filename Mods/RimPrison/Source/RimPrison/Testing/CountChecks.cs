@@ -216,7 +216,7 @@ namespace RimPrison
                     CountFail("tunnel unseen", $"the count did not open the books: escaped {escaped0} -> {g.stats.escaped}, today {today0} -> {g.today.escapes}, funds {funds0} -> {g.ledger.funds} (the fine is {EscapeUtility.EscapeFine})");
                 int shorts = t.Told("RP_Count_ShortLabel".Translate().Resolve());
                 string text = t.LettersTold().FirstOrDefault(l => l.StartsWith("RP_Count_ShortLabel".Translate().Resolve())) ?? "";
-                if (shorts != 1 || !text.Contains(p.LabelShort) || !text.Contains("6 hours"))
+                if (shorts != 1 || text.IndexOf(p.LabelShort, System.StringComparison.OrdinalIgnoreCase) < 0 || !text.Contains("6 hours"))
                     CountFail("tunnel unseen", $"the count's letter should name {p.LabelShort} and say six hours, {shorts} letter(s) of it: {text}");
                 if (t.Lines("RP_Chr_CountShort".Translate(p.LabelShort).Resolve()) != 1 || t.Lines("RP_Chr_Escaped".Translate(p.LabelShort).Resolve()) != 0)
                     CountFail("tunnel unseen", "the chronicle should have the count's one line for the escape and not the generic one");

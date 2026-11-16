@@ -355,6 +355,16 @@ Hidden gangs, debts and rings stay hidden until then.
   (a false rumour ends at once, a true one only quietens), speak firmly (it sticks a day longer, once), walk the wing to
   find who started it, or let it burn out; an informant may name the source. Lifting an order makes its talk false. A
   riot's letter and the next morning's incident report say what the wing was saying when it began.
+- **The break:** now and then a tense inmate with a long sentence and an escape artist's name, a gang or a ring behind
+  them plans an escape with two others. It needs a tool, maybe an inside man (a corrupt officer on their payroll), a way
+  out (a tunnel, an unlit stretch of fence, the shuttle ramp, the gate in a laundered uniform) and, once it is ready, a
+  night (a blackout, the guards' handover, a storm, the darkest hour). All of it is hidden: a frisk or a search finds the
+  tool, the tool count says which room it went missing from, informants, phone taps, the psychologist and unit officers
+  tell one part at a time, and Intel shows only what you know. Once you know a part, one letter: foil it now (search and
+  split the crew you know of, their cases on the adjudication sheet as suspicion only), let it run (a guard post on the
+  way for the night: caught in the act, they are restrained and charged with an officer's evidence - misjudge the night
+  and only the count will tell you), or turn the inside man. What you have been told stays as told - who has the tool, at
+  what hour the night falls - however the plan changes behind your back.
 - **Complaints:** inmates may complain about an officer, whether it's true or not. You uphold, dismiss or investigate,
   and the outcome reaches into discipline, careers and lawsuits.
 - **The adjudication sheet:** Policy, "Adjudicate the serious" (off by default). With it on, a seen offence of severity 3

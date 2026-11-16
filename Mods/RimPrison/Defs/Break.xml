@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The break (gap analysis 7, item 4; see Security/Break.cs): a planned escape. One plan in the prison at a time, a background story arc (it keeps nobody out of other stories), the leader its cast and the plan its payload. Its one letter warns of something on the plan's own clock (the night): never held back by the day's budget of decisions. -->
+  <RimPrison.StoryArcDef>
+    <defName>RP_Arc_Break</defName>
+    <label>escape plan</label>
+    <workerClass>RimPrison.EscapePlanArc</workerClass>
+    <maxConcurrent>1</maxConcurrent>
+    <minRefireDays>25</minRefireDays>
+    <decisionHours>24</decisionHours>
+    <urgent>true</urgent>
+    <occupiesCast>false</occupiesCast>
+  </RimPrison.StoryArcDef>
+
+  <!-- A plan foiled before the night: the case the adjudication sheet gets for each of the crew the warden knows, as suspicion only. Never picked at random; sanctioned as an escape attempt (no row of its own on the Policy tab). -->
+  <RimPrison.MisconductDef>
+    <defName>RP_EscapePlot</defName>
+    <label>planning an escape</label>
+    <baseWeight>0</baseWeight>
+    <minTension>999</minTension>
+    <severity>3</severity>
+    <punishmentHours>24</punishmentHours>
+    <tensionRelief>0</tensionRelief>
+    <sanctionAs>RP_EscapeAttempt</sanctionAs>
+    <workerClass>RimPrison.MisconductWorker_Never</workerClass>
+  </RimPrison.MisconductDef>
+</Defs>

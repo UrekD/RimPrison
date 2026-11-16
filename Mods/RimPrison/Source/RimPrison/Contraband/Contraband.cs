@@ -152,7 +152,7 @@ namespace RimPrison
                 ContrabandKind kind = Ext(t.def).kind;
                 if (t.ParentHolder is Pawn_EquipmentTracker eq) eq.Remove((ThingWithComps)t);
                 else inmate.inventory.innerContainer.Remove(t);
-                ToolCount.Notify_Taken(t, ToolSource.Pockets);
+                ToolCount.Notify_Taken(t, ToolSource.Pockets, inmate);
                 t.Destroy();
                 n++;
                 pm?.AddFind(inmate.PositionHeld, kind, FindSource.Pockets);

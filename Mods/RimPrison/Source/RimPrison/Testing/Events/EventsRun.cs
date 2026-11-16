@@ -179,6 +179,7 @@ namespace RimPrison
                 EvWardenAsks();
                 EvWatchList();
                 EvAmends();
+                EvBreak();
             }
 
         }

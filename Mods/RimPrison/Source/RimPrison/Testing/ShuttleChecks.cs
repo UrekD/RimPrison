@@ -186,6 +186,7 @@ namespace RimPrison
             Checked("shuttle without holding", CheckShuttleWithoutHolding);
             Checked("shuttle without a pad", CheckShuttleNoPad);
             Checked("shuttle cargo", CheckShuttleCargo);
+            Checked("shuttle cargo partial merge", CheckShuttleCargoPartialMerge);
             Checked("shuttle boarding", CheckShuttleBoarding);
             Checked("shuttle blocked pad", CheckShuttleBlockedPad);
             Checked("shuttle delays", CheckShuttleDelays);
@@ -503,7 +504,8 @@ namespace RimPrison
                     foreach (Thing t in map.listerThings.ThingsOfDef(ThingDefOf.Steel).ToList())
                         if (!before.Contains(t) && !t.Destroyed) t.Destroy(DestroyMode.Vanish);
                 });
-                void Run(string stage, int count, Func<IntVec3, bool> placedRight, string where)
+                // (padRect: the pad the crates should go down on; the line then tells what stood on its cells as the shuttle landed and where each stack that is not on it lies.)
+                void Run(string stage, int count, Func<IntVec3, bool> placedRight, string where, CellRect? padRect = null)
                 {
                     g.supply.pending.Clear();
                     g.supply.pending.Add(new SupplyOrder { thing = ThingDefOf.Steel, count = count, cost = 0, arriveTick = ShNow - 1 });
@@ -520,18 +522,33 @@ namespace RimPrison
                     int aboard = v.cargo.Where(o => o.thing == ThingDefOf.Steel).Sum(o => o.count), ordered = g.supply.PendingCount(ThingDefOf.Steel);
                     // (Where each stack was set down is read the tick it appears: the colony's haulers take loose steel off the pad to a stockpile within the unloading, and what they have moved was set down right.)
                     var firstSeen = new Dictionary<Thing, IntVec3>();
+                    var onCellThen = new Dictionary<Thing, string>();
+                    string onPad = null;
                     ShuttleTicks(() =>
                     {
                         foreach (Thing t in map.listerThings.ThingsOfDef(ThingDefOf.Steel))
-                            if (!already.Contains(t) && !firstSeen.ContainsKey(t)) firstSeen[t] = t.Position;
+                            if (!already.Contains(t) && !firstSeen.ContainsKey(t))
+                            {
+                                firstSeen[t] = t.Position;
+                                // (What stood on that cell is read now, with the position: pawns and haulers move on.)
+                                if (padRect != null && !placedRight(t.Position)) onCellThen[t] = ThingsOnCells(map, CellRect.SingleCell(t.Position), t);
+                            }
+                        if (onPad == null && padRect is { } landedOn && v.phase == ShuttlePhase.Landed) onPad = ThingsOnCells(map, landedOn, v.shuttle);
                         return g.shuttle.visit != v || v.cargoDone;
                     }, 4000);
                     int delivered = v.cargoUnits;
                     List<IntVec3> placed = firstSeen.Values.ToList();
                     int wrong = placed.Count(at => !placedRight(at));
                     RPLog.Message($"[RimPrison:test] shuttle cargo ({stage}): {aboard} aboard, {ordered} counted as ordered, {delivered} delivered in {placed.Count} stacks, {wrong} not {where}, kind {v.kind}");
+                    if (wrong > 0 && padRect is { } pr)
+                    {
+                        string off = string.Join("; ", firstSeen.Where(kv => !placedRight(kv.Value)).Select(kv => $"{kv.Key.stackCount} {kv.Key.def.defName} first seen at {kv.Value} ({PadDistance(pr, kv.Value):F1} cells from the pad, lying now at {(kv.Key.Spawned ? kv.Key.Position.ToString() : "nowhere")}, on that cell then: {(onCellThen.TryGetValue(kv.Key, out string then) ? then : "not read")})"));
+                        RPLog.Message($"[RimPrison:test] shuttle cargo ({stage}): the pad is {pr} (shuttle at {v.shuttle?.Position}, ramp {v.shuttle?.InteractionCell}, {ShuttleSystem.Pads(map).Count()} pads, on the pad {v.onPad}); off it: {off}; on the pad cells as the shuttle landed: {onPad ?? "(it never landed in the window)"}; on them now: {ThingsOnCells(map, pr, v.shuttle)}");
+                    }
                     if (aboard != count || ordered < count) problems0.Add($"shuttle cargo ({stage}): {aboard} steel aboard and {ordered} counted ordered, of {count} on order");
                     if (delivered != count) problems0.Add($"shuttle cargo ({stage}): {delivered} steel unloaded, {count} ordered");
+                    // (No new stack seen means every crate was stacked onto steel already on the cells: nothing was judged, so the stage cannot pass.)
+                    if (padRect != null && placed.Count == 0) problems0.Add($"shuttle cargo ({stage}): no new stack was seen set down, {delivered} of {count} steel counted delivered (merged into steel already on the pad?), where they went was not measured");
                     if (wrong > 0) problems0.Add($"shuttle cargo ({stage}): {wrong} of {placed.Count} stacks were not set down {where}");
                     if (v.kind != ShuttleKind.Cargo || g.stats.cargoRuns != cargoRuns0 + 1) problems0.Add($"shuttle cargo ({stage}): the visit was a {v.kind}, cargo runs {g.stats.cargoRuns}");
                     if (g.shuttle.visit == v && v.phase == ShuttlePhase.Landed) ShuttleDepartIn(v, 60);
@@ -549,8 +566,128 @@ namespace RimPrison
                 {
                     foreach (IntVec3 c in zoneCells) pm.zones.Set(c, RPDefOf.RP_Deliveries);
                 });
-                if (pad != null) Run("pad", 40, at => pad.OccupiedRect().Contains(at), "on the pad");
+                // (Every item is lifted off the pad for the stage and put back after: a stack left there by an earlier check would take the crate whole, and nothing would be seen set down.)
+                if (pad != null) LiftItems(map, r, pad.OccupiedRect());
+                if (pad != null) Run("pad", 40, at => pad.OccupiedRect().Contains(at), "on the pad", pad.OccupiedRect());
+                CheckShuttleCargoCrowdedPad(map, r, pad, Run);
             });
+        }
+
+        /// <summary>
+        /// A crate that is partly set down (stacked onto steel on the ground) and then finds no room is neither delivered whole nor sent back whole: the units set down are booked delivered and paid for, only
+        /// the remainder stays aboard and is refunded.
+        /// </summary>
+        private static void CheckShuttleCargoPartialMerge(Map map)
+        {
+            Guarded("shuttle cargo: a partly set down crate books what stayed aboard", map, r =>
+            {
+                PrisonGame g = PrisonGame.Instance;
+                if (!ShuttleStage(map, r, "shuttle cargo partial merge")) return;
+                bool fails0 = ShuttleSystem.PlaceCrateFailsForTests;
+                int merges0 = ShuttleSystem.PlaceCrateMergesFirstForTests;
+                r.Add(() =>
+                {
+                    ShuttleSystem.PlaceCrateFailsForTests = fails0;
+                    ShuttleSystem.PlaceCrateMergesFirstForTests = merges0;
+                });
+                var before = new HashSet<Thing>(map.listerThings.ThingsOfDef(ThingDefOf.Steel));
+                r.Add(() =>
+                {
+                    foreach (Thing t in map.listerThings.ThingsOfDef(ThingDefOf.Steel).ToList())
+                        if (!before.Contains(t) && !t.Destroyed) t.Destroy(DestroyMode.Vanish);
+                });
+                const int Steel = 150, Cost = 300, Merged = 20, Paid = 40;
+                g.supply.pending.Clear();
+                g.supply.pending.Add(new SupplyOrder { thing = ThingDefOf.Steel, count = Steel, cost = Cost, arriveTick = ShNow - 1 });
+                ShuttleSystem.PlaceCrateFailsForTests = true;
+                ShuttleSystem.PlaceCrateMergesFirstForTests = Merged;
+                if (!ShuttleSystem.CallCargo(g, map))
+                {
+                    problems0.Add("shuttle cargo partial merge: the cargo run could not be called");
+                    return;
+                }
+                ShuttleVisit v = g.shuttle.visit;
+                ShuttleTicks(() => g.shuttle.visit != v || v.cargoDone, 3000);
+                int delivered = v.cargoUnits, aboard = v.cargo.Where(o => o.thing == ThingDefOf.Steel).Sum(o => o.count), aboardCost = v.cargo.Where(o => o.thing == ThingDefOf.Steel).Sum(o => o.cost);
+                ShuttleDepartIn(v, 0);
+                ShuttleTicks(() => g.shuttle.visit != v, 1500);
+                int back = g.supply.pending.Where(o => o.thing == ThingDefOf.Steel).Sum(o => o.count), backCost = g.supply.pending.Where(o => o.thing == ThingDefOf.Steel).Sum(o => o.cost);
+                ShuttleSystem.PlaceCrateFailsForTests = false;
+                ShuttleSystem.PlaceCrateMergesFirstForTests = 0;
+                RPLog.Message($"[RimPrison:test] shuttle cargo partial merge: {Merged} of {Steel} set down, then no room: {delivered} booked delivered, {aboard} aboard (paid {aboardCost}), back in the office {back} (paid {backCost})");
+                if (delivered != Merged || aboard != Steel - Merged || aboardCost != Cost - Paid || back != Steel - Merged || backCost != Cost - Paid)
+                    problems0.Add($"shuttle cargo partial merge: {Merged} of {Steel} steel were set down and the rest found no room, but {delivered} were booked delivered (expected {Merged}), {aboard} stayed aboard (expected {Steel - Merged}) and {back} went back to the office, paid {backCost} (expected {Steel - Merged} and {Cost - Paid})");
+            });
+        }
+
+        /// <summary>Lifts every item off the cells of <paramref name="rect"/> for the check, and puts each back where it lay when the rollback runs.</summary>
+        private static void LiftItems(Map map, Rollback r, CellRect rect)
+        {
+            foreach (IntVec3 c in rect)
+            {
+                if (!c.InBounds(map)) continue;
+                foreach (Thing left in c.GetThingList(map).Where(t => t.def.category == ThingCategory.Item).ToList())
+                {
+                    left.DeSpawn();
+                    IntVec3 lay = c;
+                    r.Add(() =>
+                    {
+                        if (!left.Destroyed && !left.Spawned) GenSpawn.Spawn(left, lay, map);
+                    });
+                }
+            }
+        }
+
+        /// <summary>The things on a rect that are neither the pad nor the shuttle <paramref name="except"/> (and not the thing itself): "def at cell" each, "nothing" when there are none.</summary>
+        private static string ThingsOnCells(Map map, CellRect rect, Thing except)
+        {
+            var found = new List<string>();
+            foreach (IntVec3 c in rect)
+            {
+                if (!c.InBounds(map)) continue;
+                foreach (Thing t in c.GetThingList(map))
+                    if (t != except && t.def != RPShuttleDefOf.RP_ShuttlePad && t.def != RPShuttleDefOf.RP_StateShuttle && !t.def.IsFilth) found.Add($"{t.def.defName}{(t is Pawn ? " (pawn)" : "")}@{c}");
+            }
+            return found.Count == 0 ? "nothing" : string.Join(", ", found);
+        }
+
+        private static double PadDistance(CellRect pad, IntVec3 c) => Math.Sqrt(Math.Pow(Math.Max(Math.Max(pad.minX - c.x, 0), c.x - pad.maxX), 2) + Math.Pow(Math.Max(Math.Max(pad.minZ - c.z, 0), c.z - pad.maxZ), 2));
+
+        /// <summary>
+        /// Crates go down on the pad even when the cells they would be set on are taken: a leftover on the pad's edge sent the stack to the nearest free cell, off the pad (ev1 of census c86: "1 of 1 stacks
+        /// were not set down on the pad"). Every cell the unloading may use but one carries an item, and the crate lands on that one.
+        /// </summary>
+        private static void CheckShuttleCargoCrowdedPad(Map map, Rollback r, Building pad, Action<string, int, Func<IntVec3, bool>, string, CellRect?> run)
+        {
+            if (pad == null) return;
+            PrisonGame g = PrisonGame.Instance;
+            // (The cells the crates may use: the pad's, outside the margin kept clear round the ramp and the hull, where a pawn can stand. Taken from the hull of a shuttle on this pad.)
+            IntVec3 ramp = ShuttleSystem.Footprint(pad.Position, out CellRect hull);
+            CellRect keepClear = ShuttleSystem.KeepClear(ramp);
+            List<IntVec3> cells = pad.OccupiedRect().Cells.Where(c => c.InBounds(map) && !keepClear.Contains(c) && !hull.Contains(c) && c.Walkable(map)).ToList();
+            List<IntVec3> open = cells.Where(c => !c.GetThingList(map).Any(t => t is Building && t != pad)).OrderByDescending(c => c.DistanceToSquared(ramp)).ToList();
+            if (cells.Count < 2 || open.Count == 0)
+            {
+                RPLog.Message($"[RimPrison:test] shuttle cargo (crowded pad): {cells.Count} cells on the pad for crates, {open.Count} with no building but the pad, not checked");
+                return;
+            }
+            // (The farthest cell from the ramp is the free one; whatever earlier checks left on it is lifted off for the check and put back after. A list, not FirstOrDefault: a default cell is (0, 0, 0), which is valid.)
+            IntVec3 free = open[0];
+            // (Every item on the pad is lifted, the earlier stage's steel too: a partial stack beside the free cell would take the crate whole.)
+            LiftItems(map, r, pad.OccupiedRect());
+            foreach (IntVec3 c in cells)
+            {
+                if (c == free) continue;
+                Thing block = ThingMaker.MakeThing(ThingDefOf.WoodLog);
+                block.stackCount = 1;
+                GenSpawn.Spawn(block, c, map);
+                block.SetForbidden(true, warnOnFail: false);
+                r.Add(() =>
+                {
+                    if (!block.Destroyed) block.Destroy(DestroyMode.Vanish);
+                });
+            }
+            run("crowded pad", 40, at => at == free, $"on the one free pad cell {free}", pad.OccupiedRect());
         }
 
         /// <summary>

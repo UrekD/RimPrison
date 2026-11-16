@@ -43,7 +43,9 @@ namespace RimPrison
         /// <summary>
         /// The scenes' throwaway inmates, which no warden takes to a bed. They have none of their own, and vanilla's warden work (<c>WorkGiver_Warden_TakeToBed</c>) escorts such an inmate to a free bed in another room: a real guard
         /// reserved the inmate for <c>EscortPrisonerToBed</c> in the hour the cap check came back to offer its third doctor a test ("the inmate reserved by Whistler (EscortPrisonerToBed, -1 of 1)", stability10-s10f,
-        /// inspector-in3a: one run in three). The walked rounds are not about beds, so the work is kept off these inmates (<see cref="Patch_WorkGiver_Warden_TakeToBed_HeldInmates"/>).
+        /// inspector-in3a: one run in three). The walked rounds are not about beds, so the work is kept off these inmates (<see cref="Patch_WorkGiver_Warden_TakeToBed_HeldInmates"/>). Nor are
+        /// they about searches: a real guard's routine frisk (an inmate out of their cell, a two in a hundred roll) reserved one the same way ("the inmate reserved by Lover (RP_Frisk, -1 of 1)", break-b3b), so that work
+        /// is kept off them too (<see cref="Patch_WorkGiver_Frisk_HeldInmates"/>).
         /// </summary>
         private static readonly List<Pawn> dtInmates = new List<Pawn>();
 
@@ -300,6 +302,38 @@ namespace RimPrison
                     RPLog.Message($"[RimPrison:test] drug testing (kits not hauled): the doctor could not take the stack anyway (reserve {doctor.CanReserve(kit)}, forbidden {kit.IsForbidden(doctor)}); the doctor's part is skipped");
                 else if (doctorOffered)
                     DtFail("the scene's own doctor was offered the scene's kits to haul: after a round cut short the doctor carries the stack off and the check finds a kit still in their hands");
+            });
+        }
+
+        /// <summary>
+        /// A guard beside the scene's inmate is not offered a search of them (a real guard's routine frisk reserved one in break-b3b, and the doctor of the round was offered no test), where the same guard is offered a search
+        /// of an inmate who is not the scene's.
+        /// </summary>
+        private static void CheckDrugTestInmatesNotFrisked(Map map)
+        {
+            Guarded("drug testing: a guard is not offered a search of the scene's inmate", map, r =>
+            {
+                DtRound t = DtRoundScene(map, r, 1, 1, 1);
+                Pawn guard = ThrowawayStaff(map, r, RPSecurityDefOf.RP_Guard);
+                t.s.Place(guard, 8);
+                Pawn inmate = t.inmates[0], other = t.s.Inmate("Zdt7a");
+                if (PrisonGame.Instance.shakedownUntilTick > Find.TickManager.TicksGame) { RPLog.Message("[RimPrison:test] drug testing (inmates not frisked): a shakedown is on, the check is skipped"); return; }
+                foreach (Pawn p in new[] { inmate, other })
+                {
+                    CompInmate c = p.Inmate();
+                    (c.suspected, c.awaitingSearch, c.lastSearchedTick) = (false, false, -9999999);
+                }
+                WorkGiver_Frisk.RoutineRollForTests = true;
+                r.Add(() => WorkGiver_Frisk.RoutineRollForTests = null);
+                var giver = (WorkGiver_Frisk)DefDatabase<WorkGiverDef>.GetNamed("RP_Frisk_WorkGiver").Worker;
+                // (The premise: a guard is offered a routine frisk of an inmate who is not the scene's, so that nothing but the scene's hold keeps them off the scene's.)
+                if (!giver.HasJobOnThing(guard, other))
+                {
+                    RPLog.Message($"[RimPrison:test] drug testing (inmates not frisked): the guard is offered no routine frisk of an ordinary inmate either (candidate {WorkGiver_Frisk.Candidate(other)}, reserve {guard.CanReserve(other)}); the check is skipped");
+                    return;
+                }
+                if (giver.HasJobOnThing(guard, inmate))
+                    DtFail("a guard was offered a routine frisk of the scene's inmate: a real guard would reserve them against the doctor of the round");
             });
         }
 
@@ -586,6 +620,21 @@ namespace RimPrison
         {
             if (!AutoTest.Active || t is not Pawn p || !AutoTest.DrugTestInmateHeld(p)) return true;
             __result = null;
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Autotest: no guard is offered a search of a drug-test scene's inmate (<see cref="AutoTest.DrugTestInmateHeld"/>): nothing reserves the inmate against the doctor the check offers them to.
+    /// </summary>
+    [HarmonyPatch(typeof(WorkGiver_Frisk), nameof(WorkGiver_Frisk.HasJobOnThing))]
+    [TestOnly]
+    public static class Patch_WorkGiver_Frisk_HeldInmates
+    {
+        public static bool Prefix(Thing t, ref bool __result)
+        {
+            if (!AutoTest.Active || t is not Pawn p || !AutoTest.DrugTestInmateHeld(p)) return true;
+            __result = false;
             return false;
         }
     }

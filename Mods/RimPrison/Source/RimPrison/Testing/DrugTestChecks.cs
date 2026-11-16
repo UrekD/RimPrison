@@ -73,6 +73,7 @@ namespace RimPrison
             CheckDrugTestKitsAndDoctors(map);
             CheckDrugTestRound(map);
             CheckDrugTestKitsNotHauled(map);
+            CheckDrugTestInmatesNotFrisked(map);
             CheckDrugTestRoundAcrossAnHourAndALoad(map);
             CheckDrugTestCapAcrossALoad(map);
             CheckDrugTestDoctorsHeldThroughThePass(map);

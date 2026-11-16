@@ -30,6 +30,11 @@ namespace RimPrison
 
         internal static bool TourScrollToWatch;
 
+        /// <summary>Where the escape plans begin (for the tour's scroll to them).</summary>
+        private static float breakTop = -1f;
+
+        internal static bool TourScrollToBreak;
+
         /// <summary>The columns in a scroll view: with trials, complaints, debts and rings listed the left one runs off the window.</summary>
         public static void Draw(Rect rect, Map map, ref Vector2 scroll)
         {
@@ -42,6 +47,11 @@ namespace RimPrison
             {
                 TourScrollToWatch = false;
                 scroll.y = Mathf.Max(0f, watchTop - 8f);
+            }
+            if (TourScrollToBreak && breakTop > 0f)
+            {
+                TourScrollToBreak = false;
+                scroll.y = Mathf.Max(0f, breakTop - 8f);
             }
             var view = new Rect(0f, 0f, rect.width - 16f, Mathf.Max(rect.height, contentHeight));
             Widgets.BeginScrollView(rect, ref scroll, view);
@@ -364,6 +374,12 @@ namespace RimPrison
             List<StoryArc> rings = RingSystem.VisibleRings();
             if (rings.Count == 0) Muted(right, ref y, "RP_IntelNoRings");
             foreach (StoryArc ring in rings) DrawRing(right, ref y, ring, map);
+            // A planned break the warden has found a part of: what is known of it, one marker while more is suspected, and the moves.
+            y += 8f;
+            breakTop = y;
+            Header(right, ref y, "RP_IntelBreak");
+            if (EscapePlans.VisiblePlan() is { } plan) DrawPlan(right, ref y, plan, map);
+            else Muted(right, ref y, "RP_IntelNoBreak");
             // The tools of the workshop and the kitchen as the staff last counted them back in (never what is true), and the way to replace the ones counted short.
             y += 8f;
             Header(right, ref y, "RP_IntelTools");
@@ -640,6 +656,42 @@ namespace RimPrison
             ChoiceLetter_PrisonDecision ask = OpenDecision("RP_Decision_Arc", d => d.arcId == arc.id);
             bool askHeld = ask == null && HeldDecision("RP_Decision_Arc", d => d.arcId == arc.id);
             TooltipHandler.TipRegion(reopen, (ask != null ? "RP_IntelReopenRingTip" : askHeld ? "RP_IntelReopenHeldTip" : "RP_IntelReopenGoneTip").Translate());
+            if (Widgets.ButtonText(reopen, "RP_IntelReopen".Translate(), active: ask != null)) ask.OpenLetter();
+            y += 28f;
+        }
+
+        /// <summary>One plan: a row for each known link (the crew, the tool, the inside man, the way, the night) and one for the marker, then the warden's moves (foil, post guards on the way, turn the inside man, the letter).</summary>
+        private static void DrawPlan(Rect col, ref float y, StoryArc arc, Map map)
+        {
+            float top = y;
+            foreach (PlanPart part in EscapePlans.Chain(arc))
+            {
+                var row = new Rect(col.x, y, col.width, 22f);
+                GUI.color = part.Known ? (part.link.handled ? PrisonHUD.Muted : PrisonHUD.Warn) : PrisonHUD.Muted;
+                Widgets.Label(row, part.text.CapitalizeFirst().Truncate(row.width - 2f));
+                GUI.color = Color.white;
+                if (part.Known && EscapePlans.Focus(arc, part.link, map) is { Spawned: true } who) Click(row, who);
+                y += 22f;
+            }
+            TooltipHandler.TipRegion(new Rect(col.x, top, col.width, y - top), "RP_IntelBreakTip".Translate());
+            string foilWhy = EscapePlans.FoilWhy(arc, map), postWhy = EscapePlans.PostWhy(arc, map), turnWhy = EscapePlans.TurnWhy(arc, map);
+            var foil = new Rect(col.x + 16f, y, 90f, 22f);
+            TooltipHandler.TipRegion(foil, foilWhy ?? "RP_IntelBreakFoilTip".Translate().Resolve());
+            if (Widgets.ButtonText(foil, "RP_IntelBreakFoil".Translate(), active: foilWhy == null) && foilWhy == null)
+            {
+                StoryArc target = arc;
+                Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("RP_IntelBreakFoilTip".Translate(), () => EscapePlans.Foil(target, map), destructive: true));
+            }
+            var post = new Rect(foil.xMax + 8f, y, 90f, 22f);
+            TooltipHandler.TipRegion(post, postWhy ?? "RP_IntelBreakPostTip".Translate(EscapePlans.PostHoursText(map, arc.plan)).Resolve());
+            if (Widgets.ButtonText(post, "RP_IntelBreakPost".Translate(), active: postWhy == null) && postWhy == null) EscapePlans.LetItRun(arc, map);
+            var turn = new Rect(post.xMax + 8f, y, 90f, 22f);
+            TooltipHandler.TipRegion(turn, turnWhy ?? "RP_IntelBreakTurnTip".Translate().Resolve());
+            if (Widgets.ButtonText(turn, "RP_IntelBreakTurn".Translate(), active: turnWhy == null) && turnWhy == null) EscapePlans.Turn(arc, map);
+            var reopen = new Rect(turn.xMax + 8f, y, 90f, 22f);
+            ChoiceLetter_PrisonDecision ask = OpenDecision("RP_Decision_Arc", d => d.arcId == arc.id);
+            bool askHeld = ask == null && HeldDecision("RP_Decision_Arc", d => d.arcId == arc.id);
+            TooltipHandler.TipRegion(reopen, (ask != null ? "RP_IntelReopenBreakTip" : askHeld ? "RP_IntelReopenHeldTip" : "RP_IntelReopenGoneTip").Translate());
             if (Widgets.ButtonText(reopen, "RP_IntelReopen".Translate(), active: ask != null)) ask.OpenLetter();
             y += 28f;
         }

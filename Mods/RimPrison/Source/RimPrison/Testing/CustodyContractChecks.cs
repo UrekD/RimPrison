@@ -17,6 +17,11 @@ namespace RimPrison
     /// </summary>
     public static partial class AutoTest
     {
+        /// <summary>The beds the shuttle check gave back for the rest of the cohort are held free: no bedless inmate is given one (see <see cref="Patch_InmateUtility_TryReassignBed_CustodyBeds"/>).</summary>
+        private static bool custodyBedsHeld;
+
+        internal static bool CustodyBedsHeld => custodyBedsHeld;
+
         private static void CustodyFail(string check, string what) => problems0.Add($"custody contracts ({check}): {what}");
 
         private static void CheckCustodyContracts(Map map)
@@ -410,6 +415,16 @@ namespace RimPrison
                 for (int i = 0; i < waiting && i < fillers.Count; i++) fillers[i].ownership.UnclaimAll();
                 // (With exactly two free beds to begin with there were no fillers to give a bed back: the bed comes free from a member who was admitted, who goes without for the rest of the check.)
                 for (int i = fillers.Count; i < waiting && i - fillers.Count < serving.Count; i++) serving[i - fillers.Count].pawn?.ownership.UnclaimAll();
+                // (The beds just given back are held free until the check ends: a bedless inmate - the one who lost theirs, or a real one of an overcrowded prison - asks for a bed in their hourly pass and the roster is made at the
+                // launch, ticks after the call, so the bed was gone when the roster came to it: "0 aboard", break-b4b. See Patch_InmateUtility_TryReassignBed_CustodyBeds.)
+                custodyBedsHeld = true;
+                r.Add(() => custodyBedsHeld = false);
+                int freeAfterGivingBack = IntakeSystem.FreeBedCount(map, level), calledAt = Find.TickManager.TicksGame;
+                if (freeAfterGivingBack != waiting)
+                {
+                    RPLog.Message($"[RimPrison:test] custody shuttle: {freeAfterGivingBack} free {level.label} beds after giving back, not the {waiting} the rest of the cohort needs - the check cannot give them a place, the rest is not checked");
+                    return;
+                }
                 ShuttleSystem.CallDaily(g, map);
                 ShuttleVisit v2 = g.shuttle.visit;
                 ShuttleTicks(() => g.shuttle.visit != v2 || v2.phase == ShuttlePhase.Landed, 2500);
@@ -424,7 +439,7 @@ namespace RimPrison
                 List<CustodyMember> left = c.members.Where(m => m.state == CustodyState.Pending).ToList();
                 Pawn made = left.FirstOrDefault()?.pawn;
                 if (aboard != waiting || left.Count != waiting || made == null || made.Spawned || g.shuttle.carriedOver.Contains(made) || !CustodyContracts.Holds(made) || !Find.WorldPawns.Contains(made))
-                    CustodyFail("shuttle", $"after a shuttle lifted off with the cohort still aboard ({aboard} aboard), they are not kept as the contract's own (pending {left.Count}, made {made != null}, spawned {made?.Spawned}, carried over {g.shuttle.carriedOver.Contains(made)}, held {CustodyContracts.Holds(made)}, in the world {Find.WorldPawns.Contains(made)})");
+                    CustodyFail("shuttle", $"after a shuttle lifted off with the cohort still aboard ({aboard} aboard of {waiting} pending, {freeAfterGivingBack} free {level.label} bed(s) when it was called, {IntakeSystem.FreeBedCount(map, level)} when it landed {v2.landedTick - calledAt} ticks on), they are not kept as the contract's own (pending {left.Count}, made {made != null}, spawned {made?.Spawned}, carried over {g.shuttle.carriedOver.Contains(made)}, held {CustodyContracts.Holds(made)}, in the world {Find.WorldPawns.Contains(made)})");
                 if (g.intake.nextInmateNumber != number0 + serving.Count + waiting) CustodyFail("shuttle", $"{g.intake.nextInmateNumber - number0} inmates were made, expected {serving.Count + waiting}");
                 if (CustodyEntries(r).Count != serving.Count || c.extensionDays != extended) CustodyFail("shuttle", $"a shuttle that landed and lifted off with them aboard paid for them or moved the window ({CustodyEntries(r).Count} fees, {c.extensionDays} days added, expected {extended})");
                 EndShuttleVisit(g, map);
@@ -943,5 +958,16 @@ namespace RimPrison
                 (custodyStatsBefore[0], custodyStatsBefore[1], custodyStatsBefore[2], custodyStatsBefore[3], custodyStatsBefore[4], custodyStatsBefore[5], custodyStatsBefore[6]);
             custodySeeded = false;
         }
+    }
+
+    /// <summary>
+    /// Autotest: while the custody shuttle check holds the beds it gave back (<see cref="AutoTest.CustodyBedsHeld"/>), no bedless inmate is given a bed by their hourly pass: the bed is for the cohort's roster, made at the
+    /// launch some ticks after the call.
+    /// </summary>
+    [HarmonyLib.HarmonyPatch(typeof(InmateUtility), nameof(InmateUtility.TryReassignBed))]
+    [TestOnly]
+    public static class Patch_InmateUtility_TryReassignBed_CustodyBeds
+    {
+        public static bool Prefix() => !(AutoTest.Active && AutoTest.CustodyBedsHeld);
     }
 }

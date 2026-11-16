@@ -47,6 +47,8 @@ namespace RimPrison
             }
             // (A member of a smuggling ring may let on about it.)
             RingSystem.Notify_Assessed(inmate, chance);
+            // (And so may someone in a planned break's crew.)
+            EscapePlans.Notify_Assessed(inmate, chance);
             if (found.Count > 0)
                 Messages.Message("RP_AssessmentFound".Translate(inmate.LabelShort, string.Join(", ", found)), inmate, MessageTypeDefOf.NeutralEvent);
             if (c.tension >= TherapyAbove * 0.8f)

@@ -68,6 +68,9 @@ namespace RimPrison
         private static RiotBook tourRiotBook;
         /// <summary>The watch list subset's changes to put back: each inmate's watch-list fields as they were (null while nothing is changed).</summary>
         private static List<(Pawn p, int[] ticks, RiskTrigger ev, RiskTrigger cause, WatchAnswer answer)> tourWatch;
+        /// <summary>The tour's escape plan, and the prison's own plans set aside while it shows.</summary>
+        private static StoryArc tourBreak;
+        private static List<StoryArc> tourBreakLive;
         /// <summary>The riot review subset's clock: the tick and the speed it found, how far it moved the clock on, and the letters whose timeouts moved with it (null while the clock is the game's).</summary>
         private static (int tick, TimeSpeed speed, int shift, List<LetterWithTimeout> letters)? tourRiotClock;
 
@@ -2001,6 +2004,58 @@ namespace RimPrison
             // RIMPRISON_TOUR=informant: the file with a task, the target menu, the move menu, Intel's task row. Not in the whole tour: it makes an inmate an informant.
             if (System.Environment.GetEnvironmentVariable("RIMPRISON_TOUR") == "informant") steps.RemoveAll(x => x.name != "map" && !x.name.StartsWith("informant-"));
             else steps.RemoveAll(x => x.name.StartsWith("informant-"));
+            steps.Add(("break-letter", () =>
+            {
+                // A plan of the tensest inmate and two others, the way out (the fence at an unlit stretch) and one of the crew known, the night chosen two days off and not known: its one letter. Every tick is the
+                // clock's own or later (a tour game starts near tick 0).
+                Clear();
+                PrisonGame game = PrisonGame.Instance;
+                List<Pawn> inmates = map.mapPawns.PrisonersOfColonySpawned.Where(p => InmateUtility.IsActiveInmate(p) && p.Inmate() is { security.escortOnly: false })
+                    .OrderByDescending(p => p.Inmate().tension).Take(3).ToList();
+                if (inmates.Count < 2)
+                {
+                    Log.Error($"[RimPrison] ui tour: no two inmates for an escape plan ({inmates.Count})");
+                    return;
+                }
+                tourBreakLive ??= game.story.arcs.Where(a => a.plan != null).ToList();
+                game.story.arcs.RemoveAll(a => a.plan != null);
+                // (A tour game is at its start's daylight, so no stretch is unlit: any cell outside the inmates' space does for the fence, not the inmate's own.)
+                IntVec3 cell = EscapePlans.FindOutside(map, inmates[0].Position, unlit: true, out IntVec3 found) || EscapePlans.FindOutside(map, inmates[0].Position, unlit: false, out found) ? found : inmates[0].Position;
+                StoryArc arc = EscapePlans.Make(map, inmates[0], inmates.Skip(1), PlanWay.Fence, cell);
+                tourBreak = arc;
+                arc.plan.readiness = 1f;
+                (arc.plan.night, arc.plan.nightTick) = (PlanNight.Dark, Find.TickManager.TicksGame + 2 * GenDate.TicksPerDay);
+                arc.plan.links.Add(new PlanLink { role = PlanRole.Night, name = EscapePlans.NightText(map, arc.plan) });
+                EscapePlans.Reveal(arc, arc.plan.Find(PlanRole.Way), "tip", map, announce: false);
+                EscapePlans.Reveal(arc, EscapePlans.CrewLink(arc, inmates[1]), "session", map, announce: false);
+                Find.LetterStack.LettersListForReading.OfType<ChoiceLetter_PrisonDecision>().FirstOrDefault(l => l.arcId == arc.id)?.OpenLetter();
+            }));
+            steps.Add(("break-intel", () =>
+            {
+                // Intel's escape plans: the known links (the way out, one of the crew), the marker for the rest, and Foil, Post guards, Turn (off: no inside man known) and the letter.
+                Clear();
+                MainTabWindow_Prison.Open(MainTabWindow_Prison.Tab.Intel);
+                IntelTab.TourScrollToBreak = true;
+            }));
+            steps.Add(("break-back", () =>
+            {
+                // (The prison's own plans back: the tour's was never.)
+                Clear();
+                IntelTab.TourScrollToBreak = false;
+                PrisonGame game = PrisonGame.Instance;
+                if (tourBreak != null)
+                {
+                    int id = tourBreak.id;
+                    foreach (ChoiceLetter_PrisonDecision l in Find.LetterStack.LettersListForReading.OfType<ChoiceLetter_PrisonDecision>().Where(l => l.arcId == id).ToList()) Find.LetterStack.RemoveLetter(l);
+                    game.story.deferredLetters.RemoveAll(l => l.arcId == id);
+                    game.story.arcs.Remove(tourBreak);
+                }
+                if (tourBreakLive != null) game.story.arcs.AddRange(tourBreakLive);
+                (tourBreak, tourBreakLive) = (null, null);
+            }));
+            // RIMPRISON_TOUR=break: an escape plan's letter and Intel's rows. Not in the whole tour: it makes a plan of real inmates.
+            if (System.Environment.GetEnvironmentVariable("RIMPRISON_TOUR") == "break") steps.RemoveAll(x => x.name != "map" && !x.name.StartsWith("break-"));
+            else steps.RemoveAll(x => x.name.StartsWith("break-"));
             steps.Add(("unitofficer-row", () =>
             {
                 // A guard named three and a half days ago to the first wing with an inmate on it (the medium wing if it has one): the Deployment tab scrolled to the unit officers' block.

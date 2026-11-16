@@ -162,6 +162,11 @@ namespace RimPrison
                     // (Not on a new day: midnight reset the count to 0, and yesterday's would start today with part of its budget used.)
                     if (GenLocalDate.DayOfYear(map) == day0) story.beatsToday = beats0;
                 });
+                // (Nor do random mood breaks: a throwaway guard's "poor mood", with a death in the prison the thought of it, put an "insulting spree" on the guard sent to bring the inmate home, which ended the walk - "InterruptForced ...
+                // MentalStateHandler.TryStartMentalState" in break-b5a. The checks that want a break start one by hand, forced, which this does not stop.)
+                bool randomBreaks0 = DebugSettings.enableRandomMentalStates;
+                DebugSettings.enableRandomMentalStates = false;
+                r.Add(() => DebugSettings.enableRandomMentalStates = randomBreaks0);
                 s.origin = OpenCorner(map, Width, Height);
                 if (!s.origin.IsValid)
                 {

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The break (gap analysis 7, item 4): a planned escape uncovered piece by piece. Only a link the warden knows is ever named here. -->
+
+  <!-- The parts, as the warden knows them -->
+  <RP_BreakLine_Leader>{0} leads it</RP_BreakLine_Leader>
+  <RP_BreakLine_Member>{0} is in the crew</RP_BreakLine_Member>
+  <RP_BreakLine_Tool>{0} has the tool for it</RP_BreakLine_Tool>
+  <RP_BreakLine_ToolFound>{0} had the tool for it, a {1}</RP_BreakLine_ToolFound>
+  <RP_BreakLine_ToolCounted>the tool for it went missing from the {0} in period {1}</RP_BreakLine_ToolCounted>
+  <RP_BreakLine_Officer>{0} is the inside man</RP_BreakLine_Officer>
+  <RP_BreakLine_Way>the way out is {0}</RP_BreakLine_Way>
+  <RP_BreakLine_Night>the night is {0}</RP_BreakLine_Night>
+  <RP_BreakWay_Fence>the fence at an unlit stretch ({0}, {1})</RP_BreakWay_Fence>
+  <RP_BreakWay_Tunnel>a tunnel from cell {0}</RP_BreakWay_Tunnel>
+  <RP_BreakWay_TunnelNoNumber>a tunnel from a cell</RP_BreakWay_TunnelNoNumber>
+  <RP_BreakWay_Ramp>the shuttle ramp, in pad duty's blind hour</RP_BreakWay_Ramp>
+  <RP_BreakWay_Uniform>the gate, in a guard's uniform from the laundry</RP_BreakWay_Uniform>
+  <RP_BreakNight_Dark>day {0} at {1}, in the darkest stretch</RP_BreakNight_Dark>
+  <RP_BreakNight_Handover>day {0} at {1}, as the guards hand over</RP_BreakNight_Handover>
+  <RP_BreakNight_Storm>day {0} at {1}, under the storm</RP_BreakNight_Storm>
+  <RP_BreakNight_Blackout>the blackout, day {0}</RP_BreakNight_Blackout>
+
+  <!-- How a link was found -->
+  <RP_BreakLinkFound>An escape plan - {0} ({1}).</RP_BreakLinkFound>
+  <RP_BreakHow_find>found on them</RP_BreakHow_find>
+  <RP_BreakHow_stash>found in their cell</RP_BreakHow_stash>
+  <RP_BreakHow_tunnel>found beside a tunnel</RP_BreakHow_tunnel>
+  <RP_BreakHow_raid>taken in a bust</RP_BreakHow_raid>
+  <RP_BreakHow_count>the tool count</RP_BreakHow_count>
+  <RP_BreakHow_tip>an informant's tip</RP_BreakHow_tip>
+  <RP_BreakHow_tap>a phone tap</RP_BreakHow_tap>
+  <RP_BreakHow_session>a session with the psychologist</RP_BreakHow_session>
+  <RP_BreakHow_source>the turned inside man</RP_BreakHow_source>
+  <RP_BreakHow_search>a cell search, and the tunnel is filled in</RP_BreakHow_search>
+  <RP_BreakTunnelFilled>An escape plan - {0} - the guards searched that cell, and the tunnel is filled in.</RP_BreakTunnelFilled>
+  <RP_TipBreak>an escape is being planned - {0}.</RP_TipBreak>
+  <RP_Sus_Break>{0} was named as the inside man of a planned break</RP_Sus_Break>
+  <RP_KeepApartWhy_break>an escape plan</RP_KeepApartWhy_break>
+
+  <!-- The letter -->
+  <RP_BreakAskLabel>An escape is being planned</RP_BreakAskLabel>
+  <RP_BreakAskText>Some of your inmates are planning a break, and this much is known:\n\n{0}\n\nWhatever else belongs to it is still hidden.\n\nFoil it now - the guards frisk the crew you know of, search their cells and keep them apart. With this little evidence their cases go to the adjudication sheet as suspicion only, and the plan falls apart.\nLet it run - the guards wait for the night. With the way out known a guard post goes up on it, manned {1}; a crew that comes out by a manned post is restrained and charged with an officer's evidence. Misjudge the night and they are gone, and only the count will tell you.\nTurn the inside man - once an officer on the crew's payroll is known, he can be made to work for you, and tells you a link of the plan a day.</RP_BreakAskText>
+  <RP_Break_Foil>Foil it now</RP_Break_Foil>
+  <RP_Break_Watch>Let it run</RP_Break_Watch>
+  <RP_Break_Turn>Turn the inside man</RP_Break_Turn>
+  <RP_BreakOver>The plan is over.</RP_BreakOver>
+  <RP_BreakNoCrewKnown>Nobody in the crew is known yet.</RP_BreakNoCrewKnown>
+  <RP_BreakNoInsideMan>No inside man is known, or he is no longer theirs.</RP_BreakNoInsideMan>
+  <RP_BreakPostHoursNight>{0} to {1}, round the night they planned</RP_BreakPostHoursNight>
+  <RP_BreakPostHoursSmall>{0} to {1}, every night (the night is not known)</RP_BreakPostHoursSmall>
+
+  <!-- The answers -->
+  <RP_BreakFoiled>The guards move on the planned break - {0} are to be frisked, their cells searched, and kept apart.</RP_BreakFoiled>
+  <RP_Chr_BreakFoiled>The warden foiled a planned break before its night ({0}).</RP_Chr_BreakFoiled>
+  <RP_BreakWatching>The guards wait for the break. Nothing is known of the way out yet, so no post goes up.</RP_BreakWatching>
+  <RP_BreakPosted>A guard post goes up on the way out of the planned break, {0}, manned {1}.</RP_BreakPosted>
+  <RP_BreakTurned>{0} works for the warden now, and will tell what the crew plans.</RP_BreakTurned>
+  <RP_Chr_BreakTurned>{0}, the inside man of a planned break, was turned by the warden.</RP_Chr_BreakTurned>
+
+  <!-- The night -->
+  <RP_BreakReason>a planned break</RP_BreakReason>
+  <RP_BreakCaughtLabel>Caught in the act</RP_BreakCaughtLabel>
+  <RP_BreakCaughtText>{0} went for the way out on the night they had planned - {1} - and {2} was waiting at the post.\n\nThey are restrained, and each has a case on the adjudication sheet for the escape attempt, with an officer's evidence.</RP_BreakCaughtText>
+  <RP_Chr_BreakCaught>A planned break was caught in the act - {0}, by {1}.</RP_Chr_BreakCaught>
+  <RP_BreakSeenLabel>A break</RP_BreakSeenLabel>
+  <RP_BreakSeenText>{0} broke out together, as planned. The guards are after them.\n\nAnyone else in it was not seen going; the next count will tell.</RP_BreakSeenText>
+  <RP_Chr_BreakSeen>A planned break - {0} were seen going.</RP_Chr_BreakSeen>
+  <RP_Chr_BreakEnded>A planned break the guards knew of came to nothing.</RP_Chr_BreakEnded>
+  <RP_Chr_BreakEndedLeader>The break {0} was planning came to nothing.</RP_Chr_BreakEndedLeader>
+
+  <!-- Intel -->
+  <RP_IntelBreak>Escape plans</RP_IntelBreak>
+  <RP_IntelNoBreak>No escape plan is known. A frisk or a search, the tool count, informants' tips, phone taps, the psychologist and a unit officer show its parts, one by one.</RP_IntelNoBreak>
+  <RP_IntelBreakMore>more of it suspected</RP_IntelBreakMore>
+  <RP_IntelBreakTip>What is known of a planned break - the crew, the tool, the inside man, the way out and the night, as far as they have been found. There may be more you have not found yet.</RP_IntelBreakTip>
+  <RP_IntelBreakFoil>Foil</RP_IntelBreakFoil>
+  <RP_IntelBreakFoilTip>Frisk the crew you know of, search their cells and keep them apart; their cases go to the adjudication sheet as suspicion only, and the plan falls apart.</RP_IntelBreakFoilTip>
+  <RP_IntelBreakPost>Post guards</RP_IntelBreakPost>
+  <RP_IntelBreakPostTip>Puts a guard post up on the way out, manned {0}. A crew that comes out by a manned post is caught in the act.</RP_IntelBreakPostTip>
+  <RP_IntelBreakNoWay>The way out is not known.</RP_IntelBreakNoWay>
+  <RP_IntelBreakPosted>A post is up on the way out, manned {0}.</RP_IntelBreakPosted>
+  <RP_IntelBreakTurn>Turn</RP_IntelBreakTurn>
+  <RP_IntelBreakTurnTip>Turn the known inside man - he works for you, and tells you a link of the plan a day.</RP_IntelBreakTurnTip>
+  <RP_IntelReopenBreakTip>Reopens the letter about this plan, which is still waiting for your answer (unanswered, it lets the plan run).</RP_IntelReopenBreakTip>
+</LanguageData>

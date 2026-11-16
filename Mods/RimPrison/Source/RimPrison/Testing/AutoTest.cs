@@ -3837,9 +3837,11 @@ namespace RimPrison
                     Metrics(map, hour);
                     if (Plan == "showcase") ShowcaseSupermaxWatch(map);
                     if (Plan == "showcase") ShowcaseBedlessWatch(map);
+                    if (Plan == "showcase") ShowcaseFreezerWatch(map);
                     FoodDiag(map, hour);
                 }
                 if (Plan == "showcase") ShowcaseSupermaxTrackIn(map);
+                if (Plan == "showcase") ShowcaseFreezerTick();
                 Track(map);
                 // (Not while a long event such as the vanilla autosave at the day change is pending: quitting to the
                 // menu under it leaves the autosave event stuck forever.)
@@ -3945,6 +3947,7 @@ namespace RimPrison
             sb.Append($"asks={WardenAsks.Describe(PrisonMap.Of(map))} ");
             sb.Append($"standing={StandingOrders.Describe(g)} ");
             sb.Append($"amends={AmendsDescribe(map)} ");
+            sb.Append($"break={EscapePlans.Describe()} ");
             sb.Append($"bar={g.staffBarCompact}:{string.Join(",", g.staffBarPins.Select(p => p.thingIDNumber).OrderBy(i => i))}:{string.Join(",", g.staffBarCollapsed.OrderBy(c => c))} ");
             // The warden's desk: each day's card with the numbers it was worked out from, and today's meal and misconduct-by-level counts.
             sb.Append($"cards={string.Join(",", g.gradeCards.Select(c => $"{c.detailed}:{c.inmates}:{c.safety:F1}:{c.security:F1}:{c.health:F1}:{c.conditions:F1}:{c.order:F1}:{c.reform:F1}:{c.violent}:{c.deaths}:{c.escapes}:{c.contrabandSmuggled}:{c.contrabandFound}:{c.ringsBusted}:{c.injured}:{c.employed}:{c.reformed}:{c.released}:{c.complianceSamples}:{c.meanMood:F3}:{c.complianceSum:F2}:{c.paroleShare:F2}:{c.stayedOut:F2}"))} history={g.gradeHistory.Count}/{g.gradeCards.Count} ");
@@ -4195,6 +4198,7 @@ namespace RimPrison
             SeedWardenAsksForReload(map);
             SeedWatchListForReload(map);
             SeedAmendsForReload(map);
+            SeedBreakForReload(map);
             RecordShuttleForReload(map);
             // (An evacuation half done, built by hand with no tick and no regime changed (the seeds before have recorded walks, hearings and a shuttle that a tick would move): see SeedEvacuationForReload.)
             SeedEvacuationForReload(map);
@@ -4236,6 +4240,8 @@ namespace RimPrison
             UnseedStandingOrdersAfterReload();
             // The seeded restorative meetings came back whole, and are put back as they were (an approved one would call a family in the rest of the run).
             CheckAmendsAfterReload(map);
+            // The seeded escape plan came back whole, and is taken out again (before any check that ticks: its hour or its day would move it).
+            CheckBreakAfterReload(map);
             // (Back to the book the game had: the seeded promise would be judged, and a seeded rise paid, in the rest of the run.)
             if (agreementsBeforeSeed != null)
             {

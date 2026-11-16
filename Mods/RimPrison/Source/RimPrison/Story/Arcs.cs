@@ -57,6 +57,8 @@ namespace RimPrison
         public SmugglingRing ring;
         /// <summary>A shot-caller's deal (null for every other arc; see <see cref="GangDeal"/>).</summary>
         public GangDeal deal;
+        /// <summary>A planned escape's links, readiness and night (null for every other arc; see <see cref="EscapePlan"/>).</summary>
+        public EscapePlan plan;
 
         public Pawn A => pawns.Count > 0 ? pawns[0] : null;
         public Pawn B => pawns.Count > 1 ? pawns[1] : null;
@@ -76,6 +78,7 @@ namespace RimPrison
             Scribe_Values.Look(ref stake, "stake", -1);
             Scribe_Deep.Look(ref ring, "ring");
             Scribe_Deep.Look(ref deal, "deal");
+            Scribe_Deep.Look(ref plan, "plan");
             if (Scribe.mode == LoadSaveMode.PostLoadInit) pawns ??= new List<Pawn>();
         }
     }

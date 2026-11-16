@@ -520,6 +520,15 @@ namespace RimPrison
                 CheckAmends(map);
             }
 
+            private void EvBreak()
+            {
+                // The break, a planned escape (BreakChecks.cs), last of the list: who may start one and when, a frisk of the tool holder finds that link and no other (nothing told or shown names the rest) with the one letter,
+                // the tool count's shortage says where the tool went and not who, a tip, a tap and a session one link each, the answers (let it run, the night's post hours, turning the inside man, foiling with the cases as
+                // suspicion only), readiness, the night and a blackout; caught in the act at a manned post (real ticks), and with no post the crew gone unseen until the count. Round 2, the review's fixes: the post follows
+                // the way, no night through a dead way, the inside man's own tip, the marker, a source turned by internal affairs, caught crew taken back in, a filled tunnel, a night moved on.
+                CheckBreak(map);
+            }
+
             private void EvAgreement()
             {
                 // ...and for staff agreements (AgreementChecks.cs): a promise to fix the grievance kept by real cover over the hours and not by the last hour's, nights by night staff, safety broken by a blow, the pay rise paid and taken back, one reloaded before judgment judged once, a representative who left, the peace and the bonus that is not offered.

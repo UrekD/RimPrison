@@ -939,15 +939,28 @@ namespace RimPrison
                 Complaint lie = ComplaintSystem.OpenBy(g, schemer.thingIDNumber);
                 if (lie == null || lie.isTrue || gentle.GetComp<CompStaff>().trueComplaints != 0) CourtScene.Fail($"a manipulative inmate whose contraband was found filed {(lie == null ? "nothing in 300 searches" : "a true complaint")}");
                 // A restraint that goes too far: the rough guard hurts a calm inmate within a few tries.
-                int hurt = 0;
-                for (int i = 0; i < 80 && hurt == 0; i++)
+                // (A restraint is rough with the chance the code gives: RoughBase + RoughPerBrutality x the guard's brutality, 13 in 100 for Bloodlust alone. The dice are the game's and a run of them is not the check's to
+                // rely on - eighty tries leave one run in 70000 with none - so each restraint is made under a seed whose first roll comes up, and a restraint that is then not rough is the failure.)
+                float roughChance = ComplaintSystem.RoughBase + ComplaintSystem.RoughPerBrutality * UnityEngine.Mathf.Max(0f, ComplaintSystem.Brutality(brute));
+                int roughSeed = CountRollingSeed(roughChance);
+                int hurt = 0, unfit = 0;
+                for (int i = 0; i < 5 && hurt == 0; i++)
                 {
                     Pawn p = s.Inmate("Zrestrained57" + i);
+                    if (!ComplaintSystem.Fit(p)) unfit++;
                     int before = p.health.hediffSet.hediffs.Count;
-                    ComplaintSystem.Notify_Restrained(brute, p, p.Inmate(), wasAggro: false);
+                    Rand.PushState(roughSeed);
+                    try
+                    {
+                        ComplaintSystem.Notify_Restrained(brute, p, p.Inmate(), wasAggro: false);
+                    }
+                    finally
+                    {
+                        Rand.PopState();
+                    }
                     if (p.health.hediffSet.hediffs.Count > before) hurt++;
                 }
-                if (hurt == 0) CourtScene.Fail("eighty restraints by a guard with a brutal streak and not one rough one");
+                if (hurt == 0) CourtScene.Fail($"restraints by a guard with a brutal streak, made on a roll that comes up ({roughChance:P0} each by the code), and not one rough one ({unfit} of the inmates not fit to be roughed up)");
                 // The real restraint (a guard who is Bloodlust, Psychopath, Brawler and Abrasive in one): the game's own call restrains them and may go too far, the inmate remembering it worse than a plain restraint.
                 Pawn tyrant = s.Guard("Ztyrant57");
                 tyrant.story.traits.allTraits.Clear();

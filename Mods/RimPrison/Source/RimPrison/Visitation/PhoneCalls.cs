@@ -56,6 +56,8 @@ namespace RimPrison
                 c.gangKnown = true;
                 key = "RP_TapGang";
             }
+            // (Someone in a planned break's crew may give a link of it away; the reveal has its own line.)
+            if (key == null && EscapePlans.Notify_Tapped(p)) game.stats.phoneTapIntel++;
             if (key == null) return;
             game.stats.phoneTapIntel++;
             Messages.Message(key.Translate(p.LabelShort), p, MessageTypeDefOf.CautionInput, historical: false);

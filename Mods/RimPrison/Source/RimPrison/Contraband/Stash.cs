@@ -110,7 +110,7 @@ namespace RimPrison
                 if (!Rand.Chance(chance)) continue;
                 ContrabandKind kind = ContrabandUtility.Ext(t.def).kind;
                 c.stash.Remove(t);
-                ToolCount.Notify_Taken(t, ToolSource.Stash);
+                ToolCount.Notify_Taken(t, ToolSource.Stash, owner);
                 t.Destroy();
                 found++;
                 pm?.AddFind(cell, kind, FindSource.Stash);

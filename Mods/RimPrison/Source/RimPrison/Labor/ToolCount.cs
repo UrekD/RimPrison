@@ -352,8 +352,11 @@ namespace RimPrison
         /// What the staff know changes only for a tool they had counted (<see cref="ToolPool.countedOrder"/>): one that was taken after the last count is not in their number, so finding it changes nothing they know and says nothing
         /// (the next count finds the room whole of it) - the message would give away a theft nobody has counted.
         /// </summary>
-        public static void Notify_Taken(Thing t, ToolSource source)
+        /// <param name="from">Whom it was taken from, when the taking knows (a planned break's tool is found on them).</param>
+        public static void Notify_Taken(Thing t, ToolSource source, Pawn from = null)
         {
+            // (Every taking passes here, traced or not: a planned break's tool is found by it.)
+            EscapePlans.Notify_ToolTaken(t, source, from);
             ToolLedgers book = Book;
             if (book == null || t == null || !book.byThing.TryGetValue(t.thingIDNumber, out ToolTrace trace)) return;
             book.byThing.Remove(trace.thingId);
@@ -386,7 +389,7 @@ namespace RimPrison
             if (owner.equipment?.Primary is { } eq && Traced(eq)) traced.Add(eq);
             foreach (Thing t in traced)
             {
-                Notify_Taken(t, ToolSource.Tunnel);
+                Notify_Taken(t, ToolSource.Tunnel, owner);
                 ContrabandKind kind = ContrabandUtility.Ext(t.def).kind;
                 IntVec3 at = owner.PositionHeld;
                 bool hidden = c.stash.Contains(t);
@@ -573,6 +576,7 @@ namespace RimPrison
             int now = Find.TickManager.TicksGame;
             int actual = Missing(pool);
             int fresh = actual - pool.knownMissing;
+            int countedFrom = pool.countedOrder;
             pool.countDue = false;
             pool.countedPeriod = pool.countDuePeriod;
             pool.countedTick = now;
@@ -582,6 +586,8 @@ namespace RimPrison
             pool.knownMissing = actual;
             pool.countedOrder = book.nextOrder;
             if (fresh <= 0) return;
+            // (A planned break's tool among the ones now counted short: the warden knows the plan has a tool from this room, not who has it.)
+            EscapePlans.Notify_ToolCounted(pool, countedFrom);
             // (The crews of the periods the letter is about: the first one's, and while it waits each later one's.)
             if (pool.asked)
             {

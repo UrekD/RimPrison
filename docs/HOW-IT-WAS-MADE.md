@@ -1,7 +1,7 @@
 # How Rim Prison was made and tested
 
-Rim Prison is a **proof of concept and a work in progress**. AI coding agents wrote it over about two weeks in
-October 2026 (16–28), directed by one person. This page says who did what, how it was checked, and what was not
+Rim Prison is a **proof of concept and a work in progress**. AI coding agents wrote it from October to November 2026
+(mostly October 16–28), directed by one person. This page says who did what, how it was checked, and what was not
 checked.
 
 ## Who did what
@@ -17,7 +17,7 @@ install. They did not write the code by hand. The code has not had a line-by-lin
 |---|---|
 | Design, implementation, fixes, test harness, test runs, docs | [Claude Code](https://claude.com/claude-code) with Claude Opus 5.5 |
 | Features built from written specs | Claude Sonnet 5.5 and Claude Opus 5.5, run by a local agent orchestrator in isolated git worktrees (on the last day through OpenCode, when the usual runtime hit its limit) |
-| Independent reviews | Claude Fable 5.1 and GPT-6 Astra (OpenAI Codex CLI) reviewed the design; Fable, then Opus, reviewed each feature, with Astra on some of them |
+| Independent reviews | Claude Fable 5.1 and GPT-6 Astra (OpenAI Codex CLI) reviewed the design; Fable, then Opus, reviewed each feature, with Astra on some of them; from November, GPT-6.1 Sol (OpenAI Codex CLI) and Claude Opus 5.5 reviewed each plan before it was built and each finished batch of work |
 | Gap analyses (what a prison game still lacked, in order) | Claude Fable 5.1, GPT-6 Astra and Claude Opus 5.5 |
 | Art | Drawn by code: `tools/gen-art.py` (stdlib Python, redrawn by GPT-6.1 Sol in the OpenAI Codex CLI after a first version by Claude) writes every texture and icon to PNG; `tools/check-art.py` checks them. No image-generation model was used |
 
@@ -61,10 +61,11 @@ and feature checks. It fails on any error in the log that is not a known vanilla
 A run without the expansions (Core, Harmony and this mod) was checked too.
 
 **Census runs.** To measure flakiness, batches of about six runs (two of the events plan, saveload, normal, stress,
-showcase) ran on the main line of development (numbered up to 85), and **24 stability rounds** fixed what they
-turned up: flaky checks, and the product bugs behind some of them. The last batches before publishing passed 6, 5, 5,
-6, 6, 3 and 5 of 6 runs. The round after the 3 of 6 fixed its cause; the last failure (the showcase prison's freezer
-running warm) is still open.
+showcase) ran on the main line of development (numbered up to 87), and **26 stability rounds** fixed what they
+turned up: flaky checks, and the product bugs behind some of them. Of the last batches, 6, 6, 3, 5, 5 and 5 of 6 runs
+passed. The round after the 3 of 6 fixed its cause. The showcase prison's freezer running warm has not come back, and
+its check now reports the cause if it does; the last failure (an inmate restless for longer than a day) is a known
+timing-dependent check.
 
 **UI tour** (`tools/uitour.sh`, `tools/showcase-shots.sh`): a windowed run under Xvfb with software Vulkan that opens
 every screen, or walks the prison, and takes a screenshot of each. The screenshots in the README come from it.
@@ -75,7 +76,7 @@ every screen, or walks the prison, and takes a screenshot of each. The screensho
   or on a long-running save. Balance (money, tension, how often things happen) is tuned from automated runs only.
 - **Flaky checks.** Some feature checks still fail now and then in the harness (a few timing-dependent ones are
   known); not every failure has been traced to a cause.
-- **Unfinished work.** A planned-escape feature was in progress and an outside work party was planned; neither is
+- **Unfinished work.** The planned escape is in; the outside work party (trusties) is still being built and is not
   in this version.
 - **Other mods.** Only Harmony was loaded with it. No modded save was tried.
 - **Multiplayer.** Not considered.

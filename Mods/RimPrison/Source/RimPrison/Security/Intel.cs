@@ -52,6 +52,7 @@ namespace RimPrison
                 if (TipAbout(snitch, sc.gang, target, tc) is { } about) return about;
                 var only = new List<Pawn> { target };
                 if (RingSystem.TryTip(snitch, only) is { } ringAbout) return ringAbout;
+                if (EscapePlans.TryTip(snitch, only) is { } planAbout) return planAbout;
                 if (DebtSystem.TryTip(snitch, only, own: false) is { } debtAbout) return debtAbout;
             }
             var candidates = new List<Pawn>();
@@ -79,6 +80,8 @@ namespace RimPrison
                 if (TipAbout(snitch, sc.gang, o, o.Inmate()) is { } tip) return tip;
             // A ring's links, when the snitch is close to some of its members: after a tunnel, contraband and a gang (a ring is found again, a tunnel that is not is dug out).
             if (RingSystem.TryTip(snitch, candidates) is { } ringTip) return ringTip;
+            // A planned break's next link, when the snitch is close to one of its crew (after the ring: see EscapePlans).
+            if (EscapePlans.TryTip(snitch, candidates) is { } planTip) return planTip;
             // Who started the rumour on their own wing, and whether it holds (half the time, when the warden does not know yet: see Rumours): after the rings, so that talk never takes the place of a ring's link.
             if (Rumours.TryTip(snitch, sc) is { } rumourTip) return rumourTip;
             // Who owes whom (their own debt, or one among the people near them): last, so that gossip about money never takes the place of a tunnel, contraband or a gang.
@@ -124,6 +127,7 @@ namespace RimPrison
             foreach (Pawn o in wing)
                 if (o.Inmate() is { } oc && TipAbout(null, ownGang, o, oc) is { } tip) return tip;
             if (RingSystem.TryTip(officer, wing, map: map) is { } ringTip) return ringTip;
+            if (EscapePlans.TryTip(officer, wing, map: map) is { } planTip) return planTip;
             return DebtSystem.TryTip(officer, wing, own: false, map: map);
         }
 
@@ -257,7 +261,7 @@ namespace RimPrison
         }
 
         /// <summary>An outdoor cell outside the compound, 6–25 cells from the cell, that is not inmate space.</summary>
-        private static bool TryFindExit(Pawn p, out IntVec3 exit)
+        internal static bool TryFindExit(Pawn p, out IntVec3 exit)
         {
             Map map = p.Map;
             PrisonMap pm = PrisonMap.Of(map);
@@ -286,6 +290,8 @@ namespace RimPrison
                     ComplaintSystem.Notify_Searched(guard, owner, stashFound > 0, guard.Position);
                     // Notes of who owes whom turn up in a cell turned over.
                     DebtSystem.Notify_Searched(owner, DebtSystem.CellSearchFind);
+                    // (A planned break's tunnel from this cell may be found, and filled in.)
+                    EscapePlans.Notify_CellSearched(owner);
                     if (c.tunnelProgress <= 0.05f || !Rand.Chance(0.85f)) continue;
                     c.tunnelProgress = 0f;
                     c.tunnelKnown = false;

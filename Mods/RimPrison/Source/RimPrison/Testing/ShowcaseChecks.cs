@@ -175,12 +175,12 @@ namespace RimPrison
             foreach (string line in PrisonServices.Lines(map)) Fail("services: " + line);
 
             // The cold store is cold, everything that wants power has it, the cameras watch.
-            PrisonBuilder.BuiltRoom? freezer = PrisonBuilder.Rooms.Where(r => r.Name == "Freezer").Select(r => (PrisonBuilder.BuiltRoom?)r).FirstOrDefault();
-            if (freezer is { } f)
+            if (ShowcaseFreezer() is { } f)
             {
                 float temp = f.Interior.CenterCell.GetTemperature(map);
                 RPLog.Message($"[RimPrison:showcase] freezer {temp:F1}C, outside {map.mapTemperature.OutdoorTemp:F1}C");
-                if (temp > 5f) Fail($"the freezer is at {temp:F1}C");
+                // (Warm: say why - the cooler, the doors, the roof and walls, the mains, the hours before; see ShowcaseFreezer.cs.)
+                if (temp > 5f) Fail($"the freezer is at {temp:F1}C (outside {map.mapTemperature.OutdoorTemp:F1}C): {FreezerReport(map, f)}");
             }
             int unpowered = map.listerBuildings.allBuildingsColonist.Count(b => b.GetComp<CompPowerTrader>() is { PowerOn: false } && FlickUtility.WantsToBeOn(b) && !b.IsBrokenDown());
             if (unpowered > 0 && !game.BlackoutActive) Fail($"{unpowered} buildings without power");
@@ -376,6 +376,7 @@ namespace RimPrison
 
         private static void ShowcaseStart(Map map)
         {
+            ShowcaseFreezerReset();
             foreach (Pawn p in map.mapPawns.PrisonersOfColonySpawned)
             {
                 CompInmate c = p.Inmate();

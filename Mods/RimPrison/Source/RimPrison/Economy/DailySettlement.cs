@@ -452,6 +452,7 @@ namespace RimPrison
             ExInmates.Daily(game, map);
             DebtSystem.Daily(map);
             RingSystem.Daily(map);
+            EscapePlans.Daily(map);
             int informants = 0;
             foreach (Pawn p in map.mapPawns.PrisonersOfColonySpawned)
                 if (p.Inmate() is { informantPaid: true, activeFlag: true } ic)
