@@ -61,6 +61,11 @@ namespace RimPrison
         public int leaveUntilTick = -1;
         /// <summary>The tick they went home at (set by <see cref="StaffCommute.Leave"/>, read and reset when they come back: the time away is what <see cref="HomeHealing"/> heals them for). -1: not at home, or got there another way (an old save): no healing on that arrival.</summary>
         public int homeSinceTick = -1;
+        /// <summary>Why the leave above was given (<see cref="HurtOnDuty.ReasonNone"/> and the rest): cleared once, at the return. An old save's leave has none, and reads as before.</summary>
+        public int leaveReason;
+        /// <summary>The case they are in the middle of (an id on <see cref="injuries"/>, -1 none), the days after being sent back on the next shift that a resignation is put down to the danger (the tick it runs to, -1 none), and the latest five times an inmate hurt them.</summary>
+        public int injuryCaseId = -1, rushedBackUntilTick = -1;
+        public List<InjuryCase> injuries = new List<InjuryCase>();
         /// <summary>Away on a training course (the leave above); trained last at this tick.</summary>
         public bool trainingPending;
         /// <summary>Their leave is a rest (burnout), whatever else it covers (a course booked before it).</summary>
@@ -89,7 +94,7 @@ namespace RimPrison
         public int lastNightDay = -1;
         /// <summary>On strike (no work) until this tick.</summary>
         public int strikeUntilTick = -1;
-        /// <summary>Let go while neither on a map nor at home (carried, in a pod): done once they are back on a map. 0 none; 1 let go, 2 let go and arrested; 4 added: not written up.</summary>
+        /// <summary>Let go while neither on a map nor at home (carried, in a pod): done once they are back on a map. 0 none; 1 let go, 2 let go and arrested; 4 added: not written up; 8 added: the warden's own dismissal.</summary>
         public int pendingFire;
         /// <summary>The record of a former inmate of this prison who was hired from the register (see <see cref="ExInmates"/>), else null.</summary>
         public ExInmatePast formerPast;
@@ -111,6 +116,11 @@ namespace RimPrison
             Scribe_Values.Look(ref leaveAtTick, "rpLeaveAt", -1);
             Scribe_Values.Look(ref leaveUntilTick, "rpLeaveUntil", -1);
             Scribe_Values.Look(ref homeSinceTick, "rpHomeSince", -1);
+            Scribe_Values.Look(ref leaveReason, "rpLeaveReason");
+            Scribe_Values.Look(ref injuryCaseId, "rpInjuryCase", -1);
+            Scribe_Values.Look(ref rushedBackUntilTick, "rpRushedBackUntil", -1);
+            // (Not written when there is none: every humanlike carries this comp. A missing node loads as null, fixed below.)
+            if (Scribe.mode != LoadSaveMode.Saving || injuries.Count > 0) Scribe_Collections.Look(ref injuries, "rpInjuries", LookMode.Deep);
             Scribe_Values.Look(ref trainingPending, "rpTrainingPending");
             Scribe_Values.Look(ref restPending, "rpRestPending");
             Scribe_Values.Look(ref lastTrainedTick, "rpLastTrained", -1);
@@ -148,6 +158,8 @@ namespace RimPrison
             {
                 evidence ??= new List<string>();
                 life ??= new List<LifeEntry>();
+                injuries ??= new List<InjuryCase>();
+                injuries.RemoveAll(c => c == null);
             }
             Scribe_References.Look(ref dog, "rpDog");
             Scribe_Values.Look(ref strikeUntilTick, "rpStrikeUntil", -1);
@@ -176,7 +188,7 @@ namespace RimPrison
         {
             int pending = pendingFire;
             pendingFire = 0;
-            if (pending != 0 && role != null && Pawn is { Spawned: true, Dead: false }) StaffUtility.Fire(Pawn, arrest: (pending & 2) != 0, record: (pending & 4) == 0);
+            if (pending != 0 && role != null && Pawn is { Spawned: true, Dead: false }) StaffUtility.Fire(Pawn, arrest: (pending & 2) != 0, record: (pending & 4) == 0, byWarden: (pending & 8) != 0);
         }
 
         public override string CompInspectStringExtra()
@@ -218,6 +230,8 @@ namespace RimPrison
             if (strikeUntilTick >= 0 && parent.IsHashIntervalTick(250, delta) && Find.TickManager.TicksGame >= strikeUntilTick) strikeUntilTick = -1;
             // A course whose time ran out while they were kept on site (the prison is never left empty): done in-house.
             if (trainingPending && parent.IsHashIntervalTick(250, delta)) StaffTraining.CheckInHouse(Pawn, this);
+            // An injury leave that ran out while they were kept on site (downed, in a medical bed): over here, once an hour.
+            if (leaveReason == HurtOnDuty.ReasonInjury && parent.IsHashIntervalTick(GenDate.TicksPerHour, delta)) HurtOnDuty.CheckInHouse(Pawn, this);
             if (leaveAtTick >= 0 && parent.IsHashIntervalTick(250, delta) && Find.TickManager.TicksGame >= leaveAtTick && Pawn?.Spawned == true)
             {
                 leaveAtTick = -1;
@@ -309,7 +323,7 @@ namespace RimPrison
                             StaffUtility.ApplyRole(Pawn, chosen);
                         }));
                     }
-                    options.Add(new FloatMenuOption("RP_Fire".Translate(), () => StaffUtility.Fire(Pawn)));
+                    options.Add(new FloatMenuOption("RP_Fire".Translate(), () => StaffUtility.Fire(Pawn, byWarden: true)));
                     Find.WindowStack.Add(new FloatMenu(options));
                 },
             };
@@ -563,13 +577,14 @@ namespace RimPrison
         /// Let go while at home (off shift): they simply do not come back. No arrest is possible from here; the record
         /// and the message still say so.
         /// </summary>
-        private static void FireOffSite(Pawn p, bool record)
+        private static void FireOffSite(Pawn p, bool record, bool byWarden)
         {
             PrisonGame game = PrisonGame.Instance;
             CompStaff sc = p.GetComp<CompStaff>();
             if (game == null || sc?.role == null || !game.home.Contains(p)) return;
             if (record && sc.leaveAtTick < 0) Story.Record(RPChronicleDefOf.RP_Chr_Staff, 1, "RP_Chr_StaffLeft".Translate(p.LabelShort, StaffCareers.Title(sc)), p);
             UnitOfficers.Unassign(p, sc);
+            HurtOnDuty.Notify_Left(p, sc, dismissed: byWarden && record && sc.leaveAtTick < 0);
             sc.role = null;
             StaffCommute.StaffVersion++;
             sc.trainingPending = false;
@@ -583,7 +598,8 @@ namespace RimPrison
 
         /// <summary>Let go: they walk off the map, or (<paramref name="arrest"/>) wait for the police officer.</summary>
         /// <param name="record">False when the caller reports the departure itself (resignation, retirement).</param>
-        public static void Fire(Pawn p, bool arrest = false, bool record = true)
+        /// <param name="byWarden">The warden's own dismissal (the staff's gizmo): the one a hurt officer's colleagues hold against the prison (<see cref="HurtOnDuty.Notify_Left"/>), not a corruption dismissal or welfare's move.</param>
+        public static void Fire(Pawn p, bool arrest = false, bool record = true, bool byWarden = false)
         {
             // The state's security chief is not the warden's to let go (the state recalls them itself, see SpecialMeasures).
             if (SpecialMeasures.Posted(p) && !SpecialMeasures.Recalling)
@@ -602,15 +618,20 @@ namespace RimPrison
             // dismissal waits until they are free.
             if (HostageCrisis.IsHeld(p) && p.GetComp<CompStaff>() is { role: not null } held)
             {
-                held.pendingFire = 1 | (arrest ? 2 : 0) | (record ? 0 : 4);
+                held.pendingFire = 1 | (arrest ? 2 : 0) | (record ? 0 : 4) | (byWarden ? 8 : 0);
+                HurtOnDuty.Notify_DismissalQueued(p);
                 return;
             }
             if (p.Map == null)
             {
                 CompStaff offSite = p.GetComp<CompStaff>();
-                if (PrisonGame.Instance?.home.Contains(p) == true) FireOffSite(p, record);
+                if (PrisonGame.Instance?.home.Contains(p) == true) FireOffSite(p, record, byWarden);
                 // Carried, or in a pod: neither on a map nor at home. They are let go as soon as they are back on one.
-                else if (offSite?.role != null && !p.Dead && !p.Destroyed) offSite.pendingFire = 1 | (arrest ? 2 : 0) | (record ? 0 : 4);
+                else if (offSite?.role != null && !p.Dead && !p.Destroyed)
+                {
+                    offSite.pendingFire = 1 | (arrest ? 2 : 0) | (record ? 0 : 4) | (byWarden ? 8 : 0);
+                    HurtOnDuty.Notify_DismissalQueued(p);
+                }
                 return;
             }
             CompStaff sc = p.GetComp<CompStaff>();
@@ -621,6 +642,7 @@ namespace RimPrison
             if (p.carryTracker?.CarriedThing != null) p.carryTracker.TryDropCarriedThing(p.Position, ThingPlaceMode.Near, out _);
             // (Let go, resigned or retired: a unit officer's post is cleared, and the slot is free.)
             UnitOfficers.Unassign(p, sc);
+            HurtOnDuty.Notify_Left(p, sc, dismissed: byWarden && record && !arrest && sc.leaveAtTick < 0);
             sc.role = null;
             StaffCommute.StaffVersion++;
             StaffBar.MarkDirty();

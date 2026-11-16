@@ -782,7 +782,8 @@ namespace RimPrison
                 reloadProblems.Add("saveload: no guard to name for a guard post");
                 return;
             }
-            CompGuardPost post = GuardPosts.Posts(map).FirstOrDefault();
+            // (A floor post: the seed is of what the Deployment tab sets on a spot, and a monitor, listed with them, would stand in for it.)
+            CompGuardPost post = GuardPosts.Posts(map).FirstOrDefault(p => !p.IsMonitor);
             if (post == null)
             {
                 post = GuardPosts.Place(map, guard.Position)?.TryGetComp<CompGuardPost>();

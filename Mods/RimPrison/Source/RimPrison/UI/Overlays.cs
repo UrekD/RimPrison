@@ -240,11 +240,18 @@ namespace RimPrison
 
         private static bool Watching(Pawn g) => g.Spawned && !g.Downed && g.Awake();
 
-        /// <summary>Which cameras are working and which towers manned, folded into one number.</summary>
+        /// <summary>Whether what the overlay was built from has changed (a camera switched, watched or not watched live, a tower manned or not): the next look rebuilds it. For the checks.</summary>
+        internal bool Stale(PrisonMap pm) => DeviceState(pm) != builtDevices;
+
+        /// <summary>Which cameras are working and watched live (a manned monitor carries them, see <see cref="Cctv"/>) and which towers manned, folded into one number.</summary>
         private static int DeviceState(PrisonMap pm)
         {
             var h = new System.HashCode();
-            foreach (CompSecurityCamera cam in pm.Cameras) h.Add(cam.Working);
+            foreach (CompSecurityCamera cam in pm.Cameras)
+            {
+                h.Add(cam.Working);
+                h.Add(cam.WatchedLive);
+            }
             foreach (CompGuardTower tower in pm.Towers) h.Add(tower.Manned);
             h.Add(pm.Cameras.Count);
             h.Add(pm.Towers.Count);
@@ -282,8 +289,12 @@ namespace RimPrison
                     if (c.InBounds(map) && (!IsDark(c) || c.InHorDistOf(g.Position, TensionUtility.DarkSight)) && GenSight.LineOfSight(g.Position, c, map, skipFirstCell: true)) watch[map.cellIndices.CellToIndex(c)] += 1f;
             }
             foreach (CompSecurityCamera cam in pm.Cameras)
+            {
+                // (A camera no manned monitor carries sees nothing live, as in the tension model.)
+                if (!cam.WatchedLive) continue;
                 foreach (IntVec3 c in GenRadial.RadialCellsAround(cam.parent.Position, cam.Props.radius, true))
                     if (c.InBounds(map) && cam.Covers(c) && !IsDark(c)) watch[map.cellIndices.CellToIndex(c)] += 0.5f;
+            }
             foreach (CompGuardTower tower in pm.Towers)
                 foreach (IntVec3 c in GenRadial.RadialCellsAround(tower.parent.Position, tower.Props.radius, true))
                     if (c.InBounds(map) && TensionUtility.TowerSees(tower, c)) watch[map.cellIndices.CellToIndex(c)] += 1f;

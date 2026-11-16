@@ -440,6 +440,12 @@ namespace RimPrison
                 CheckDark(map);
             }
 
+            private void EvCctv()
+            {
+                // ...and for the control room (CctvChecks.cs): a camera is watched live only while a guard sits at a powered monitor that carries it, eight feeds to a monitor, the priority and the toggle, the old save's flags and letter, the chief, the overlay, the cache against a plain walk.
+                CheckCctv(map);
+            }
+
             private void EvKin()
             {
                 // ...and for kin across the wall (made on a hire and an arrival, the officer's request, the complaint's evidence, the corruption odds, the subdue, a death of kin), in KinChecks.cs.
@@ -554,6 +560,35 @@ namespace RimPrison
                 // away read once, a tended wound and blood loss, a flu with its immunity, a plague near lethal, the dog, what ticks its own way left alone).
                 CheckNewsFromHomeIsATrigger(map);
                 CheckStaffHealAtHome(map);
+            }
+
+            private void EvHurtOnDuty()
+            {
+                // Hurt on duty (HurtOnDutyChecks.cs): how bad an injury is, one case and one letter (a second hook joins, another attacker is a new case), who is a case, the minor case with no letter, the leave (paid, off the roster,
+                // back with the reason cleared and no rest), the in-house expiry, the leaves that do not shorten each other, compensation paid once (and not without the money), a standing order, a held letter that lapses, four
+                // guards in an hour sharing a letter, a case found worse, back on the next shift (the memories, the reason for a resignation), the fear armed again on the return, the pension and the desk post, the officer let go or
+                // dead, sent back after the leave is over, a queued dismissal and an old save's leave with no reason, the hostage path and the record. The round trip through a save is in the saveload plan.
+                CheckHodSeverity(map);
+                CheckHodOneCaseOneLetter(map);
+                CheckHodMinorHasNoLetter(map);
+                CheckHodWhoIsACase(map);
+                CheckHodLeave(map);
+                CheckHodInHouseExpiry(map);
+                CheckHodLeavesDoNotShortenEachOther(map);
+                CheckHodCompensation(map);
+                CheckHodStandingOrder(map);
+                CheckHodHeldLetterLapses(map);
+                CheckHodFourGuardsOneLetter(map);
+                CheckHodUpgrade(map);
+                CheckHodBackOnShift(map);
+                CheckHodWarinessOnReturn(map);
+                CheckHodLastingPensionAndDesk(map);
+                CheckHodOfficerLeaves(map);
+                CheckHodBackAfterTheLeaveIsOver(map);
+                CheckHodQueuedDismissalIsMoot(map);
+                CheckHodOldSaveLeaveClosesTheCase(map);
+                CheckHodHostage(map);
+                CheckHodRecord(map);
             }
 
             private void EvAgreement()

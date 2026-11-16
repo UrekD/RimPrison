@@ -91,6 +91,8 @@ namespace RimPrison
                     s.r.Add(() => { if (seedling.Spawned) seedling.Destroy(DestroyMode.Vanish); });
                 }
                 growing.SetPlantDefToGrow(crop);
+                // (Alive: a seedling that died on the spawn, of a cold map's weather, leaves an empty cell to sow, and the check would judge a sowing.)
+                if (plants.Any(p => !p.Spawned)) { s.Fail($"the check's own fixture: a seedling of {crop.defName} did not stay alive on the strip ({map.mapTemperature.OutdoorTemp:F0} C outdoors)"); TrustyStill(t, guard); return; }
                 s.Beat();
                 c.UpdateWorkPass();
                 if (!s.pm.party.isOut) { s.Fail($"the check's own premise: the party is not out: {TrustyLine(s, t)}"); TrustyStill(t, guard); return; }

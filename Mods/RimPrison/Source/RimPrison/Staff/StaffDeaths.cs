@@ -32,6 +32,7 @@ namespace RimPrison
             DangerMap.NoteDeath(staff, dinfo, culprit);
             Kin.Notify_Died(staff);
             UnitOfficers.Unassign(staff, sc);
+            HurtOnDuty.Notify_Left(staff, sc, dismissed: false);
             StaffCareers.InvalidateLeads();
             Pawn killer = dinfo?.Instigator as Pawn;
             TaggedString how = killer != null && killer != staff

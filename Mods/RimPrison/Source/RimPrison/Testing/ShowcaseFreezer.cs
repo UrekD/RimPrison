@@ -13,8 +13,10 @@ namespace RimPrison
     public static partial class AutoTest
     {
         /// <summary>The freezer's hourly looks, newest last (the last day): when it warmed, with the cooler, the doors and the mains at that hour.</summary>
-        private static readonly List<(string line, int doorOpenTicks)> freezerLooks = new List<(string, int)>();
+        private static readonly List<(string line, int doorOpenTicks, float temp, bool blackout)> freezerLooks = new List<(string, int, float, bool)>();
         private const int FreezerLooksKept = 24;
+        /// <summary>A freezer above this is warm (the showcase's check, and the look a blackout is measured from).</summary>
+        private const float FreezerWarmAbove = 5f;
 
         /// <summary>The doors in the freezer's walls (found at the hourly look), and how many ticks they stood open since it, all of them added up.</summary>
         private static List<Building_Door> freezerDoors = new List<Building_Door>();
@@ -80,9 +82,24 @@ namespace RimPrison
             float temp = f.Interior.CenterCell.GetTemperature(map);
             string coolers = string.Join("; ", ControlsOf(map, f.Interior).Select(b => $"{b.def.defName} {(b.GetComp<CompPowerTrader>()?.PowerOn == true ? "on" : "OFF")}{(b.IsBrokenDown() ? " BROKEN" : "")}{(b.IsBurning() ? " BURNING" : "")}"));
             PrisonGame game = PrisonGame.Instance;
-            freezerLooks.Add(($"day {GenDate.DaysPassed} h{GenLocalDate.HourOfDay(map)}: {temp:F1}C (outside {map.mapTemperature.OutdoorTemp:F1}C), {(coolers.Length == 0 ? "no cooler" : coolers)}, doors open {freezerDoorOpenTicks} ticks (all doors added up, {GenDate.TicksPerHour} an hour for each door){(game.BlackoutActive ? ", BLACKOUT" : "")}", freezerDoorOpenTicks));
+            freezerLooks.Add(($"day {GenDate.DaysPassed} h{GenLocalDate.HourOfDay(map)}: {temp:F1}C (outside {map.mapTemperature.OutdoorTemp:F1}C), {(coolers.Length == 0 ? "no cooler" : coolers)}, doors open {freezerDoorOpenTicks} ticks (all doors added up, {GenDate.TicksPerHour} an hour for each door){(game.BlackoutActive ? ", BLACKOUT" : "")}", freezerDoorOpenTicks, temp, game.BlackoutActive));
             if (freezerLooks.Count > FreezerLooksKept) freezerLooks.RemoveAt(0);
             freezerDoorOpenTicks = 0;
+        }
+
+        /// <summary>
+        /// The mains are down and every cooler of the cold store is off with them (the utilities are the prison's abstract mains, <see cref="UtilitySystem"/>: a cooler is on it with no conduit, and a blackout switches
+        /// it off, as the incident says: "machines off"), and the freezer was cold at the last look before the blackout began: a warm freezer that a blackout of up to six hours explains (census-c89-sc: -4.0C, then 8.2C
+        /// after the sixth hour of a blackout, the cooler "powered False (no net)" that its report read as a missing conduit). With no look before the blackout, or a cold store that was already warm, it explains nothing.
+        /// </summary>
+        private static bool FreezerWarmFromBlackout(Map map, PrisonBuilder.BuiltRoom f)
+        {
+            if (!PrisonGame.Instance.BlackoutActive || !UtilitySystem.Active) return false;
+            List<Building> coolers = ControlsOf(map, f.Interior).Where(b => b.GetComp<CompPowerTrader>() != null).ToList();
+            if (coolers.Count == 0 || coolers.Any(b => b.GetComp<CompPowerTrader>().PowerOn)) return false;
+            int i = freezerLooks.Count - 1;
+            while (i >= 0 && freezerLooks[i].blackout) i--;
+            return i >= 0 && freezerLooks[i].temp <= FreezerWarmAbove;
         }
 
         /// <summary>What to read a warm freezer by: the room, its roof and walls, each cooler, each door and how long they stood open, the mains, and the hours before.</summary>

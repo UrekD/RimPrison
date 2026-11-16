@@ -180,10 +180,31 @@ namespace RimPrison
                 float temp = f.Interior.CenterCell.GetTemperature(map);
                 RPLog.Message($"[RimPrison:showcase] freezer {temp:F1}C, outside {map.mapTemperature.OutdoorTemp:F1}C");
                 // (Warm: say why - the cooler, the doors, the roof and walls, the mains, the hours before; see ShowcaseFreezer.cs.)
-                if (temp > 5f) Fail($"the freezer is at {temp:F1}C (outside {map.mapTemperature.OutdoorTemp:F1}C): {FreezerReport(map, f)}");
+                // (A blackout on at the end of the run, with the coolers off and the freezer cold before it: the incident's own effect, told. Without a blackout the coolers are on the mains from the start, and a cold store that is not
+                // cold is a failure.)
+                if (temp > FreezerWarmAbove && FreezerWarmFromBlackout(map, f)) RPLog.Message($"[RimPrison:showcase] the freezer is at {temp:F1}C with a blackout on and the coolers off with it, as the blackout says - not judged: {FreezerReport(map, f)}");
+                else if (temp > FreezerWarmAbove) Fail($"the freezer is at {temp:F1}C (outside {map.mapTemperature.OutdoorTemp:F1}C): {FreezerReport(map, f)}");
+                // Every cooler of the cold store is on the mains when the mains are up (a cooler left off would warm the freezer, a blackout or not).
+                if (!game.BlackoutActive && UtilitySystem.Active)
+                    foreach (Building cooler in ControlsOf(map, f.Interior).Where(b => b.GetComp<CompPowerTrader>() is { PowerOn: false } && !b.IsBrokenDown()))
+                        Fail($"a cooler of the freezer is off with the mains up: {CoolerLine(map, cooler)}");
             }
             int unpowered = map.listerBuildings.allBuildingsColonist.Count(b => b.GetComp<CompPowerTrader>() is { PowerOn: false } && FlickUtility.WantsToBeOn(b) && !b.IsBrokenDown());
             if (unpowered > 0 && !game.BlackoutActive) Fail($"{unpowered} buildings without power");
+            // The control room: with the policy on only the cameras a manned monitor carries watch, so the count of those is told next to the cameras that work; a monitor nobody can sit at is a layout fault.
+            List<Thing> screens = map.listerThings.ThingsOfDef(RPCctvDefOf.RP_CctvMonitor);
+            RPLog.Message($"[RimPrison:showcase] control room: policy {game.camerasNeedOperator}, {screens.Count} monitors ({screens.Count(t => t.TryGetComp<CompCctvMonitor>() is { seated: not null })} manned now), {pm.Cameras.Count(c => c.WatchedLive)} of {pm.Cameras.Count} cameras watched live");
+            foreach (Thing screen in screens)
+            {
+                IntVec3 sit = GuardPosts.StandCell(screen);
+                if (!sit.Standable(map) || !map.reachability.CanReach(gate, sit, Verse.AI.PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors))) Fail($"nobody can sit at the CCTV monitor at {screen.Position - PrisonBuilder.Origin(map)}: its cell {sit} is not standable or not reachable from the gatehouse");
+            }
+            // (The control room's check files its problems on the events plan's list; the showcase has its own, so they are carried over.)
+            int cctvProblems0 = problems0.Count;
+            CheckCctvPenitentiary(map);
+            // (On the penitentiary's start the builder puts the four monitors up: they met a game whose flags were already set, and none was offered the old-save letter.)
+            CheckCctvNewGame(map);
+            foreach (string cctvProblem in problems0.Skip(cctvProblems0).ToList()) problems.Add(cctvProblem);
             RPLog.Message($"[RimPrison:showcase] cameras {pm.Cameras.Count(c => c.Working)}/{pm.Cameras.Count}, towers {map.listerBuildings.AllBuildingsColonistOfDef(RPArmedDefOf.RP_GuardTower).Count()}, lamps {map.listerBuildings.AllBuildingsColonistOfDef(DefDatabase<ThingDef>.GetNamed("StandingLamp")).Count()}");
 
             // Staff: every role the prison uses is at work, the guards are posted.

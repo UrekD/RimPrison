@@ -12,7 +12,7 @@ namespace RimPrison
     /// </summary>
     public static class Shadow
     {
-        public static int meals, mealsDiffer, stoves, stovesDiffer, foodRooms, foodRoomsDiffer, fixtures, fixturesDiffer, watched, watchedDiffer, draws, drawsDiffer;
+        public static int meals, mealsDiffer, stoves, stovesDiffer, foodRooms, foodRoomsDiffer, fixtures, fixturesDiffer, watched, watchedDiffer, draws, drawsDiffer, cctv, cctvDiffer;
         public static string first = "";
 
         private static void Note(string what)
@@ -21,7 +21,7 @@ namespace RimPrison
         }
 
         public static string Summary() =>
-            $"meals {mealsDiffer}/{meals}, stoves {stovesDiffer}/{stoves}, food in room {foodRoomsDiffer}/{foodRooms}, fixtures {fixturesDiffer}/{fixtures}, watched {watchedDiffer}/{watched}, draw {drawsDiffer}/{draws}; first: {first}";
+            $"meals {mealsDiffer}/{meals}, stoves {stovesDiffer}/{stoves}, food in room {foodRoomsDiffer}/{foodRooms}, fixtures {fixturesDiffer}/{fixtures}, watched {watchedDiffer}/{watched}, draw {drawsDiffer}/{draws}, cctv {cctvDiffer}/{cctv}; first: {first}";
 
         /// <summary>The meals the canteen search would consider, by the index and by walking every food thing.</summary>
         public static void CheckMeals(Map map, PrisonMap pm, PrisonZoneDef zone, List<Thing> indexed)
@@ -100,6 +100,26 @@ namespace RimPrison
             if (answer == TensionUtility.Watchers(p, pm) > 0f) return;
             watchedDiffer++;
             Note($"watched {answer} vs {TensionUtility.Watchers(p, pm)}");
+        }
+
+        /// <summary>The cameras' cached watched answers right after the beat rebuilt them, against the plain walk (the manned monitors' room for feeds, a camera's rank among those on the screens).</summary>
+        public static void CheckCctv(Map map, PrisonMap pm)
+        {
+            int differ = Cctv.Mismatches(map, pm, out int asked);
+            cctv += asked;
+            if (differ == 0) return;
+            cctvDiffer += differ;
+            Note($"cctv {differ} of {asked} cameras differ from the walk at tick {Find.TickManager.TicksGame}");
+        }
+
+        /// <summary>The cache before the beat rebuilds it, against the plain walk (see <see cref="Cctv.Stale"/>): a difference is a change that should have rebuilt it at once and did not.</summary>
+        public static void CheckCctvStale(Map map, PrisonMap pm)
+        {
+            int differ = Cctv.Stale(map, pm, out int asked);
+            cctv += asked;
+            if (differ == 0) return;
+            cctvDiffer += differ;
+            Note($"cctv {differ} of {asked} cameras were stale before the beat at tick {Find.TickManager.TicksGame}");
         }
 
         public static void CheckDraw(Map map, float answer)

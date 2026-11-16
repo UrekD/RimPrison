@@ -443,6 +443,8 @@ namespace RimPrison
                 if (hurt != null && culprit != null)
                 {
                     g.story.lastHazardDemandTick = -999999;
+                    // (A live guard: the hurt-on-duty case this opens is undone below, or the guard would stay on a paid day's leave for the checks after this one - the careers check wants two on site.)
+                    System.Action undoCase = HodSnapshot(hurt);
                     StaffStories.Notify_StaffDowned(hurt, culprit);
                     var hz = Find.LetterStack.LettersListForReading.OfType<ChoiceLetter_PrisonDecision>().LastOrDefault(l => l.Is("RP_Decision_HazardPay"));
                     if (hz == null) problems0.Add("no hazard pay demand after a guard went down");
@@ -457,6 +459,7 @@ namespace RimPrison
                     int before = hurt.GetComp<CompStaff>().commendations;
                     StaffStories.Notify_SubduedArmed(hurt, culprit);
                     if (hurt.GetComp<CompStaff>().commendations != before + 1) problems0.Add("commendation not counted");
+                    undoCase();
                 }
             }
 

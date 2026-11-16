@@ -39,10 +39,19 @@ namespace RimPrison
             // (The sowing's own test is whether the crop can be planted now, which leaves the map's yearly extremes out.)
             crop = crops.FirstOrDefault(d => cells.Cells.All(cell => d.CanEverPlantAt(cell, map, false, false)));
             if (crop == null) return null;
-            (TrustySeason.Map, TrustySeason.Cells) = (map, cells);
-            r.Add(() => (TrustySeason.Map, TrustySeason.Cells) = (null, default));
+            TrustyHoldSeason(map, r, cells);
             RPLog.Message($"[RimPrison:test] trusties ({check}): no crop grows at {map.mapTemperature.OutdoorTemp:F0} C outdoors (seasonal {map.mapTemperature.SeasonalTemp:F0} C), so the growing season is held on over the check's cells for {crop.defName}");
             return crop;
+        }
+
+        /// <summary>
+        /// The growing season is held on over these cells, and the cold held off the plants on them, until the rollback (see <see cref="TrustySeason"/>): a plant on a cold map dies of the cold the moment it is spawned (the game's own check of a
+        /// plant that is spawned or grown), so a check's seedlings and crop plants would be dead, and the cells they stood on empty and sowable, before the check looked.
+        /// </summary>
+        private static void TrustyHoldSeason(Map map, Rollback r, CellRect cells)
+        {
+            (TrustySeason.Map, TrustySeason.Cells) = (map, cells);
+            r.Add(() => (TrustySeason.Map, TrustySeason.Cells) = (null, default));
         }
 
         /// <summary>The text of the messages on screen now.</summary>
@@ -2059,7 +2068,7 @@ namespace RimPrison
         }
     }
 
-    /// <summary>The cells over which a grower check holds the growing season on (see <c>AutoTest.TrustyGrowerCrop</c>); no map, nothing held.</summary>
+    /// <summary>The cells over which a check holds the growing season on and the cold off the plants (see <c>AutoTest.TrustyHoldSeason</c>); no map, nothing held.</summary>
     internal static class TrustySeason
     {
         internal static Map Map;
@@ -2079,5 +2088,13 @@ namespace RimPrison
             __result = true;
             return false;
         }
+    }
+
+    /// <summary>The plants on the cells a grower check holds (see <see cref="TrustySeason"/>) do not die of the cold, on the spawn or on the long tick; everywhere else the game's own check stands.</summary>
+    [HarmonyPatch(typeof(Plant), "CheckMakeLeafless")]
+    [TestOnly]
+    public static class Patch_Plant_CheckMakeLeafless_TrustySeason
+    {
+        public static bool Prefix(Plant __instance) => !(__instance.Spawned && TrustySeason.Holds(__instance.Position, __instance.Map));
     }
 }

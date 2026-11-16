@@ -986,6 +986,8 @@ namespace RimPrison
                     StaffWariness.Notify_HurtBy(hostage, hsc, leader);
                     wary = StaffWariness.WaryOf(hsc, leader);
                 }
+                // Freed hurt, or downed in the crisis: their case (one with any the downing already opened: same attacker, the same day).
+                if (hsc != null && (fate == HostageFate.Hurt || hostage.Downed)) HurtOnDuty.Open(hostage, leader, HurtOnDuty.CauseHostage, arc.startTick);
                 foreach (Pawn o in StaffCommute.AllStaff(map))
                     if (o != hostage && o.GetComp<CompStaff>()?.role != null) o.needs?.mood?.thoughts.memories.TryGainMemory(RPLifeDefOf.RP_ColleagueHurt, hostage);
             }

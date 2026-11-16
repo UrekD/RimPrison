@@ -177,6 +177,8 @@ namespace RimPrison
         {
             // Whoever was taken hostage quits over the danger, whatever else they had against the job.
             if (p.needs?.mood?.thoughts.memories.GetFirstMemoryOfDef(RPHostageDefOf.RP_TakenHostage) != null) return ResignReason.Danger;
+            // Sent back on the next shift hurt: whatever else they had against the job, it was the danger.
+            if (sc.rushedBackUntilTick > Find.TickManager.TicksGame) return ResignReason.Danger;
             if (sc.rank == 0 && StaffLives.DaysInRole(sc) >= StagnantDays) return ResignReason.Pay;
             if (Frightened(p)) return ResignReason.Danger;
             if (sc.waryOfId >= 0 && sc.waryUntilTick > Find.TickManager.TicksGame) return ResignReason.HatedInmate;

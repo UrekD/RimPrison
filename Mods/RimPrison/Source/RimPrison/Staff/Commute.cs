@@ -240,6 +240,8 @@ namespace RimPrison
             int away = HomeHealing.AwayTicks(sc.homeSinceTick, Find.TickManager.TicksGame);
             sc.homeSinceTick = -1;
             game.home.Remove(p);
+            // (Read as they left: the spawn takes the food need off a member of staff, as the needs tracker finds right for them, and the food is topped up after the healing.)
+            bool starving = HomeHealing.IsStarving(p), dogStarving = false;
             GenSpawn.Spawn(p, entry, map);
             StaffCareers.InvalidateLeads();
             // (The dog is healed only if it was at home: one that stayed on site was ticked all the while.)
@@ -247,16 +249,17 @@ namespace RimPrison
             if (sc.dog is { Dead: false } dog && game.home.Contains(dog))
             {
                 homeDog = dog;
+                dogStarving = HomeHealing.IsStarving(dog);
                 game.home.Remove(dog);
                 GenSpawn.Spawn(dog, CellFinder.StandableCellNear(entry, map, 2f), map);
             }
             if (!p.IsFreeColonist) ReturnedNotStaff++;
             if (AutoTest.Active) RPLog.Message($"[commute] {p.LabelShort} came in for the shift (free colonist: {p.IsFreeColonist})");
-            // (Before the food is topped up: one who left starving heals nothing at home. No time away, none given: an old save, or one that got home another way.)
+            // (One who left starving heals nothing at home, and the food is topped up after. No time away, none given: an old save, or one that got home another way.)
             if (away > 0)
             {
-                HomeHealing.Result healed = HomeHealing.Apply(p, away);
-                if (homeDog is { Dead: false, Spawned: true }) HomeHealing.Apply(homeDog, away);
+                HomeHealing.Result healed = HomeHealing.Apply(p, away, starving);
+                if (homeDog is { Dead: false, Spawned: true }) HomeHealing.Apply(homeDog, away, dogStarving);
                 if (AutoTest.Active) RPLog.Message($"[commute] {p.LabelShort} healed at home for {away / (float)GenDate.TicksPerHour:F1} h: {healed.injuryHealed:F2} off the injuries in {healed.steps} steps, {healed.removed} gone");
             }
             if (p.needs?.rest != null) p.needs.rest.CurLevel = 1f;
@@ -265,11 +268,13 @@ namespace RimPrison
                 sc.leaveUntilTick = -1;
                 Roster.Invalidate();
                 // A course and a rest can share one leave (burnout leave granted after a course was booked): both count.
-                bool rest = sc.restPending || !sc.trainingPending;
+                // (An injury leave is no rest: it has its own reason, see HurtOnDuty. A burnout leave granted over it still is one.)
+                bool rest = HurtOnDuty.RestDue(sc);
                 if (sc.trainingPending) StaffTraining.Complete(p, sc);
                 if (rest) p.needs?.mood?.thoughts.memories.TryGainMemory(RPStaffLifeDefOf.RP_Rested);
                 sc.restPending = false;
             }
+            HurtOnDuty.Notify_Returned(p, sc);
             if (p.needs?.food != null) p.needs.food.CurLevel = p.needs.food.MaxLevel * 0.9f;
             if (p.needs?.joy != null) p.needs.joy.CurLevel = UnityEngine.Mathf.Max(p.needs.joy.CurLevel, 0.8f);
         }

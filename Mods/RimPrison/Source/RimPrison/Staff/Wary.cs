@@ -1,5 +1,6 @@
 using System.Linq;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimPrison
@@ -38,6 +39,23 @@ namespace RimPrison
             sc.waryOfName = attacker.LabelShort;
             sc.waryUntilTick = Find.TickManager.TicksGame + Days * GenDate.TicksPerDay;
             staff.needs?.mood?.thoughts.memories.TryGainMemory(RPWaryDefOf.RP_Shaken, attacker);
+        }
+
+        /// <summary>The days the fear is armed again on their return from an injury leave.</summary>
+        public const int ReturnDays = 7;
+
+        /// <summary>
+        /// Back from an injury leave (or sent back on the next shift): the fear of the one who put them down runs for a week more, with what it always does (a hesitant subdue, the shaken memory, the status line). Only when
+        /// it is still theirs: the attacker is still in the prison and they have not faced them down since (either clears it). False: not armed.
+        /// </summary>
+        public static bool Rearm(Pawn staff, CompStaff sc, int attackerId)
+        {
+            if (sc == null || attackerId < 0 || sc.waryOfId != attackerId) return false;
+            Map map = staff.MapHeld ?? Find.AnyPlayerHomeMap;
+            if (map?.mapPawns.PrisonersOfColony.Find(x => x.thingIDNumber == attackerId) is not { } attacker) return false;
+            sc.waryUntilTick = Mathf.Max(sc.waryUntilTick, Find.TickManager.TicksGame + ReturnDays * GenDate.TicksPerDay);
+            staff.needs?.mood?.thoughts.memories.TryGainMemory(RPWaryDefOf.RP_Shaken, attacker);
+            return true;
         }
 
         /// <summary>Restrained the one who hurt them.</summary>

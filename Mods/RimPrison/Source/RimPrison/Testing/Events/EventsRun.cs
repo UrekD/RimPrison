@@ -66,6 +66,7 @@ namespace RimPrison
                 EvExInmates();
                 EvOldAge();
                 EvDark();
+                EvCctv();
                 EvKeptRooms();
                 EvKin();
                 EvRoster();
@@ -183,6 +184,7 @@ namespace RimPrison
                 EvStability28();
                 EvStability29();
                 EvStability31();
+                EvHurtOnDuty();
                 // (The trusties' checks are not in the burst: their real ticks take hours of the game's clock, which the stove fire left to the staff waits on - see AutoTest.CheckTrustiesOnce.)
             }
 

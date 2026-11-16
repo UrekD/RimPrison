@@ -46,13 +46,19 @@ namespace RimPrison
         /// <summary>Who the post is for, as the tab and the inspect string say it.</summary>
         public string GuardLabel() => Assigned?.LabelShortCap ?? (GuardGone ? assigned.LabelShortCap + " " + "RP_DeployPostGuardGone".Translate() : "RP_PostGuardAny".Translate().ToString());
 
-        /// <summary>Its hours cover now and the state's chief is not setting the patrols: a guard is wanted here.</summary>
-        public bool OpenNow => parent.Spawned && !SpecialMeasures.ChiefInPost && CoversHour(GenLocalDate.HourOfDay(parent.Map));
+        /// <summary>The post is a CCTV monitor's (see <see cref="Cctv"/>): the guard sits on its interaction cell, and it is never suspended by the state's chief.</summary>
+        public bool IsMonitor => GuardPosts.IsMonitor(parent);
+
+        /// <summary>
+        /// Its hours cover now and the state's chief is not setting the patrols: a guard is wanted here. A monitor's post is not the chief's to suspend, and is wanted only while the cameras need an operator (see <see cref="Cctv.Needed"/>:
+        /// with the policy off nothing is on its screens to watch) and the monitor shows something (powered and unbroken: nobody is sent to a dark screen, and the guard at one gets up).
+        /// </summary>
+        public bool OpenNow => parent.Spawned && (IsMonitor ? Cctv.Needed && Cctv.Shows(parent) : !SpecialMeasures.ChiefInPost) && CoversHour(GenLocalDate.HourOfDay(parent.Map));
 
         /// <summary>Whoever has the manning job for this post, on the way or there (see <see cref="StandingThere"/>).</summary>
         public Pawn Stander => GuardPosts.StanderOf(parent);
 
-        public bool StandingThere => Stander is { } p && p.Position == parent.Position;
+        public bool StandingThere => Stander is { } p && p.Position == GuardPosts.StandCell(parent);
 
         public override void PostExposeData()
         {
@@ -78,10 +84,18 @@ namespace RimPrison
         /// <summary>Who stands here now, or why nobody is sent.</summary>
         public string StatusText()
         {
-            if (SpecialMeasures.ChiefInPost) return "RP_PostSuspended".Translate();
+            if (IsMonitor && !Cctv.Needed) return "RP_CctvPostIdle".Translate();
+            if (!IsMonitor && SpecialMeasures.ChiefInPost) return "RP_PostSuspended".Translate();
+            // (A dark monitor takes nobody, and a guard who was on it is getting up.)
+            if (IsMonitor && !Cctv.Shows(parent)) return "RP_CctvInspectDark".Translate();
             Pawn stander = Stander;
-            if (stander != null) return (stander.Position == parent.Position ? "RP_PostStanding" : "RP_PostOnTheWay").Translate(stander.LabelShort);
-            return (OpenNow ? "RP_PostUnmanned" : "RP_PostOutsideHours").Translate();
+            if (stander != null)
+            {
+                if (stander.Position == GuardPosts.StandCell(parent)) return "RP_PostStanding".Translate(stander.LabelShort);
+                // (The screens stay empty until the guard sits.)
+                return (IsMonitor ? "RP_CctvScreensEmptyOnTheWay" : "RP_PostOnTheWay").Translate(stander.LabelShort);
+            }
+            return (OpenNow ? IsMonitor ? "RP_CctvScreensEmpty" : "RP_PostUnmanned" : "RP_PostOutsideHours").Translate();
         }
     }
 
@@ -92,13 +106,38 @@ namespace RimPrison
 
         public static string HourLabel(int hour) => "RP_PostHour".Translate(hour.ToString("00")).ToString();
 
-        /// <summary>Every post on the map, in the order they were put up.</summary>
+        /// <summary>The post is a CCTV monitor (a thing with a <see cref="CompGuardPost"/> whose guard sits at its interaction cell), not a floor spot.</summary>
+        public static bool IsMonitor(Thing post) => post.def == RPCctvDefOf.RP_CctvMonitor;
+
+        /// <summary>
+        /// The cell a guard stands on to man the post: a monitor's interaction cell (the monitor itself is not a place to stand), else the post's own cell. Every path, reach, reservation, job target and status of a post
+        /// goes to this cell and not to <see cref="Thing.Position"/>.
+        /// </summary>
+        public static IntVec3 StandCell(Thing post) => post.def.hasInteractionCell ? post.InteractionCell : post.Position;
+
+        /// <summary>The floor posts on the map (the spots).</summary>
+        private static List<Thing> FloorPosts(Map map) => map.listerThings.ThingsOfDef(RPPostDefOf.RP_GuardPost);
+
+        /// <summary>The monitors on the map (each is a post).</summary>
+        private static List<Thing> MonitorPosts(Map map) => map.listerThings.ThingsOfDef(RPCctvDefOf.RP_CctvMonitor);
+
+        /// <summary>Whether the map has a post of any kind.</summary>
+        public static bool AnyPost(Map map) => FloorPosts(map).Count > 0 || MonitorPosts(map).Count > 0;
+
+        /// <summary>Every thing on the map that is a post, floor spots first then monitors (what the work giver scans).</summary>
+        public static IEnumerable<Thing> PostThings(Map map)
+        {
+            List<Thing> floor = FloorPosts(map), monitors = MonitorPosts(map);
+            for (int i = 0; i < floor.Count; i++) yield return floor[i];
+            for (int i = 0; i < monitors.Count; i++) yield return monitors[i];
+        }
+
+        /// <summary>Every post on the map (floor spots and monitors), in the order they were put up.</summary>
         public static List<CompGuardPost> Posts(Map map)
         {
             var list = new List<CompGuardPost>();
-            List<Thing> things = map.listerThings.ThingsOfDef(RPPostDefOf.RP_GuardPost);
-            for (int i = 0; i < things.Count; i++)
-                if (things[i].TryGetComp<CompGuardPost>() is { } post) list.Add(post);
+            foreach (Thing t in PostThings(map))
+                if (t.TryGetComp<CompGuardPost>() is { } post) list.Add(post);
             list.Sort((a, b) => a.parent.thingIDNumber.CompareTo(b.parent.thingIDNumber));
             return list;
         }
@@ -136,20 +175,24 @@ namespace RimPrison
             !CareDetail.IsReserve(p) && (Idle(p) || forPost != null && OnDuty(p) && p.CurJobDef == RPPostDefOf.RP_ManPost && p.CurJob.targetA.Thing == forPost.parent);
 
         /// <summary>Free for the post, allowed to go to it and able to reach it.</summary>
-        public static bool FreeAndAble(Pawn g, CompGuardPost post) => Free(g, post) && !post.parent.IsForbidden(g) && !KeptOff(g, post) && g.CanReach(post.parent.Position, PathEndMode.OnCell, Danger.Some);
+        public static bool FreeAndAble(Pawn g, CompGuardPost post) => Free(g, post) && !post.parent.IsForbidden(g) && !KeptOff(g, post) && g.CanReach(StandCell(post.parent), PathEndMode.OnCell, Danger.Some);
 
         /// <summary>A guard who asked to be kept off the wing their kin is in does not man a post in it (see <see cref="Kin"/>).</summary>
-        public static bool KeptOff(Pawn guard, CompGuardPost post) => post.parent.Map != null && Kin.KeepsOffCell(guard, post.parent.Map, post.parent.Position);
+        public static bool KeptOff(Pawn guard, CompGuardPost post) => post.parent.Map != null && Kin.KeepsOffCell(guard, post.parent.Map, StandCell(post.parent));
 
         /// <summary>The guard is named for another post that is open, unmanned and theirs to take: that one is the one they go to.</summary>
         private static bool NamedElsewhere(Pawn pawn, CompGuardPost post)
         {
-            List<Thing> things = pawn.Map.listerThings.ThingsOfDef(RPPostDefOf.RP_GuardPost);
+            return NamedAt(pawn, post, FloorPosts(pawn.Map)) || NamedAt(pawn, post, MonitorPosts(pawn.Map));
+        }
+
+        private static bool NamedAt(Pawn pawn, CompGuardPost post, List<Thing> things)
+        {
             for (int i = 0; i < things.Count; i++)
             {
                 if (things[i] == post.parent || things[i].TryGetComp<CompGuardPost>() is not { } other || other.Assigned != pawn || !other.OpenNow) continue;
                 if (other.Stander is { } s && s != pawn || other.parent.IsForbidden(pawn) || KeptOff(pawn, other)) continue;
-                if (pawn.CanReach(other.parent.Position, PathEndMode.OnCell, Danger.Some)) return true;
+                if (pawn.CanReach(StandCell(other.parent), PathEndMode.OnCell, Danger.Some)) return true;
             }
             return false;
         }
@@ -175,13 +218,14 @@ namespace RimPrison
                 // (Whoever is on it keeps it: two free guards walking about would hand it back and forth at every check.)
                 if (named != pawn && post.Stander != pawn && CloserFreeGuard(pawn, post, named)) return false;
             }
-            return pawn.CanReserveAndReach(post.parent, PathEndMode.OnCell, Danger.Some, 1, -1, null, forced);
+            // (Reach the cell a guard stands on, reserve the post itself: a monitor is no cell to walk to.)
+            return pawn.Spawned && pawn.CanReach(StandCell(post.parent), PathEndMode.OnCell, Danger.Some) && pawn.CanReserve(post.parent, 1, -1, null, forced);
         }
 
         /// <summary>Another guard who would go (free for this post, not the one named, who is looked at on their own, nor one bound for the post that names them) stands nearer the post than this one: they are the one to send.</summary>
         private static bool CloserFreeGuard(Pawn pawn, CompGuardPost post, Pawn named)
         {
-            IntVec3 at = post.parent.Position;
+            IntVec3 at = StandCell(post.parent);
             int mine = pawn.Position.DistanceToSquared(at);
             IReadOnlyList<Pawn> colonists = pawn.Map.mapPawns.FreeColonistsSpawned;
             for (int i = 0; i < colonists.Count; i++)
@@ -197,8 +241,14 @@ namespace RimPrison
         /// <summary>The first post this guard would be sent to now, if any (what ends a patrol: the post work giver would hand it to them).</summary>
         public static CompGuardPost PostFor(Pawn pawn)
         {
-            if (pawn.Map == null || SpecialMeasures.ChiefInPost) return null;
-            List<Thing> things = pawn.Map.listerThings.ThingsOfDef(RPPostDefOf.RP_GuardPost);
+            if (pawn.Map == null) return null;
+            // (With the state's chief in post the floor posts are suspended; a monitor is not.)
+            if (!SpecialMeasures.ChiefInPost && FirstTaken(pawn, FloorPosts(pawn.Map)) is { } floor) return floor;
+            return FirstTaken(pawn, MonitorPosts(pawn.Map));
+        }
+
+        private static CompGuardPost FirstTaken(Pawn pawn, List<Thing> things)
+        {
             for (int i = 0; i < things.Count; i++)
                 if (things[i].TryGetComp<CompGuardPost>() is { } post && CanTake(pawn, post)) return post;
             return null;
@@ -206,7 +256,7 @@ namespace RimPrison
 
         public static string PlaceOf(CompGuardPost post)
         {
-            IntVec3 c = post.parent.Position;
+            IntVec3 c = GuardPosts.StandCell(post.parent);
             PrisonZoneDef zone = PrisonMap.Of(post.parent.Map)?.zones.ZoneAt(c);
             return zone != null ? "RP_PostPlace".Translate(zone.label, c.x, c.z).ToString() : "RP_PostPlaceNone".Translate(c.x, c.z).ToString();
         }
@@ -224,13 +274,22 @@ namespace RimPrison
             IntVec3 other = IntVec3.Invalid;
             foreach (IntVec3 c in GenRadial.RadialCellsAround(near, NearRadius, true))
             {
-                if (!c.InBounds(map) || !c.InHorDistOf(near, NearRadius) || !c.Standable(map) || c.GetEdifice(map) != null) continue;
+                if (!c.InBounds(map) || !c.InHorDistOf(near, NearRadius) || !c.Standable(map) || c.GetEdifice(map) != null || IsMonitorSeat(map, c)) continue;
                 if (c.GetThingList(map).Any(t => t.def == RPPostDefOf.RP_GuardPost || t.def.entityDefToBuild == RPPostDefOf.RP_GuardPost)) continue;
                 if (!GenConstruct.CanPlaceBlueprintAt(RPPostDefOf.RP_GuardPost, c, Rot4.North, map).Accepted) continue;
                 if (room == null || c.GetRoom(map) == room) return c;
                 if (!other.IsValid) other = c;
             }
             return other;
+        }
+
+        /// <summary>The cell is a monitor's seat (its interaction cell): a floor post's guard standing on it would be counted as the monitor's operator.</summary>
+        public static bool IsMonitorSeat(Map map, IntVec3 c)
+        {
+            List<Thing> monitors = MonitorPosts(map);
+            for (int i = 0; i < monitors.Count; i++)
+                if (StandCell(monitors[i]) == c) return true;
+            return false;
         }
 
         /// <summary>Puts a post up at once (a spot costs nothing and takes no work, like vanilla's) at the cell nearest to <paramref name="near"/>; null when there is no cell.</summary>
@@ -255,13 +314,20 @@ namespace RimPrison
     /// <summary>Guards on shift and free man the open posts (under the towers, above the patrol, under all the rest of a guard's work: a built tower keeps its guard, the posts take the guards no tower needs).</summary>
     public class WorkGiver_ManPost : WorkGiver_Scanner
     {
-        public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForDef(RPPostDefOf.RP_GuardPost);
+        // (Floor posts and monitors are both posts, and nothing else is: the scan is over the two lists and no region search is made - an undefined request has none - and a job asked for by hand takes the same list, see
+        // FloatMenuOptionProvider_WorkGivers.ScannerShouldSkip.)
+        public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.Undefined);
+
+        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => GuardPosts.PostThings(pawn.Map);
+
+        // (Reach is asked of the cell the guard stands on, in HasJobOnThing: a monitor's own cell is not where they go, so the game's reach test of the thing itself - which would ask about that cell - is left out.)
+        public override bool AllowUnreachable => true;
 
         public override PathEndMode PathEndMode => PathEndMode.OnCell;
 
-        // (With the state's chief in post the patrols are theirs: the warden's posts are suspended, nobody is sent. No posts on the map: nothing to scan.)
+        // (With the state's chief in post the patrols are theirs: the warden's floor posts are suspended, nobody is sent; the monitors are not. No posts on the map: nothing to scan.)
         public override bool ShouldSkip(Pawn pawn, bool forced = false) =>
-            !GuardUtility.IsGuard(pawn) || SpecialMeasures.ChiefInPost || pawn.Map == null || pawn.Map.listerThings.ThingsOfDef(RPPostDefOf.RP_GuardPost).Count == 0;
+            !GuardUtility.IsGuard(pawn) || pawn.Map == null || !GuardPosts.AnyPost(pawn.Map) || SpecialMeasures.ChiefInPost && pawn.Map.listerThings.ThingsOfDef(RPCctvDefOf.RP_CctvMonitor).Count == 0;
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false) => t.TryGetComp<CompGuardPost>() is { } post && GuardPosts.CanTake(pawn, post, forced);
 
@@ -305,14 +371,21 @@ namespace RimPrison
                 // longer hold it. (CanTake is true for whoever stands on it and should: nobody else is sent while they do.)
                 return Post is { OpenNow: true } post && GuardPosts.OnDuty(pawn) && GuardPosts.CanTake(pawn, post) ? JobCondition.Ongoing : JobCondition.Succeeded;
             });
-            yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);
+            // (The cell to stand on: a floor post's own, a monitor's interaction cell. Not the building's cell: a monitor is no place to stand.)
+            yield return Toils_Goto.GotoCell(job.targetA.Thing is { } postThing ? GuardPosts.StandCell(postThing) : job.targetA.Cell, PathEndMode.OnCell);
             var watch = ToilMaker.MakeToil("ManPostWatch");
-            watch.initAction = () => pawn.pather.StopDead();
+            // (A guard at a monitor faces its screens and keeps to them; one on a floor post looks about.)
+            bool screens = job.targetA.Thing is { } screenThing && GuardPosts.IsMonitor(screenThing);
+            watch.initAction = () =>
+            {
+                pawn.pather.StopDead();
+                if (screens) pawn.rotationTracker.FaceTarget(job.targetA);
+            };
             watch.defaultCompleteMode = ToilCompleteMode.Never;
             watch.handlingFacing = true;
             watch.tickIntervalAction = delta =>
             {
-                if (pawn.IsHashIntervalTick(200, delta)) pawn.Rotation = Rot4.Random;
+                if (!screens && pawn.IsHashIntervalTick(200, delta)) pawn.Rotation = Rot4.Random;
             };
             yield return watch;
         }

@@ -835,6 +835,11 @@ namespace RimPrison
             {
                 const string check = "watch ticks";
                 WatchSwitches(r);
+                // (No random mood breaks for the scene, as the supermax scenes hold them off: stability31-s31f's guard, in a poor mood, took an "insulting spree" 141 ticks into their meditation, which ended it before the check was
+                // due. The crisis the check starts by hand is forced, which this does not stop.)
+                bool randomBreaks0 = DebugSettings.enableRandomMentalStates;
+                DebugSettings.enableRandomMentalStates = false;
+                r.Add(() => DebugSettings.enableRandomMentalStates = randomBreaks0);
                 // (The hour's pass leaves the scene's inmate alone: the period is the check's own.)
                 WatchList.Pool = _ => false;
                 PsychScene s = PsychScene.Build(map, r, check);

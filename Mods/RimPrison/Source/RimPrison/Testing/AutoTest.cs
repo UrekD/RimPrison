@@ -3939,9 +3939,11 @@ namespace RimPrison
                 sb.Append($"{s.LabelShort}:{s.GetComp<CompStaff>()?.role?.defName}/t={s.GetComp<CompStaff>()?.lastTrainedTick}:{s.GetComp<CompStaff>()?.trainingPending}/w={s.GetComp<CompStaff>()?.waryOfId}:{s.GetComp<CompStaff>()?.waryUntilTick}:{s.GetComp<CompStaff>()?.waryOfName}/rank={s.GetComp<CompStaff>()?.rank}:{s.GetComp<CompStaff>()?.passedOverTick}/since={s.GetComp<CompStaff>()?.roleSinceTick}:{s.GetComp<CompStaff>()?.pendingFire}/held={HostageCrisis.IsHeld(s)}:{s.MentalStateDef?.defName}/cmp={s.GetComp<CompStaff>()?.complaintsUpheld}:{s.GetComp<CompStaff>()?.lastUpheldTick}:{s.GetComp<CompStaff>()?.trueComplaints}:{s.GetComp<CompStaff>()?.disciplineUntilTick}:{s.GetComp<CompStaff>()?.standDownUntilTick}/as={s.GetComp<CompStaff>()?.assaultedTick}/uo={UnitOfficers.Describe(s.GetComp<CompStaff>())}/hs={s.GetComp<CompStaff>()?.homeSinceTick} ");
             // (The staff at home are not on the map: the time each left at, those on site included.)
             sb.Append($"stafftimes={StaffHomeDescribe(map)} ");
+            sb.Append($"hurt={HodDescribe(g, map)} ");
             sb.Append($"careers={g.stats.promotions}/{g.stats.promotionsDeclined}/{g.stats.resignations} unitTips={g.stats.unitTips} ");
             sb.Append($"warden={WardenSystem.Describe(g, map)} ");
             sb.Append($"guardposts={GuardPosts.Describe(map)} ");
+            sb.Append($"cctv={CctvDescribe(g, map)} ");
             sb.Append($"care={CareDescribe(map)} ");
             sb.Append($"evac={EvacuationSystem.Describe(map)} ");
             sb.Append($"keptrooms={KeptRooms.Describe(map)} ");
@@ -4190,6 +4192,7 @@ namespace RimPrison
             SeedToolsForReload(map);
             SeedBarForReload(map);
             SeedGuardPostsForReload(map);
+            SeedCctvForReload(map);
             SeedKeptRoomsForReload(map);
             SeedCountForReload(map);
             SeedSuppressionForReload();
@@ -4208,6 +4211,7 @@ namespace RimPrison
             // (After the rumours: the seeded requests are about the seeded rumour's wing.)
             SeedWardenAsksForReload(map);
             SeedStaffHomeForReload(map);
+            SeedHurtOnDutyForReload(map);
             SeedWatchListForReload(map);
             SeedAmendsForReload(map);
             SeedBreakForReload(map);
@@ -4222,6 +4226,7 @@ namespace RimPrison
             RecordWatchListForReload(map);
             RecordTrustiesForReload(map);
             snapshotBefore = Snapshot(map);
+            RecordCctvForReload(map);
             SeedArrestForReload(map);
             GameDataSaveLoader.SaveGame("RimPrisonAutotest");
             RPLog.Message("[RimPrison:test] saved; reloading");
@@ -4238,6 +4243,8 @@ namespace RimPrison
             RecordSupermaxAtLoad(map);
             RecordEvacuationAtLoad(map);
             RecordCareAtLoad(map);
+            // (Before the snapshot, which works the cameras' answers out again: what the load itself made of them.)
+            RecordCctvAtLoad(map);
             string after = Snapshot(map);
             if (after != snapshotBefore)
             {
@@ -4248,6 +4255,8 @@ namespace RimPrison
             else RPLog.Message("[RimPrison:test] reload: state identical");
             // (The seeded times at home go back to what they were: a member of staff at home would be healed for them at the next arrival.)
             RestoreStaffHomeAfterReload(map);
+            // (The seeded hurt guard at home: its case and leave came back, and it is taken out again.)
+            CheckHodAfterReload(map);
             // (First of the checks after the load: an hour's pass in a check that ticks would close the seeded riot that is still on.)
             CheckRiotReviewAfterReload(map);
             // (The seeded evacuation is a real one again before anything ticks: its drill flag was for the comparison.)
@@ -4391,6 +4400,7 @@ namespace RimPrison
             CheckEvacuationAfterReload(map);
             CheckBarAfterReload(map);
             CheckGuardPostAfterReload(map);
+            CheckCctvAfterReload(map);
             CheckKeptRoomsAfterReload(map);
             CheckHiringAfterReload(map);
             CheckCountAfterReload(map);
@@ -5043,6 +5053,8 @@ namespace RimPrison
             foreach (Pawn p in map.mapPawns.PrisonersOfColonySpawned)
                 if (OutsideTheCompound(p, PrisonBuilder.Footprint(map))) outside++;
             if (outside > 0) problems.Add($"{outside} inmates outside the compound");
+            // (The cameras' watched cache is held against a plain walk on every beat, right after the rebuild: any difference is a wrong answer in a cache, whatever the plan looked at.)
+            if (Shadow.cctvDiffer > 0) problems.Add($"cctv: the watched cache differed from the plain walk {Shadow.cctvDiffer} times ({Shadow.first})");
             double secs = wall.Elapsed.TotalSeconds;
             PrisonStats st = game.stats;
             int jobs = 0;

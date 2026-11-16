@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -436,6 +437,9 @@ namespace RimPrison
                     real.jobs.EndCurrentJob(JobCondition.InterruptForced);
                 }
                 Pawn admin = ThrowawayStaff(map, r, RPParoleDefOf.RP_Administrator);
+                // (The prison's inmates are loose around the hearing room for thousands of ticks: the board's administrator is held against harm, as a scene's pawn is, and what was tried on them is kept to tell by whom.)
+                ParoleHold.Hold(admin);
+                r.Add(ParoleHold.Release);
                 // (At the hearing room's own desk: a walk from the intake across a prison can outlast the time the hearing waits for a board, and it sits with the warden's chair.)
                 Thing boardDesk = map.listerBuildings.AllBuildingsColonistOfDef(RPAdminDefOf.RP_OfficeDesk).FirstOrDefault(d => pm.zones.ZoneAt(d.Position) == RPParoleDefOf.RP_HearingRoom && !d.IsBurning());
                 Place(admin, boardDesk != null && boardDesk.InteractionCell.Standable(map) ? boardDesk.InteractionCell : CellFinder.StandableCellNear(start, map, 3f));
@@ -467,7 +471,11 @@ namespace RimPrison
                 }
                 bool sawBoard = sat.Count > 0;
                 bool adminBoard = letter11 != null && sawBoard && hc11.boardName == admin.LabelShort && sat.Contains(hc11.boardName) && letter11.Text.ToString().Contains("RP_ParoleBoard_Admin".Translate(hc11.boardName).ToString());
-                if (!adminBoard) Fail($"with an administrator on staff the board is the administrator at the desk: letter {letter11 != null}, administrators seen sitting [{string.Join(", ", sat)}] (ours is {admin.LabelShort}), board named {hc11.boardName} (stage {hc11.stage}, the administrator does {admin.CurJobDef?.defName}; needed medical rest at the start {medicalRest}, now {HealthAIUtility.ShouldSeekMedicalRest(admin)}, rest {admin.needs?.rest?.CurLevel:F2}, downed {admin.Downed}, mental {admin.InMentalState}, "
+                // (A board whose administrator was set upon, or downed, was broken from outside: told with who did it, not failed.)
+                bool brokenFromOutside = !adminBoard && (ParoleHold.Harm.Count > 0 || admin.Downed || admin.Dead || !admin.Spawned);
+                if (brokenFromOutside)
+                    RPLog.Message($"[RimPrison:test] parole: the administrator's sitting was broken from outside, so the board is not judged - {admin.LabelShort} {(ParoleHold.Harm.Count > 0 ? "was set upon (" + string.Join(", ", ParoleHold.Harm.Select(kv => $"{kv.Value}x by {kv.Key}")) + "; held against it)" : "was downed with no blow seen")}, downed {admin.Downed}, dead {admin.Dead}, spawned {admin.Spawned}, doing {admin.CurJobDef?.defName ?? "nothing"}, hediffs [{string.Join(", ", admin.health.hediffSet.hediffs.Select(x => x.def.defName))}]");
+                else if (!adminBoard) Fail($"with an administrator on staff the board is the administrator at the desk: letter {letter11 != null}, administrators seen sitting [{string.Join(", ", sat)}] (ours is {admin.LabelShort}), board named {hc11.boardName} (stage {hc11.stage}, the administrator does {admin.CurJobDef?.defName}; needed medical rest at the start {medicalRest}, now {HealthAIUtility.ShouldSeekMedicalRest(admin)}, rest {admin.needs?.rest?.CurLevel:F2}, downed {admin.Downed}, mental {admin.InMentalState}, "
                          + $"timetable {admin.timetable?.CurrentAssignment?.defName}, hediffs [{string.Join(", ", admin.health.hediffSet.hediffs.Select(x => x.def.defName))}]; the inmate {h11.LabelShort} "
                          + $"({h11.Inmate()?.security?.defName}) at {h11.Position} on {h11.CurJobDef?.defName ?? "no job"}, in the hearing room {pm.zones.ZoneAt(h11.Position) == RPParoleDefOf.RP_HearingRoom}, reaches the desk {boardDesk != null && h11.CanReach(boardDesk, PathEndMode.Touch, Danger.Deadly)}, "
                          + $"downed {h11.Downed}, mental {h11.MentalStateDef?.defName ?? "none"}, forced {h11.Inmate()?.forcedActivity?.defName ?? "none"}, escorted by {map.mapPawns.FreeColonistsSpawned.FirstOrDefault(x => x.CurJob?.targetA.Thing == h11)?.LabelShort ?? "nobody"})");
@@ -498,7 +506,7 @@ namespace RimPrison
                                && Math.Abs(h3b.Inmate().lastHearingTick - Now()) < 5 && Math.Abs(h4b.Inmate().lastHearingTick - Now()) < 5;
                 if (!waits || !walksIn || !maxWaits || !dropped)
                     Fail($"fallbacks: waits for an escort at first {waits}, walks in alone after two hours {walksIn}, maximum security never alone {maxWaits}; stale hearings dropped and decided by the board's roll {dropped}");
-                log += $" board={adminBoard} fallbacks={waits && walksIn && maxWaits && dropped}";
+                log += $" board={adminBoard || brokenFromOutside} fallbacks={waits && walksIn && maxWaits && dropped}";
 
                 // ---- a hearing decided at once (no warden's letter) that grants parole: terms in the register --------------------------
                 Pawn h7 = Hopeful();
@@ -777,6 +785,47 @@ namespace RimPrison
             g.story.formerInmates.RemoveAll(x => x.name == "Paroleseed");
             g.rearrests.RemoveAll(x => x.name == "Paroleseed");
             paroleSeedInmateId = -1;
+        }
+    }
+
+    /// <summary>The pawn a check holds against harm, and what was tried on them (who, how often): the parole check's board administrator, who walks among a live prison's inmates for the whole of a sitting.</summary>
+    internal static class ParoleHold
+    {
+        private static Pawn held;
+        /// <summary>Who tried to harm the held pawn (instigator and the damage), how many times.</summary>
+        internal static readonly Dictionary<string, int> Harm = new Dictionary<string, int>();
+
+        internal static void Hold(Pawn p)
+        {
+            held = p;
+            Harm.Clear();
+        }
+
+        internal static void Release() => held = null;
+
+        internal static bool Holds(Pawn p) => held != null && p == held;
+
+        internal static void Note(DamageInfo dinfo)
+        {
+            string by = dinfo.Instigator is Pawn who
+                ? $"{who.LabelShort} ({(who.IsPrisonerOfColony ? "inmate" : who.GetComp<CompStaff>()?.role?.defName ?? "neither inmate nor staff")})"
+                : dinfo.Instigator?.def.defName ?? "no instigator";
+            string key = $"{by} with {dinfo.Def?.defName ?? "?"}";
+            Harm[key] = Harm.TryGetValue(key, out int n) ? n + 1 : 1;
+        }
+    }
+
+    /// <summary>Takes the blows of the pawn a check holds against harm (see <see cref="ParoleHold"/>) and writes down who struck; costs a field read for every other pawn.</summary>
+    [HarmonyPatch(typeof(Pawn), nameof(Pawn.PreApplyDamage))]
+    [TestOnly]
+    public static class Patch_Pawn_PreApplyDamage_ParoleHold
+    {
+        public static bool Prefix(Pawn __instance, ref DamageInfo dinfo, ref bool absorbed)
+        {
+            if (!ParoleHold.Holds(__instance)) return true;
+            ParoleHold.Note(dinfo);
+            absorbed = true;
+            return false;
         }
     }
 }

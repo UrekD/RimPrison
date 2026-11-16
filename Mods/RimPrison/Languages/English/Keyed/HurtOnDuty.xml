@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Hurt on duty (Staff/HurtOnDuty.cs). No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+  <RP_HodLabel>{0} was hurt on duty</RP_HodLabel>
+  <RP_HodLabelMany>{0} officers were hurt on duty</RP_HodLabelMany>
+  <RP_HodText>An inmate hurt a member of staff. They are on leave on full pay until you decide what the prison does for them, and the leave stands if you say nothing. An answer is for everyone named here.
+
+{0}{1}</RP_HodText>
+  <RP_HodNotePension>A pension is only for a lasting injury - anyone named here whose injury is not lasting gets compensation and the leave instead.</RP_HodNotePension>
+  <RP_HodNoteDesk>A desk post as an administrator is only for an officer with Intellectual {0} or more who can do the administrator's work - anyone else named here gets the leave.</RP_HodNoteDesk>
+  <RP_HodRow>{0} ({1}) was hurt by {2} - {3}. Leave on full pay {4} days, compensation {5}.</RP_HodRow>
+  <RP_HodUnknownAttacker>an inmate</RP_HodUnknownAttacker>
+  <RP_HodLevel_1>a minor injury</RP_HodLevel_1>
+  <RP_HodLevel_2>a serious injury</RP_HodLevel_2>
+  <RP_HodLevel_3>a lasting injury</RP_HodLevel_3>
+  <RP_Hod_Leave>Injury leave on full pay</RP_Hod_Leave>
+  <RP_Hod_Compensation>Compensation and leave</RP_Hod_Compensation>
+  <RP_Hod_Back>Back on the next shift</RP_Hod_Back>
+  <RP_Hod_Pension>A pension - they retire</RP_Hod_Pension>
+  <RP_Hod_Desk>A desk post as an administrator</RP_Hod_Desk>
+  <RP_HodBackOver>Sending them back would end nothing - their injury leave is over, or another leave runs past it.</RP_HodBackOver>
+  <RP_HodPensionDown>Wait until they are on their feet.</RP_HodPensionDown>
+  <RP_HodNoFunds>The prison cannot pay what was promised to {0}, so they have the leave instead.</RP_HodNoFunds>
+  <RP_HodCompNote>Compensation - {0}</RP_HodCompNote>
+  <RP_HodPensionNote>Pension - {0}</RP_HodPensionNote>
+  <RP_Chr_HodMinor>{0} was hurt on duty and has {1} paid day off to recover.</RP_Chr_HodMinor>
+  <RP_Chr_HodCompensated>{0} was paid {1} for the injury, with the leave.</RP_Chr_HodCompensated>
+  <RP_Chr_HodRushedBack>{0} was sent back to work on the next shift, hurt.</RP_Chr_HodRushedBack>
+  <RP_Chr_HodPensioned>{0} ({1}) was pensioned off after the injury, with {2}.</RP_Chr_HodPensioned>
+  <RP_Chr_HodDesk>{0} ({1}) was moved to a desk post as {2} after the injury.</RP_Chr_HodDesk>
+  <RP_Chr_HodBack>{0} is back at work after the injury.</RP_Chr_HodBack>
+  <RP_StaffWhereInjuryLeave>on injury leave ({0} days left)</RP_StaffWhereInjuryLeave>
+  <RP_HodRecordHeader>Hurt on duty</RP_HodRecordHeader>
+  <RP_HodRecordLine>{0} - {1}, by {2}. {3}</RP_HodRecordLine>
+  <RP_HodAnswer_0>Waiting for the warden's answer.</RP_HodAnswer_0>
+  <RP_HodAnswer_1>Injury leave on full pay.</RP_HodAnswer_1>
+  <RP_HodAnswer_2>Compensation and leave.</RP_HodAnswer_2>
+  <RP_HodAnswer_3>Sent back on the next shift.</RP_HodAnswer_3>
+  <RP_HodAnswer_4>Pensioned off.</RP_HodAnswer_4>
+  <RP_HodAnswer_5>Moved to a desk post.</RP_HodAnswer_5>
+</LanguageData>

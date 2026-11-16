@@ -199,6 +199,13 @@ namespace RimPrison
                 }
             }
             list.GapLine();
+            // Hurt on duty: the latest cases, with what was answered.
+            if (HurtOnDuty.RecordLines(sc) is { Count: > 0 } hurt)
+            {
+                list.Label("RP_HodRecordHeader".Translate());
+                foreach (string line in hurt) list.Label("   " + line);
+                list.GapLine();
+            }
             StaffLifeSection(list, sc.life);
             lastHeight = list.CurHeight + 12f;
             list.End();
@@ -206,10 +213,12 @@ namespace RimPrison
         }
 
         /// <summary>Shift, post and where they are: on site, home, on leave, on a course, suspended.</summary>
-        private static string PostLine(Pawn p, CompStaff sc)
+        internal static string PostLine(Pawn p, CompStaff sc)
         {
             int now = Find.TickManager.TicksGame;
             string where = CorruptionSystem.Suspended(sc) ? (CorruptionSystem.StoodDownOnly(sc) ? "RP_StaffWhereStoodDown" : "RP_StaffWhereSuspended").Translate().ToString()
+                // (An injury leave over a booked course is the injury's: the course is done on the return.)
+                : StaffLives.OnLeave(sc) && sc.leaveReason == HurtOnDuty.ReasonInjury ? "RP_StaffWhereInjuryLeave".Translate(((sc.leaveUntilTick - now) / (float)GenDate.TicksPerDay).ToString("0.0")).ToString()
                 : sc.trainingPending ? "RP_StaffWhereCourse".Translate().ToString()
                 : StaffLives.OnLeave(sc) ? "RP_StaffWhereLeave".Translate(((sc.leaveUntilTick - now) / (float)GenDate.TicksPerDay).ToString("0.0")).ToString()
                 : p.Spawned ? "RP_StaffWhereOnSite".Translate().ToString() : "RP_StaffWhereHome".Translate().ToString();

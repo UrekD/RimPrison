@@ -296,6 +296,11 @@ duty watches it.
   without a bed, an illness runs its course with their immunity (never to the point of death at home), and a handler's
   dog heals with them.
 - **Trouble:** corruption, burnout and memories of danger.
+- **Hurt on duty:** an officer put down by an inmate is a case. A minor injury is a paid day off; a serious or lasting
+  one is a letter that asks what the prison does for them - injury leave on full pay, compensation with the leave,
+  back on the next shift (a rushed-back officer and their colleagues remember it), and for a lasting injury a pension
+  or a desk post as an administrator. The leave starts at once, they heal at home, and on return they are wary of the
+  one who did it for a week. The staff record keeps the latest cases.
 - **Kin across the wall:** now and then a new hire is the parent, child or half-sibling of an inmate, or a new
   arrival is related to someone on the staff. A letter asks whether to keep a guard away from their relative. A guard
   may hesitate to restrain their own kin when another guard could go. A fixer finds an officer easier to bribe when
@@ -415,6 +420,15 @@ Hidden gangs, debts and rings stay hidden until then.
   fight, an escort or a search still comes first, and the state's security chief suspends the posts while in charge. The
   guard stays as long as the post is theirs: they go at once when the post's hours end or the guard you named is free.
   Each hot patch on the Deployment tab has a "post a guard here" button.
+- **A staffed control room:** the security chief's project also unlocks the CCTV monitor. With the policy "cameras need an
+  operator" on (it is on in a new game; an older save keeps the old rule until you switch, and is offered the switch once,
+  when it first builds a monitor), a camera watches live only while a guard sits at a powered monitor that carries it. A
+  monitor is a guard post - give it hours and a guard on the Deployment tab - and carries up to eight of the cameras you
+  have set to show on the screens, the high-priority ones first (both are buttons on the camera). A monitor with nobody at
+  it, no power or broken down shows nothing (and no guard is sent to a dark one; a camera without power gives its place on the
+  screens to the next), so a camera nobody watches sees no misconduct, adds no suppression and cannot
+  see an escape; a court still takes a working camera's recording as evidence. The state penitentiary comes with a control
+  room of four monitors, two for the day and two for the night, and its yard, canteens and gates on the first screens.
 - **A care detail:** on the Deployment tab, keep up to three guards for care. They are picked each hour from the guards on
   duty (those already feeding or carrying first) or named by you, and they bring the meal to the inmate shut in a cell, feed
   and carry the injured and walk a supermax inmate back to the cell, while the others answer the trouble: a reserve guard

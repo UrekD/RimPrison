@@ -157,6 +157,8 @@ namespace RimPrison
         public StateOversight oversight = new StateOversight();
         public List<StoryArc> arcs = new List<StoryArc>();
         public int nextArcId = 1;
+        /// <summary>The next id of a member of staff's injury case (see <see cref="HurtOnDuty"/>).</summary>
+        public int nextInjuryCaseId = 1;
         /// <summary>Who owes whom among the inmates (see <see cref="DebtSystem"/>), and the next debt's id.</summary>
         public List<InmateDebt> debts = new List<InmateDebt>();
         public int nextDebtId = 1;
@@ -323,6 +325,7 @@ namespace RimPrison
             Scribe_Deep.Look(ref oversight, "oversight");
             Scribe_Collections.Look(ref arcs, "arcs", LookMode.Deep);
             Scribe_Values.Look(ref nextArcId, "nextArcId", 1);
+            Scribe_Values.Look(ref nextInjuryCaseId, "nextInjuryCaseId", 1);
             Scribe_Collections.Look(ref debts, "debts", LookMode.Deep);
             Scribe_Values.Look(ref nextDebtId, "nextDebtId", 1);
             Scribe_Collections.Look(ref lastArcStart, "lastArcStart", LookMode.Def, LookMode.Value);

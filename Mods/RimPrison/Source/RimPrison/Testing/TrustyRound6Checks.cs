@@ -207,17 +207,23 @@ namespace RimPrison
                 {
                     var crop = (Plant)ThingMaker.MakeThing(cropDef);
                     crop.Growth = 1f;
+                    // (Kept from the cold: on a cold map a plant dies the moment it is spawned, and there would be no crop to cut.)
+                    TrustyHoldSeason(map, r, CellRect.SingleCell(s.At(14, 2)));
                     GenSpawn.Spawn(crop, s.At(14, 2), map);
                     r.Add(() =>
                     {
                         if (crop.Spawned) crop.Destroy(DestroyMode.Vanish);
                     });
-                    t.jobs.StartJob(new Job(JobDefOf.CutPlant, crop), JobCondition.InterruptForced);
-                    if (t.CurJobDef != JobDefOf.CutPlant || !Trusties.IsWorkingOutside(t)) s.Fail($"the check's own fixture: the cut of the crop plant in the zone did not start ({TrustyLine(s, t)})");
-                    else if (worker.Capacity(map) != 0) s.Fail("the check's own premise: a crop plant outside a growing zone is work to the zone");
-                    else if (Students().Contains(t)) s.Fail($"a class collected a trusty at a cut in the zone because the zone has nothing else to cut: {TrustyLine(s, t)}");
+                    if (!crop.Spawned || !crop.HarvestableNow) s.Fail($"the check's own fixture: the crop plant to cut is {(crop.Spawned ? "not ripe" : "dead")} on the strip ({map.mapTemperature.OutdoorTemp:F0} C outdoors)");
+                    else
+                    {
+                        t.jobs.StartJob(new Job(JobDefOf.CutPlant, crop), JobCondition.InterruptForced);
+                        if (t.CurJobDef != JobDefOf.CutPlant || !Trusties.IsWorkingOutside(t)) s.Fail($"the check's own fixture: the cut of the crop plant in the zone did not start ({TrustyLine(s, t)})");
+                        else if (worker.Capacity(map) != 0) s.Fail("the check's own premise: a crop plant outside a growing zone is work to the zone");
+                        else if (Students().Contains(t)) s.Fail($"a class collected a trusty at a cut in the zone because the zone has nothing else to cut: {TrustyLine(s, t)}");
+                    }
                     TrustyStill(t);
-                    crop.Destroy(DestroyMode.Vanish);
+                    if (crop.Spawned) crop.Destroy(DestroyMode.Vanish);
                 }
                 // The control: a work course the warden referred them to takes them (the referral pass), strip or not.
                 tree = s.Tree(s.At(12, 3));

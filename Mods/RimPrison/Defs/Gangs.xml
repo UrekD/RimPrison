@@ -129,7 +129,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RP_SecurityCamera</defName>
     <label>security camera</label>
-    <description>CCTV camera. Inmates in view are watched: misconduct is seen and punished, and being watched keeps them in line (like half a guard). Powered.</description>
+    <description>CCTV camera. Inmates in view are watched: misconduct is seen and punished, and being watched keeps them in line (like half a guard). With the policy "cameras need an operator" on (new games), that holds only while a guard sits at a powered CCTV monitor that carries this camera: the camera has to be set to show on the screens, and may be given a high priority (the monitors carry the high ones first). Court evidence does not depend on it: a working, lit camera records. Powered.</description>
     <thingClass>Building</thingClass>
     <designationCategory>RP_Prison</designationCategory>
     <graphicData>

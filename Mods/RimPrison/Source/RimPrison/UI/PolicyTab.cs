@@ -44,6 +44,10 @@ namespace RimPrison
             list.CheckboxLabeled("RP_AutoReclassify".Translate(), ref game.autoReclassify, "RP_AutoReclassifyDesc".Translate());
             list.CheckboxLabeled("RP_CellsByConduct".Translate(), ref game.cellsByConduct, "RP_CellsByConductDesc".Translate(CellQuality.StepDays, CellQuality.FallBy, CellQuality.MaxGrade));
             list.CheckboxLabeled("RP_WinterJackets".Translate(), ref game.winterJackets, "RP_WinterJacketsDesc".Translate(WinterClothing.ColdBelow.ToStringTemperature("F0")));
+            // (Cameras need an operator: both ways, and the cameras' watched answers are worked out again at once.)
+            bool needsOperator0 = game.camerasNeedOperator;
+            list.CheckboxLabeled("RP_CctvPolicy".Translate(), ref game.camerasNeedOperator, "RP_CctvPolicyDesc".Translate(Cctv.FeedsPerMonitor));
+            if (needsOperator0 != game.camerasNeedOperator) Cctv.SetPolicy(game.camerasNeedOperator);
             list.GapLine();
             // (Armed response is set in Deployment.)
             list.Label("RP_VisitPolicyLabel".Translate());

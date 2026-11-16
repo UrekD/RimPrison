@@ -116,11 +116,11 @@
   <RimPrison.BureaucracyDef>
     <defName>RP_Bur_Security</defName>
     <label>security chief</label>
-    <description>A security chief: CCTV cameras and metal detectors.</description>
+    <description>A security chief: CCTV cameras and the monitors that guards watch them on, and metal detectors.</description>
     <cost>600</cost>
     <work>16</work>
     <uiOrder>50</uiOrder>
-    <buildings><li>RP_SecurityCamera</li><li>RP_MetalDetector</li></buildings>
+    <buildings><li>RP_SecurityCamera</li><li>RP_CctvMonitor</li><li>RP_MetalDetector</li></buildings>
   </RimPrison.BureaucracyDef>
   <RimPrison.BureaucracyDef>
     <defName>RP_Bur_Tasers</defName>

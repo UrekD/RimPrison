@@ -464,16 +464,20 @@ namespace RimPrison
                     astray.pather.StopDead();
                     CountScene.Place(astray, t.s.cell);
                 }
-                void Case(string what, System.Func<bool> setUp)
+                // (Back puts the inmate back in the yard, ends their job and their walk; a state that is on the file and not in the world is undone by the case's own undo: the control is the inmate in the yard
+                // and nothing else - stability32-s32c's "waiting to be searched" stayed on through its control, which the count rightly passed over.)
+                void Case(string what, System.Func<bool> setUp, System.Action undo = null)
                 {
                     Back();
                     if (!setUp())
                     {
                         RPLog.Message($"[RimPrison:test] count: could not put the inmate {what}, not judged");
+                        undo?.Invoke();
                         Back();
                         return;
                     }
                     if (WrittenUp()) CountFail("out of place", $"an inmate {what} was written up as out of place");
+                    undo?.Invoke();
                     Back();
                     if (!WrittenUp()) CountFail("out of place", $"the control after {what}: the inmate standing in the yard at lockdown was not written up (the case would pass for the wrong reason)");
                 }
@@ -503,8 +507,7 @@ namespace RimPrison
                 {
                     ac.awaitingSearch = true;
                     return true;
-                });
-                ac.awaitingSearch = false;
+                }, () => ac.awaitingSearch = false);
 
                 // What a write-up does and does not do to the file: it is a mark (see MisconductDef.mark). It does not push an older record out of a full file, restart the clean days, bar a mentor, count in the statistics, or
                 // stand for the offence a restraint was for.
@@ -719,6 +722,14 @@ namespace RimPrison
             g.fugitives.Add(new Fugitive { pawn = countSeedFugitive, returnTick = now + 30 * GenDate.TicksPerDay, attempts = 1, escapedTick = now - 20000, headStart = 15000 });
         }
 
+        /// <summary>Where the count's inmate is when the check cannot find them on the map: spawned or not, dead, destroyed, carried, a prisoner, an inmate, in the world's keeping - so a failure says what took them.</summary>
+        private static string CountSeedWhere(int pawnId)
+        {
+            Pawn p = PawnsFinder.AllMapsWorldAndTemporary_AliveOrDead.FirstOrDefault(x => x.thingIDNumber == pawnId);
+            if (p == null) return $"no pawn {pawnId} anywhere";
+            return $"{p.LabelShort}: spawned {p.Spawned}, dead {p.Dead}, destroyed {p.Destroyed}, discarded {p.Discarded}, prisoner of the colony {p.IsPrisonerOfColony}, inmate {p.Inmate() != null}, carried by {p.CarriedBy?.LabelShort ?? "nobody"}, in a map {p.MapHeld != null}, faction {p.Faction?.Name}, job {p.CurJobDef?.defName}";
+        }
+
         /// <summary>After the reload: the count's state came back whole (the snapshot compared it), and is put back as the game had it (the seed's own inmate and fugitive taken away).</summary>
         private static void CheckCountAfterReload(Map map)
         {
@@ -727,7 +738,7 @@ namespace RimPrison
             if (countSeed.pawnId < 0) return;
             Pawn counted = map.mapPawns.PrisonersOfColonySpawned.FirstOrDefault(p => p.thingIDNumber == countSeed.pawnId);
             if (counted?.Inmate() == null || counted.Inmate().lastCountedTick != countSeed.counted)
-                reloadProblems.Add($"the tick an inmate was last counted changed in the round trip ({counted?.Inmate()?.lastCountedTick} for {countSeed.counted})");
+                reloadProblems.Add($"the tick an inmate was last counted changed in the round trip ({counted?.Inmate()?.lastCountedTick} for {countSeed.counted}; {CountSeedWhere(countSeed.pawnId)})");
             else RPLog.Message("[RimPrison:test] saveload count: the state of the count, the hidden escape, the fugitive's head start and the inmate's last count are intact");
             // (The one still on the map came back with its record: held, not exited, the pawn spawned.)
             if (countSeedWalker >= 0 && !pm.count.hidden.Any(h => !h.Exited && h.pawn is { Spawned: true } w && w.thingIDNumber == countSeedWalker)) reloadProblems.Add($"the escape nobody had seen, the runner still on the map, did not come back from the save ({pm.count.hidden.Count} held)");

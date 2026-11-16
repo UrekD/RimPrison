@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The control room: CCTV monitors and their operators (Security/Cctv.cs, the camera's gizmos, the Policy and Deployment tabs). No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+
+  <!-- The policy (Policy tab). -->
+  <RP_CctvPolicy>Cameras need an operator</RP_CctvPolicy>
+  <RP_CctvPolicyDesc>On - a camera is watched live only while a guard sits at a powered CCTV monitor that carries it. Each manned monitor carries up to {0} of the cameras set to show on the screens, the high-priority ones first. A camera nobody watches sees no misconduct live and adds nothing to suppression, and an escape it could see is not seen; court evidence is unchanged (a working, lit camera is a recording). Off - every working camera watches by itself, as it did before the monitors. A new game starts with it on.</RP_CctvPolicyDesc>
+
+  <!-- The old-save letter (a monitor built in a game that keeps the old rule). -->
+  <RP_CctvLetterLabel>Cameras and monitors</RP_CctvLetterLabel>
+  <RP_CctvLetterText>A CCTV monitor has gone up, but in this prison every working camera still watches by itself, as it always has. The control room works another way - a camera is watched live only while a guard sits at a powered monitor that carries it, and you choose which cameras go on the screens and which first. Switch to it? It can be turned back in the Policy tab at any time.</RP_CctvLetterText>
+
+  <!-- A camera's gizmos and inspect line. -->
+  <RP_CctvOnScreens>On the screens</RP_CctvOnScreens>
+  <RP_CctvOnScreensDesc>Whether the CCTV monitors may carry this camera. A manned monitor carries up to {0} cameras, the high-priority ones first, then in the order the cameras were built; the cameras that do not fit wait for a free place. Matters only while the policy "cameras need an operator" is on.</RP_CctvOnScreensDesc>
+  <RP_CctvPriority_Normal>Priority - normal</RP_CctvPriority_Normal>
+  <RP_CctvPriority_High>Priority - high</RP_CctvPriority_High>
+  <RP_CctvPriorityDesc>The monitors carry the high-priority cameras before the normal ones. Click to switch.</RP_CctvPriorityDesc>
+  <RP_CctvPriorityWord_Normal>normal priority</RP_CctvPriorityWord_Normal>
+  <RP_CctvPriorityWord_High>high priority</RP_CctvPriorityWord_High>
+  <RP_CctvInspectOnScreens>On the screens, {0}</RP_CctvInspectOnScreens>
+  <RP_CctvInspectOffScreens>Not on the screens, {0}</RP_CctvInspectOffScreens>
+  <RP_CctvInspectWatched>watched live</RP_CctvInspectWatched>
+  <RP_CctvInspectUnwatched>nobody watching</RP_CctvInspectUnwatched>
+  <RP_CctvInspectNoPicture>no picture - no power or broken down</RP_CctvInspectNoPicture>
+
+  <!-- A monitor (its inspect line, and the status of its post on the Deployment tab). -->
+  <RP_CctvInspectCarrying>{0} at the screens - carrying {1} of {2} cameras</RP_CctvInspectCarrying>
+  <RP_CctvInspectDark>No power or broken down - the screens are dark</RP_CctvInspectDark>
+  <RP_CctvInspectPolicyOff>Cameras need no operator - the policy is off</RP_CctvInspectPolicyOff>
+  <RP_CctvDeployCarrying>carrying {0} of {1} cameras</RP_CctvDeployCarrying>
+  <RP_CctvScreensEmpty>Screens empty - no guard at the monitor</RP_CctvScreensEmpty>
+  <RP_CctvScreensEmptyOnTheWay>Screens empty - {0} on the way</RP_CctvScreensEmptyOnTheWay>
+  <RP_CctvInspectOffHours>Screens off - outside the monitor's hours</RP_CctvInspectOffHours>
+  <RP_CctvPostIdle>The policy "cameras need an operator" is off - nobody is sent</RP_CctvPostIdle>
+</LanguageData>

@@ -421,6 +421,27 @@ def camera():
     return c
 
 
+def cctv_monitor():
+    """A control-room console, 2x1: a bank of four screens along the back, the keyboard and a pair of status lights at the front (the operator stands below it)."""
+    c = Canvas(128, 64)
+    c.panel(4, 6, 124, 58, STEEL, 4)
+    c.panel(8, 9, 120, 38, '#4d5e59', 3)
+    for i, x in enumerate((12, 41, 70, 99)):
+        c.panel(x, 12, x+17, 34, INK, 2, 1)
+        c.rect(x+2.5, 14.5, x+14.5, 31.5, '#6f9a96' if i != 2 else '#82a9a0', 1)
+        c.line([(x+4, 18), (x+13, 18)], '#b2c4b4', .9)
+        c.line([(x+4, 22), (x+11, 22)], '#9bb9b4', .8)
+        c.line([(x+4, 26), (x+12, 26)], '#9bb9b4', .8)
+    c.panel(14, 42, 78, 54, '#c5c7b6', 2, 1)
+    for x in range(18, 75, 5): c.line([(x, 45), (x, 51)], DARK, .8)
+    c.disk(94, 48, 4, 4, STEEL)
+    c.ellipse(108, 44, 1.6, 1.6, '#a6bd79')
+    c.ellipse(108, 50, 1.6, 1.6, '#b2755d')
+    c.bolt(8, 54)
+    c.bolt(120, 54)
+    return c
+
+
 def guard_post():
     """A floor marker like vanilla's spots: a disc on the ground with a shield on it."""
     c = Canvas()
@@ -704,7 +725,7 @@ BUILDINGS = {
     'RP_SchoolDesk': school_desk, 'RP_OfficeDesk': office_desk,
     'RP_PhoneBooth': phone_booth, 'RP_VisitationBooth': visitation_booth,
     'RP_WashingMachine': washing_machine, 'RP_ExecutionTable': execution_table,
-    'RP_GuardTower': tower, 'RP_GuardPost': guard_post, 'RP_Camera': camera, 'RP_MetalDetector': metal_detector,
+    'RP_GuardTower': tower, 'RP_GuardPost': guard_post, 'RP_Camera': camera, 'RP_CctvMonitor': cctv_monitor, 'RP_MetalDetector': metal_detector,
     'RP_SecurityDoor': security_door, 'RP_WeightBench': weight_bench, 'RP_BookShelf': book_shelf,
     'RP_ShuttlePad': shuttle_pad,
     **{f'RP_PaddedBed_{d}': (lambda d=d: padded_bed(d)) for d in ('north', 'east', 'south', 'west')},

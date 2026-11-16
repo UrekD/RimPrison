@@ -43,6 +43,12 @@ namespace RimPrison
             if (map == null) return;
             // The funds the difficulty gives (the neutral level's are the constant; set before anything is bought).
             if (PrisonGame.Instance != null) PrisonGame.Instance.ledger.funds = PrisonDifficulty.StartingFunds(Find.Storyteller?.difficultyDef, starterFacility && facility == Facility.Penitentiary);
+            // A new game has its cameras watched from the screens: the policy is on, and nobody owes the warden the old-save letter. Set before the builder puts the penitentiary's monitors up.
+            if (PrisonGame.Instance != null)
+            {
+                PrisonGame.Instance.camerasNeedOperator = true;
+                PrisonGame.Instance.cctvMigrated = true;
+            }
             if (unlocked != null && PrisonGame.Instance != null)
                 foreach (BureaucracyDef b in unlocked)
                     if (b != null && !PrisonGame.Instance.bureaucracy.IsDone(b)) PrisonGame.Instance.bureaucracy.done.Add(b);

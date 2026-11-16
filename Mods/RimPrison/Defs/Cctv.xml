@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The control room's monitor: the post a guard sits at to watch the cameras live (see Security/Cctv.cs). Its post is a guard post (hours and guard set on the Deployment tab), manned by the same work giver; the guard stands on its interaction cell. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RP_CctvMonitor</defName>
+    <label>CCTV monitor</label>
+    <description>A bank of screens. With the policy "cameras need an operator" on, a camera is watched live only while a guard sits at a powered monitor that carries it: this one carries up to eight of the cameras set to show on the screens, the high-priority ones first. It is a guard post - set its hours and its guard on the Deployment tab. A monitor that loses power, breaks down or has nobody at it shows nothing. Powered.</description>
+    <thingClass>Building</thingClass>
+    <designationCategory>RP_Prison</designationCategory>
+    <uiOrder>2110</uiOrder>
+    <graphicData>
+      <texPath>Things/Building/RP_CctvMonitor</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,1)</drawSize>
+    </graphicData>
+    <size>(2,1)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.5</fillPercent>
+    <pathCost>50</pathCost>
+    <rotatable>true</rotatable>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <canOverlapZones>false</canOverlapZones>
+    <costList><Steel>60</Steel><ComponentIndustrial>3</ComponentIndustrial></costList>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <WorkToBuild>1500</WorkToBuild>
+      <Mass>20</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>120</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="RimPrison.CompProperties_GuardPost" />
+      <li Class="RimPrison.CompProperties_CctvMonitor">
+        <feeds>8</feeds>
+      </li>
+    </comps>
+    <placeWorkers><li>PlaceWorker_PreventInteractionSpotOverlap</li></placeWorkers>
+  </ThingDef>
+
+  <!-- Old saves keep today's rule until the warden switches (a monitor built in one sends this letter once): accepting turns the policy on. -->
+  <RimPrison.PrisonDecisionDef><defName>RP_Decision_CctvSwitch</defName><label>cameras and monitors</label><urgent>true</urgent><workerClass>RimPrison.PrisonDecisionWorker_CctvSwitch</workerClass></RimPrison.PrisonDecisionDef>
+</Defs>

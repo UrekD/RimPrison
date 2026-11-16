@@ -409,10 +409,12 @@ namespace RimPrison
             return Put(defName, minX, minZ, rot, stuff);
         }
 
-        /// <summary>A security camera where it is free (cameras are single-cell buildings, not wall-mounted).</summary>
-        private static void Cam(int x, int z)
+        /// <summary>A security camera where it is free (cameras are single-cell buildings, not wall-mounted); a high one is on a monitor's first screens (see <see cref="Cctv"/>).</summary>
+        private static void Cam(int x, int z, bool high = false)
         {
-            if (FreeCell(x, z)) Spawn(D("RP_SecurityCamera"), x, z, Rot4.North);
+            if (!FreeCell(x, z)) return;
+            Thing cam = Spawn(D("RP_SecurityCamera"), x, z, Rot4.North);
+            if (high && cam?.TryGetComp<CompSecurityCamera>() is { } comp) comp.priority = CctvPriority.High;
         }
 
         /// <summary>Plant pots and the like where free.</summary>

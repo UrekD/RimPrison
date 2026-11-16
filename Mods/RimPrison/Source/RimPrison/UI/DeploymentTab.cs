@@ -364,29 +364,52 @@ namespace RimPrison
                 var from = new Rect(row.x + 4f, row.y + 26f, 86f, 24f);
                 var to = new Rect(from.xMax + 4f, from.y, 86f, 24f);
                 TooltipHandler.TipRegion(new Rect(from.x, from.y, to.xMax - from.x, from.height), "RP_DeployPostHoursTip".Translate());
+                // (A monitor's hours decide whether its feeds are carried: the cache is rebuilt at once.)
                 if (Widgets.ButtonText(from, "RP_DeployPostFrom".Translate(GuardPosts.HourLabel(post.fromHour))))
-                    Find.WindowStack.Add(new FloatMenu(HourOptions(h => post.fromHour = h)));
+                    Find.WindowStack.Add(new FloatMenu(HourOptions(h =>
+                    {
+                        post.fromHour = h;
+                        Cctv.Rebuild(map);
+                    })));
                 if (Widgets.ButtonText(to, "RP_DeployPostTo".Translate(GuardPosts.HourLabel(post.toHour))))
-                    Find.WindowStack.Add(new FloatMenu(HourOptions(h => post.toHour = h)));
+                    Find.WindowStack.Add(new FloatMenu(HourOptions(h =>
+                    {
+                        post.toHour = h;
+                        Cctv.Rebuild(map);
+                    })));
                 // The guard: any free guard, or one by name.
                 var who = new Rect(to.xMax + 8f, from.y, row.xMax - to.xMax - 12f, 24f);
                 TooltipHandler.TipRegion(who, "RP_DeployPostGuardTip".Translate());
                 if (Widgets.ButtonText(who, post.GuardLabel().Truncate(who.width - 8f)))
                 {
                     guards ??= StaffCommute.AllStaff(map).Where(p => p.GetComp<CompStaff>().role.guardDuties).ToList();
-                    var options = new List<FloatMenuOption> { new FloatMenuOption("RP_DeployPostGuardMenuAny".Translate(), () => post.assigned = null) };
+                    var options = new List<FloatMenuOption>
+                    {
+                        new FloatMenuOption("RP_DeployPostGuardMenuAny".Translate(), () =>
+                        {
+                            post.assigned = null;
+                            Cctv.Rebuild(map);
+                        }),
+                    };
                     foreach (Pawn g in guards)
                     {
                         Pawn chosen = g;
-                        options.Add(new FloatMenuOption(g.LabelShortCap, () => post.assigned = chosen));
+                        options.Add(new FloatMenuOption(g.LabelShortCap, () =>
+                        {
+                            post.assigned = chosen;
+                            Cctv.Rebuild(map);
+                        }));
                     }
                     Find.WindowStack.Add(new FloatMenu(options));
                 }
                 // Who stands there now (or why nobody is sent).
-                GUI.color = SpecialMeasures.ChiefInPost ? PrisonHUD.Warn : PrisonHUD.Muted;
+                // (The chief's patrols suspend the floor posts, never a monitor's.)
+                GUI.color = SpecialMeasures.ChiefInPost && !post.IsMonitor ? PrisonHUD.Warn : PrisonHUD.Muted;
                 Text.Font = GameFont.Tiny;
                 // (How thin the roster is in the post's hours, from the strip: the fewest guards on duty in any of them.)
                 string status = post.HoursText() + " (" + "RP_PostFewest".Translate(Roster.Fewest(strip, post.fromHour, post.toHour)) + ") - " + post.StatusText();
+                // (A monitor says what is on its screens: how many cameras of its room.)
+                if (post.IsMonitor && post.parent.TryGetComp<CompCctvMonitor>() is { seated: not null } monitor) status += " - " + "RP_CctvDeployCarrying".Translate(monitor.carrying, monitor.Props.feeds);
                 var statusRect = new Rect(row.x + 4f, row.y + 52f, row.width - 8f, 18f);
                 Widgets.Label(statusRect, status.Truncate(row.width - 10f));
                 TooltipHandler.TipRegion(statusRect, status);

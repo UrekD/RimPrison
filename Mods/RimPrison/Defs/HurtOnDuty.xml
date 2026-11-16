@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Hurt on duty (Staff/HurtOnDuty.cs): what the prison does for a member of staff an inmate put down. The letter is not urgent (a day to answer), and its routine answers may be standing orders. -->
+  <RimPrison.PrisonDecisionDef>
+    <defName>RP_Decision_HurtOnDuty</defName>
+    <label>staff hurt on duty</label>
+    <workerClass>RimPrison.HurtOnDutyDecision</workerClass>
+    <standingOrderAllowed>true</standingOrderAllowed>
+    <standingOrderOptions><li>RP_Hod_Leave</li><li>RP_Hod_Compensation</li><li>RP_Hod_Back</li></standingOrderOptions>
+  </RimPrison.PrisonDecisionDef>
+  <ThoughtDef>
+    <defName>RP_RushedBack</defName>
+    <durationDays>6</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>sent back hurt</label><description>I was still sore and they put me back on the wing the next shift. The job comes first, apparently.</description><baseMoodEffect>-12</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <!-- The colleagues' memories (and the two below for an officer who leaves) are plain memories with no other pawn: vanilla discards a social memory that has no opinion offset at once, and one that names a pawn when that pawn is discarded (an officer let go at home is). -->
+  <ThoughtDef>
+    <defName>RP_ColleagueRushedBack</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>4</stackLimit>
+    <stages><li><label>a colleague sent back hurt</label><description>They sent a hurt officer straight back to work. That could be any of us.</description><baseMoodEffect>-3</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_LookedAfter</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>4</stackLimit>
+    <stages><li><label>a hurt colleague looked after</label><description>One of us got hurt and the prison paid up and gave them time. Good to know it would do the same for me.</description><baseMoodEffect>3</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_FiredWhileHurt</defName>
+    <durationDays>5</durationDays>
+    <stackLimit>4</stackLimit>
+    <stages><li><label>a hurt colleague let go</label><description>They got hurt on the wing and a few days later they were out the door. Remember that the next time you are bleeding for this place.</description><baseMoodEffect>-6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_PensionSendOff</defName>
+    <durationDays>5</durationDays>
+    <stackLimit>4</stackLimit>
+    <stages><li><label>a hurt colleague pensioned off</label><description>They gave a good officer a pension after what the wing did to them. Not every place would.</description><baseMoodEffect>4</baseMoodEffect></li></stages>
+  </ThoughtDef>
+</Defs>

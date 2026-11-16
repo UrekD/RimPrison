@@ -337,7 +337,7 @@ Acting on tips can expose the informant.</RP_TipText>
   <RP_CorruptLabel>Corrupt staff</RP_CorruptLabel>
   <RP_CorruptText>When guards found {0}'s contraband, {0} named the source: {1}, who has taken {2} bribe(s). Dismiss them, or keep them close and watch.</RP_CorruptText>
   <RP_ToggleZones>Show prison zones.</RP_ToggleZones>
-  <RP_ToggleCoverage>Show security coverage - everywhere inmates are held or sent (not staff rooms), coloured by who can see it. Red - nobody (blind spots, where dealing, tool theft and fights go unseen). Amber - a camera only. Green - a guard or a manned tower; deeper green, two or more.\n\nThe marks are where contraband was found in the last 30 days, fading with age - purple a drug, red a weapon, orange a tool, blue a phone; P on an inmate, S in a cell, V on a visitor, M in the post, R in a raid on a ring.</RP_ToggleCoverage>
+  <RP_ToggleCoverage>Show security coverage - everywhere inmates are held or sent (not staff rooms), coloured by who can see it. Red - nobody (blind spots, where dealing, tool theft and fights go unseen). Amber - a camera only (with the policy "cameras need an operator" on, only a camera that a manned CCTV monitor carries counts). Green - a guard or a manned tower; deeper green, two or more.\n\nThe marks are where contraband was found in the last 30 days, fading with age - purple a drug, red a weapon, orange a tool, blue a phone; P on an inmate, S in a cell, V on a visitor, M in the post, R in a raid on a ring.</RP_ToggleCoverage>
   <RP_ToggleTension>Show inmate tension - rooms tinted from green (calm) to red (about to blow).</RP_ToggleTension>
   <RP_ArmedPolicyLabel>Armed response (armed guards):</RP_ArmedPolicyLabel>
   <RP_Armed_HoldFire>Hold fire</RP_Armed_HoldFire>
@@ -878,7 +878,7 @@ Acting on tips can expose the informant.</RP_TipText>
   <RP_ResignLabel>{0} quit</RP_ResignLabel>
   <RP_ResignText>{0} ({1}) left their keys on the desk and walked out, citing {2}. They won't be back.</RP_ResignText>
   <RP_ResignReason_Pay>being stuck in the same job with no step up in pay</RP_ResignReason_Pay>
-  <RP_ResignReason_Danger>the danger, after a colleague was hurt or killed, or after being held hostage</RP_ResignReason_Danger>
+  <RP_ResignReason_Danger>the danger, after a colleague was hurt or killed, after being held hostage, or after being sent back to work hurt</RP_ResignReason_Danger>
   <RP_ResignReason_HatedInmate>a standing fear of {0}</RP_ResignReason_HatedInmate>
   <RP_ResignReason_Burnout>burnout</RP_ResignReason_Burnout>
   <!-- Careers. -->

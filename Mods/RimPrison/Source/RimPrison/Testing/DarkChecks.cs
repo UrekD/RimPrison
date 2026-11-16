@@ -15,8 +15,18 @@ namespace RimPrison
     {
         private static void DarkFail(string what) => problems0.Add("dark: " + what);
 
-        /// <summary>A powered camera on the spot, taken down again by the rollback (it registers itself with the prison's cameras when it spawns).</summary>
+        /// <summary>
+        /// A powered camera on the spot, taken down again by the rollback (it registers itself with the prison's cameras when it spawns). The cameras of these scenes are about what a camera sees, not about who watches it: the policy
+        /// "cameras need an operator" is off for the check (the old rule: a working camera watches by itself), and put back by the rollback. The control room's own checks are in CctvChecks.cs.
+        /// </summary>
         private static CompSecurityCamera SpawnDarkCamera(Map map, Rollback r, IntVec3 spot)
+        {
+            CctvPolicy(r, false);
+            return SpawnTestCamera(map, r, spot);
+        }
+
+        /// <summary>A powered camera on the spot, taken down again by the rollback, whatever the policy says.</summary>
+        private static CompSecurityCamera SpawnTestCamera(Map map, Rollback r, IntVec3 spot)
         {
             var building = (Building)ThingMaker.MakeThing(RPDefOf.RP_SecurityCamera);
             building.SetFactionDirect(Faction.OfPlayer);

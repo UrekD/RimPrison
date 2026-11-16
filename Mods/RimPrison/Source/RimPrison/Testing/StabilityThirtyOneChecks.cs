@@ -385,16 +385,15 @@ namespace RimPrison
                     RPLog.Message("[RimPrison:test] stability 31: no flu def, the tend not checked");
                     return;
                 }
-                // (One with a food need to starve: a candidate's needs may not be settled yet - the product reads the need as optional too - so they are, and a candidate with none at all is replaced by the next.)
-                Pawn p = null;
-                for (int tries = 0; tries < 8 && p?.needs?.food == null; tries++)
-                {
-                    p = S31Guard(map, r);
-                    p.needs?.AddOrRemoveNeedsAsAppropriate();
-                }
+                // (Staff have no food need - they bring their own lunch, Patch_Pawn_NeedsTracker_ShouldHaveNeed - so the need is given to this made-up guard the way the tracker adds one. The spawn on the way
+                // back asks the tracker which needs are right for them and takes it off again (round 33, second round), so the rule is judged on how they left, read before the spawn: the need is gone by the
+                // time the healing runs. The premise is built, and a build that did not take is a failure, not a skip.)
+                Pawn p = S31Guard(map, r);
+                if (p.needs?.food != null) S31Fail(check, "premise: a member of staff has a food need of their own (they bring their own lunch)");
+                else HarmonyLib.AccessTools.Method(typeof(Pawn_NeedsTracker), "AddNeed")?.Invoke(p.needs, new object[] { NeedDefOf.Food });
                 if (p.needs?.food == null)
                 {
-                    RPLog.Message("[RimPrison:test] stability 31: no guard with a food need in 8 candidates, the starving tend not checked");
+                    S31Fail(check, "premise: the food need could not be given to the guard, the starving tend not checked");
                     return;
                 }
                 Hediff h = HediffMaker.MakeHediff(flu, p);

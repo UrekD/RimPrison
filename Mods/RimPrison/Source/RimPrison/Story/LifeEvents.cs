@@ -276,6 +276,8 @@ namespace RimPrison
             StaffWariness.Notify_HurtBy(staff, sc, attacker);
             foreach (Pawn o in staff.Map.mapPawns.FreeColonistsSpawned)
                 if (o != staff && o.GetComp<CompStaff>()?.role != null) o.needs?.mood?.thoughts.memories.TryGainMemory(RPLifeDefOf.RP_ColleagueHurt, staff);
+            // The officer's own case (its own letter, or a paid day off): before the hazard pay's cooldown below, which is the colleagues' and returns early.
+            HurtOnDuty.Open(staff, attacker, HurtOnDuty.CauseAssault);
             // One hazard pay demand at a time, and not every scuffle.
             int now = Find.TickManager.TicksGame;
             if (now - game.story.lastHazardDemandTick < 3 * GenDate.TicksPerDay) return;

@@ -103,10 +103,9 @@ namespace RimPrison
             switch (option)
             {
                 case 0:
-                    sc.leaveUntilTick = Find.TickManager.TicksGame + StaffLives.LeaveDays * GenDate.TicksPerDay;
+                    // (The longer leave stands: a burnout leave never cuts an injury leave short.)
+                    HurtOnDuty.WriteLeave(sc, Find.TickManager.TicksGame + StaffLives.LeaveDays * GenDate.TicksPerDay, HurtOnDuty.ReasonBurnout);
                     sc.restPending = true;
-                    StaffCareers.InvalidateLeads();
-                    Roster.Invalidate();
                     Story.Record(RPChronicleDefOf.RP_Chr_Staff, 1, "RP_Chr_StaffLeave".Translate(p.LabelShort, StaffLives.LeaveDays), p);
                     break;
                 case 1:

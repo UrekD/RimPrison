@@ -45,9 +45,7 @@ namespace RimPrison
         {
             if (CannotGo(p, sc) != null || !PrisonGame.Instance.ledger.TrySpend(RPDefOf.RP_Wages, Cost, "RP_TrainingNote".Translate(p.LabelShort))) return false;
             sc.trainingPending = true;
-            sc.leaveUntilTick = Find.TickManager.TicksGame + Days * GenDate.TicksPerDay;
-            StaffCareers.InvalidateLeads();
-            Roster.Invalidate();
+            HurtOnDuty.WriteLeave(sc, Find.TickManager.TicksGame + Days * GenDate.TicksPerDay, HurtOnDuty.ReasonTraining);
             Messages.Message("RP_TrainingSent".Translate(p.LabelShort, SkillFor(sc.role).label), p, MessageTypeDefOf.NeutralEvent, historical: false);
             return true;
         }
@@ -59,7 +57,12 @@ namespace RimPrison
             if (!sc.trainingPending || sc.role == null || p?.Spawned != true || StaffLives.OnLeave(sc)) return;
             sc.leaveUntilTick = -1;
             Roster.Invalidate();
+            // (A burnout leave or an injury leave that ran beside the course ends with it: the rest is read before the course is done and the reason cleared, as at the gate.)
+            bool rest = HurtOnDuty.RestDue(sc);
             Complete(p, sc);
+            if (rest) p.needs?.mood?.thoughts.memories.TryGainMemory(RPStaffLifeDefOf.RP_Rested);
+            sc.restPending = false;
+            HurtOnDuty.Notify_Returned(p, sc);
         }
 
         /// <summary>Back through the gate after the course.</summary>

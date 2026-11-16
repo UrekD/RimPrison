@@ -493,6 +493,8 @@ namespace RimPrison
             EvacuationSystem.Beat(map, this);
             K9Utility.Tick(map);
             UtilitySystem.Tick(map);
+            // (After the utilities pass: a monitor's power is this beat's.)
+            Cctv.Beat(map, this);
             CountSystem.Tick(map, this);
             Trusties.Beat(map, this);
             ProgramSystem.CompleteFinished(this);

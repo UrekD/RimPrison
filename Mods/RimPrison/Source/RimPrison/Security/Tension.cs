@@ -197,7 +197,7 @@ namespace RimPrison
         }
 
         /// <summary>
-        /// The one seen rule: whether anything that watches sees the inmate, so the misconduct they commit there is seen and the contraband they handle is watched. A guard or a manned tower, or a working camera, however
+        /// The one seen rule: whether anything that watches sees the inmate, so the misconduct they commit there is seen and the contraband they handle is watched. A guard or a manned tower, or a working camera that is watched live (a manned monitor carries it, when the policy is on: <see cref="CompSecurityCamera.WatchedLive"/>), however
         /// little (it is <c>Watchers(p, pm) &gt; 0</c>, stopping at the first that settles it); in the dark (<see cref="Dark"/>) a guard or a tower sees only <see cref="DarkSight"/> cells and a camera sees nothing.
         /// </summary>
         public static bool Watched(Pawn p, PrisonMap pm)
@@ -222,14 +222,14 @@ namespace RimPrison
             if (dark) return false;
             List<CompSecurityCamera> cams = pm.Cameras;
             for (int i = 0; i < cams.Count; i++)
-                if (cams[i].Covers(c)) return true;
+                if (cams[i].WatchedLive && cams[i].Covers(c)) return true;
             return false;
         }
 
         /// <summary>A manned tower sees its whole radius, dark or not: it has a searchlight (the dark rule is for a guard on foot and a camera).</summary>
         public static bool TowerSees(CompGuardTower tower, IntVec3 c) => tower.Covers(c);
 
-        /// <summary>Guards in sight count 1, manned towers 1, powered cameras covering the inmate 0.5 (none in the dark, and guards only close by; a tower's searchlight sees its radius).</summary>
+        /// <summary>Guards in sight count 1, manned towers 1, powered cameras covering the inmate 0.5 when a monitor carries them (none in the dark, and guards only close by; a tower's searchlight sees its radius).</summary>
         public static float Watchers(Pawn p, PrisonMap pm) => p.Spawned ? WatchersAt(p.Position, p.Map, pm) : 0f;
 
         /// <summary><see cref="Watchers"/> for a cell; <paramref name="ignoreDark"/> counts them as if the cell were lit (the count suppression is taken from).</summary>
@@ -247,7 +247,7 @@ namespace RimPrison
             if (dark) return w;
             List<CompSecurityCamera> cams = pm.Cameras;
             for (int i = 0; i < cams.Count; i++)
-                if (cams[i].Covers(c)) w += 0.5f;
+                if (cams[i].WatchedLive && cams[i].Covers(c)) w += 0.5f;
             return w;
         }
 

@@ -92,6 +92,15 @@ namespace RimPrison
         public MailPolicy mailPolicy = MailPolicy.SpotChecks;
         /// <summary>What the staff cooks make (Policy): simple or fine meals.</summary>
         public KitchenMenu kitchenMenu = KitchenMenu.Simple;
+        /// <summary>
+        /// Cameras need an operator (Policy, see <see cref="Cctv"/>): a camera is watched live only while a guard sits at a powered CCTV monitor that carries it. A save without the key loads false (today's rule: every working camera watches by
+        /// itself); a new game is set true before the builder runs (<see cref="ScenPart_PrisonStart"/>).
+        /// </summary>
+        public bool camerasNeedOperator;
+        /// <summary>The warden has chosen the policy, or the game began with it set: no letter is owed. A save without the key loads false (an old save).</summary>
+        public bool cctvMigrated;
+        /// <summary>The old-save letter that offers the switch has been sent (once, when a monitor is first built in a game that keeps today's rule).</summary>
+        public bool cctvLetterSent;
         /// <summary>Good behaviour remission policy (off by default).</summary>
         public bool remission;
         /// <summary>Adjudicate the serious (Policy, off by default): a seen offence of severity <see cref="Adjudication.MinSeverity"/> and over is a case for the warden's sheet, not the table's sanction (see <see cref="Adjudication"/>).</summary>
@@ -329,6 +338,8 @@ namespace RimPrison
             EnsureRegimes();
             intake.EnsureDefaults();
             PrisonNaming.Apply(this);
+            // (The cameras' watched answers are derived, never saved: worked out here once the game is ready, so the first answer after a load is the beat's and not a stale one.)
+            Cctv.RebuildAll();
         }
 
         private void EnsureRegimes()
@@ -514,6 +525,7 @@ namespace RimPrison
             Scribe_Values.Look(ref mailPolicy, "mailPolicy", MailPolicy.SpotChecks);
             Scribe_Values.Look(ref kitchenMenu, "kitchenMenu", KitchenMenu.Simple);
             Scribe_Values.Look(ref remission, "remission");
+            Cctv.ExposeFlags(ref camerasNeedOperator, ref cctvMigrated, ref cctvLetterSent);
             Scribe_Values.Look(ref adjudicate, "adjudicate");
             Scribe_Deep.Look(ref adjudication, "adjudication");
             Scribe_Deep.Look(ref custody, "custody");

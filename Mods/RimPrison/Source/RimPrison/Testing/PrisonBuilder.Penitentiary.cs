@@ -92,8 +92,9 @@ namespace RimPrison
                     PutF("Table2x2c", 66, 6, Rot4.North);
                     Chair(68, 6, Rot4.West);
                     Chair(68, 7, Rot4.West);
-                    Cam(55, 11);
-                    Cam(64, 11);
+                    // (The gates, the yard and the canteens are on the control room's first screens: see the high-priority cameras.)
+                    Cam(55, 11, high: true);
+                    Cam(64, 11, high: true);
                     Corners(r, heaters: true);
                 });
 
@@ -395,6 +396,7 @@ namespace RimPrison
                 foreach (int x in new[] { x0 + 1, x0 + 6, x0 + 11 })
                     DiningTable(x, z, "we");
             if (r.X0 < 60) Put("RP_CommissaryCounter", x0 + 11, 66);
+            Cam(x0 + 13, 57, high: true);
             Corners(r, heaters: true);
         }
 
@@ -424,11 +426,17 @@ namespace RimPrison
             // The hub: control (the camera monitors), briefing, records, and the command suite behind the control room.
             Room("Control room", 53, WingZ0, 66, 85, paved, "RP_StaffOnly").Door(Side.S, GateX, Staff).Door(Side.N, GateX, Staff).With(r =>
             {
-                for (int i = 0; i < 5; i++) Put("FlatscreenTelevision", 54 + 2 * i, 84, Rot4.South);
+                // The bank of four CCTV monitors along the north wall, each its own post (the operator stands on the cell south of it): two on the day shift's hours and two on the night shift's, so two operators at
+                // a time carry sixteen feeds. A pair at each end, the two cells at the door's x (the gate, GateX) left free so that nothing stands in the way of the door.
+                foreach ((int x, int from, int to) in new[] { (54, 6, 22), (56, 6, 22), (60, 22, 6), (62, 22, 6) })
+                    if (Put("RP_CctvMonitor", x, 84, Rot4.North)?.TryGetComp<CompGuardPost>() is { } screens) (screens.fromHour, screens.toHour) = (from, to);
                 PutF("Table2x2c", 57, 80, Rot4.North);
                 PutF("Table2x2c", 61, 80, Rot4.North);
                 foreach (int x in new[] { 57, 58, 61, 62 }) Chair(x, 79, Rot4.North);
-                Corners(r, heaters: true);
+                // (Not Corners' heaters: its north-west one would stand on the first monitor's seat, (54, 83). The heaters go on the south wall side instead, clear of every seat and of the doors' way.)
+                Corners(r, heaters: false);
+                Heat(r.IX0, r.IZ0 + 1);
+                Heat(r.IX1, r.IZ0 + 1);
             });
             // A medical ward beside the control room, close to every wing: the injured are carried to the nearest medical bed, and doctors and officers pass here all day.
             Room("Medical ward", 46, WingZ0, 53, 81, sterile, null).Door(Side.S, 49, Auto).With(r =>
@@ -629,7 +637,7 @@ namespace RimPrison
                 Chair(58, 63, Rot4.East);
                 Chair(61, 63, Rot4.West);
                 Lamp(58, 61);
-                Cam(61, 61);
+                Cam(61, 61, high: true);
             });
         }
 
@@ -681,12 +689,13 @@ namespace RimPrison
                 patch.SetPlantDefToGrow(DefDatabase<ThingDef>.GetNamed(crop));
             }
             // Light and cameras round the yard's edge, in the entry court too.
-            for (int x = 45; x <= 75; x += 6) { LampIfFree(x, 30); LampIfFree(x, 66); Cam(x + 3, 30); }
+            for (int x = 45; x <= 75; x += 6) { LampIfFree(x, 30); LampIfFree(x, 66); Cam(x + 3, 30, high: true); }
             for (int z = 33; z <= 63; z += 6) { LampIfFree(43, z); LampIfFree(76, z); }
-            Cam(43, 66);
-            Cam(76, 66);
-            Cam(55, 14);
-            Cam(64, 14);
+            Cam(43, 66, high: true);
+            Cam(76, 66, high: true);
+            // (The entry court's cameras, at the perimeter gates.)
+            Cam(55, 14, high: true);
+            Cam(64, 14, high: true);
             foreach (int z in new[] { 15, 21, 27 }) { LampIfFree(52, z); LampIfFree(67, z); }
             Decor("PlantPot", 52, 25);
             Decor("PlantPot", 67, 25);

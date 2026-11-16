@@ -52,12 +52,14 @@ namespace RimPrison
         /// <summary>The time away to give: none for a tick that is not before now (an old save, a clock put back), at most <see cref="MaxAwayTicks"/>.</summary>
         public static int AwayTicks(int since, int now) => since < 0 || since >= now ? 0 : Mathf.Min(now - since, MaxAwayTicks);
 
-        /// <summary>Gives the pawn (a member of staff, or a handler's dog) <paramref name="away"/> ticks of health at home. Read before the food is topped up: one who left starving has no natural healing.</summary>
-        public static Result Apply(Pawn p, int away)
+        /// <summary>Whether the pawn is starving now. The caller reads it as they left, before the spawn (which adds and removes needs as the tracker finds right, and takes the food need off a member of staff) and before the food is topped up.</summary>
+        public static bool IsStarving(Pawn p) => p.needs?.food is { Starving: true };
+
+        /// <summary>Gives the pawn (a member of staff, or a handler's dog) <paramref name="away"/> ticks of health at home. <paramref name="starving"/> is how they left (<see cref="IsStarving"/>, read before the spawn): one who left starving has no natural healing.</summary>
+        public static Result Apply(Pawn p, int away, bool starving)
         {
             var result = new Result();
             if (p == null || p.Dead || away <= 0 || p.health?.hediffSet == null || !p.RaceProps.IsFlesh) return result;
-            bool starving = p.needs?.food is { Starving: true };
             // (The severity each illness left with: the most it may go on to, if that is more than the stage that would kill.)
             var started = new Dictionary<Hediff, float>();
             foreach (Hediff h in p.health.hediffSet.hediffs)
