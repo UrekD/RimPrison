@@ -39,6 +39,7 @@ namespace RimPrison
                 CheckWatchReservations(map);
                 CheckWatchPaddedAnswer(map);
                 CheckWatchChecksAndCrisis(map);
+                CheckWatchCallsAWanderingGuard(map);
                 CheckWatchUnkeptWatch(map);
                 CheckWatchUnwatchedCrisisDeath(map);
                 CheckWatchPaddedCrisis(map);
@@ -967,6 +968,76 @@ namespace RimPrison
                     WatchFail(check, $"after {ShNow - t0} ticks of a crisis on watch: still in it {WatchList.InCrisis(p)}, cut {HasCut(p)}, bleeding {p.health.hediffSet.BleedRateTotal:F2}, a line that somebody reached them "
                                      + $"{r.NewEntries.Any(e => e.text.Trim().EndsWith(tail))}; the guard is {guard.CurJobDef?.defName} at {guard.Position - s.origin}");
                 if (c.crisisCount != 1) WatchFail(check, $"the crisis count is {c.crisisCount}");
+            });
+        }
+
+        /// <summary>
+        /// A due check calls the guard who is wandering as it calls one on patrol (<see cref="WatchList.LeisureRank"/>): the guard of a scene wanders between checks, and a walk that long was not interrupted - the next check came
+        /// 1817 ticks after the last, 784 of them on <c>GotoWander</c> (trusty-t11a, "watch ticks"; the rule's beat and walk make 1536 at most). Each of the wander jobs, with the check due: the beat's call gives the guard the check.
+        /// </summary>
+        private static void CheckWatchCallsAWanderingGuard(Map map)
+        {
+            Guarded("watch list: a due check calls a guard who is wandering", map, r =>
+            {
+                const string check = "watch call";
+                WatchSwitches(r);
+                WatchList.Pool = _ => false;
+                PsychScene s = PsychScene.Build(map, r, check);
+                if (s == null) return;
+                SecurityLevelDef medium = InmateUtility.DefaultSecurity;
+                s.RegimeAllDay(medium, RPDefOf.RP_Lockup);
+                Pawn guard = s.Staff("Zwg8", "RP_Guard", s.Corridor);
+                guard.workSettings?.SetPriority(WorkTypeDefOf.Warden, 1);
+                supermaxGuards.Add(guard);
+                r.Add(() => supermaxGuards.Remove(guard));
+                Pawn p = s.Inmate("Zww2", medium, s.plain, s.CellQ);
+                WatchReset(p);
+                CompInmate c = p.Inmate();
+                r.Add(() =>
+                {
+                    if (!p.Dead) p.mindState.mentalStateHandler.Reset();
+                });
+                WatchList.Notify_Trigger(p, RiskTrigger.DearJohn);
+                WatchList.Flag(p, c, map, guard, RiskFlagger.Guard);
+                WatchList.Answer(p, c, WatchAnswer.Watch, map);
+                p.needs.mood.CurLevel = 0.5f;
+                foreach (JobDef wander in new[] { JobDefOf.Wait_Wander, JobDefOf.GotoWander })
+                {
+                    c.watchCheckTick = ShNow - WatchList.CheckEveryTicks;
+                    guard.jobs.StopAll();
+                    IntVec3 dest = IntVec3.Invalid;
+                    if (wander == JobDefOf.GotoWander)
+                    {
+                        // (The game's pick may be the guard's own cell: it samples the cells of a region, the guard's among them, and a corridor of 7 cells gave it back in s30a - "no cell to wander to from (2, 0, 1)" with the corridor empty
+                        // and open. Asked again, then the corridor's cells, the farthest first: there is a premise whenever the guard can walk to another cell.)
+                        for (int i = 0; i < 20 && (!dest.IsValid || dest == guard.Position); i++)
+                            dest = RCellFinder.RandomWanderDestFor(guard, guard.Position, 8f, null, Danger.Deadly);
+                        if (!dest.IsValid || dest == guard.Position)
+                            dest = Enumerable.Range(1, PsychScene.Width - 2).Select(x => s.At(x, 1)).Where(cell => cell != guard.Position && cell.Standable(map) && guard.CanReach(cell, PathEndMode.OnCell, Danger.Deadly))
+                                .OrderByDescending(cell => cell.DistanceToSquared(guard.Position)).FirstOrDefault();
+                        if (!dest.IsValid || dest == guard.Position)
+                        {
+                            WatchFail(check, $"premise: no cell to wander to from {guard.Position - s.origin} (the corridor's cells are all the guard's own, standing on or out of reach; the unit's door cells {s.doorP?.Position - s.origin}, {s.doorQ?.Position - s.origin})");
+                            return;
+                        }
+                    }
+                    Job job = wander == JobDefOf.GotoWander ? JobMaker.MakeJob(wander, dest) : JobMaker.MakeJob(wander);
+                    guard.jobs.StartJob(job, JobCondition.InterruptForced);
+                    if (guard.CurJobDef != wander)
+                    {
+                        WatchFail(check, $"premise: the guard could not be put on {wander.defName} (job {guard.CurJobDef?.defName ?? "none"})");
+                        return;
+                    }
+                    if (!WatchList.CheckDue(p))
+                    {
+                        WatchFail(check, $"premise: the check is not due ({WatchList.Describe(c)})");
+                        return;
+                    }
+                    int rank = WatchList.LeisureRank(guard);
+                    Pawn called = WatchList.CallFreeGuard(map, p, RPWatchDefOf.RP_WatchCheckGiver);
+                    if (called != guard || guard.CurJobDef != RPWatchDefOf.RP_WatchCheck)
+                        WatchFail(check, $"a due check did not call the guard on {wander.defName} (leisure rank {rank}, called {called?.LabelShort ?? "nobody"}, the guard is on {guard.CurJobDef?.defName ?? "none"})");
+                }
             });
         }
 

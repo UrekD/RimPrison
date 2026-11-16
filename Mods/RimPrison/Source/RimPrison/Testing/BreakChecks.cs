@@ -476,7 +476,9 @@ namespace RimPrison
                 BreakScene s = MakeBreakScene(map, r, check, way: site);
                 if (s == null) return;
                 PrisonGame g = PrisonGame.Instance;
-                // (Calm from the start: the post scene's ticks cross hours, and a tense crew rolls misconduct in each.)
+                // (Calm from the start: the post scene's ticks cross hours, and a tense crew rolls misconduct in each. And held against the live prison's wardens - a routine frisk or a carry to a bed takes a member off the night and
+                // a guard from the post - as the drug-test scenes' inmates are: see HoldInmate.)
+                foreach (Pawn member in s.Crew) HoldInmate(member, r);
                 var couldGo = new Dictionary<Pawn, string>();
                 BreakKeepCrew(s, couldGo);
                 EscapePlans.Reveal(s.arc, s.Link(PlanRole.Way), "tip", map);
@@ -502,7 +504,14 @@ namespace RimPrison
                 s.Plan.readiness = 1f;
                 (s.Plan.night, s.Plan.nightTick) = (PlanNight.Dark, Find.TickManager.TicksGame + 1);
                 s.Plan.links.Add(new PlanLink { role = PlanRole.Night, name = EscapePlans.NightText(map, s.Plan) });
-                int ran = ps.Run(() => s.arc.done, GenDate.TicksPerHour + 200, () => { ps.Open(post); BreakKeepCrew(s, couldGo); });
+                // (The guard's last few ticks before the night, for a failure line: the night's pass finds a catcher only in a guard on RP_ManPost standing at the post, awake - a guard whose watch lapsed or who was called away
+                // that tick catches nobody, and the crew make a break for it unseen.)
+                var trail = new List<string>();
+                int ran = ps.Run(() => s.arc.done, GenDate.TicksPerHour + 200, () => { ps.Open(post); BreakKeepCrew(s, couldGo); }, () =>
+                {
+                    if (trail.Count == 4) trail.RemoveAt(0);
+                    trail.Add(BreakGuardSample(guard, postThing, post));
+                });
                 if (!s.arc.done)
                 {
                     BreakFail(check, $"no break in {ran} real ticks after the night ({s.Plan.Describe()}, {ps.HourText})");
@@ -522,9 +531,16 @@ namespace RimPrison
                 bool letterNames = r.NewLetters.Where(l => l.Label.Resolve() == "RP_BreakCaughtLabel".Translate().Resolve()).All(l => goers.All(p => ((l as ChoiceLetter)?.Text.Resolve() ?? "").Contains(p.LabelShort)));
                 bool stepsDone = goers.All(p => BreakCaughtSteps(p, true, null, cases, guard).EndsWith("ok"));
                 if (!stepsDone || cases.Count != goers.Count || caughtLetters != 1 || !letterNames || !postThing.Destroyed)
-                    BreakFail(check, $"after the night: {goers.Count} could go, cases {cases.Count} (want {goers.Count}), the letter {caughtLetters} naming them {letterNames}, the post down {postThing.Destroyed} - {steps}");
+                    BreakFail(check, $"after the night: {goers.Count} could go, cases {cases.Count} (want {goers.Count}), the letter {caughtLetters} naming them {letterNames}, the post down {postThing.Destroyed} - {steps}; the guard {guard.LabelShort} at the end of the last ticks (tick: job at cell, standing, open, on duty): {string.Join(" | ", trail)}");
                 RPLog.Message($"[RimPrison:test] break: caught in the act after {ran} real ticks, {goers.Count} went, {cases.Count} cases with an officer's evidence");
             });
+        }
+
+        /// <summary>One look at the scene's guard for the caught check's failure line: the tick, their job and where, whether they stand at the post as <see cref="EscapePlans.Catcher"/> reads it, and the post's hours and their shift.</summary>
+        private static string BreakGuardSample(Pawn guard, Thing postThing, CompGuardPost post)
+        {
+            bool standing = !postThing.Destroyed && post.Stander == guard && guard.Position == postThing.Position;
+            return $"{Find.TickManager.TicksGame}: {guard.CurJobDef?.defName ?? "none"} at {guard.Position}, standing {standing}, open {!postThing.Destroyed && post.OpenNow}, on duty {GuardPosts.OnDuty(guard)}";
         }
 
         /// <summary>

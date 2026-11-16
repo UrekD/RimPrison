@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Trusties and the outside work party (Trusties.cs, TrustyUI.cs). No capital letter may follow a colon here (the game capitalises it): a dash or a comma. -->
+
+  <!-- Making a trusty: why not -->
+  <RP_TrustyNo_NotHere>{0} is not an inmate the warden can make a trusty now.</RP_TrustyNo_NotHere>
+  <RP_TrustyNo_Already>{0} is a trusty already.</RP_TrustyNo_Already>
+  <RP_TrustyNo_Level>Only inmates at {1} security can be trusties, and {0} is not one.</RP_TrustyNo_Level>
+  <RP_TrustyNo_Grade>{0}'s conduct grade is {1}, and a trusty needs {2}.</RP_TrustyNo_Grade>
+  <RP_TrustyNo_Misconduct>{0} was seen in serious misconduct ({1}) in the last {2} days.</RP_TrustyNo_Misconduct>
+  <RP_TrustyNo_Tension>{0}'s tension is {1}, and a trusty is made at {2} or less.</RP_TrustyNo_Tension>
+  <RP_TrustyNo_WatchList>{0} is on the watch list.</RP_TrustyNo_WatchList>
+  <RP_TrustyNo_Mental>{0} is in a mental state.</RP_TrustyNo_Mental>
+  <RP_TrustyNo_Confined>{0} is confined.</RP_TrustyNo_Confined>
+
+  <RP_TrustyGrant>Make a trusty</RP_TrustyGrant>
+  <RP_TrustyGrantDesc>Trusties work in the outside work zone beyond the wall, in their work hours, while guards stand near it. A minimum-security inmate with a high conduct grade, no serious trouble lately and a calm temper can be made one. They lose the status for serious misconduct, any escape, or a move off minimum security.</RP_TrustyGrantDesc>
+  <RP_TrustyEnd>End trusty status</RP_TrustyEnd>
+  <RP_TrustyEndDesc>The inmate is no trusty from now on and loses the outside job. One standing outside the wall walks back in on the pass they hold.</RP_TrustyEndDesc>
+  <RP_TrustyChip>trusty</RP_TrustyChip>
+  <RP_TrustyLine>Trusty - may work outside the wall</RP_TrustyLine>
+  <RP_JobNeedsTrusty>trusties only</RP_JobNeedsTrusty>
+
+  <RP_TrustyMade>{0} is now a trusty, and can work outside the wall once there is an outside work zone, a gate and guards near it.</RP_TrustyMade>
+  <RP_Chr_TrustyMade>{0} was made a trusty.</RP_Chr_TrustyMade>
+  <RP_TrustyLost>{0} is a trusty no more - {1}.</RP_TrustyLost>
+  <RP_Chr_TrustyLost>{0} lost trusty status - {1}.</RP_Chr_TrustyLost>
+  <RP_TrustyWhy_Warden>the warden took it back</RP_TrustyWhy_Warden>
+  <RP_TrustyWhy_Misconduct>seen in serious misconduct ({0})</RP_TrustyWhy_Misconduct>
+  <RP_TrustyWhy_Reclassified>moved to {0} security</RP_TrustyWhy_Reclassified>
+  <RP_TrustyLockedOut>{0} is outside the wall and the gate is {1}.</RP_TrustyLockedOut>
+  <RP_TrustyWalkedOff>walked off from the outside work party</RP_TrustyWalkedOff>
+
+  <!-- The grounds contract and the zone -->
+  <RP_GroundsContractNote>State grounds contract, {0} trusty hours</RP_GroundsContractNote>
+  <RP_OutsideWorkNotOutside>The outside work zone goes in the open beyond the wall, where the ground reaches the edge of the map - not inside the walls.</RP_OutsideWorkNotOutside>
+
+  <!-- The party, on the Deployment tab -->
+  <RP_TrustyParty_Out>Party out - {0} on the job, {1} near</RP_TrustyParty_Out>
+  <!-- (A count with its noun, one form for one and another for the rest: used inside the lines below.) -->
+  <RP_TrustyN_Guard>{0} guard</RP_TrustyN_Guard>
+  <RP_TrustyN_Guards>{0} guards</RP_TrustyN_Guards>
+  <RP_TrustyN_Trusty>{0} trusty</RP_TrustyN_Trusty>
+  <RP_TrustyN_Trusties>{0} trusties</RP_TrustyN_Trusties>
+  <RP_TrustyParty_Idle>Nobody holds the outside job.</RP_TrustyParty_Idle>
+  <RP_TrustyParty_NoZone>Held in - no outside work zone in the open.</RP_TrustyParty_NoZone>
+  <RP_TrustyParty_Riot>Called in - a riot is on.</RP_TrustyParty_Riot>
+  <RP_TrustyParty_Hostage>Called in - a hostage crisis is on.</RP_TrustyParty_Hostage>
+  <RP_TrustyParty_Raid>Called in - a raid is on.</RP_TrustyParty_Raid>
+  <RP_TrustyParty_Evacuation>Called in - an evacuation is on.</RP_TrustyParty_Evacuation>
+  <RP_TrustyParty_Lockdown>Called in - the minimum wing is locked down.</RP_TrustyParty_Lockdown>
+  <RP_TrustyParty_Escape>Called in - an escape is on.</RP_TrustyParty_Escape>
+  <RP_TrustyParty_Hold>Held in for an hour after it was called in.</RP_TrustyParty_Hold>
+  <RP_TrustyParty_NoPost>Held in - no guard post covers the zone.</RP_TrustyParty_NoPost>
+  <RP_TrustyParty_Unmanned>Held in - short, the open guard posts near the zone ({0}) have nobody on them or on the way, for {1} on the job.</RP_TrustyParty_Unmanned>
+  <RP_TrustyParty_Short>Held in - short, {0} near the zone for {1} on the job.</RP_TrustyParty_Short>
+
+  <RP_DeployTrusties>Trusties</RP_DeployTrusties>
+  <RP_DeployTrustiesTip>Trusties work in the outside work zone in their work hours, in a party that goes out only while enough guards stand near the zone. A guard on duty near the zone counts, and so does an open guard post within ten cells of it. A post counts only while a guard is on it or on the way. A riot, a hostage crisis, a raid, an evacuation, a lockdown of the minimum wing or an escape somebody has seen calls the party in at once, and so does an hour of too few guards.</RP_DeployTrustiesTip>
+  <RP_DeployTrustiesNone>No trusties yet. Make a minimum-security inmate with a high conduct grade one, paint an outside work zone on land you own up to an Auto gate door, and post a guard near it.</RP_DeployTrustiesNone>
+  <RP_DeployTrustyRatio>One guard near the zone for {0} trusties</RP_DeployTrustyRatio>
+  <RP_DeployTrustyRatioTip>How many trusties one guard near the zone can watch (2 to 4). More trusties than the guards near the zone can watch keep the party in.</RP_DeployTrustyRatioTip>
+  <RP_DeployTrustyGuards>{0} near the zone, with {1} on the job (they need {2})</RP_DeployTrustyGuards>
+  <RP_DeployTrustyContract>{0} trusty hours today, {1} from the state at the day's end</RP_DeployTrustyContract>
+  <RP_DeployTrustyGate>Gate at ({0}, {1}) - {2}</RP_DeployTrustyGate>
+  <RP_DeployTrustyGateShut>The gate is {0} - it stays shut to the party, and an inmate outside the wall cannot walk back in through it. Set it to Auto.</RP_DeployTrustyGateShut>
+  <RP_DeployTrustyNoGate>No gate yet. Set an Auto door between the minimum wing's space and the zone, and paint the zone up to it.</RP_DeployTrustyNoGate>
+  <RP_DeployTrustyWorking>working</RP_DeployTrustyWorking>
+  <RP_DeployTrustyOutside>outside</RP_DeployTrustyOutside>
+  <RP_DeployTrustyInside>inside</RP_DeployTrustyInside>
+  <RP_DeployTrustyNoJob>no outside job</RP_DeployTrustyNoJob>
+  <RP_DeployTrustyRow>{0} - {1}</RP_DeployTrustyRow>
+  <RP_DeployTrustyMore>and {0} more</RP_DeployTrustyMore>
+</LanguageData>

@@ -87,7 +87,7 @@ namespace RimPrison
             if (fresh) leg = new EscortLeg { guard = guard, kind = kind, target = target, startTick = Find.TickManager.TicksGame };
             leg.phase = phase;
             // (An evacuation's walk has its own route and rules: no perimeter door, no other inmate's cell, no door the guard happens to pass on a shorter way, see EvacRoutes.)
-            leg.doors = kind == EscortKind.Evacuation ? EvacuationSystem.EscortDoors(inmate, phase == EscortPhase.Out ? target : HomeCell(inmate)) : PlanDoors(inmate, guard, phase == EscortPhase.Out ? target : HomeCell(inmate));
+            leg.doors = kind == EscortKind.Evacuation ? EvacuationSystem.EscortDoors(inmate, phase == EscortPhase.Out ? target : HomeCell(inmate)) : PlanDoors(inmate, guard, phase == EscortPhase.Out ? target : HomeCell(inmate, guard, toWing: kind == EscortKind.Home, chosen: target));
             c.leg = leg;
             Forget(inmate);
             // (Turned for home: whatever they were doing at the far end (a wander of up to fifteen minutes) is over, and they look for the way back at once.)
@@ -141,17 +141,25 @@ namespace RimPrison
         /// <summary>Nobody came: the inmate has not got to where they are going <see cref="SupermaxSystem.NoShowTicks"/> after the walk began (an inmate who did not set out, a way that is shut to them).</summary>
         public static bool NoShow(EscortLeg leg, int now) => leg.arrivedTick < 0 && now - leg.startTick > SupermaxSystem.NoShowTicks;
 
-        /// <summary>The cell a guard sees an inmate back into.</summary>
-        public static IntVec3 HomeCell(Pawn inmate)
+        /// <summary>
+        /// The cell a guard sees an inmate back into. <paramref name="toWing"/>: the walk is a <see cref="EscortKind.Home"/> leg, so a trusty out in the open with no bed to go to is walked to their wing (the evacuation's walk
+        /// back is not: such a one is as they were before); the cell is chosen by <paramref name="guard"/>'s way when a guard is given, never by the inmate's own (see <see cref="Trusties.WingTarget"/>), once: when the leg is
+        /// planned. From then on it is <paramref name="chosen"/> (the leg's target, the guard's job's), so the pass's doors, the guard's walk and the inmate's walk all go to the one cell - when it is off the prison cells: a cell
+        /// chosen for a walk to a bed that is lost before the end (the cell near it, in a room the guard's walk opens no door to) is no wing cell, and the way is asked for anew.
+        /// </summary>
+        public static IntVec3 HomeCell(Pawn inmate, Pawn guard = null, bool toWing = false, IntVec3? chosen = null)
         {
             Building_Bed bed = inmate.ownership?.OwnedBed;
-            if (bed == null || !bed.Spawned) return IntVec3.Invalid;
+            if (bed == null || !bed.Spawned) return toWing && Trusties.WingBound(inmate) ? chosen is { IsValid: true } planned && planned.GetRoom(inmate.Map) is not { IsPrisonCell: true } ? planned : Trusties.WingTarget(inmate, guard) : IntVec3.Invalid;
             Room cell = bed.GetRoom();
             if (cell == null) return IntVec3.Invalid;
             return CellFinder.TryFindRandomCellNear(bed.Position, inmate.Map, 2, c => c.GetRoom(inmate.Map) == cell && c.Standable(inmate.Map), out IntVec3 near) ? near : bed.Position;
         }
 
         public static bool InOwnCell(Pawn inmate) => inmate.GetRoom() is { } room && room == InmateUtility.CellOf(inmate);
+
+        /// <summary>Seen in: in the own cell, or (a trusty who has no bed) back inside the prison.</summary>
+        public static bool SeenIn(Pawn inmate) => InOwnCell(inmate) || Trusties.BackInWithoutBed(inmate);
 
         /// <summary>
         /// A supermax inmate who is out of their cell with nobody: new to the level, or let out of a hearing, a medical bed or solitary, or left by a guard who was lost. They wait where they are (a
@@ -161,12 +169,21 @@ namespace RimPrison
             c.security is { escortOnly: true } && c.leg == null && c.forcedActivity == null && p.Spawned && p.ownership?.OwnedBed is { Spawned: true } && !InOwnCell(p)
             && !p.Downed && !p.InBed() && !HealthAIUtility.ShouldSeekMedicalRest(p) && !c.awaitingSearch && c.processed && ParoleScene.CaseOf(p) is not { stage: HearingStage.Called or HearingStage.Seated };
 
+        /// <summary>A trusty with no bed, out in the open on a walk back: the way in to the cell of their wing the walk was planned to, the guard's and the pass's (null: they have a bed, or are in already).</summary>
+        private static Job GoToWing(Pawn pawn, EscortLeg leg)
+        {
+            if (!Trusties.WingBound(pawn) || !leg.target.IsValid) return null;
+            Job job = JobMaker.MakeJob(JobDefOf.Goto, leg.target);
+            job.locomotionUrgency = LocomotionUrgency.Walk;
+            return job;
+        }
+
         /// <summary>The inmate's own job during a walk (null: none, the schedule goes on): a walk to where the guard is going, then the shower or a wander in the yard; a walk home at the end.</summary>
         public static Job JobFor(Pawn pawn, CompInmate c, PrisonMap pm)
         {
             EscortLeg leg = c.leg;
             if (leg == null || leg.kind == EscortKind.Hearing) return null;
-            if (leg.phase == EscortPhase.Back) return RegimeActivityWorker.GoToOwnCell(pawn) ?? RegimeActivityWorker.WaitJob(pawn, 120);
+            if (leg.phase == EscortPhase.Back) return RegimeActivityWorker.GoToOwnCell(pawn) ?? (leg.kind == EscortKind.Home ? GoToWing(pawn, leg) : null) ?? RegimeActivityWorker.WaitJob(pawn, 120);
             if (leg.arrivedTick < 0)
             {
                 if (pawn.Position != leg.target)
@@ -250,7 +267,7 @@ namespace RimPrison
 
         private EscortLeg Leg => Inmate?.Inmate()?.leg;
 
-        private bool StillOn => Inmate?.Inmate() is { activeFlag: true } c && c.security is { escortOnly: true } && !Inmate.Downed && !Inmate.InMentalState;
+        private bool StillOn => Inmate?.Inmate() is { activeFlag: true } c && (c.security is { escortOnly: true } || Kind == EscortKind.Home && (Trusties.Stranded(Inmate) || c.leg is { kind: EscortKind.Home })) && !Inmate.Downed && !Inmate.InMentalState;
 
         /// <summary>A lockdown: whatever they came for is over, they are walked back.</summary>
         private bool Lockdown => Inmate?.Inmate() is { } c && PrisonGame.Instance is { } game && game.LockedDown(c);
@@ -305,7 +322,7 @@ namespace RimPrison
                 CompInmate c = Inmate.Inmate();
                 EscortWalk.Hold(Inmate, pawn, Kind, job.targetC.Cell, home ? EscortPhase.Back : EscortPhase.Out);
                 // (With the pass on, can they get there? Not: no walk for a while, and nobody is left outside.)
-                IntVec3 goal = home ? EscortWalk.HomeCell(Inmate) : job.targetC.Cell;
+                IntVec3 goal = home ? EscortWalk.HomeCell(Inmate, pawn, toWing: true, chosen: job.targetC.Cell) : job.targetC.Cell;
                 if (Leg == null || !goal.IsValid || !Inmate.CanReach(goal, PathEndMode.OnCell, Danger.Deadly))
                 {
                     c.escortRetryTick = Find.TickManager.TicksGame + GenDate.TicksPerHour / 2;
@@ -359,7 +376,7 @@ namespace RimPrison
             Toil walkHome = Pace(ToilMaker.MakeToil("EscortHome"), LocomotionUrgency.Walk);
             walkHome.initAction = () =>
             {
-                IntVec3 cell = EscortWalk.HomeCell(Inmate);
+                IntVec3 cell = EscortWalk.HomeCell(Inmate, pawn, toWing: home, chosen: job.targetC.Cell);
                 if (!cell.IsValid || !pawn.CanReach(cell, PathEndMode.OnCell, Danger.Deadly)) EndJobWith(JobCondition.Incompletable);
                 else pawn.pather.StartPath(cell, PathEndMode.OnCell);
             };
@@ -370,7 +387,7 @@ namespace RimPrison
             Toil seeIn = Toils_General.Wait(SeeInMaxTicks);
             seeIn.tickIntervalAction = delta => Hold(EscortPhase.Back);
             seeIn.FailOn(() => !EnsureLeg(EscortPhase.Back));
-            seeIn.AddEndCondition(() => EscortWalk.InOwnCell(Inmate) ? JobCondition.Succeeded : JobCondition.Ongoing);
+            seeIn.AddEndCondition(() => EscortWalk.SeenIn(Inmate) ? JobCondition.Succeeded : JobCondition.Ongoing);
             yield return seeIn;
         }
 

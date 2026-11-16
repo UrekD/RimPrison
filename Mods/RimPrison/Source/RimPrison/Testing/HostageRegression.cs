@@ -394,12 +394,14 @@ namespace RimPrison
                 arc = s.Begin(out guard, out boss, followers: 1);
                 if (arc == null) return;
                 Pawn follower = arc.pawns[2];
+                // (A one-letter name: the chronicle of the scenes before says "was charged with" of other ringleaders, and a name matched as text found itself in those lines - c88-ev1 "D" in "Deer was charged with": the entries are the ringleader's by id.)
+                boss.Name = new NameSingle("a");
                 boss.Kill(null);
                 BodyLeft(boss);
                 s.Worker.Finish(arc, map, HostageHow.GaveUp, HostageFate.Freed, "", boss);
                 letter = FreedLetter(guard);
                 string dead = HostageCrisis.NotCharged(boss);
-                bool deadSaid = letter.Contains(dead, StringComparison.OrdinalIgnoreCase) && !letter.Contains("charged with") && !s.r.NewEntries.Any(e => e.text.Contains("charged with") && e.text.Contains(boss.LabelShort));
+                bool deadSaid = letter.Contains(dead, StringComparison.OrdinalIgnoreCase) && !letter.Contains("charged with") && !s.r.NewEntries.Any(e => e.text.Contains("charged with") && e.ids.Contains(boss.thingIDNumber));
                 arc = s.Begin(out guard, out boss);
                 if (arc == null) return;
                 s.Worker.Finish(arc, map, HostageHow.GaveUp, HostageFate.Freed, "", boss, charge: false);

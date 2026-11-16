@@ -196,6 +196,9 @@ namespace RimPrison
                 map.reachability.ClearCache();
                 r.Add(() => map.reachability.ClearCache());
                 Pawn inmate = Throwaway(map, r);
+                // (Held against the wardens' take-to-bed work and the routine frisk: the guard beside the inmate is a real guard to the work scan, and an escort to a bed takes the inmate off the walk onto a wait - "job
+                // Wait_MaintainPosture, at (3, 0, 1)", trusty-t8a - before the check's own look at the guard's job can stop it.)
+                HoldInmate(inmate, r);
                 float moving = SlowTheWalk(inmate);
                 Pawn guard = ThrowawayStaff(map, r, RPSecurityDefOf.RP_Guard);
                 guard.health.Reset();
@@ -205,7 +208,9 @@ namespace RimPrison
                 // (At a walk, as the transfer's own walk is: the pathfinder weighs the cells against the pace.)
                 Job walk = JobMaker.MakeJob(JobDefOf.Goto, ramp);
                 walk.locomotionUrgency = LocomotionUrgency.Walk;
+                S29WatchEnds(inmate, r);
                 inmate.jobs.StartJob(walk, JobCondition.InterruptForced);
+                bool started = inmate.CurJob == walk;
                 ShuttleTicks(() =>
                 {
                     if (guard.CurJob != null) guard.jobs.StopAll();
@@ -215,7 +220,8 @@ namespace RimPrison
                 S24Place(guard, At(2, 1));
                 if (!inmate.pather.Moving || inmate.pather.curPath is not { Found: true } way)
                 {
-                    S24Fail(check, $"premise: the slow inmate would not walk the way (job {inmate.CurJobDef?.defName}, at {inmate.Position - o}, Moving {moving:F2})");
+                    S24Fail(check, $"premise: the slow inmate would not walk the way (job {inmate.CurJobDef?.defName}, at {inmate.Position - o}, Moving {moving:F2}; the walk started {started}, still the job {inmate.CurJob == walk}, "
+                                   + $"path {(inmate.pather.curPath is { } cp ? (cp.Found ? "found" : "not found") : "none")}, held {DrugTestInmateHeld(inmate)}, claims on them: {DtReservedBy(map, inmate)}, guard {guard.CurJobDef?.defName ?? "no job"}; {S29Ends(inmate)})");
                     return;
                 }
                 List<IntVec3> theirs = way.NodesReversed.ToList();

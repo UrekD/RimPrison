@@ -483,8 +483,14 @@ namespace RimPrison
         private static Building staffFireStove;
         private static bool staffFirePending;
         private static string staffFireNote = "";
-        private static int staffFireTick = -1, staffFireOutTick = -1;
+        private static int staffFireTick = -1, staffFireOutTick = -1, staffFireFirstSampleHour = -1;
         private const int StaffFireHours = 4;
+        /// <summary>
+        /// The hours of the day the fire is lit in (the first hourly sample in them after the kitchen's tests): the day shift's, so that it is fought by staff who are awake, and early enough that the hours it is given are all still the
+        /// day shift's. The events checks run between two samples and take what game time their real ticks take (the trusties' walks: some hours), so the first sample after them comes later in the day than it used to; the last hour is the
+        /// shift's end less the fire's hours, not an hour of the morning.
+        /// </summary>
+        private const int StaffFireFirstHour = 7, StaffFireLastHour = ShiftSystem.DayShiftEnd - StaffFireHours - 1;
 
         /// <summary>
         /// Gang war arc: it starts from the incident with one letter (not during a truce, one war per pair); talks and a
@@ -3778,6 +3784,8 @@ namespace RimPrison
             }
             // Vocational training (VocationChecks.cs): once, after the events have fired.
             if (Plan == "events" && eventsFired) CheckVocationOnce(Find.CurrentMap);
+            // Trusties and the outside work party (TrustyChecks.cs): once the stove fire left to the staff is over (see CheckTrustiesOnce).
+            if (Plan == "events" && eventsFired) CheckTrustiesOnce(Find.CurrentMap);
             // Hostage plan: two hours in, a guard is taken and nobody answers (see StartHostageSoak).
             if (Plan == "hostage" && !hostageSoakStarted && Find.TickManager.TicksGame - startTick >= 2 * GenDate.TicksPerHour) StartHostageSoak(Find.CurrentMap);
             if (Plan == "hostage" && hostageSoakStarted) WatchHostageSoak(Find.CurrentMap);
@@ -3928,7 +3936,9 @@ namespace RimPrison
                 sb.Append($"wl={WatchList.Describe(c)} ");
             }
             foreach (Pawn s in map.mapPawns.FreeColonistsSpawned.OrderBy(p => p.thingIDNumber))
-                sb.Append($"{s.LabelShort}:{s.GetComp<CompStaff>()?.role?.defName}/t={s.GetComp<CompStaff>()?.lastTrainedTick}:{s.GetComp<CompStaff>()?.trainingPending}/w={s.GetComp<CompStaff>()?.waryOfId}:{s.GetComp<CompStaff>()?.waryUntilTick}:{s.GetComp<CompStaff>()?.waryOfName}/rank={s.GetComp<CompStaff>()?.rank}:{s.GetComp<CompStaff>()?.passedOverTick}/since={s.GetComp<CompStaff>()?.roleSinceTick}:{s.GetComp<CompStaff>()?.pendingFire}/held={HostageCrisis.IsHeld(s)}:{s.MentalStateDef?.defName}/cmp={s.GetComp<CompStaff>()?.complaintsUpheld}:{s.GetComp<CompStaff>()?.lastUpheldTick}:{s.GetComp<CompStaff>()?.trueComplaints}:{s.GetComp<CompStaff>()?.disciplineUntilTick}:{s.GetComp<CompStaff>()?.standDownUntilTick}/as={s.GetComp<CompStaff>()?.assaultedTick}/uo={UnitOfficers.Describe(s.GetComp<CompStaff>())} ");
+                sb.Append($"{s.LabelShort}:{s.GetComp<CompStaff>()?.role?.defName}/t={s.GetComp<CompStaff>()?.lastTrainedTick}:{s.GetComp<CompStaff>()?.trainingPending}/w={s.GetComp<CompStaff>()?.waryOfId}:{s.GetComp<CompStaff>()?.waryUntilTick}:{s.GetComp<CompStaff>()?.waryOfName}/rank={s.GetComp<CompStaff>()?.rank}:{s.GetComp<CompStaff>()?.passedOverTick}/since={s.GetComp<CompStaff>()?.roleSinceTick}:{s.GetComp<CompStaff>()?.pendingFire}/held={HostageCrisis.IsHeld(s)}:{s.MentalStateDef?.defName}/cmp={s.GetComp<CompStaff>()?.complaintsUpheld}:{s.GetComp<CompStaff>()?.lastUpheldTick}:{s.GetComp<CompStaff>()?.trueComplaints}:{s.GetComp<CompStaff>()?.disciplineUntilTick}:{s.GetComp<CompStaff>()?.standDownUntilTick}/as={s.GetComp<CompStaff>()?.assaultedTick}/uo={UnitOfficers.Describe(s.GetComp<CompStaff>())}/hs={s.GetComp<CompStaff>()?.homeSinceTick} ");
+            // (The staff at home are not on the map: the time each left at, those on site included.)
+            sb.Append($"stafftimes={StaffHomeDescribe(map)} ");
             sb.Append($"careers={g.stats.promotions}/{g.stats.promotionsDeclined}/{g.stats.resignations} unitTips={g.stats.unitTips} ");
             sb.Append($"warden={WardenSystem.Describe(g, map)} ");
             sb.Append($"guardposts={GuardPosts.Describe(map)} ");
@@ -3945,6 +3955,7 @@ namespace RimPrison
             sb.Append($"riots={RiotReviewDescribe(g)} ");
             sb.Append($"rumours={Rumours.Describe(PrisonMap.Of(map))} ");
             sb.Append($"asks={WardenAsks.Describe(PrisonMap.Of(map))} ");
+            sb.Append($"trusty={TrustyDescribe(map)} ");
             sb.Append($"standing={StandingOrders.Describe(g)} ");
             sb.Append($"amends={AmendsDescribe(map)} ");
             sb.Append($"break={EscapePlans.Describe()} ");
@@ -4196,9 +4207,11 @@ namespace RimPrison
             SeedStandingOrdersForReload(map);
             // (After the rumours: the seeded requests are about the seeded rumour's wing.)
             SeedWardenAsksForReload(map);
+            SeedStaffHomeForReload(map);
             SeedWatchListForReload(map);
             SeedAmendsForReload(map);
             SeedBreakForReload(map);
+            SeedTrustiesForReload(map);
             RecordShuttleForReload(map);
             // (An evacuation half done, built by hand with no tick and no regime changed (the seeds before have recorded walks, hearings and a shuttle that a tick would move): see SeedEvacuationForReload.)
             SeedEvacuationForReload(map);
@@ -4207,6 +4220,7 @@ namespace RimPrison
             // (The evacuation's drill flag, set only now: nothing ticks between this and the save.)
             MarkEvacuationForSnapshot(map);
             RecordWatchListForReload(map);
+            RecordTrustiesForReload(map);
             snapshotBefore = Snapshot(map);
             SeedArrestForReload(map);
             GameDataSaveLoader.SaveGame("RimPrisonAutotest");
@@ -4232,6 +4246,8 @@ namespace RimPrison
                 RPLog.Message("[RimPrison:test] after:  " + after);
             }
             else RPLog.Message("[RimPrison:test] reload: state identical");
+            // (The seeded times at home go back to what they were: a member of staff at home would be healed for them at the next arrival.)
+            RestoreStaffHomeAfterReload(map);
             // (First of the checks after the load: an hour's pass in a check that ticks would close the seeded riot that is still on.)
             CheckRiotReviewAfterReload(map);
             // (The seeded evacuation is a real one again before anything ticks: its drill flag was for the comparison.)
@@ -4251,6 +4267,8 @@ namespace RimPrison
             // (Before the checks below that run real ticks: an hourly psych pass in them can rightly move the seeded fields.)
             CheckPsychAfterReload(map);
             CheckWatchListAfterReload(map);
+            // The seeded trusty status and party came back whole, and are taken out again.
+            CheckTrustiesAfterReload(map);
             // The seeded shot-caller's deal came back whole, and is taken out again.
             UnseedGangDealAfterReload(map);
             CheckDrugTestAfterReload(map);
@@ -4511,7 +4529,7 @@ namespace RimPrison
             CellRect footprint = PrisonBuilder.Footprint(map);
             foreach (Pawn p in map.mapPawns.PrisonersOfColonySpawned)
                 if (!footprint.Contains(p.Position))
-                    RPLog.Message($"[RimPrison:test] OUTSIDE {p.LabelShort} at {p.Position} job={p.CurJobDef?.defName} mental={p.MentalStateDef?.defName} downed={p.Downed} released={p.guest?.Released} lord={p.GetLord()?.LordJob?.GetType().Name}");
+                    RPLog.Message($"[RimPrison:test] OUTSIDE {p.LabelShort} at {p.Position} job={p.CurJobDef?.defName} mental={p.MentalStateDef?.defName} downed={p.Downed} released={p.guest?.Released} lord={p.GetLord()?.LordJob?.GetType().Name} trusty={p.Inmate()?.IsTrusty == true}/{p.Inmate()?.outsidePass == true} zone={pm.zones.ZoneAt(p.Position)?.defName ?? "none"} bed={p.ownership?.OwnedBed?.Position.ToString() ?? "none"}");
             int n = 0, sampled = 0, inPlace = 0, mental = 0, hungry = 0;
             float mood = 0f, food = 0f, rest = 0f, hyg = 0f, blad = 0f, joy = 0f;
             var activities = new Dictionary<string, int>();
@@ -4604,7 +4622,8 @@ namespace RimPrison
             if (hour % 6 == 3) Details(map, game, pm);
             // The stove fire left to the staff: light it, then note when nothing burns at it any more.
             // (In the day shift: the shuttle checks run for hours at the end of the events checks, and a fire lit at night went to staff who were asleep or on their way home.)
-            if (staffFirePending && hour is >= 7 and <= 14)
+            if (staffFirePending && staffFireFirstSampleHour < 0) staffFireFirstSampleHour = hour;
+            if (staffFirePending && hour >= StaffFireFirstHour && hour <= StaffFireLastHour)
             {
                 staffFirePending = false;
                 if (IncidentWorker_KitchenFire.KitchenStoves(map).FirstOrDefault() is { } stove && FireUtility.TryStartFireIn(stove.Position, map, 0.6f, null))
@@ -4957,12 +4976,17 @@ namespace RimPrison
                 problems.Add($"guards never searched a visitor ({game.stats.visitorsWavedThrough} waved through)");
             if (Plan == "events" && game.stats.smugglersDetained + game.stats.staffArrested > 0 && game.stats.arrestsMade == 0)
                 problems.Add("the police never collected a detained suspect");
+            // The trusty checks run after the stove fire (CheckTrustiesOnce): a run that ends before they ran judged none of them.
+            if (Plan == "events" && !trustiesRan)
+                problems.Add($"the trusty checks never ran (the stove fire left to the staff: pending {staffFirePending}, lit at {staffFireTick}, out at {staffFireOutTick})");
             // The stove fire left to the staff: out within a few hours, the stove still standing (fought, not burned out).
             if (Plan == "events")
             {
                 RPLog.Message($"[RimPrison:test] staff fire: lit {staffFireTick}, out {staffFireOutTick} ({(staffFireOutTick - staffFireTick) / (float)GenDate.TicksPerHour:F1}h), stove {staffFireStove?.LabelShort} {(staffFireStove?.Destroyed == false ? $"{staffFireStove.HitPoints}/{staffFireStove.MaxHitPoints}" : "destroyed")}");
                 if (staffFireTick < 0 || staffFireOutTick < 0 || staffFireOutTick - staffFireTick > StaffFireHours * GenDate.TicksPerHour || staffFireStove == null || staffFireStove.Destroyed)
-                    problems.Add($"the staff did not put out a stove fire within {StaffFireHours} hours (lit at {staffFireTick}, out at {staffFireOutTick}, stove {(staffFireStove?.Destroyed == false ? "standing" : "gone")}; staff on site when it was lit: {staffFireNote})");
+                    problems.Add($"the staff did not put out a stove fire within {StaffFireHours} hours (lit at {staffFireTick}, out at {staffFireOutTick}, stove {(staffFireStove == null ? "never chosen" : staffFireStove.Destroyed ? "gone" : "standing")}; "
+                                 + (staffFireTick < 0 ? $"it was never lit: the first hourly sample after the kitchen's tests was at hour {staffFireFirstSampleHour} and the fire is lit in hours {StaffFireFirstHour}-{StaffFireLastHour} - the events checks that ran in between took too much of the day; " : "")
+                                 + $"staff on site when it was lit: {staffFireNote})");
             }
             // The settlement at midnight runs the corruption pass over everyone employed (staff at home too).
             if (!IsHuge && days >= 2 && CorruptionSystem.DailyPasses == 0) problems.Add("the daily corruption pass never ran");
@@ -5017,7 +5041,7 @@ namespace RimPrison
             if (Plan == "showcase") CheckVocationLayout(map, problems);
             int outside = 0;
             foreach (Pawn p in map.mapPawns.PrisonersOfColonySpawned)
-                if (!p.guest.Released && !PrisonBuilder.Footprint(map).Contains(p.Position)) outside++; // (released: free to go)
+                if (OutsideTheCompound(p, PrisonBuilder.Footprint(map))) outside++;
             if (outside > 0) problems.Add($"{outside} inmates outside the compound");
             double secs = wall.Elapsed.TotalSeconds;
             PrisonStats st = game.stats;

@@ -59,6 +59,8 @@ namespace RimPrison
         public int passedOverTick = NotPassedOver;
         /// <summary>Paid leave (burnout): at home until this tick.</summary>
         public int leaveUntilTick = -1;
+        /// <summary>The tick they went home at (set by <see cref="StaffCommute.Leave"/>, read and reset when they come back: the time away is what <see cref="HomeHealing"/> heals them for). -1: not at home, or got there another way (an old save): no healing on that arrival.</summary>
+        public int homeSinceTick = -1;
         /// <summary>Away on a training course (the leave above); trained last at this tick.</summary>
         public bool trainingPending;
         /// <summary>Their leave is a rest (burnout), whatever else it covers (a course booked before it).</summary>
@@ -108,6 +110,7 @@ namespace RimPrison
             Scribe_Defs.Look(ref patrolZone, "rpPatrolZone");
             Scribe_Values.Look(ref leaveAtTick, "rpLeaveAt", -1);
             Scribe_Values.Look(ref leaveUntilTick, "rpLeaveUntil", -1);
+            Scribe_Values.Look(ref homeSinceTick, "rpHomeSince", -1);
             Scribe_Values.Look(ref trainingPending, "rpTrainingPending");
             Scribe_Values.Look(ref restPending, "rpRestPending");
             Scribe_Values.Look(ref lastTrainedTick, "rpLastTrained", -1);

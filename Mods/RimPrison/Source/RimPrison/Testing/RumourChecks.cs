@@ -608,8 +608,8 @@ namespace RimPrison
         private static bool? rumourStartBeforeSeed;
 
         /// <summary>
-        /// Two rumours with every field off its default: a live one (reach 1, so an hour's pass between the snapshot and the save changes nothing) on a wing with inmates, in the plain words but false (an order lifted), and one
-        /// ended, distorted and true (a guard's kill); the words' default is the opposite of the truth, so both are written. No rumour starts until the check after the load (a cell search between the snapshot and the save
+        /// Two rumours with every field off its default: a live one (reach 1, so an hour's pass between the snapshot and the save changes nothing) on a wing with inmates, in the plain words and true (the request seeded about it must come back tied to it), and one
+        /// ended, distorted and true (a guard's kill); the words' default is the opposite of the truth, so the second's is written. No rumour starts until the check after the load (a cell search between the snapshot and the save
         /// would change the list).
         /// </summary>
         private static void SeedRumoursForReload(Map map)
@@ -628,7 +628,7 @@ namespace RimPrison
             {
                 new Rumour
                 {
-                    kind = RumourKind.Supermax, level = level, originId = teller.thingIDNumber, originName = teller.LabelShort, isTrue = false, distorted = false, reach = 1f, startTick = Mathf.Max(1, now - 1234),
+                    kind = RumourKind.Supermax, level = level, originId = teller.thingIDNumber, originName = teller.LabelShort, isTrue = true, distorted = false, reach = 1f, startTick = Mathf.Max(1, now - 1234),
                     expireTick = now + GenDate.TicksPerDay + 777, subject = "Seedsubject", truthKnown = true, originKnown = true,
                 },
                 new Rumour
@@ -648,6 +648,8 @@ namespace RimPrison
         {
             if (rumourSeed == null) return;
             PrisonMap pm = PrisonMap.Of(map);
+            // (The requests seeded about them are looked at while they are in place.)
+            CheckAskTiesAfterReload(map);
             string after = Rumours.Describe(pm);
             RPLog.Message($"[RimPrison:test] saveload rumours: {(after == rumourSeed ? "intact" : "changed")} ({after})");
             if (after != rumourSeed) reloadProblems.Add($"the rumour list changed in the round trip: {rumourSeed} -> {after}");

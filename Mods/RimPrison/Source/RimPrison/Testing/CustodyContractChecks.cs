@@ -22,6 +22,11 @@ namespace RimPrison
 
         internal static bool CustodyBedsHeld => custodyBedsHeld;
 
+        /// <summary>The same beds, once they are given back: nobody is given one through any path (see <see cref="Patch_Pawn_Ownership_ClaimBed_CustodyBeds"/>) but the cohort's own, as they are admitted.</summary>
+        private static bool custodyClaimsRefused;
+
+        internal static bool CustodyClaimsRefused => custodyClaimsRefused;
+
         private static void CustodyFail(string check, string what) => problems0.Add($"custody contracts ({check}): {what}");
 
         private static void CheckCustodyContracts(Map map)
@@ -29,6 +34,7 @@ namespace RimPrison
             CheckCustodyTexts(map);
             CheckCustodyOffer(map);
             CheckCustodyCadence(map);
+            CheckCustodyBedsHeld(map);
             CheckCustodyShuttle(map);
             CheckCustodyAttendance(map);
             CheckCustodyDepartures(map);
@@ -276,6 +282,72 @@ namespace RimPrison
             });
         }
 
+        /// <summary>The claims refused while the cohort's beds are held (who asked for which bed, and by what way): in the line of a failure.</summary>
+        private static readonly List<string> custodyClaims = new List<string>();
+
+        internal static void CustodyClaimRefused(Pawn p, Building_Bed bed)
+        {
+            string way = string.Join(" < ", new System.Diagnostics.StackTrace().GetFrames().Skip(3).Take(4).Select(f => f.GetMethod()?.DeclaringType?.Name + "." + f.GetMethod()?.Name));
+            string line = $"{p?.LabelShort} for a bed at {bed?.Position} by {way}";
+            if (custodyClaims.Count < 12) custodyClaims.Add(line);
+            RPLog.Message($"[RimPrison:bed] a claim is refused, the bed is held for the custody cohort: {line}");
+        }
+
+        /// <summary>
+        /// Takes the beds of <paramref name="count"/> real inmates of the level (not in the hole, not already bedless), so that many are free for the check; the rollback gives each back to whoever lost it, when the bed is free and
+        /// they have none. They are held out of the hourly reassignment while the check lasts (<see cref="custodyBedsHeld"/>).
+        /// </summary>
+        private static void CustodyGiveUpBeds(Map map, Rollback r, SecurityLevelDef level, int count)
+        {
+            var gave = new List<(Pawn pawn, Building_Bed bed)>();
+            foreach (Pawn p in map.mapPawns.PrisonersOfColonySpawned.ToList())
+            {
+                if (gave.Count >= count) break;
+                if (p.Inmate() is not { } c || c.security != level || c.forcedActivity != null || c.homeBed != null || p.ownership?.OwnedBed is not { } bed || PunishmentUtility.IsSolitaryBed(bed) || bed.OwnersForReading.Count != 1) continue;
+                p.ownership.UnclaimAll();
+                gave.Add((p, bed));
+            }
+            r.Add(() =>
+            {
+                foreach ((Pawn pawn, Building_Bed bed) in gave)
+                    if (!pawn.Destroyed && pawn.ownership != null && pawn.ownership.OwnedBed == null && bed.Spawned && bed.OwnersForReading.Count < bed.SleepingSlotsCount) pawn.ownership.ClaimBedIfNonMedical(bed);
+            });
+            RPLog.Message($"[RimPrison:test] custody shuttle: {gave.Count} inmate(s) of {level.label} gave up their beds for the check ({string.Join(", ", gave.Select(x => x.pawn.LabelShort))})");
+        }
+
+        /// <summary>
+        /// The beds the shuttle check holds for the cohort are held against every way to a bed, not the hourly reassignment alone (trusty's runs, with no hold, found the third roster empty): while they are held a bedless
+        /// inmate who is not the cohort's is refused a free bed and the refusal is logged; with the hold off the same claim goes through (the control).
+        /// </summary>
+        private static void CheckCustodyBedsHeld(Map map)
+        {
+            Guarded("custody contracts: held beds are held against every claim", map, r =>
+            {
+                SecurityLevelDef level = DefDatabase<SecurityLevelDef>.GetNamed("RP_Minimum");
+                // (The premise as the shuttle check makes it: a prison with no free bed of the level - every run of the events plan had none, and this check was skipped in all of them - has a real inmate of the level give theirs up
+                // for the check, and take it back after.)
+                custodyBedsHeld = true;
+                r.Add(() => custodyBedsHeld = false);
+                if (IntakeSystem.FreeBedCount(map, level) < 1) CustodyGiveUpBeds(map, r, level, 1);
+                Building_Bed bed = IntakeSystem.FreeBedsInOrder(map, level).FirstOrDefault();
+                if (bed == null)
+                {
+                    RPLog.Message($"[RimPrison:test] custody beds held: no free {level.label} bed in this prison and no inmate of the level to give theirs up, not checked");
+                    return;
+                }
+                Pawn p = Throwaway(map, r, level);
+                custodyClaims.Clear();
+                custodyClaimsRefused = true;
+                r.Add(() => custodyClaimsRefused = false);
+                bool refused = !p.ownership.ClaimBedIfNonMedical(bed) && p.ownership.OwnedBed == null && custodyClaims.Count == 1;
+                custodyClaimsRefused = false;
+                bool control = p.ownership.ClaimBedIfNonMedical(bed) && p.ownership.OwnedBed == bed;
+                p.ownership.UnclaimAll();
+                if (!refused || !control)
+                    CustodyFail("beds held", $"a claim on a free bed while the beds were held was refused {refused} ({custodyClaims.Count} logged; true and 1 expected), and with the hold off it went through {control} (true expected)");
+            });
+        }
+
         // ---- the shuttle: delayed, a part of the cohort, the rest kept ---------------------------------------------------------------------------------------------------------
 
         private static void CheckCustodyShuttle(Map map)
@@ -290,15 +362,22 @@ namespace RimPrison
                     return;
                 }
                 CustodySetAside(g, r);
+                custodyClaims.Clear();
                 List<Pawn> carried0 = g.shuttle.carriedOver;
                 List<MarshalEntry> marshals0 = g.shuttle.marshals;
                 g.shuttle.carriedOver = new List<Pawn>();
                 g.shuttle.marshals = new List<MarshalEntry>();
                 r.Add(() => (g.shuttle.carriedOver, g.shuttle.marshals) = (carried0, marshals0));
                 SecurityLevelDef level = DefDatabase<SecurityLevelDef>.GetNamed("RP_Minimum");
+                // (No bedless inmate is given a bed by their hourly pass from here on: the check's beds are its own, from the first look to the end.)
+                custodyBedsHeld = true;
+                r.Add(() => custodyBedsHeld = false);
+                // A prison with fewer than two free beds of the level gives them up (the check used to be told, and every run of the events plan with the round-26 hold had no free bed: it was not checked at all): real inmates of
+                // the level are without their beds while it runs, and have them back after.
+                if (IntakeSystem.FreeBedCount(map, level) < 2) CustodyGiveUpBeds(map, r, level, 2 - IntakeSystem.FreeBedCount(map, level));
                 if (IntakeSystem.FreeBedCount(map, level) < 2)
                 {
-                    RPLog.Message($"[RimPrison:test] custody shuttle: fewer than two free {level.label} beds in this prison, not checked");
+                    RPLog.Message($"[RimPrison:test] custody shuttle: fewer than two free {level.label} beds in this prison and no inmate of the level to give theirs up, not checked");
                     return;
                 }
                 // Exactly two free beds of the level: the cohort of three can only come in part (the others' beds are held by throwaway inmates).
@@ -315,6 +394,9 @@ namespace RimPrison
                     RPLog.Message($"[RimPrison:test] custody shuttle: could not leave exactly two free {level.label} beds ({IntakeSystem.FreeBedCount(map, level)}), not checked");
                     return;
                 }
+                // The two beds are the cohort's from here to the end: nobody else is given one by any way (see the second shuttle below, and Patch_Pawn_Ownership_ClaimBed_CustodyBeds).
+                custodyClaimsRefused = true;
+                r.Add(() => custodyClaimsRefused = false);
                 var admitted = new List<Pawn>();
                 r.Add(() =>
                 {
@@ -416,9 +498,9 @@ namespace RimPrison
                 // (With exactly two free beds to begin with there were no fillers to give a bed back: the bed comes free from a member who was admitted, who goes without for the rest of the check.)
                 for (int i = fillers.Count; i < waiting && i - fillers.Count < serving.Count; i++) serving[i - fillers.Count].pawn?.ownership.UnclaimAll();
                 // (The beds just given back are held free until the check ends: a bedless inmate - the one who lost theirs, or a real one of an overcrowded prison - asks for a bed in their hourly pass and the roster is made at the
-                // launch, ticks after the call, so the bed was gone when the roster came to it: "0 aboard", break-b4b. See Patch_InmateUtility_TryReassignBed_CustodyBeds.)
-                custodyBedsHeld = true;
-                r.Add(() => custodyBedsHeld = false);
+                // launch, ticks after the call, so the bed was gone when the roster came to it: "0 aboard", break-b4b. See Patch_InmateUtility_TryReassignBed_CustodyBeds. The same reached the third shuttle in two runs of the
+                // trusty branch, which had no hold: the second roster had its bed, the bed was gone by the third, "passengers=0" - the check's own premise, not a fault of the roster. Every other way to a bed is refused too (from the
+                // two beds' being left, above), and logged with who asked: Patch_Pawn_Ownership_ClaimBed_CustodyBeds.)
                 int freeAfterGivingBack = IntakeSystem.FreeBedCount(map, level), calledAt = Find.TickManager.TicksGame;
                 if (freeAfterGivingBack != waiting)
                 {
@@ -445,6 +527,7 @@ namespace RimPrison
                 EndShuttleVisit(g, map);
 
                 // The next shuttle brings the same people (nobody is made again) and they are admitted once, each paid once.
+                int freeAtThird = IntakeSystem.FreeBedCount(map, level);
                 ShuttleSystem.CallDaily(g, map);
                 ShuttleVisit v3 = g.shuttle.visit;
                 ShuttleTicks(() => g.shuttle.visit != v3 || v3.phase == ShuttlePhase.Landed, 2500);
@@ -453,7 +536,7 @@ namespace RimPrison
                 int servingNow = c.Count(CustodyState.Serving);
                 CustodyMember again = c.members.FirstOrDefault(m => m.pawn == made);
                 if (servingNow != serving.Count + waiting || again is not { state: CustodyState.Serving } || again.pawn?.Inmate()?.admittedTick != again.admittedTick || again.paid != fee || g.intake.nextInmateNumber != number0 + serving.Count + waiting || c.paidAdmission != fee * (serving.Count + waiting) || CustodyEntries(r).Count != serving.Count + waiting)
-                    CustodyFail("shuttle", $"after the third shuttle {servingNow} are admitted (expected {serving.Count + waiting}), the carried-over member {(again == null ? "is gone" : again.state.ToString())}, fees {CustodyEntries(r).Count}, paid {c.paidAdmission}, inmates made {g.intake.nextInmateNumber - number0} ({c.Describe()})");
+                    CustodyFail("shuttle", $"after the third shuttle {servingNow} are admitted (expected {serving.Count + waiting}), the carried-over member {(again == null ? "is gone" : again.state.ToString())}, fees {CustodyEntries(r).Count}, paid {c.paidAdmission}, inmates made {g.intake.nextInmateNumber - number0} - its roster had {v3.rosterSize}, {IntakeSystem.FreeBedCount(map, level)} free {level.label} bed(s) after it ({freeAtThird} when it was called), the pawn spawned {made?.Spawned} on the world's books {made != null && Find.WorldPawns.Contains(made)}, {custodyClaims.Count} claim(s) refused meanwhile [{string.Join("; ", custodyClaims)}] ({c.Describe()})");
                 if (map.mapPawns.PrisonersOfColonySpawned.Count(p => c.MemberOf(p) != null) != servingNow) CustodyFail("shuttle", "the cohort in the prison is not the cohort admitted: somebody is there twice or not at all");
                 if (serving.Any(m => c.members.Contains(m) && m.paid != fee)) CustodyFail("shuttle", "a member admitted earlier was paid for again");
                 EndShuttleVisit(g, map);
@@ -969,5 +1052,22 @@ namespace RimPrison
     public static class Patch_InmateUtility_TryReassignBed_CustodyBeds
     {
         public static bool Prefix() => !(AutoTest.Active && AutoTest.CustodyBedsHeld);
+    }
+
+    /// <summary>
+    /// Autotest: while the custody shuttle check holds the beds it gave back (<see cref="AutoTest.CustodyClaimsRefused"/>), no pawn is given one by any way (the hourly reassignment is held already; a lie-down, a move
+    /// to a better cell, a punishment's end are the others) but a member of the cohort still waiting for their place, as the roster brings them in. The refusal is logged with who asked and how.
+    /// </summary>
+    [HarmonyLib.HarmonyPatch(typeof(Pawn_Ownership), nameof(Pawn_Ownership.ClaimBedIfNonMedical))]
+    [TestOnly]
+    public static class Patch_Pawn_Ownership_ClaimBed_CustodyBeds
+    {
+        public static bool Prefix(Building_Bed newBed, Pawn ___pawn, ref bool __result)
+        {
+            if (!AutoTest.Active || !AutoTest.CustodyClaimsRefused || CustodyContracts.Holds(___pawn)) return true;
+            AutoTest.CustodyClaimRefused(___pawn, newBed);
+            __result = false;
+            return false;
+        }
     }
 }

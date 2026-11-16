@@ -17,7 +17,7 @@ namespace RimPrison
 
     /// <summary>
     /// Staff go home: when their shift ends (their timetable says sleep) they walk out of the gate and leave the map,
-    /// and they come back through it rested, fed and in better spirits when the next shift starts. Suspended staff stay
+    /// and they come back through it rested, fed and in better spirits (and healed by the time away, see <see cref="HomeHealing"/>) when the next shift starts. Suspended staff stay
     /// home. Handlers take their dog. At least one member of staff always stays on site.
     /// </summary>
     public static class StaffCommute
@@ -208,6 +208,9 @@ namespace RimPrison
             return others >= 1 ? GoHomeJob(p) : null;
         }
 
+        /// <summary>For the checks: no way in is found, as when the map has no entry cell (put back by the check's rollback).</summary>
+        internal static bool ForceNoEntry;
+
         /// <summary>Reached the edge of the map: off home (out of the map, held by the prison until they return).</summary>
         public static void Leave(Pawn p)
         {
@@ -220,26 +223,42 @@ namespace RimPrison
                 game.home.TryAdd(dog);
             }
             p.DeSpawn();
-            game.home.TryAdd(p);
+            // (The time they are away from: only a departure that got them home starts it, see Arrive.)
+            if (game.home.TryAdd(p)) sc.homeSinceTick = Find.TickManager.TicksGame;
             StaffCareers.InvalidateLeads();
             game.stats.staffWentHome++;
             if (AutoTest.Active) RPLog.Message($"[commute] {p.LabelShort} went home ({sc.role.defName}, {(sc.nightShift ? "night" : "day")} shift)");
         }
 
-        /// <summary>Back through the gate for their shift, with their dog; a night at home put them right.</summary>
-        private static void Arrive(Pawn p, CompStaff sc, Map map, PrisonGame game)
+        /// <summary>
+        /// Back through the gate for their shift, with their dog; a night at home put them right: rested, fed, in better spirits, and healed for the time they were away (<see cref="HomeHealing"/>; the dog's too).
+        /// A way in that is not found changes nothing (the time away is read and reset only past it, so it is not given twice). (Internal for the checks.)
+        /// </summary>
+        internal static void Arrive(Pawn p, CompStaff sc, Map map, PrisonGame game)
         {
-            if (!RCellFinder.TryFindRandomPawnEntryCell(out IntVec3 entry, map, CellFinder.EdgeRoadChance_Always)) return;
+            if (ForceNoEntry || !RCellFinder.TryFindRandomPawnEntryCell(out IntVec3 entry, map, CellFinder.EdgeRoadChance_Always)) return;
+            int away = HomeHealing.AwayTicks(sc.homeSinceTick, Find.TickManager.TicksGame);
+            sc.homeSinceTick = -1;
             game.home.Remove(p);
             GenSpawn.Spawn(p, entry, map);
             StaffCareers.InvalidateLeads();
+            // (The dog is healed only if it was at home: one that stayed on site was ticked all the while.)
+            Pawn homeDog = null;
             if (sc.dog is { Dead: false } dog && game.home.Contains(dog))
             {
+                homeDog = dog;
                 game.home.Remove(dog);
                 GenSpawn.Spawn(dog, CellFinder.StandableCellNear(entry, map, 2f), map);
             }
             if (!p.IsFreeColonist) ReturnedNotStaff++;
             if (AutoTest.Active) RPLog.Message($"[commute] {p.LabelShort} came in for the shift (free colonist: {p.IsFreeColonist})");
+            // (Before the food is topped up: one who left starving heals nothing at home. No time away, none given: an old save, or one that got home another way.)
+            if (away > 0)
+            {
+                HomeHealing.Result healed = HomeHealing.Apply(p, away);
+                if (homeDog is { Dead: false, Spawned: true }) HomeHealing.Apply(homeDog, away);
+                if (AutoTest.Active) RPLog.Message($"[commute] {p.LabelShort} healed at home for {away / (float)GenDate.TicksPerHour:F1} h: {healed.injuryHealed:F2} off the injuries in {healed.steps} steps, {healed.removed} gone");
+            }
             if (p.needs?.rest != null) p.needs.rest.CurLevel = 1f;
             if (sc.leaveUntilTick >= 0 && !StaffLives.OnLeave(sc))
             {

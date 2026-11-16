@@ -215,43 +215,55 @@ namespace RimPrison
 
         public override Job TryGiveJob(Pawn inmate, PrisonMap pm)
         {
-            List<IntVec3> garden = pm.zones.CellsOf(RPLaborDefOf.RP_Garden);
-            if (garden.Count == 0) return null;
+            // Harvest first, then sow.
+            return GrowerJob(inmate, pm, RPLaborDefOf.RP_Garden, sowing: false) ?? GrowerJob(inmate, pm, RPLaborDefOf.RP_Garden, sowing: true);
+        }
+
+        /// <summary>
+        /// The vanilla grower work for a growing zone inside a prison zone (the garden's, or the outside work zone's): a harvest (<paramref name="sowing"/> false) or what a sow asks for (the sowing itself, the cut of a plant
+        /// in its way, the haul of an item in its way). Samples the zone's cells rather than scanning them all, unless <paramref name="every"/> (is there one at all: every cell, in order). <paramref name="accept"/>: the job is not given unless it says so (the outside work wants every target in the open).
+        /// </summary>
+        internal static Job GrowerJob(Pawn inmate, PrisonMap pm, PrisonZoneDef prisonZone, bool sowing, System.Func<Job, bool> accept = null, bool every = false)
+        {
+            List<IntVec3> cells = pm.zones.CellsOf(prisonZone);
+            if (cells.Count == 0) return null;
             Map map = inmate.Map;
-            // Sample rather than scan everything: harvest first, then sow.
-            for (int pass = 0; pass < 2; pass++)
-                for (int i = 0; i < 40; i++)
+            for (int i = 0, tries = every ? cells.Count : 40; i < tries; i++)
+            {
+                IntVec3 c = every ? cells[i] : cells.RandomElement();
+                if (c.GetZone(map) is not Zone_Growing zone || zone.ContainsStaticFire) continue;
+                if (sowing && !zone.allowSow) continue;
+                Job job;
+                WantedPlant() = zone.GetPlantDefToGrow();
+                try
                 {
-                    IntVec3 c = garden.RandomElement();
-                    if (c.GetZone(map) is not Zone_Growing zone || zone.ContainsStaticFire) continue;
-                    if (pass == 1 && !zone.allowSow) continue;
-                    Job job;
-                    WantedPlant() = zone.GetPlantDefToGrow();
-                    try
-                    {
-                        job = pass == 0 ? (Harvest.HasJobOnCell(inmate, c) ? Harvest.JobOnCell(inmate, c) : null) : Sow.JobOnCell(inmate, c);
-                    }
-                    finally
-                    {
-                        WantedPlant() = null;
-                    }
-                    if (job == null) continue;
-                    // Harvest jobs queue nearby plants of the same crop: keep only the garden's.
-                    if (job.targetQueueA != null)
-                    {
-                        job.targetQueueA.RemoveAll(t => pm.zones.ZoneAt(t.Cell) != RPLaborDefOf.RP_Garden);
-                        if (job.def == JobDefOf.Harvest && job.targetQueueA.Count == 0 && !job.targetA.IsValid) continue;
-                    }
-                    return job;
+                    job = !sowing ? (Harvest.HasJobOnCell(inmate, c) ? Harvest.JobOnCell(inmate, c) : null) : Sow.JobOnCell(inmate, c);
                 }
+                finally
+                {
+                    WantedPlant() = null;
+                }
+                if (job == null) continue;
+                // Harvest jobs queue nearby plants of the same crop: keep only the zone's.
+                if (job.targetQueueA != null)
+                {
+                    job.targetQueueA.RemoveAll(t => pm.zones.ZoneAt(t.Cell) != prisonZone);
+                    if (job.def == JobDefOf.Harvest && job.targetQueueA.Count == 0 && !job.targetA.IsValid) continue;
+                }
+                if (accept != null && !accept(job)) continue;
+                return job;
+            }
             return null;
         }
 
         /// <summary>Hourly: whatever inmates harvest is dropped forbidden (vanilla, non-colonist harvester), often just
         /// outside the garden: release items in and around it.</summary>
-        public static void ReleaseProduce(Map map, PrisonMap pm)
+        public static void ReleaseProduce(Map map, PrisonMap pm) => ReleaseAround(map, pm, RPLaborDefOf.RP_Garden, null);
+
+        /// <summary>Releases the forbidden items on the zone's cells and the ones next to them (every item, or the ones <paramref name="which"/> says).</summary>
+        internal static void ReleaseAround(Map map, PrisonMap pm, PrisonZoneDef prisonZone, System.Func<Thing, bool> which)
         {
-            List<IntVec3> garden = pm.zones.CellsOf(RPLaborDefOf.RP_Garden);
+            List<IntVec3> garden = pm.zones.CellsOf(prisonZone);
             if (garden.Count == 0) return;
             var seen = new HashSet<IntVec3>();
             foreach (IntVec3 g in garden)
@@ -260,9 +272,98 @@ namespace RimPrison
                     if (!c.InBounds(map) || !seen.Add(c)) continue;
                     List<Thing> things = c.GetThingList(map);
                     for (int i = 0; i < things.Count; i++)
-                        if (things[i].def.category == ThingCategory.Item && things[i].IsForbidden(Faction.OfPlayer)) things[i].SetForbidden(false, warnOnFail: false);
+                        if (things[i].def.category == ThingCategory.Item && things[i].IsForbidden(Faction.OfPlayer) && (which == null || which(things[i]))) things[i].SetForbidden(false, warnOnFail: false);
                 }
         }
+    }
+
+    /// <summary>
+    /// The trusties' outside work (see <see cref="Trusties"/>): cut the wild trees and brush in the outside work zone, and harvest and sow the vanilla growing zones inside it. Given only to a trusty while the party is out, and
+    /// only for targets that lie in the zone and in the open. What is cut and harvested is the prison's (<see cref="ReleaseProduce"/>).
+    /// </summary>
+    public class InmateJobWorker_Outside : InmateJobWorker
+    {
+        /// <summary>One place per <see cref="Trusties.CellsPerPlace"/> cells of the zone that have work to do: a growing zone, or a wild plant to cut.</summary>
+        public override int Capacity(Map map)
+        {
+            PrisonMap pm = PrisonMap.Of(map);
+            if (pm == null) return 0;
+            int n = 0;
+            foreach (IntVec3 c in pm.zones.CellsOf(RPTrustyDefOf.RP_OutsideWork))
+                if (Trusties.InZone(pm, c) && (c.GetZone(map) is Zone_Growing || WildTarget(c, map) != null)) n++;
+            return n == 0 ? 0 : Mathf.Max(1, n / Trusties.CellsPerPlace);
+        }
+
+        /// <summary>
+        /// The party is out and the trusty has the work: they are at it, or the zone has some to give them now (<see cref="FindJob"/> over every cell: a ripe harvest, a cell to sow, a wild plant to cut; a strip with everything sown and
+        /// growing, or nothing left to cut, gives none, and they go to the class). A class that would take the work slot leaves them be (see <see cref="ProgramSystem.KeepsToTheirJob"/>): the hourly class pass queues every attendee for a
+        /// regime interrupt, which ends a cut, and a cut that is ended starts again from nothing, so a tree that takes more than an hour was never felled. A course the warden referred them to is the warden's word: the class pass leaves
+        /// that course to take them (and no other).
+        /// </summary>
+        public override bool HasWork(Pawn inmate) =>
+            inmate.Inmate() is { IsTrusty: true } && inmate.Spawned && PrisonMap.Of(inmate.Map) is { } pm && pm.party.isOut && (Trusties.IsWorkingOutside(inmate) || FindJob(inmate, pm, every: true) != null);
+
+        public override Job TryGiveJob(Pawn inmate, PrisonMap pm) => inmate.Inmate() is { IsTrusty: true } && pm.party.isOut ? FindJob(inmate, pm, every: false) : null;
+
+        /// <summary>
+        /// The work the zone has for this trusty: the job <see cref="TryGiveJob"/> gives (sampling the zone's cells), or, <paramref name="every"/>, whether there is any (every cell looked at, so a miss is no chance of the sample). The one
+        /// test of what is work, for the two, so that a trusty is never told there is work and then given none.
+        /// </summary>
+        private static Job FindJob(Pawn inmate, PrisonMap pm, bool every)
+        {
+            List<IntVec3> cells = pm.zones.CellsOf(RPTrustyDefOf.RP_OutsideWork);
+            if (cells.Count == 0) return null;
+            bool Accept(Job job) => Trusties.JobInZone(job, pm) && FirstTarget(job) is { IsValid: true } first && inmate.CanReach(first, PathEndMode.Touch, Danger.Some);
+            // Harvest first, then the wild plants, then sow.
+            return InmateJobWorker_Garden.GrowerJob(inmate, pm, RPTrustyDefOf.RP_OutsideWork, sowing: false, Accept, every) ?? CutJob(inmate, pm, cells, Accept, every) ?? InmateJobWorker_Garden.GrowerJob(inmate, pm, RPTrustyDefOf.RP_OutsideWork, sowing: true, Accept, every);
+        }
+
+        /// <summary>Where the job goes first: its target, or the first of the queue (a harvest has no target until it starts).</summary>
+        private static LocalTargetInfo FirstTarget(Job job) => job.targetA.IsValid ? job.targetA : job.targetQueueA is { Count: > 0 } queue ? queue[0] : LocalTargetInfo.Invalid;
+
+        /// <summary>The cost of walking over a plant that makes it brush (bushes, brambles, tall grass): short grass and the flowers are no work.</summary>
+        private const int BrushPathCost = 14;
+
+        /// <summary>A wild tree or brush on the cell (a plant that is no crop and not in a growing zone), or null.</summary>
+        internal static Plant WildTarget(IntVec3 c, Map map)
+        {
+            if (c.GetPlant(map) is not { Spawned: true, Destroyed: false } plant || c.GetZone(map) is Zone_Growing) return null;
+            return plant.def.plant.IsTree || !plant.def.plant.Sowable && plant.def.pathCost >= BrushPathCost ? plant : null;
+        }
+
+        /// <summary>Cuts a wild plant in the zone: a stretch of the zone's cells from a random start (the zone is no larger than a few hundred cells; <paramref name="every"/>: all of them), the first plant that is theirs to cut.</summary>
+        private static Job CutJob(Pawn inmate, PrisonMap pm, List<IntVec3> cells, System.Func<Job, bool> accept, bool every)
+        {
+            Map map = inmate.Map;
+            int start = every ? 0 : Rand.Range(0, cells.Count);
+            for (int i = 0; i < cells.Count && (every || i < 150); i++)
+            {
+                IntVec3 c = cells[(start + i) % cells.Count];
+                if (WildTarget(c, map) is not { } plant || plant.IsBurning() || !inmate.CanReserve(plant) || !PlantUtility.PawnWillingToCutPlant_Job(plant, inmate) || PlantUtility.TreeMarkedForExtraction(plant)) continue;
+                if (plant.TryGetComp<CompPlantPreventCutting>() is { PreventCutting: true }) continue;
+                Job job = JobMaker.MakeJob(JobDefOf.CutPlant, plant);
+                if (accept(job)) return job;
+            }
+            return null;
+        }
+
+        private static HashSet<ThingDef> produce;
+
+        /// <summary>What a plant yields (wood, the crops): the only things the zone gives the prison. Not any other item that happens to lie forbidden near it.</summary>
+        private static HashSet<ThingDef> Produce
+        {
+            get
+            {
+                if (produce != null) return produce;
+                produce = new HashSet<ThingDef>();
+                foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
+                    if (d.plant?.harvestedThingDef is { } yield) produce.Add(yield);
+                return produce;
+            }
+        }
+
+        /// <summary>Hourly: the wood cut and the crops harvested in the zone are dropped forbidden, as the garden's are: released, those only (never another forbidden item the warden left there).</summary>
+        public static void ReleaseProduce(Map map, PrisonMap pm) => InmateJobWorker_Garden.ReleaseAround(map, pm, RPTrustyDefOf.RP_OutsideWork, t => Produce.Contains(t.def));
     }
 
     /// <summary>Cleaning duty: mop the filth in inmate areas.</summary>
@@ -308,6 +409,13 @@ namespace RimPrison
         {
             if (comp.job == null) return null;
             if (comp.job.requiredProgram != null && !comp.passedPrograms.Contains(comp.job.requiredProgram)) return null;
+            // The outside job is a trusty's, and only while the party is out: no work and no wandering in the outside zone for anyone else, and none in the hours the party is called in (the slot falls back to lockup).
+            if (comp.job == RPTrustyDefOf.RP_JobOutside)
+            {
+                if (!comp.IsTrusty || !pm.party.isOut) return null;
+                // (The pass is theirs from the moment the work starts, not at the next look of the 250 ticks.)
+                comp.UpdateWorkPass();
+            }
             // The room's work is held for a re-count or a search of its crew (see ToolCount): they wait in it.
             if (ToolCount.Held(comp.job.zone)) return WanderInZones(pawn, pm, JobZones(comp.job));
             return comp.job.Worker.TryGiveJob(pawn, pm) ?? WanderInZones(pawn, pm, JobZones(comp.job));
@@ -374,6 +482,8 @@ namespace RimPrison
         /// <summary>Doing their prison job right now (paid, counts as hours worked).</summary>
         public static bool IsWorking(Pawn p, CompInmate c)
         {
+            // The outside work counts only on a target in the zone: a cut, a sow, a harvest or a haul that clears a sow's way.
+            if (c.job == RPTrustyDefOf.RP_JobOutside) return Trusties.IsWorkingOutside(p);
             // Gardening also means cutting weeds and moving things out of the way.
             if (c.job?.zone == RPLaborDefOf.RP_Garden && (p.CurJobDef == JobDefOf.CutPlant || p.CurJobDef == JobDefOf.HaulToCell)) return true;
             if (workJobs.Count == 0)
@@ -394,7 +504,9 @@ namespace RimPrison
         /// <summary>Hands out free job slots to eligible inmates; removes jobs from those no longer eligible.</summary>
         public static void AssignJobs(Map map)
         {
-            List<InmateJobDef> jobs = DefDatabase<InmateJobDef>.AllDefsListForReading;
+            // (The outside job first: only a trusty may hold it, and one with no job would else be taken by the first job with a place free.)
+            var jobs = new List<InmateJobDef>(DefDatabase<InmateJobDef>.AllDefsListForReading);
+            if (jobs.Remove(RPTrustyDefOf.RP_JobOutside)) jobs.Insert(0, RPTrustyDefOf.RP_JobOutside);
             var used = new Dictionary<InmateJobDef, int>();
             IReadOnlyList<Pawn> inmates = map.mapPawns.PrisonersOfColonySpawned;
             // The jobs the inmates hold, by thing id, when the warden keeps some of them apart: two of a pair do not work in one room (the workshop, the kitchen, the laundry).
@@ -405,9 +517,11 @@ namespace RimPrison
                 if (c?.job == null) continue;
                 // A job that asks for a program they have not passed does nothing (the regime gives no work) and would hold a slot from a trained inmate, locked by the warden or not (an old save's menu choice).
                 bool untrained = c.job.requiredProgram != null && !c.passedPrograms.Contains(c.job.requiredProgram);
-                if (untrained || !Eligible(c, c.job) && !c.jobLocked)
+                // The outside job is a trusty's, locked by the warden or not: one who holds it without the status loses it.
+                bool notTrusty = !Trusties.MayHold(c, c.job);
+                if (untrained || notTrusty || !Eligible(c, c.job) && !c.jobLocked)
                 {
-                    if (untrained) c.jobLocked = false;
+                    if (untrained || notTrusty) c.jobLocked = false;
                     c.job = null;
                     continue;
                 }
@@ -425,14 +539,22 @@ namespace RimPrison
                 used.TryGetValue(job, out int n);
                 int cap = job.Worker.Capacity(map);
                 if (n >= cap) continue;
-                foreach (Pawn p in inmates)
-                {
-                    CompInmate c = p.Inmate();
-                    if (c == null || c.job != null || c.jobLocked || !Eligible(c, job) || held != null && KeepApart.PartnerHolds(p, job.zone, held)) continue;
-                    c.job = job;
-                    if (held != null) held[p.thingIDNumber] = job;
-                    if (++n >= cap) break;
-                }
+                // The outside job goes first to trusties with no job, then moves ones whose job the warden did not lock out of it: a trusty nearly always has a job already, and the status would do nothing else.
+                bool outside = job == RPTrustyDefOf.RP_JobOutside;
+                for (int round = 0; round < (outside ? 2 : 1) && n < cap; round++)
+                    foreach (Pawn p in inmates)
+                    {
+                        CompInmate c = p.Inmate();
+                        if (c == null || c.jobLocked || c.job == job || (round == 0 ? c.job != null : c.job == null) || !Eligible(c, job) || held != null && KeepApart.PartnerHolds(p, job.zone, held)) continue;
+                        if (c.job != null)
+                        {
+                            used[c.job]--;
+                            held?.Remove(p.thingIDNumber);
+                        }
+                        c.job = job;
+                        if (held != null) held[p.thingIDNumber] = job;
+                        if (++n >= cap) break;
+                    }
             }
         }
 
@@ -491,6 +613,8 @@ namespace RimPrison
         public static bool Eligible(CompInmate c, InmateJobDef job, bool forProgram = false)
         {
             if (c.security == null || c.tension > job.maxTension || c.forcedActivity != null || !forProgram && FoodScare.StoodDown(job)) return false;
+            // (Only a trusty holds the outside job, whoever asks: the daily pass, the warden's menu, a talent, a gang deal.)
+            if (!Trusties.MayHold(c, job)) return false;
             if (!forProgram && job.requiredProgram != null && !c.passedPrograms.Contains(job.requiredProgram)) return false;
             return job.allowedSecurity.Count == 0 || job.allowedSecurity.Contains(c.security);
         }

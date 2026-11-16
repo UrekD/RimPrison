@@ -140,7 +140,7 @@ namespace RimPrison
             Guarded("compliance counts the regime's own places", map, r =>
             {
                 PrisonMap pm = PrisonMap.Of(map);
-                InmateJobDef job = DefDatabase<InmateJobDef>.AllDefsListForReading.FirstOrDefault(j => j.zone != null && j.requiredProgram == null && pm.zones.Any(j.zone));
+                InmateJobDef job = DefDatabase<InmateJobDef>.AllDefsListForReading.FirstOrDefault(j => j.zone != null && j.requiredProgram == null && j != RPTrustyDefOf.RP_JobOutside && pm.zones.Any(j.zone));
                 if (job == null) { RPLog.Message("[RimPrison:test] compliance check: no job with a zone in this prison, skipped"); return; }
                 Pawn p = Throwaway(map, r);
                 CompInmate c = p.Inmate();

@@ -61,6 +61,8 @@ namespace RimPrison
                 if (tries < 29) p.Destroy(DestroyMode.Vanish);
             }
             p.Name = new NameSingle("Zvoc" + name);
+            // (Held against the wardens' take-to-bed work and the routine frisk, as the drug-test scenes' inmates are: a warden carried the tailor off in the middle of a cycle, "job Carried", s28neg2.)
+            HoldInmate(p, r);
             CompInmate c = p.Inmate();
             (c.tension, c.suppressed, c.referral, c.job, c.jobWaiting, c.hoursWorked, c.programsPassed) = (0f, 0f, null, null, false, 0, 0);
             // (Rested and fed: a tired inmate goes to bed in the middle of a check that runs real ticks.)
@@ -492,7 +494,7 @@ namespace RimPrison
             ShuttleTicks(() => g.laundry.sewn > sewn, 1800);
             if (g.laundry.sewn == sewn)
             {
-                VocFail(check, $"a cycle at the bench sewed nothing in 1800 ticks (job {p.CurJobDef?.defName} at {p.Position}, bench {job.targetA.Thing?.Position})");
+                VocFail(check, $"a cycle at the bench sewed nothing in 1800 ticks (job {p.CurJobDef?.defName} at {p.Position}, bench {job.targetA.Thing?.Position}, carried by {p.CarriedBy?.LabelShort ?? "nobody"} on {p.CarriedBy?.CurJobDef?.defName ?? "no job"}, held {DrugTestInmateHeld(p)})");
                 return false;
             }
             return true;

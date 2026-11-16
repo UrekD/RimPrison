@@ -4,6 +4,7 @@
 # Usage: tools/uitour.sh [penitentiary]   (the tour in the state penitentiary instead of the inherited facility; pictures in .work/shots-penitentiary/)
 # RIMPRISON_TOUR=handover tools/uitour.sh [penitentiary]: only the old warden's note (the welcome letter of a prison handed over with its past), the Intel screen, the chronicle and the overview.
 # RIMPRISON_TOUR=evacuation tools/uitour.sh: only the Deployment screen's evacuation block - two assembly points marked, then a drill running with the accountability list.
+# RIMPRISON_TOUR=trusty tools/uitour.sh: only the trusties - a gate made in the compound wall, an outside work zone, a trusty and a guard on the strip with the party out (all put back), the Deployment block, the map, the Inmates tab's chip and the grant menu.
 # For pictures of the prison itself (the overview, a cell block, the canteen at lunch, ...) see tools/showcase-shots.sh.
 set -uo pipefail
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)

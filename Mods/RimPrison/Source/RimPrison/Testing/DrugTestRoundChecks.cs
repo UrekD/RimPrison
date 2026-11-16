@@ -61,12 +61,19 @@ namespace RimPrison
         /// </summary>
         internal static bool DrugTestKitHeld(Thing t) => dtDoctors.Count > 0 && t.def == DrugTesting.Kit;
 
+        /// <summary>An inmate of a scene kept from the wardens' take-to-bed work and routine frisk for as long as the scene stands (see <see cref="dtInmates"/>): the tool count's worker, the break's crew.</summary>
+        private static void HoldInmate(Pawn p, Rollback r)
+        {
+            if (dtInmates.Contains(p)) return;
+            dtInmates.Add(p);
+            r.Add(() => dtInmates.Remove(p));
+        }
+
         /// <summary>A new inmate of the scene, kept from the wardens' take-to-bed work for as long as the scene stands.</summary>
         private static Pawn DtInmate(RingScene s, string name)
         {
             Pawn p = s.Inmate(name);
-            dtInmates.Add(p);
-            s.r.Add(() => dtInmates.Remove(p));
+            HoldInmate(p, s.r);
             return p;
         }
 
@@ -136,6 +143,9 @@ namespace RimPrison
             DrugTesting.Hourly(map, t.g);
             return t;
         }
+
+        /// <summary>The doctor has a drug test kit in their hands (the one thing a round puts there).</summary>
+        private static bool DtCarriesKit(Pawn doctor) => doctor.carryTracker?.CarriedThing is { } held && held.def == DrugTesting.Kit;
 
         /// <summary>The kits in the scene: on the ground (all of them on the map) and in the doctors' hands.</summary>
         private static int DtKits(DtRound t) =>
@@ -520,9 +530,15 @@ namespace RimPrison
                     DtFail($"{what}: a result was read (the file says {c.lastTestResult}, tests {tests0} -> {g.stats.drugTests}, records {misconducts0} -> {c.records.Count})");
                 if (g.drugTestLog.claims.Count != 0) DtFail($"{what}: the round is still taken on ({g.drugTestLog.claims.Count})");
                 // (The round's finish puts down whatever is in the doctor's hands, the kit it picked up or another: a pawn's own tick comes every 15 ticks off camera, so the doctor has a few ticks after the round, not none, to be rid of it.)
-                if (doctor.carryTracker.CarriedThing != null) ShuttleTicks(() => doctor.carryTracker.CarriedThing == null, 60);
+                // (Only a kit is the round's: the doctor's next job can be a haul of something else lying about - a drug stack in the shift-ended case, "still carrying WakeUp28412 ... job HaulToCell", stability28-s28d - which
+                // the round neither picked up nor owes anything for. Another thing in the hands is told, not failed.)
+                if (DtCarriesKit(doctor)) ShuttleTicks(() => !DtCarriesKit(doctor), 60);
                 if (doctor.carryTracker.CarriedThing is { } held)
-                    DtFail($"{what}: the doctor is still carrying {held} (stack {held.stackCount}, destroyed {held.Destroyed}, spawned {held.Spawned}, job {doctor.CurJob?.def.defName}, at {doctor.Position})");
+                {
+                    string carried = $"{held} (stack {held.stackCount}, destroyed {held.Destroyed}, spawned {held.Spawned}, job {doctor.CurJob?.def.defName}, at {doctor.Position})";
+                    if (DtCarriesKit(doctor)) DtFail($"{what}: the doctor is still carrying {carried}");
+                    else RPLog.Message($"[RimPrison:test] drug testing: {what}: the doctor went on to another job and carries {carried}, which is not the round's kit");
+                }
                 if (DtKits(t) != kits0 - kitsLost) DtFail($"{what}: the kits are {DtKits(t)} ({kits0} before, {kitsLost} lost with it)");
                 if (DrugTesting.OwnsWait(doctor, inmate) || inmate.CurJob?.def == RPDrugTestDefOf.RP_DrugTestWait) DtFail($"{what}: the inmate is still waiting for the doctor");
                 if (replacementStays && inmate.CurJob?.def != JobDefOf.Wait_MaintainPosture) DtFail($"{what}: the job the inmate took up instead was cut (now {inmate.CurJob?.def.defName})");

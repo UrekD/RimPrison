@@ -134,7 +134,8 @@ namespace RimPrison
         public static bool IsInside(Pawn p)
         {
             if (p.Inmate() is { processed: true }) return true;
-            if (PrisonMap.Of(p.Map)?.zones.ZoneAt(p.Position) != null) return true;
+            // (The outside work zone is ground beyond the wall: no inside of the prison.)
+            if (PrisonMap.Of(p.Map)?.zones.ZoneAt(p.Position) is { outsideWork: false }) return true;
             return p.GetDistrict() is { TouchesMapEdge: false };
         }
 

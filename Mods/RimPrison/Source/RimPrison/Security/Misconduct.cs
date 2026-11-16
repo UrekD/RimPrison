@@ -478,6 +478,8 @@ namespace RimPrison
             }
             // (A fight or an assault that was seen, by a member of a gang that has a deal with the warden, is a breach of it.)
             if (seen && def.assault) GangDeals.Notify_Breach(p, c);
+            // (A trusty who is seen in serious trouble is one no longer: not for a mark, which is the count's out-of-place line and no act of theirs. An escape's own start takes the status, unseen or not.)
+            if (seen && def.severity >= 2 && !def.mark) Trusties.Revoke(p, "RP_TrustyWhy_Misconduct".Translate(def.label), silent: false);
             // (The policy decides, also for a misconduct whose default is no punishment but the warden set hours.)
             if (seen) Sanctions.Apply(p, c, def, evidence);
             if (!secret && (def.letter || def.severity >= 3))

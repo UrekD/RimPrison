@@ -241,8 +241,8 @@ namespace RimPrison
             pm.rumours.Add(r);
             Prune(pm, now);
             Story.Record(RPChronicleDefOf.RP_Chr_Security, 1, "RP_Chr_RumourStarted".Translate(WingName(level), Text(r)));
-            // (A false one: someone of the wing who knows better asks to see the warden about the talk, see WardenAsks.)
-            if (!isTrue) WardenAsks.Notify_FalseRumour(pm.map, level, r.originId);
+            // (Someone of the wing may ask to see the warden about the talk, true or false alike, see WardenAsks.)
+            WardenAsks.Notify_Rumour(pm.map, r);
             return r;
         }
 

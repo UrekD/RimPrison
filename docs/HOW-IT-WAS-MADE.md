@@ -61,11 +61,10 @@ and feature checks. It fails on any error in the log that is not a known vanilla
 A run without the expansions (Core, Harmony and this mod) was checked too.
 
 **Census runs.** To measure flakiness, batches of about six runs (two of the events plan, saveload, normal, stress,
-showcase) ran on the main line of development (numbered up to 87), and **26 stability rounds** fixed what they
+showcase) ran on the main line of development (numbered up to 89), and **32 stability rounds** fixed what they
 turned up: flaky checks, and the product bugs behind some of them. Of the last batches, 6, 6, 3, 5, 5 and 5 of 6 runs
-passed. The round after the 3 of 6 fixed its cause. The showcase prison's freezer running warm has not come back, and
-its check now reports the cause if it does; the last failure (an inmate restless for longer than a day) is a known
-timing-dependent check.
+passed, then 4 and 5 of 6 after the trusties landed. The round after the 3 of 6 fixed its cause. The showcase prison's
+freezer running warm came back once and its check now names the cause (the cooler had no power), which is the next fix.
 
 **UI tour** (`tools/uitour.sh`, `tools/showcase-shots.sh`): a windowed run under Xvfb with software Vulkan that opens
 every screen, or walks the prison, and takes a screenshot of each. The screenshots in the README come from it.
@@ -76,8 +75,8 @@ every screen, or walks the prison, and takes a screenshot of each. The screensho
   or on a long-running save. Balance (money, tension, how often things happen) is tuned from automated runs only.
 - **Flaky checks.** Some feature checks still fail now and then in the harness (a few timing-dependent ones are
   known); not every failure has been traced to a cause.
-- **Unfinished work.** The planned escape is in; the outside work party (trusties) is still being built and is not
-  in this version.
+- **Unfinished work.** The planned escape and the outside work party (trusties) are in; the next items of the latest
+  gap analysis (an injured officer's leave and return, a staffed control room, the last day on death row) are not.
 - **Other mods.** Only Harmony was loaded with it. No modded save was tried.
 - **Multiplayer.** Not considered.
 

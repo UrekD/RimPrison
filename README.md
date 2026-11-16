@@ -166,6 +166,19 @@ duty watches it.
   period and never a name. Ask for a supervised re-count (the next period starts an hour late and nothing goes missing
   in it), a search of the crew (it starts two hours late), or carry on short (the room's output is down until you
   replace the tools from Intel, or one turns up in a search, a stash or a tunnel and says where it came from).
+- **Trusties and the outside work party:** a minimum-security inmate with a high conduct grade and a clean record can be
+  made a trusty. Paint an outside work zone on land you own, in the open beyond the wall, up to an Auto gate door, and
+  trusties cut trees and brush and tend growing zones there in their work hours for the state's grounds contract; what
+  they cut and harvest is the prison's. The party goes out only while enough guards stand near the zone (one for every
+  two to four trusties, as you set it in the Deployment tab; a guard post near it counts while a guard is on it or on the way), and a riot, a raid, a lockdown
+  of the minimum wing, an evacuation or an escape calls it back in. A walk-off is a real risk and one nobody saw is
+  found by the count; serious misconduct, any escape or a move off minimum takes the status away. Lock the gate with a trusty
+  outside and nobody can let them in: you are told once a day.
+
+  ![Deployment, Trusties: the party out with one trusty on the job and one guard near, the gate and the trusty outside](docs/screenshots/trusty-party.jpg)
+
+  ![A trusty on the outside work strip beyond the wall, past the gate of the minimum wing](docs/screenshots/trusty-strip.jpg)
+
 - **Smuggling rings:** behind the contraband are rings made of a dealer, couriers, a relative outside and an officer on
   the take. You find them link by link, then bust them, wait or turn a member.
 - **Men and women:** they are kept apart in the cells (a mixed cell counts as a clash, and the daily review splits it),
@@ -279,7 +292,9 @@ duty watches it.
   round lasts three days and brings up to three applicants per post, the same ones however often you look. An agency
   hires somebody at once for twice the fee.
 - **Working life:** staff work shifts and commute. Their morale changes how well they work. They take training courses
-  and breaks in the staff room.
+  and breaks in the staff room. A night at home rests them and heals them: a wound closes at the pace of lying down
+  without a bed, an illness runs its course with their immunity (never to the point of death at home), and a handler's
+  dog heals with them.
 - **Trouble:** corruption, burnout and memories of danger.
 - **Kin across the wall:** now and then a new hire is the parent, child or half-sibling of an inmate, or a new
   arrival is related to someone on the staff. A letter asks whether to keep a guard away from their relative. A guard
@@ -314,11 +329,12 @@ duty watches it.
   a hearing). They are never let go or sent home, sleep in a cot of their own, and are the one a riot goes for.
 - **Asks to see the warden:** inmates with a reason ask to see you - a trial witness who was got at and trusts you more
   than the guards, a debtor after a beating, a member of a gang you know who has doubts, a hunger striker, a step-down
-  candidate in supermax, a cell request, someone on a wing where a false rumour is going round. The prison panel counts
+  candidate in supermax, a cell request, someone on a wing where a rumour is going round (true or false: a request tells
+  you nothing of which). The prison panel counts
   them ("3 ask to see you"); Intel lists each with the reason, the hours left (a request lapses after a day) and "Go" (a
   word with them, or the walk of their wing for a rumour). Answered in person it does more than a plain word or walk -
   more trust and calm by a word, twice the trust on a walk - and the reason's own: the witness tells you they were
-  threatened, the doubter is heard out as the chaplain would, the rumour's source is named and shown false.
+  threatened, the doubter is heard out as the chaplain would, the rumour's source is named and whether it holds.
 
 ![The warden's three orders, and a word with an inmate](docs/screenshots/warden-word.jpg)
 
@@ -396,7 +412,8 @@ Hidden gangs, debts and rings stay hidden until then.
   the covert economy alike.
 - **Guard posts:** place a guard post (Architect, Prison) and give it hours ("12:00 to 14:00" for the canteen at lunch, or
   all day) and, if you like, a named guard. A guard on shift who is not on a tower stands there and watches the spot; a
-  fight, an escort or a search still comes first, and the state's security chief suspends the posts while in charge.
+  fight, an escort or a search still comes first, and the state's security chief suspends the posts while in charge. The
+  guard stays as long as the post is theirs: they go at once when the post's hours end or the guard you named is free.
   Each hot patch on the Deployment tab has a "post a guard here" button.
 - **A care detail:** on the Deployment tab, keep up to three guards for care. They are picked each hour from the guards on
   duty (those already feeding or carrying first) or named by you, and they bring the meal to the inmate shut in a cell, feed

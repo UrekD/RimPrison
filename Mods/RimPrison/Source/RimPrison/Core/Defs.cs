@@ -19,6 +19,8 @@ namespace RimPrison
         public int uiOrder;
         /// <summary>A kind inmates share (yard, canteen, showers...): each patch of it can be kept for some security levels (see <see cref="ZoneGrid.SetKept"/>).</summary>
         public bool keepable;
+        /// <summary>Ground beyond the wall that trusties work (see <see cref="Trusties"/>): painted only in the open, on land the prison owns, and never counted as inside the prison.</summary>
+        public bool outsideWork;
         /// <summary>Things the zone needs to work; listed as problems in the zone readout when missing.</summary>
         public List<ThingDef> requiredThings = new List<ThingDef>();
 

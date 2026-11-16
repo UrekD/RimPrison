@@ -76,6 +76,13 @@ namespace RimPrison
         {
             // New arrivals (and returned fugitives) waiting at the intake spot are not escaping.
             if (p.InMentalState || p.Downed || !p.Awake() || !c.processed || c.awaitingSearch || !OpenRouteToEdge(p, out bool momentary)) return;
+            // A trusty out on the work, or one on the way back with the outside pass, is not the breach rule's inmate: they may walk off, at the odds of their own (see Trusties.WalkOffChance). A trusty
+            // farther out than the zone, and anyone else, is under the old rule below.
+            if (Trusties.Exempt(p, c))
+            {
+                Trusties.RollWalkOff(p, c);
+                return;
+            }
             // Already outside the walls (chased someone out in a rage, wandered through a breach): they run.
             if (p.GetDistrict()?.TouchesMapEdge == true)
             {

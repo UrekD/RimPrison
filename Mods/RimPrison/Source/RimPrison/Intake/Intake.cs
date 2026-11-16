@@ -390,6 +390,9 @@ namespace RimPrison
         /// <summary>Whether the bed's wing takes this sex (see <see cref="WingAllows"/>).</summary>
         public static bool BedAllows(Building_Bed bed, Gender gender) => WingAllows(WingOf(bed), gender);
 
+        /// <summary>For the checks: beds a scene has built and hands out itself (null outside a check that has any). They are in no list of free beds, so a real arrival or a move of a real inmate is never given one: the scene's beds are on open ground and are gone when the check ends.</summary>
+        internal static HashSet<Building_Bed> HeldForTests;
+
         private static void CollectFreeBeds(Map map, SecurityLevelDef sec, List<Building_Bed> wing, List<Building_Bed> open, Gender? gender = null)
         {
             PrisonMap pm = PrisonMap.Of(map);
@@ -411,6 +414,7 @@ namespace RimPrison
             {
                 // (The list refreshes every 250 ticks and not while paused: a bed switched off or made medical since is not free.)
                 if (!bed.Spawned || !bed.ForPrisoners || bed.Medical || PunishmentUtility.IsSolitaryBed(bed)) continue;
+                if (HeldForTests != null && HeldForTests.Contains(bed)) continue;
                 CompAssignableToPawn assign = bed.CompAssignableToPawn;
                 int taken = assign == null ? 0 : assign.AssignedPawnsForReading.Count + (held != null && held.TryGetValue(bed, out int h) ? h : 0);
                 if (assign == null || taken >= assign.TotalSlots) continue;

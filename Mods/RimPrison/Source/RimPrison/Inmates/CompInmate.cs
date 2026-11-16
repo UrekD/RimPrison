@@ -52,6 +52,12 @@ namespace RimPrison
         /// <summary>Computed on the main thread: the staff work zone this inmate may enter right now (kitchen job at
         /// work time). Read by door checks on pathfinding threads.</summary>
         public volatile PrisonZoneDef workPass;
+        /// <summary>When the warden made them a trusty (-1: they are not one, see <see cref="Trusties"/>). Cleared with the stay.</summary>
+        public int trustySinceTick = -1;
+        /// <summary>They hold the outside pass (the gate of the outside work zone opens to them, see <see cref="UpdateWorkPass"/>): saved, so a save in the middle of the way back keeps it. Cleared with the stay.</summary>
+        public bool outsidePass;
+
+        public bool IsTrusty => trustySinceTick >= 0;
         /// <summary>How unsafe they feel (0-100), and when they last asked for protective custody.</summary>
         public float fear;
         /// <summary>Persistent suppression (0-100) from punishment: fewer incidents, but no learning and slow recovery.</summary>
@@ -522,6 +528,8 @@ namespace RimPrison
             Scribe_References.Look(ref homeBed, "rpHomeBed");
             Scribe_Defs.Look(ref job, "rpJob");
             Scribe_Values.Look(ref jobLocked, "rpJobLocked");
+            Scribe_Values.Look(ref trustySinceTick, "rpTrustySince", -1);
+            Scribe_Values.Look(ref outsidePass, "rpOutsidePass");
             Scribe_Values.Look(ref hoursWorked, "rpHoursWorked");
             Scribe_Values.Look(ref lastWorkDay, "rpLastWorkDay", -1);
             Scribe_Values.Look(ref lastSearchedTick, "rpLastSearched", -999999);
@@ -593,7 +601,21 @@ namespace RimPrison
                 if (want?.def == null) want = null;
                 pastGrudges ??= new List<GrudgeRecord>();
                 pastGrudges.RemoveAll(g => g == null);
+                // (A pass held in the middle of the way back is held again - the token is: the pass itself is shut during a mental state, which a load restores without starting it, so no start clears the pass; the look after the state is over gives it back.)
+                FixOutsideJobAfterLoad();
+                workPass = outsidePass && !LoadedInMentalState() ? RPTrustyDefOf.RP_OutsideWork : null;
             }
+        }
+
+        /// <summary>The pawn is in a mental state as the save had it (read straight off the handler: the load has put it back, and nothing has started it again).</summary>
+        private bool LoadedInMentalState() => Pawn?.mindState?.mentalStateHandler?.CurState != null;
+
+        /// <summary>The outside job is a trusty's: one without the status, whatever put it there, is not given it back by a load.</summary>
+        internal void FixOutsideJobAfterLoad()
+        {
+            if (job != RPTrustyDefOf.RP_JobOutside || IsTrusty) return;
+            job = null;
+            jobLocked = false;
         }
 
         public override void CompTickInterval(int delta)
@@ -610,19 +632,7 @@ namespace RimPrison
         private void Rare()
         {
             Pawn p = Pawn;
-            // Kitchen workers may pass the work-zone door at work time, and keep the pass while still inside so they
-            // can walk out when the shift ends.
-            // Anyone standing in a staff zone may leave it (job revoked, punished, shift over); entering needs the job.
-            PrisonZoneDef pass = null;
-            PrisonZoneDef inside = PrisonMap.Of(p.Map)?.zones.ZoneAt(p.Position);
-            if (inside is { staffOnly: true } && !p.InAggroMentalState) pass = inside;
-            else if (job?.zone is { staffOnly: true } wz && !p.InMentalState && forcedActivity == null
-                     && PrisonGame.Instance.CurrentActivity(p) == RPLaborDefOf.RP_Work) pass = wz;
-            if (pass != workPass)
-            {
-                workPass = pass;
-                PrisonMap.Of(p.Map)?.Notify_WorkPassChanged(p);
-            }
+            UpdateWorkPass();
             if (forcedActivity != null && forcedUntilTick >= 0 && Find.TickManager.TicksGame >= forcedUntilTick)
                 PunishmentUtility.End(p, this);
             if (pendingPunishmentHours > 0 && p.InBed() && p.health.hediffSet.HasHediff(RPSecurityDefOf.RP_Restrained)
@@ -659,6 +669,31 @@ namespace RimPrison
             }
         }
 
+        /// <summary>
+        /// The work-zone pass they hold, worked out on the main thread (every 250 ticks, and when the outside work party goes out or is called in): kitchen workers may pass the work-zone door at work time, and keep the pass
+        /// while still inside so they can walk out when the shift ends; anyone standing in a staff zone may leave it (job revoked, punished, shift over), entering needs the job. A trusty's outside pass is a return token
+        /// (<see cref="outsidePass"/>, see <see cref="Trusties.WantsOutsideToken"/>): while they hold it out in the open it is the pass they have, whatever job they were given since (a staff job's pass waits until they are
+        /// inside), and a mental state shuts the gate to them without taking the token.
+        /// </summary>
+        public void UpdateWorkPass()
+        {
+            Pawn p = Pawn;
+            if (p == null || !p.Spawned) return;
+            PrisonMap pm = PrisonMap.Of(p.Map);
+            PrisonZoneDef pass = null;
+            PrisonZoneDef inside = pm?.zones.ZoneAt(p.Position);
+            outsidePass = pm != null && Trusties.WantsOutsideToken(p, this, pm);
+            if (inside is { staffOnly: true } && !p.InAggroMentalState) pass = inside;
+            else if (Trusties.HoldsPass(p, this)) pass = RPTrustyDefOf.RP_OutsideWork;
+            else if (job?.zone is { staffOnly: true } wz && !p.InMentalState && forcedActivity == null
+                     && PrisonGame.Instance.CurrentActivity(p) == RPLaborDefOf.RP_Work) pass = wz;
+            if (pass != workPass)
+            {
+                workPass = pass;
+                pm?.Notify_WorkPassChanged(p);
+            }
+        }
+
         /// <summary>An hour of prison work done (the hourly pass, for an inmate who is working): the hour is counted and paid, and what working the job lets slip happens - the tools that go missing, the fruit, the garden's patch.</summary>
         internal void WorkedAnHour(Pawn p, PrisonMap pm)
         {
@@ -668,6 +703,8 @@ namespace RimPrison
             if (job.toolTheft) ContrabandUtility.Notify_WorkedWithTools(p, job.theftKind, job.zone);
             if (job.stealsFood) HoochUtility.Notify_WorkedInKitchen(p, this, pm);
             if (job.growsContraband) GardenPatches.Notify_Gardening(p, this, pm);
+            // (The state pays for the trusty's hours in the zone: counted for the day, see Trusties.Daily.)
+            if (job == RPTrustyDefOf.RP_JobOutside) Trusties.Notify_WorkedOutside(pm);
         }
 
         private void Hourly()
@@ -730,6 +767,27 @@ namespace RimPrison
             }
             // Death row is a state sentence: the warden cannot move them elsewhere.
             if (DeathRowSystem.Ext(this) != null) yield break;
+            // A trusty works outside the wall (see Trusties): the warden makes one of a well-behaved inmate at minimum security, and takes it back.
+            if (IsTrusty)
+                yield return new Command_Action
+                {
+                    defaultLabel = "RP_TrustyEnd".Translate(),
+                    defaultDesc = "RP_TrustyEndDesc".Translate(),
+                    icon = TexCommand.ForbidOn,
+                    action = () => Trusties.Revoke(Pawn, "RP_TrustyWhy_Warden".Translate(), silent: false),
+                };
+            else if (security == RPTrustyDefOf.RP_Minimum)
+            {
+                var grant = new Command_Action
+                {
+                    defaultLabel = "RP_TrustyGrant".Translate(),
+                    defaultDesc = "RP_TrustyGrantDesc".Translate(),
+                    icon = TexCommand.HoldOpen,
+                    action = () => Trusties.Grant(Pawn),
+                };
+                if (!Trusties.CanGrant(Pawn, out string noTrusty)) grant.Disable(noTrusty);
+                yield return grant;
+            }
             // Supermax, once the clearance is done: to a free cell of the wing.
             if (SupermaxSystem.Level is { } supermax && security != supermax && Unlocks.IsUnlocked(supermax))
             {
@@ -760,6 +818,7 @@ namespace RimPrison
         /// activity, the restraint), the home bed, the tunnel and what staff suspect of it (suspected, cell search pending, a tip
         /// waiting, who smuggled for them), sanctions (yard, shop and visit bans), a hunger strike, the care refusal, and the
         /// arrangements of the stay (appeal, innocence claim, referral, mentor, remission, informant pay and task, dealer, the restorative meeting), doubts about the gang and an old gang's green light, the library book in the cell and how far it was read, and the watch list (a period, its answer and clocks, the last trigger; the count of crises stays).</item>
+        /// <item>Reset too: the trusty status and the outside pass (<see cref="trustySinceTick"/>, <see cref="outsidePass"/>; a returning reoffender is no trusty), and with it the outside job.</item>
         /// <item>Kept on purpose: <see cref="staffMemories"/> (what staff feel about them outlives a stay, a story feature), the
         /// misconduct records, reputations, gang, life and mail history, passed programs, relatives, the answered care decisions about chronic conditions (the condition stays with them; "nothing" and unanswered ones are asked again, see <see cref="OldAge"/>), cash and the psychologist's
         /// file, and the job (re-checked for eligibility by the labor pass).</item>
@@ -811,6 +870,18 @@ namespace RimPrison
             releasePlan = ReleaseSupport.None;
             (riskTick, watchUntilTick, riskEvent, riskEventTick, riskCause, lowMoodTick) = (-1, -1, RiskTrigger.None, -1, RiskTrigger.None, -1);
             (watchAnswer, watchCheckTick, counselTick, riskEndTick, measureTick) = (WatchAnswer.Pending, -1, -1, -1, -1);
+            trustySinceTick = -1;
+            outsidePass = false;
+            if (workPass == RPTrustyDefOf.RP_OutsideWork)
+            {
+                workPass = null;
+                if (Pawn is { Spawned: true } spawned) PrisonMap.Of(spawned.Map)?.Notify_WorkPassChanged(spawned);
+            }
+            if (job == RPTrustyDefOf.RP_JobOutside)
+            {
+                job = null;
+                jobLocked = false;
+            }
         }
 
         public void RefreshActiveFlag()
@@ -849,6 +920,7 @@ namespace RimPrison
                 if (forcedActivity != null) sb.Append(" (" + "RP_HoursLeft".Translate(((forcedUntilTick - Find.TickManager.TicksGame) / (float)GenDate.TicksPerHour).ToString("F0")) + ")");
             }
             if (pendingPunishmentHours > 0) sb.AppendLine().Append("RP_PunishmentPending".Translate(pendingPunishmentHours));
+            if (IsTrusty) sb.AppendLine().Append("RP_TrustyLine".Translate());
             if (job != null) sb.AppendLine().Append("RP_JobLine".Translate(job.LabelCap));
             if (cash > 0) sb.AppendLine().Append("RP_CashLine".Translate(Money.Format(cash)));
             if (suspected) sb.AppendLine().Append("RP_Suspected".Translate());
@@ -987,6 +1059,8 @@ namespace RimPrison
             }
             c.security = sec;
             c.lastReclassTick = Find.TickManager.TicksGame;
+            // (A trusty is a minimum-security inmate: off it, the status and the outside job go.)
+            if (sec != RPTrustyDefOf.RP_Minimum) Trusties.Revoke(p, "RP_TrustyWhy_Reclassified".Translate(sec.label), silent: false);
             // (Supermax is not paroled from: a hearing that was on is off.)
             if (sec.escortOnly) ParoleScene.Notify_NoHearing(p);
             if (free is { Count: > 0 }) Cellmates.Move(p, c, Cellmates.PickBed(free, c));

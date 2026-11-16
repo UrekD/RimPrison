@@ -26,7 +26,7 @@
   <RP_HudAsksNone>Nobody asks to see you</RP_HudAsksNone>
   <RP_HudAsksTip>Inmates who ask to see the warden. Each request lapses {0} hours after it was made. The warden's word with them, or a walk that meets them, answers it, and does more than a word or a walk alone. Click for the Intel screen.</RP_HudAsksTip>
   <RP_IntelAsks>Asking to see you</RP_IntelAsks>
-  <RP_IntelHint_Asks>Nobody asks to see the warden. A witness who was got at, a debtor after a beating, a gang member with doubts, a hunger striker, a step-down candidate, a cell request or the talk of a false rumour on a wing can bring an inmate to ask. A request lapses after a day.</RP_IntelHint_Asks>
+  <RP_IntelHint_Asks>Nobody asks to see the warden. A witness who was got at, a debtor after a beating, a gang member with doubts, a hunger striker, a step-down candidate, a cell request or the talk of a rumour on a wing can bring an inmate to ask. A request lapses after a day.</RP_IntelHint_Asks>
   <RP_IntelAskHours>{0} h</RP_IntelAskHours>
   <RP_IntelTip_Ask>{0} asks to see the warden - {1}. The request lapses in {2} hours. Click the name to find them.</RP_IntelTip_Ask>
   <RP_IntelAskGo>Go</RP_IntelAskGo>

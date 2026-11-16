@@ -133,6 +133,7 @@ namespace RimPrison
             DrawPosts(left, ref y, map);
             DrawCare(left, ref y, map);
             EvacuationUI.Draw(left, ref y, map);
+            TrustyUI.Draw(left, ref y, map);
             // The roster's strip of guards on duty (worked out once an hour): what the posts' hours and the pad's guards are drawn from.
             Header(left.x, ref y, left.width, "RP_DeployRoster");
             var stripRect = new Rect(left.x, y, left.width, 44f);
@@ -617,7 +618,7 @@ namespace RimPrison
             _ => Color.white,
         };
 
-        private static void Header(float x, ref float y, float width, string key)
+        internal static void Header(float x, ref float y, float width, string key)
         {
             Text.Font = GameFont.Medium;
             Widgets.Label(new Rect(x, y, width, 30f), key.Translate());

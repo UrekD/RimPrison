@@ -38,6 +38,8 @@ namespace RimPrison
         public ClassBookings bookings = new ClassBookings();
         /// <summary>The count: the one running, how the last ended, who it found missing, and the escapes the warden has not been told of (see <see cref="CountSystem"/>).</summary>
         public CountState count = new CountState();
+        /// <summary>The outside work party: the guard ratio the warden set, the day's credited hours, and whether the party is out (see <see cref="Trusties"/>). A save from before has the defaults.</summary>
+        public TrustyParty party = new TrustyParty();
         /// <summary>The single session of an old save; moved into <see cref="sessions"/> once loaded.</summary>
         public ProgramSession session;
         private readonly List<CompPrisonDoor> doors = new List<CompPrisonDoor>();
@@ -255,6 +257,7 @@ namespace RimPrison
             Scribe_Deep.Look(ref grounds, "grounds", map);
             Scribe_Deep.Look(ref turf, "turf");
             Scribe_Deep.Look(ref count, "count");
+            Scribe_Deep.Look(ref party, "trustyParty");
             Scribe_Deep.Look(ref care, "careDetail");
             Scribe_Deep.Look(ref evac, "evacuation");
             Scribe_Deep.Look(ref session, "session");
@@ -293,6 +296,7 @@ namespace RimPrison
                 grounds ??= new PrisonGrounds(map);
                 turf ??= new TurfBook();
                 count ??= new CountState();
+                party ??= new TrustyParty();
                 care ??= new CareDetail();
                 evac ??= new EvacuationState();
                 bookings ??= new ClassBookings();
@@ -425,7 +429,8 @@ namespace RimPrison
         /// <summary>Queues the inmate to be interrupted (in the next few ticks) if what they are doing now is something a regime change ends; once per inmate until they are.</summary>
         public void QueueRegimeInterrupt(Pawn p)
         {
-            if (!InmateUtility.WouldInterruptForRegimeChange(p, emergency: false) || !interruptQueued.Add(p)) return;
+            if (!InmateUtility.WouldInterruptForRegimeChange(p, emergency: false)) return;
+            if (!interruptQueued.Add(p)) return;
             // (By the job's number, not the object: jobs are pooled and handed out again, and a reused object is not the job they had.)
             interruptQueue.Enqueue((p, p.CurJob.loadID));
         }
@@ -489,6 +494,7 @@ namespace RimPrison
             K9Utility.Tick(map);
             UtilitySystem.Tick(map);
             CountSystem.Tick(map, this);
+            Trusties.Beat(map, this);
             ProgramSystem.CompleteFinished(this);
             ProgramSystem.NudgeTeachers(map, this);
         }
@@ -550,6 +556,7 @@ namespace RimPrison
             CountSystem.Hourly(map, this, game, hour);
             CollectDownedReleased();
             InmateJobWorker_Garden.ReleaseProduce(map, this);
+            InmateJobWorker_Outside.ReleaseProduce(map, this);
             GardenPatches.Hourly(map, this);
             DeathRowSystem.Hourly(map);
             ProgramSystem.HourlyTick(map, this, game);
@@ -631,7 +638,7 @@ namespace RimPrison
             {
                 CompPrisonDoor d = doors[i];
                 bool portA = d.roomA != null && sallyPorts.Contains(d.roomA), portB = d.roomB != null && sallyPorts.Contains(d.roomB);
-                bool pass = CompPrisonDoor.ArrivalPass(d.mode, d.sideA, d.sideB, portA, portB);
+                bool pass = CompPrisonDoor.ArrivalPass(d.mode, d.sideA, d.sideB, portA, portB, d.trustyGate);
                 if (pass != d.arrivalPass)
                 {
                     d.arrivalPass = pass;
@@ -647,6 +654,7 @@ namespace RimPrison
             d.roomA = d.roomB = null;
             d.sideA = d.sideB = DoorSide.None;
             PrisonZoneDef zoneA = null, zoneB = null;
+            IntVec3 cellA = IntVec3.Invalid, cellB = IntVec3.Invalid;
             Room secondRoom = null;
             Building_Door door = d.Door;
             if (!door.Spawned) return false;
@@ -673,11 +681,13 @@ namespace RimPrison
                     d.roomA = room;
                     d.sideA = side;
                     zoneA = zones.ZoneAt(c);
+                    cellA = c;
                 }
                 else
                 {
                     d.sideB = side;
                     zoneB = zones.ZoneAt(c);
+                    cellB = c;
                     secondRoom = room;
                     d.roomB = room;
                     if (side == DoorSide.Cell) d.cellRoom = room;
@@ -685,13 +695,19 @@ namespace RimPrison
                 }
                 if (side == DoorSide.Cell) d.cellRoom = room;
             }
+            PrisonZoneDef work = null;
+            // The gate of the outside work zone: a door between space the minimum wing may use and ground painted for the work party (the warden paints the zone up to the gate, which names it). No other door to the
+            // outside is one: not a staff door, not a cell's, not the perimeter's. It is a gate in any mode (the work pass opens it only in Auto, a locked one stays locked for everyone).
+            PrisonZoneDef gate = d.sideA == DoorSide.InmateSpace && d.sideB == DoorSide.Outside && zoneB is { outsideWork: true } && Trusties.GateInmateSide(this, zoneA, cellA) ? zoneB
+                : d.sideB == DoorSide.InmateSpace && d.sideA == DoorSide.Outside && zoneA is { outsideWork: true } && Trusties.GateInmateSide(this, zoneB, cellB) ? zoneA : null;
+            d.trustyGate = gate != null;
             // An Auto door between inmate space and a staff work zone: trusted workers may pass during work hours.
             // (Only an indoor staff room: a staff zone painted outdoors must never become a way out.)
-            PrisonZoneDef work = null;
             if (d.mode == PrisonDoorMode.Auto)
             {
                 if (d.sideA == DoorSide.Staff && d.sideB == DoorSide.InmateSpace && IndoorRoom(first)) work = zoneA;
                 else if (d.sideB == DoorSide.Staff && d.sideA == DoorSide.InmateSpace && IndoorRoom(secondRoom)) work = zoneB;
+                else if (gate != null) work = gate;
             }
             if (d.workZone != work)
             {
@@ -809,6 +825,13 @@ namespace RimPrison
         internal static bool HoldsDoorOpen(bool downed, Room ownCell, Room inCell) => !downed && ownCell != null && ownCell != inCell;
 
         private static bool IndoorRoom(Room room) => room != null && !room.PsychologicallyOutdoors && !room.TouchesMapEdge;
+
+        /// <summary>The cell is out in the open as the doors see it (<see cref="DoorSide.Outside"/>), or in a doorway: where a trusty who holds the outside pass keeps it (a cell, a corridor or a yard of the prison is inside). No room at all counts as outside.</summary>
+        public bool IsOutsideSpace(IntVec3 c)
+        {
+            Room room = c.GetRoom(map);
+            return room == null || room.IsDoorway || Classify(c, room) == DoorSide.Outside;
+        }
 
         private DoorSide Classify(IntVec3 c, Room room)
         {

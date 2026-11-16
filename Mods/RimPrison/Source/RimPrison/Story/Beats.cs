@@ -198,7 +198,7 @@ namespace RimPrison
             if (c == null || p.skills == null) return null;
             return DefDatabase<InmateJobDef>.AllDefsListForReading
                 .Where(j => j.skill != null && p.skills.GetSkill(j.skill).Level >= 8 && (j.allowedSecurity.Count == 0 || j.allowedSecurity.Contains(c.security))
-                            && (j.requiredProgram == null || c.passedPrograms.Contains(j.requiredProgram)))
+                            && (j.requiredProgram == null || c.passedPrograms.Contains(j.requiredProgram)) && Trusties.MayHold(c, j))
                 .OrderByDescending(j => p.skills.GetSkill(j.skill).Level).FirstOrDefault();
         }
     }

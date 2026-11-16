@@ -324,6 +324,7 @@ namespace RimPrison
             StandingOrders.Reset();
             Amends.Reset();
             Concepts.Reset();
+            Trusties.Reset();
             Concepts.DropVanillaNotes(Find.Tutor?.learningReadout);
             EnsureRegimes();
             intake.EnsureDefaults();

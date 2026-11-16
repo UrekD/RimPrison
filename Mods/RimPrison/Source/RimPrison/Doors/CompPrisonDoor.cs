@@ -60,9 +60,10 @@ namespace RimPrison
         /// (the staff room a gate opens into, the gatehouse) into the prison, or any door that is neither staff-only nor into a staff room. Read on path threads.</summary>
         public volatile bool arrivalPass;
         /// <summary>The rule behind <see cref="arrivalPass"/>: <paramref name="portA"/>/<paramref name="portB"/> say whether the room on that side is a sally port.</summary>
-        public static bool ArrivalPass(PrisonDoorMode mode, DoorSide a, DoorSide b, bool portA, bool portB)
+        public static bool ArrivalPass(PrisonDoorMode mode, DoorSide a, DoorSide b, bool portA, bool portB, bool trustyGate = false)
         {
-            if (mode == PrisonDoorMode.Locked) return false;
+            // (The gate of the trusties' work zone is no way in for arrivals: it opens into the minimum wing from the open ground.)
+            if (mode == PrisonDoorMode.Locked || trustyGate) return false;
             bool gate = a == DoorSide.Outside && (b != DoorSide.Staff || portB) || b == DoorSide.Outside && (a != DoorSide.Staff || portA);
             bool fromSallyPort = portA && b != DoorSide.Staff || portB && a != DoorSide.Staff;
             bool plain = a != DoorSide.Staff && b != DoorSide.Staff && mode != PrisonDoorMode.StaffOnly;
@@ -71,6 +72,8 @@ namespace RimPrison
         /// <summary>Computed: the staff work zone behind an Auto door that faces inmate space (kitchen); inmates
         /// with a work pass for that zone may use the door during work hours. Read on pathfinding threads.</summary>
         public volatile PrisonZoneDef workZone;
+        /// <summary>Computed: this door is the gate of the outside work zone (inmate space on one side, ground painted for the work party on the other), in whatever mode it is set. <see cref="workZone"/> names it only in Auto. Read on the main thread and by <see cref="arrivalPass"/>'s rule.</summary>
+        public bool trustyGate;
         /// <summary>Computed: this door is on the border of a room or wing held by rioters (a hostage crisis): the cells held, null otherwise. Staff are refused whichever side they stand on. Read on path threads.</summary>
         public volatile HashSet<int> heldCells;
         /// <summary>Tick the cell's occupants entered a lockup activity; -1 when not in lockup.</summary>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Trusties and the outside work party (Labor/Trusties.cs). -->
+  <RimPrison.PrisonZoneDef>
+    <defName>RP_OutsideWork</defName>
+    <label>outside work</label>
+    <description>Ground beyond the wall, up to a gate, where trusties cut trees and brush and tend growing zones in their work hours for the state's grounds contract (paint it on land you own, in the open - not inside the walls, and put a growing zone in it to have crops sown there). What they cut and harvest is the prison's. The party only goes out with enough guards near it, and a trusty who wanders off is a real escape. Set the gate door, on the wall between the minimum wing's space and this zone, to Auto.</description>
+    <color>(0.55, 0.65, 0.35)</color>
+    <inmateAccess>false</inmateAccess>
+    <staffOnly>false</staffOnly>
+    <outsideWork>true</outsideWork>
+    <uiOrder>36</uiOrder>
+  </RimPrison.PrisonZoneDef>
+
+  <RimPrison.InmateJobDef>
+    <defName>RP_JobOutside</defName>
+    <label>outside work</label>
+    <description>Cuts trees and brush and tends the growing zones in the outside work zone, for the state's grounds contract. Only for trusties, in the work hours, with guards near the zone. Fresh air, calming work, cleared land and timber.</description>
+    <workerClass>RimPrison.InmateJobWorker_Outside</workerClass>
+    <zone>RP_OutsideWork</zone>
+    <allowedSecurity><li>RP_Minimum</li></allowedSecurity>
+    <maxTension>50</maxTension>
+    <tensionPerHour>-3</tensionPerHour>
+    <wagePerHour>2</wagePerHour>
+    <skill>Plants</skill>
+    <toolTheft>false</toolTheft>
+    <uiOrder>16</uiOrder>
+  </RimPrison.InmateJobDef>
+
+  <RimPrison.LedgerCategoryDef><defName>RP_GroundsContract</defName><label>grounds contract</label><income>true</income><uiOrder>32</uiOrder></RimPrison.LedgerCategoryDef>
+</Defs>

@@ -21,7 +21,7 @@ namespace RimPrison
         StepDown,
         /// <summary>Asked for another cell (<see cref="CellRequests.TryRaise"/>).</summary>
         CellRequest,
-        /// <summary>Someone of a wing where a false rumour has started (<see cref="Rumours.Start"/>).</summary>
+        /// <summary>Someone of a wing where a rumour has started, true or false (<see cref="Rumours.Start"/>).</summary>
         Rumour,
     }
 
@@ -31,22 +31,30 @@ namespace RimPrison
         public int inmateId = -1;
         public WardenAskReason reason;
         public int tick = -1;
+        /// <summary>
+        /// For a request about the talk: the wing and the kind of the rumour it was made for, with <see cref="tick"/> (its start) what ties it to that rumour alone (<see cref="WardenAsks.RumourOf"/>): rumours of two wings can
+        /// start in the same tick (a strike, a food scare), and a worse one can replace theirs in the tick it started. Null and -1 for a request saved without them (the tick alone ties it, as it did) and for any other reason.
+        /// </summary>
+        public SecurityLevelDef rumourLevel;
+        public int rumourKind = -1;
 
         public void ExposeData()
         {
             Scribe_Values.Look(ref inmateId, "id", -1);
             Scribe_Values.Look(ref reason, "reason");
             Scribe_Values.Look(ref tick, "tick", -1);
+            Scribe_Defs.Look(ref rumourLevel, "rumourLevel");
+            Scribe_Values.Look(ref rumourKind, "rumourKind", -1);
         }
 
         public WardenAsk Copy() => (WardenAsk)MemberwiseClone();
 
-        public string Describe() => $"{inmateId}:{reason}:{tick}";
+        public string Describe() => $"{inmateId}:{reason}:{tick}:{rumourLevel?.defName}:{rumourKind}";
     }
 
     /// <summary>
     /// Asks to see the warden (gap analysis 7, weak system W2): the systems that give an inmate a reason to want the warden in person put them in a per-map queue - a threatened trial witness, a debtor after a beating, a
-    /// gang member with doubts, a hunger striker, a step-down candidate, a cell request, someone of a wing a false rumour runs on. At most one request per inmate (a more serious reason takes the place of a lesser one, the
+    /// gang member with doubts, a hunger striker, a step-down candidate, a cell request, someone of a wing a rumour runs on (true or false: the request says nothing of which). At most one request per inmate (a more serious reason takes the place of a lesser one, the
     /// same reason again starts the day again), each lapses after <see cref="LapseTicks"/>, and one whose reason is gone is dropped at the hour. The HUD counts them; Intel lists them with a "Go". Answered in person (the
     /// warden's word with them, or a walk that meets them) it does more than a generic word or walk: trust and calm scaled up, and the reason's own (<see cref="Answer"/>).
     /// </summary>
@@ -85,7 +93,7 @@ namespace RimPrison
         /// The inmate asks to see the warden. One request per inmate: a reason as serious as the one they have or less is not added (the same reason starts its day again), a more serious one takes its place. Returns
         /// whether the queue changed.
         /// </summary>
-        public static bool Raise(Pawn p, WardenAskReason reason)
+        public static bool Raise(Pawn p, WardenAskReason reason, Rumour rumour = null)
         {
             if (p?.MapHeld is not { IsPlayerHome: true } map || PrisonMap.Of(map) is not { } pm || p.Inmate() == null || !InmateUtility.IsActiveInmate(p)) return false;
             int now = Now;
@@ -94,9 +102,10 @@ namespace RimPrison
             {
                 if (reason > had.reason) return false;
                 (had.reason, had.tick) = (reason, now);
+                (had.rumourLevel, had.rumourKind) = (rumour?.level, rumour == null ? -1 : (int)rumour.kind);
                 return true;
             }
-            pm.asks.Add(new WardenAsk { inmateId = p.thingIDNumber, reason = reason, tick = now });
+            pm.asks.Add(new WardenAsk { inmateId = p.thingIDNumber, reason = reason, tick = now, rumourLevel = rumour?.level, rumourKind = rumour == null ? -1 : (int)rumour.kind });
             return true;
         }
 
@@ -160,11 +169,13 @@ namespace RimPrison
         }
 
         /// <summary>
-        /// The rumour a request about the talk is about, while it lives: the false one live on their wing that started the tick they asked (the request is made as the rumour starts, see <see cref="Notify_FalseRumour"/>, and
-        /// only a new false rumour on their wing makes it again). A rumour that started later has taken its place (a true one, perhaps); one that started earlier is another wing's, the one they were moved to. Neither is theirs:
-        /// null, and the request is over.
+        /// The rumour a request about the talk is about, while it lives: the one live on their wing that started the tick they asked, true or false (the request is made as the rumour starts, see <see cref="Notify_Rumour"/>,
+        /// and only a new rumour on their wing makes it again), of the wing and the kind the request names (<see cref="WardenAsk.rumourLevel"/>: a request saved without them is tied by the tick alone). A rumour that started later
+        /// has taken its place; one that started earlier, or in the same tick on another wing or of another kind, is not the one they asked about (the wing they were moved to, a worse thing that replaced theirs in the same tick).
+        /// Neither is theirs: null, and the request is over.
         /// </summary>
-        public static Rumour RumourOf(Map map, CompInmate c, WardenAsk a) => Rumours.LiveOn(map, c?.security) is { isTrue: false } r && r.startTick == a.tick ? r : null;
+        public static Rumour RumourOf(Map map, CompInmate c, WardenAsk a) =>
+            Rumours.LiveOn(map, c?.security) is { } r && r.startTick == a.tick && (a.rumourLevel == null || r.level == a.rumourLevel) && (a.rumourKind < 0 || (int)r.kind == a.rumourKind) ? r : null;
 
         /// <summary>The case this inmate is a witness of and has not recanted in, and their entry in it; null when there is none.</summary>
         public static (MurderTrial trial, TrialWitness witness)? WitnessCase(Pawn p)
@@ -226,17 +237,25 @@ namespace RimPrison
 
         // ---- the rumour's asker ---------------------------------------------------------------------------------------------------------------------------
 
-        /// <summary>A false rumour started on the wing: someone of it who did not start it (awake, if anyone is) asks to see the warden about the talk. Returns who, or null.</summary>
-        public static Pawn Notify_FalseRumour(Map map, SecurityLevelDef level, int originId)
+        /// <summary>The chance a rumour that started on a wing has someone of it ask to see the warden about it: the same for a true one and a false one, whatever its kind and words (that somebody asks tells nothing of whether it holds).</summary>
+        public const float RumourAskChance = 0.6f;
+
+        /// <summary>For a test: whether a rumour that started has someone ask about it (null: the dice).</summary>
+        internal static bool? ForceAsk;
+
+        /// <summary>A rumour started on the wing, true or false: at <see cref="RumourAskChance"/> someone of it who did not start it (awake, if anyone is) asks to see the warden about the talk. Returns who, or null.</summary>
+        public static Pawn Notify_Rumour(Map map, Rumour rumour)
         {
-            if (map == null || level == null) return null;
+            if (map == null || rumour?.level == null || !(ForceAsk ?? Rand.Chance(RumourAskChance))) return null;
+            SecurityLevelDef level = rumour.level;
+            int originId = rumour.originId;
             var wing = new List<Pawn>();
             foreach (Pawn p in map.mapPawns.PrisonersOfColonySpawned)
                 if (p.thingIDNumber != originId && InmateUtility.IsActiveInmate(p) && p.Inmate()?.security == level && !ShuttleSystem.OnTheWayOut(p)) wing.Add(p);
             if (wing.Count == 0) return null;
             List<Pawn> awake = wing.FindAll(p => p.Awake() && !p.Downed && !p.InMentalState);
             Pawn asker = (awake.Count > 0 ? awake : wing).RandomElement();
-            return Raise(asker, WardenAskReason.Rumour) ? asker : null;
+            return Raise(asker, WardenAskReason.Rumour, rumour) ? asker : null;
         }
 
         // ---- answered in person ---------------------------------------------------------------------------------------------------------------------------
@@ -278,7 +297,7 @@ namespace RimPrison
 
         /// <summary>
         /// What answering the reason does beyond trust and calm, each an existing effect at a step up: a witness tells the warden they were got at (the report the guards would otherwise have had: the threat is known); a doubter is heard out
-        /// as the chaplain would (<see cref="GangExit.Notify_Session"/>: the gang known, the renouncement on its way); the rumour's asker names who started it and that it is false (the walk names the origin only, an informant both).
+        /// as the chaplain would (<see cref="GangExit.Notify_Session"/>: the gang known, the renouncement on its way); the rumour's asker names who started it and whether it holds, whichever it is (the walk names the origin only, an informant both).
         /// The rest (a debtor, a striker, a step-down candidate, a cell request) is the trust and calm alone. Returns a line to add to the message, or null.
         /// </summary>
         private static string AnswerReason(Pawn warden, Pawn inmate, CompInmate c, WardenAsk ask, Map map)

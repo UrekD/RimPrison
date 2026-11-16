@@ -104,6 +104,8 @@ namespace RimPrison
             bool optional = comp.forcedActivity == null && !game.LockedDown(comp);
             // Called to a parole hearing: to the hearing room (an escort walks them in), before anything else on the schedule.
             if (optional && ParoleScene.JobFor(pawn, comp, pm) is { } hearing) return hearing;
+            // A trusty a guard is walking in from outside (see Trusties.Stranded): the way back to the cell, whatever the slot.
+            if (comp.leg is { kind: EscortKind.Home } && comp.security is not { escortOnly: true } && comp.forcedActivity == null && EscortWalk.JobFor(pawn, comp, pm) is { } walkIn) return walkIn;
             // Out of the cell only with a guard (supermax): the walk a guard is leading them on, else the cell (or the bed at night), whatever the slot: no class, visit or yard of their own.
             if (comp.security is { escortOnly: true } && comp.forcedActivity == null)
             {

@@ -285,8 +285,8 @@ namespace RimPrison
             game.programs.NoteWaiting(kept);
         }
 
-        /// <summary>A class that would take the work slot does not take a worker who has work waiting in their job's hours (the post waits for the clerk's shift: a class started in it kept the clerk from the table).</summary>
-        internal static bool KeepsToTheirJob(ProgramDef prog, Pawn p, CompInmate c) => prog.Slot == RPLaborDefOf.RP_Work && c.job != null && c.job.Worker.HasWork(p);
+        /// <summary>A class that would take the work slot does not take a worker who has work waiting in their job's hours (the post waits for the clerk's shift: a class started in it kept the clerk from the table). The course the warden referred them to is the exception: it is for it to take them (the referral pass), and no other course may.</summary>
+        internal static bool KeepsToTheirJob(ProgramDef prog, Pawn p, CompInmate c) => prog.Slot == RPLaborDefOf.RP_Work && c.job != null && c.referral != prog && c.job.Worker.HasWork(p);
 
         private static void CollectAttendees(Map map, PrisonMap pm, PrisonGame game, ProgramDef prog, Candidate cand, bool referredPass)
         {

@@ -276,9 +276,15 @@ namespace RimPrison
         }
     }
 
-    /// <summary>Walk to the post and stand watch until its hours or the guard's shift end (or something outranks it).</summary>
+    /// <summary>
+    /// Walk to the post and stand watch for as long as this guard may hold it: until its hours or the guard's shift end, another guard should take it (one named for it, one the guard is named for elsewhere), or something outranks
+    /// it. Not for a fixed time: a watch that ran out was a job given again by the work scan, and the post stood empty in the ticks between (stability 28, round 2).
+    /// </summary>
     public class JobDriver_ManPost : JobDriver
     {
+        /// <summary>How often the watch asks whether the guard may still hold the post.</summary>
+        public const int HoldCheckTicks = 30;
+
         private int nextCheckTick;
 
         private CompGuardPost Post => job.targetA.Thing?.TryGetComp<CompGuardPost>();
@@ -289,17 +295,20 @@ namespace RimPrison
         {
             // (A post taken down, or burnt, ends it: the guard is released.)
             this.FailOnDespawnedOrNull(TargetIndex.A);
-            nextCheckTick = Find.TickManager.TicksGame + 30;
+            nextCheckTick = Find.TickManager.TicksGame + HoldCheckTicks;
             AddEndCondition(() =>
             {
                 int now = Find.TickManager.TicksGame;
                 if (now < nextCheckTick) return JobCondition.Ongoing;
-                nextCheckTick = now + 30;
-                // Its hours are over, the state's chief has the patrols, or the guard's shift is (a break, the end of the day, the strike).
-                return Post is { OpenNow: true } && GuardPosts.OnDuty(pawn) ? JobCondition.Ongoing : JobCondition.Succeeded;
+                nextCheckTick = now + HoldCheckTicks;
+                // Its hours are over, the state's chief has the patrols, the guard's shift is (a break, the end of the day, the strike), or the post is another guard's now (named, or the guard is named elsewhere): the guard may no
+                // longer hold it. (CanTake is true for whoever stands on it and should: nobody else is sent while they do.)
+                return Post is { OpenNow: true } post && GuardPosts.OnDuty(pawn) && GuardPosts.CanTake(pawn, post) ? JobCondition.Ongoing : JobCondition.Succeeded;
             });
             yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);
-            Toil watch = Toils_General.Wait(GenDate.TicksPerHour);
+            var watch = ToilMaker.MakeToil("ManPostWatch");
+            watch.initAction = () => pawn.pather.StopDead();
+            watch.defaultCompleteMode = ToilCompleteMode.Never;
             watch.handlingFacing = true;
             watch.tickIntervalAction = delta =>
             {

@@ -16,19 +16,49 @@ namespace RimPrison
     {
         // ---- the long plans: watching the need, counting what the cart did ------------------------------------------------------------
 
-        /// <summary>Consecutive hours below <see cref="ExerciseUtility.RestlessBelow"/> per inmate who can reach the yard (not the downed, nor the restrained in detox: they cannot lift), the longest run, and the sampled mean.</summary>
-        private static readonly Dictionary<int, int> restlessStreak = new Dictionary<int, int>();
-        private static int longestRestless, restlessHours, exerciseSamples;
+        /// <summary>
+        /// Per inmate who can reach the yard (not the downed, nor the restrained in detox: they cannot lift; a stay in the hole ends the spell): the consecutive hours below <see cref="ExerciseUtility.RestlessBelow"/>, and how many of
+        /// them were a chance to lift (see <see cref="LiftChance"/>). Also the longest spell, the sampled mean, and the worst spell that had the chances to end it.
+        /// </summary>
+        private static readonly Dictionary<int, (int run, int chances)> restlessStreak = new Dictionary<int, (int run, int chances)>();
+        private static int longestRestless, longestRestlessChances, restlessHours, exerciseSamples, failedRestless;
         private static float exerciseSum;
+        private static string restlessFailure;
 
         /// <summary>The fewest books a 5-day normal run must hand out (the clerk works the day's work hours).</summary>
         private const int MinBooksDelivered = 3;
-        /// <summary>The longest an inmate with a bench to use may stay restless (hours).</summary>
+        /// <summary>The longest an inmate with a bench to use may stay restless (hours) - when the hours held chances to use one (see <see cref="MinLiftChances"/>).</summary>
         private const int MaxRestlessStreak = 24;
+        /// <summary>
+        /// The hours with a chance to lift (see <see cref="LiftChance"/>) a spell must hold to count against the benches. A day's free time is five hours for a medium inmate, and a prayer (the free-time worker
+        /// offers it ahead of the bench), a class of the free-time slot, a visit, a hearing or a stay in the hole takes some or all of them: the 28-hour spell of census c87's normal run (Lamp, medium, between two stays
+        /// in the hole) shows no hour at a bench in its log: a prayer in the cell one day, a class in the chapel in the free-time evenings. Lifting takes one free hour (a request every few hundred ticks, 60% a time, the bench first), so three are two more than it needs.
+        /// </summary>
+        private const int MinLiftChances = 3;
+
+        /// <summary>One more hour of an inmate's spell: it goes on while they are restless (an hour with a chance to lift is counted) and is over when they are not.</summary>
+        internal static (int run, int chances) RestlessHour((int run, int chances) spell, bool restless, bool chance) =>
+            restless ? (spell.run + 1, spell.chances + (chance ? 1 : 0)) : (0, 0);
+
+        /// <summary>A spell that is too long for the benches: past the bound, and with the chances to end it that were not taken.</summary>
+        internal static bool RestlessSpellFails(int run, int chances) => run > MaxRestlessStreak && chances >= MinLiftChances;
+
+        /// <summary>
+        /// This hour is a chance to lift: the second hour or later of free time (the first is transit, as the compliance reading counts it - not the hole, a lockdown, a yard ban, the watch or fear of the yard), not at a prayer, in a
+        /// class, a visit or a hearing, and a bench they can reach and reserve.
+        /// </summary>
+        private static bool LiftChance(Map map, PrisonGame game, PrisonMap pm, Pawn p)
+        {
+            if (game.CurrentActivity(p) != RPDefOf.RP_FreeTime || game.ActivityAt(p.Inmate(), (GenLocalDate.HourOfDay(map) + 23) % 24) != RPDefOf.RP_FreeTime) return false;
+            if (p.CurJobDef == RPFaithDefOf.RP_Pray || RegimePlacement.Sanctioned(p) || pm.sessions.Any(s => s.attendees.Contains(p))) return false;
+            return ExerciseUtility.FindBench(p) != null;
+        }
 
         /// <summary>Hourly: the exercise need of everyone who walks to the yard (not the confined, nor death row, who eat in their cells).</summary>
         private static void TrackLibrary(Map map)
         {
+            PrisonGame game = PrisonGame.Instance;
+            PrisonMap pm = PrisonMap.Of(map);
             foreach (Pawn p in map.mapPawns.PrisonersOfColonySpawned)
             {
                 if (p.Inmate() == null || ExerciseUtility.NeedOf(p) is not { } need || !InmateUtility.IsActiveInmate(p) || !PrisonServices.UsesCanteen(p) || p.Downed)
@@ -38,27 +68,35 @@ namespace RimPrison
                 }
                 exerciseSum += need.CurLevel;
                 exerciseSamples++;
-                restlessStreak.TryGetValue(p.thingIDNumber, out int run);
-                run = need.CurLevel < ExerciseUtility.RestlessBelow ? run + 1 : 0;
-                restlessStreak[p.thingIDNumber] = run;
-                if (run > 0) restlessHours++;
-                if (run == MaxRestlessStreak + 1)
-                    RPLog.Message($"[RimPrison:restless] {p.LabelShort} ({p.Inmate().security?.defName}) has been restless for {run} hours: act={PrisonGame.Instance.CurrentActivity(p).defName} job={p.CurJobDef?.defName} forced={p.Inmate().forcedActivity?.defName} downed={p.Downed} inBed={p.InBed()} medical={p.CurrentBed()?.Medical} exercise={need.CurLevel:F2}");
-                longestRestless = Mathf.Max(longestRestless, run);
+                restlessStreak.TryGetValue(p.thingIDNumber, out (int run, int chances) spell);
+                bool restless = need.CurLevel < ExerciseUtility.RestlessBelow;
+                spell = RestlessHour(spell, restless, restless && LiftChance(map, game, pm, p));
+                restlessStreak[p.thingIDNumber] = spell;
+                if (spell.run > 0) restlessHours++;
+                string who = $"{p.LabelShort} ({p.Inmate().security?.defName}): act={game.CurrentActivity(p).defName} job={p.CurJobDef?.defName} forced={p.Inmate().forcedActivity?.defName} downed={p.Downed} inBed={p.InBed()} medical={p.CurrentBed()?.Medical} exercise={need.CurLevel:F2}";
+                if (spell.run == MaxRestlessStreak + 1)
+                    RPLog.Message($"[RimPrison:restless] {p.LabelShort} ({p.Inmate().security?.defName}) has been restless for {spell.run} hours, {spell.chances} of them a chance to lift: act={game.CurrentActivity(p).defName} job={p.CurJobDef?.defName} forced={p.Inmate().forcedActivity?.defName} downed={p.Downed} inBed={p.InBed()} medical={p.CurrentBed()?.Medical} exercise={need.CurLevel:F2}");
+                if (spell.run > longestRestless) (longestRestless, longestRestlessChances) = (spell.run, spell.chances);
+                if (RestlessSpellFails(spell.run, spell.chances) && spell.run > failedRestless)
+                {
+                    failedRestless = spell.run;
+                    restlessFailure = $"an inmate stayed restless for {spell.run} hours (> {MaxRestlessStreak}) with benches built and {spell.chances} hours with a chance to lift ({who})";
+                }
             }
         }
 
-        /// <summary>End of a plan with benches and shelves: inmates lifted, never stayed restless for more than a day, and (in a 5-day normal run) the cart delivered.</summary>
+        /// <summary>End of a plan with benches and shelves: inmates lifted, none stayed restless for more than a day with the chances to lift, and (in a 5-day normal run) the cart delivered.</summary>
         private static void EvaluateLibrary(Map map, PrisonGame game, int days, List<string> problems)
         {
             PrisonMap pm = PrisonMap.Of(map);
             int clerks = map.mapPawns.PrisonersOfColonySpawned.Count(x => x.Inmate()?.job?.workerClass == typeof(InmateJobWorker_Library));
             float meanLiteracy = map.mapPawns.PrisonersOfColonySpawned.Where(x => LibrarySystem.Literacy(x) != null).Select(LibrarySystem.LiteracyLevel).DefaultIfEmpty(0f).Average();
-            RPLog.Message($"[RimPrison:test] library run: {game.stats.workouts} workouts, mean exercise {(exerciseSamples == 0 ? 0f : exerciseSum / exerciseSamples):F2}, longest restless spell {longestRestless} h ({restlessHours} restless inmate-hours), "
+            RPLog.Message($"[RimPrison:test] library run: {game.stats.workouts} workouts, mean exercise {(exerciseSamples == 0 ? 0f : exerciseSum / exerciseSamples):F2}, longest restless spell {longestRestless} h ({longestRestlessChances} of them a chance to lift, {restlessHours} restless inmate-hours), "
                           + $"{LibrarySystem.Shelves(map)} shelves with {pm.Shelves.Sum(s => s.books)} books, {clerks} clerks, {game.stats.booksDelivered} books delivered, {game.stats.booksRead} read, mean literacy {meanLiteracy:F2}, {game.stats.bookContraband} with something hidden");
             if (days < 2) return;
             if (game.stats.workouts == 0) problems.Add($"nobody lifted weights in {days} days with {pm.Fixtures.Count(f => f.Props.need == RPExerciseDefOf.RP_Exercise)} benches built");
-            if (longestRestless > MaxRestlessStreak) problems.Add($"an inmate stayed restless for {longestRestless} hours (> {MaxRestlessStreak}) with benches built");
+            if (restlessFailure != null) problems.Add(restlessFailure);
+            else if (longestRestless > MaxRestlessStreak) RPLog.Message($"[RimPrison:test] library run: a spell of {longestRestless} restless hours held {longestRestlessChances} hours with a chance to lift (fewer than {MinLiftChances}): a prayer, a class, the hole or the regime kept them from the benches, not the benches");
             if (Plan == "normal" && days >= 5 && game.stats.booksDelivered < MinBooksDelivered)
                 problems.Add($"the library clerk delivered {game.stats.booksDelivered} books in {days} days (< {MinBooksDelivered}; {clerks} clerks, {pm.Shelves.Sum(s => s.books)} books on the shelves)");
         }

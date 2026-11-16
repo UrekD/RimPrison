@@ -44,6 +44,14 @@ namespace RimPrison
         /// <summary>Whether a scene guard may be sent to this inmate: the scene's own rowdy, never the live prison's trouble.</summary>
         internal static bool PostSceneMayRespondTo(Pawn guard, Pawn inmate) => !postGuards.Contains(guard) || postRowdies.Contains(inmate);
 
+        /// <summary>
+        /// Whether a post scene's guard may use this work giver on this node: on the ordinary node the post and the patrol; on the emergency node the answer to trouble and the work that is not the prison's
+        /// Warden work (a fire, vanilla's own rescue of the downed), so that no carry, rescue or watch of a real inmate takes a scene guard from the post.
+        /// </summary>
+        internal static bool PostSceneMayUse(bool emergencyNode, WorkGiver giver) =>
+            giver is WorkGiver_ManPost or WorkGiver_Patrol && !emergencyNode
+            || emergencyNode && (giver is WorkGiver_RespondToTrouble || giver.def.workType != WorkTypeDefOf.Warden);
+
         /// <summary>The work node's looks at a guard, for a failure line: how many, and what the last one gave.</summary>
         private static string PostThinks(Pawn p) =>
             postThinks.TryGetValue(p, out var t) ? $"work node asked {t.asked}x, last gave {t.last} {Find.TickManager.TicksGame - t.tick} ticks ago" : "work node never asked";
@@ -185,8 +193,8 @@ namespace RimPrison
             /// <summary>Hours that begin in two hours' time: closed now, and for as long as the check runs.</summary>
             public void Closed(CompGuardPost p) => (p.fromHour, p.toHour) = ((Hour + 2) % 24, (Hour + 5) % 24);
 
-            /// <summary>Real ticks until the condition holds (at most <paramref name="max"/>); returns the ticks used.</summary>
-            public int Run(Func<bool> done, int max, Action each = null)
+            /// <summary>Real ticks until the condition holds (at most <paramref name="max"/>); returns the ticks used. <paramref name="afterTick"/> looks at the state at the end of every tick (what the next tick's hourly pass finds).</summary>
+            public int Run(Func<bool> done, int max, Action each = null, Action afterTick = null)
             {
                 int ticks = 0;
                 while (ticks < max && !done())
@@ -207,6 +215,7 @@ namespace RimPrison
                         each?.Invoke();
                     }
                     Find.TickManager.DoSingleTick();
+                    afterTick?.Invoke();
                     ticks++;
                 }
                 return ticks;
@@ -221,7 +230,7 @@ namespace RimPrison
         }
 
         /// <summary>Everything the check needs: a scene with a post up and the guards placed, or why it cannot be run (a failure of the check's premise is told, not hidden).</summary>
-        private static bool PostSetup(Map map, Rollback r, string what, int guardCount, out PostScene s, out CompGuardPost post, out List<Pawn> guards)
+        private static bool PostSetup(Map map, Rollback r, string what, int guardCount, out PostScene s, out CompGuardPost post, out List<Pawn> guards, float firstMin = 3f, float firstMax = 5f)
         {
             s = new PostScene(map, r);
             post = null;
@@ -244,7 +253,7 @@ namespace RimPrison
             for (int i = 1; i < guardCount; i++) guards.Add(s.Guard(IntakeSystem.IntakeCell(map, IntakeSystem.IntakeSpot(map))));
             for (int i = 0; i < guardCount; i++)
             {
-                IntVec3 start = i == 0 ? s.Start(guards[i], site, 3f, 5f) : s.Start(guards[i], site, 7f, 10f);
+                IntVec3 start = i == 0 ? s.Start(guards[i], site, firstMin, firstMax) : s.Start(guards[i], site, 7f, 10f);
                 if (!start.IsValid) start = s.Start(guards[i], site, 2f, 14f);
                 if (!start.IsValid)
                 {
@@ -825,7 +834,8 @@ namespace RimPrison
     /// Autotest: a post scene's throwaway guard is offered the post and the patrol (the filler that gives way to it) by the ordinary work node (<see cref="AutoTest.PostSceneGuard"/>), and no other work: the post is warden work, and so is
     /// everything that outranks it (a cell meal, a frisk, an escort, a search): a guard of the emergency check that was on a meal delivery (stability11-s11b: "Forsythia (scene guard) 61c job DeliverFood") stood at no post to be called away
     /// from. It is the work node's own scan that is told which givers the guard may use (<c>PawnCanUseWorkGiver</c>), so the post is still found, and given, by <see cref="WorkGiver_ManPost"/> (its skips, its scan, its job) and the patrol
-    /// still looks for a post every two seconds (<see cref="JobDriver_Patrol"/>); the emergency node (the alarm the check raises) is left alone. (Round 1 of stability12 replaced the node's result with the post the giver would give, and none when it gives none, and the guards then wandered in all three runs and did not take the post though
+    /// still looks for a post every two seconds (<see cref="JobDriver_Patrol"/>). The emergency node answers the scene's own alarm (<see cref="WorkGiver_RespondToTrouble"/>, the check's rowdy) and no other Warden work: a guard
+    /// of the handover probe was on <c>TakeWoundedPrisonerToBed</c> for a real inmate, the ordinary node never asked, and the probe could not judge ("the first scene guard did not stand at the post", stability 28 round 2, s28neg2). (Round 1 of stability12 replaced the node's result with the post the giver would give, and none when it gives none, and the guards then wandered in all three runs and did not take the post though
     /// <c>CanTake</c> held at the end of the wait; what was different for them is the patrol, which has a guard with no post look again every 120 ticks, and the work giver's own skips, both of which the node's scan keeps now. The cause is not proven: the work node's looks are in the failure line.)
     /// </summary>
     [HarmonyPatch(typeof(JobGiver_Work), "PawnCanUseWorkGiver")]
@@ -834,7 +844,7 @@ namespace RimPrison
     {
         public static void Postfix(JobGiver_Work __instance, Pawn pawn, WorkGiver giver, ref bool __result)
         {
-            if (__result && AutoTest.Active && !__instance.emergency && AutoTest.PostSceneGuard(pawn) && giver is not (WorkGiver_ManPost or WorkGiver_Patrol)) __result = false;
+            if (__result && AutoTest.Active && AutoTest.PostSceneGuard(pawn) && !AutoTest.PostSceneMayUse(__instance.emergency, giver)) __result = false;
         }
     }
 

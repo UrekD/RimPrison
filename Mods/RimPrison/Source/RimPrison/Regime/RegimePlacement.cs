@@ -13,6 +13,8 @@ namespace RimPrison
             if (!p.Inmate().processed) return true;
             // Being moved in an evacuation (out of a wing that burns, or back to the bed): where the prison has put them.
             if (EvacuationSystem.Involves(p)) return true;
+            // A trusty out in the open that a guard is to walk in (the gate locked, the zone erased): not out of place, they cannot get back by themselves (see Trusties.Stranded).
+            if (Trusties.AwaitingWayBack(p)) return true;
             // A meal the survival fallback sent them to (no patch their level may use had one to reach) is eaten in place, wherever it lies.
             if (KeptRooms.EatingOutOfNecessity(p)) return true;
             // Out of the cell only with a guard (supermax): in the cell, or on a walk with one. Anywhere else (the general showers, say) is where nobody should find them, whatever the slot says.
@@ -27,6 +29,8 @@ namespace RimPrison
             if (act == RPLaborDefOf.RP_Work && p.Inmate().job is { } job && (job.requiredProgram == null || p.Inmate().passedPrograms.Contains(job.requiredProgram)))
             {
                 if (LaborUtility.IsWorking(p, p.Inmate())) return true;
+                // A trusty's outside job while the party is in: the work slot has nothing for them and falls back to lockup, so in the room of their bed.
+                if (job == RPTrustyDefOf.RP_JobOutside && !pm.party.isOut) return p.GetRoom() == InmateUtility.CellOf(p);
                 if (job.zone != null && pm.zones.Any(job.zone)) return pm.zones.ZoneAt(p.Position) == job.zone;
                 return p.GetRoom() == InmateUtility.CellOf(p);
             }

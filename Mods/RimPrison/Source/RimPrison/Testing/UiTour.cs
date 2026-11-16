@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+using LudeonTK;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -215,7 +216,14 @@ namespace RimPrison
 
         public static void Update()
         {
-            if (steps.Count == 0) Build();
+            if (steps.Count == 0)
+            {
+                // (The windowed Windows build under Wine logs loader errors at its start, and each one opens the vanilla "Debug log" window over the pictures: no auto-open for the tour, and it is shut at every frame.)
+                HarmonyLib.AccessTools.Field(typeof(EditWindow_Log), "canAutoOpen")?.SetValue(null, false);
+                Build();
+            }
+            EditWindow_Log.wantsToOpen = false;
+            if (Find.WindowStack.IsOpen(typeof(EditWindow_Log))) Find.WindowStack.TryRemove(typeof(EditWindow_Log), doCloseSound: false);
             // (The pictures of the prison itself are not covered by the letters that open as the clock runs.)
             if (Shots && Find.WindowStack.Windows.Any(w => w is Dialog_NodeTree))
                 foreach (Dialog_NodeTree d in Find.WindowStack.Windows.OfType<Dialog_NodeTree>().ToList()) d.Close(doCloseSound: false);
@@ -344,6 +352,42 @@ namespace RimPrison
 
         /// <summary>Plan "shots": a tour of the prison itself (not of the screens) that saves the pictures for the README, see tools/showcase-shots.sh.</summary>
         public static bool Shots;
+
+        /// <summary>A pawn put at a cell (and its walk and job stopped), as the checks put theirs.</summary>
+        private static void TrustyPlace(Pawn p, IntVec3 cell)
+        {
+            if (!p.Spawned) return;
+            p.pather.StopDead();
+            p.Position = cell;
+            p.Notify_Teleported();
+        }
+
+        /// <summary>
+        /// Where the trusty subset makes the outside work gate: a cell of the compound's wall (a plain wall, nothing roofed within a cell of it) with a yard cell the minimum wing may use behind it and a strip of open ground on the
+        /// prison's land in front of it (six cells along the wall, three out, the gate's front cell among them). The strip's cells in the order of the walk out from the gate. Null when there is none.
+        /// </summary>
+        private static (IntVec3 door, List<IntVec3> strip)? TrustyGateSpot(Map map, PrisonMap pm)
+        {
+            IntVec3 o = PrisonBuilder.Origin(map);
+            var compound = new CellRect(o.x, o.z, PrisonBuilder.Width, PrisonBuilder.Depth);
+            foreach (IntVec3 cell in compound.EdgeCells)
+            {
+                bool west = cell.x == compound.minX, east = cell.x == compound.maxX, south = cell.z == compound.minZ, north = cell.z == compound.maxZ;
+                if ((west || east) && (south || north)) continue;
+                IntVec3 outward = west ? IntVec3.West : east ? IntVec3.East : south ? IntVec3.South : IntVec3.North;
+                IntVec3 along = new IntVec3(outward.z, 0, outward.x);
+                if (cell.GetEdifice(map) is not { def: var def } || def != ThingDefOf.Wall) continue;
+                IntVec3 inner = cell - outward;
+                if (!inner.InBounds(map) || !inner.Standable(map) || inner.GetEdifice(map) != null || pm.zones.ZoneAt(inner) is not { inmateAccess: true } zone || !Trusties.GateInmateSide(pm, zone, inner)) continue;
+                if (inner.GetRoom(map) is { IsPrisonCell: true } || GenRadial.RadialCellsAround(cell, 1.5f, true).Any(x => x.InBounds(map) && x.Roofed(map))) continue;
+                var strip = new List<IntVec3>();
+                for (int k = 1; k <= 3; k++)
+                    for (int j = -2; j <= 3; j++) strip.Add(cell + outward * k + along * j);
+                if (strip.Any(x => !x.InBounds(map) || !x.Standable(map) || x.Roofed(map) || x.GetEdifice(map) != null || pm.zones.ZoneAt(x) != null || !PrisonGrounds.Allows(map, x) || x.GetDistrict(map) is not { TouchesMapEdge: true })) continue;
+                return (cell, strip);
+            }
+            return null;
+        }
 
         /// <summary>The camera on a named spot of the facility (<see cref="PrisonBuilder.TourSpot"/>), zoomed by <paramref name="zoom"/> (a factor on its own zoom).</summary>
         private static bool Look(Map map, string spot, float zoom = 1f)
@@ -1341,6 +1385,132 @@ namespace RimPrison
             // RIMPRISON_TOUR=evacuation: the Deployment screen's evacuation block with two assembly points marked, then a drill just begun (the map, then the accountability list).
             if (System.Environment.GetEnvironmentVariable("RIMPRISON_TOUR") == "evacuation") steps.RemoveAll(x => x.name is not ("map" or "evac-points" or "evac-points-row" or "evac-drill" or "evac-drill-row" or "evac-back"));
             else steps.RemoveAll(x => x.name.StartsWith("evac-"));
+            // The trusties (Trusties), on the live prison and put back after: a door of the compound's wall made the gate (Auto) of a strip of open ground outside it, painted as the outside work zone, one minimum-security inmate made a trusty
+            // with the outside job and standing on the strip, a guard on duty beside them, the party's beat run (the clock stands still for the whole subset): the Deployment screen's block with the party out, the strip on the map,
+            // the Inmates tab with the chip on the trusty's row, and the actions menu of another minimum-security inmate with the grant item.
+            (Pawn pawn, int since, InmateJobDef job, bool locked, bool pass, PrisonZoneDef workPass, IntVec3 pos)? trustyWas = null;
+            (Pawn pawn, IntVec3 pos)? trustyGuard = null;
+            List<(IntVec3 cell, PrisonZoneDef was)> trustyPainted = null;
+            (IntVec3 cell, ThingDef def, ThingDef stuff, Building_Door door)? trustyGate = null;
+            TimeSpeed? trustySpeed = null;
+            Pawn trustyTrusty = null, trustyOther = null;
+            void TrustyBeat(PrisonMap pm)
+            {
+                pm.ForceDoorUpdate();
+                HarmonyLib.AccessTools.Method(typeof(PrisonMap), "RefreshGuards").Invoke(pm, null);
+                Trusties.Beat(map, pm);
+            }
+            steps.Add(("trusty-deployment", () =>
+            {
+                Clear();
+                PrisonMap pm = PrisonMap.Of(map);
+                if (pm == null) { Missing("no prison map"); return; }
+                trustySpeed ??= Find.TickManager.CurTimeSpeed;
+                Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
+                // (A tour game starts at the hour the guards are coming in: nobody is on duty at six past the hour. On to mid-morning, when the day shift is at its posts.)
+                if (trustyWas == null) AdvanceTo(map, 10, 30);
+                List<Pawn> minimum = map.mapPawns.PrisonersOfColonySpawned.Where(p => p.Inmate() is { activeFlag: true, security: { } sec } && sec == RPTrustyDefOf.RP_Minimum && !p.Inmate().IsTrusty).ToList();
+                trustyTrusty = minimum.FirstOrDefault();
+                trustyOther = minimum.Skip(1).FirstOrDefault(p => Trusties.CanGrant(p, out _)) ?? minimum.Skip(1).FirstOrDefault();
+                if (trustyTrusty == null) Missing("no minimum-security inmate to make a trusty");
+                else if (TrustyGateSpot(map, pm) is not { } spot) Missing("no wall of the compound with a yard behind it and open ground in front of it for the outside work gate");
+                else if (trustyWas == null)
+                {
+                    // The gate, and the strip painted up to it (the wall put back by the last step).
+                    Building wall = spot.door.GetEdifice(map);
+                    trustyGate = (spot.door, wall.def, wall.Stuff, null);
+                    wall.Destroy(DestroyMode.Vanish);
+                    var door = (Building_Door)ThingMaker.MakeThing(ThingDefOf.Door, ThingDefOf.Steel);
+                    door.SetFactionDirect(Faction.OfPlayer);
+                    GenSpawn.Spawn(door, spot.door, map);
+                    door.GetComp<CompPrisonDoor>().mode = PrisonDoorMode.Auto;
+                    trustyGate = (spot.door, wall.def, wall.Stuff, door);
+                    trustyPainted = spot.strip.Select(x => (x, pm.zones.ZoneAt(x))).ToList();
+                    foreach (IntVec3 x in spot.strip) pm.zones.Set(x, RPTrustyDefOf.RP_OutsideWork);
+                    pm.ForceDoorUpdate();
+                    if (!door.GetComp<CompPrisonDoor>().trustyGate) Missing("the door made in the wall is no gate of the outside work zone");
+                    // The trusty on the strip with the outside job; the guard (the first on duty) beside them.
+                    CompInmate c = trustyTrusty.Inmate();
+                    trustyWas = (trustyTrusty, -1, c.job, c.jobLocked, c.outsidePass, c.workPass, trustyTrusty.Position);
+                    c.trustySinceTick = Mathf.Max(0, Find.TickManager.TicksGame - GenDate.TicksPerDay);
+                    c.job = RPTrustyDefOf.RP_JobOutside;
+                    c.jobLocked = true;
+                    HarmonyLib.AccessTools.Method(typeof(PrisonMap), "RefreshGuards").Invoke(pm, null);
+                    List<IntVec3> free = spot.strip.Where(x => x.Standable(map) && x.GetFirstPawn(map) == null).ToList();
+                    // (A guard of the roster, not the warden: the warden is on the floor but is no guard on duty for the party's count.)
+                    Pawn guard = pm.Guards.FirstOrDefault(g => g.Spawned && GuardPosts.OnDuty(g) && g.GetComp<CompStaff>() is { role.warden: false });
+                    if (guard == null) Missing("no guard of the roster on duty to stand by the outside work zone");
+                    else if (free.Count >= 2)
+                    {
+                        trustyGuard = (guard, guard.Position);
+                        TrustyPlace(guard, free.First());
+                    }
+                    else Missing("no free cell on the strip for the guard");
+                    if (free.Count >= 2) TrustyPlace(trustyTrusty, free.Last());
+                    // (Twice: the first beat sends the party out and gives the pass, the second counts the guards near the trusty who is out, as every later one does.)
+                    TrustyBeat(pm);
+                    TrustyBeat(pm);
+                    if (!pm.party.isOut) Missing("the party is not out: " + Trusties.StateText(pm));
+                    Find.CameraDriver.SetRootPosAndSize(spot.door.ToVector3Shifted(), 14f);
+                }
+                // (The HUD's funds and day's balance are cached for sixty frames, and a windowed run draws few: without this the first pictures show what the clock's hour booked only in the later ones.)
+                PrisonHUD.Invalidate();
+                MainTabWindow_Prison.Open(MainTabWindow_Prison.Tab.Deployment);
+                DeploymentTab.leftScroll = new Vector2(0f, Mathf.Max(0f, TrustyUI.blockY - 20f));
+                TrustyUI.scrollToBlock = true;
+            }));
+            steps.Add(("trusty-strip", () =>
+            {
+                // The map: the strip outside the wall, the gate in it, the trusty at work and the guard beside them.
+                Clear();
+                TrustyUI.scrollToBlock = false;
+            }));
+            steps.Add(("trusty-inmates", () =>
+            {
+                Clear();
+                MainTabWindow_Prison.Open(MainTabWindow_Prison.Tab.Inmates);
+                if (trustyTrusty == null || HarmonyLib.AccessTools.Method(typeof(InmatesTab), "Filtered")?.Invoke(null, new object[] { map }) is not List<Pawn> list) return;
+                // (Scrolled to the trusty's row: two rows of the list above it.)
+                int row = list.IndexOf(trustyTrusty);
+                foreach (MainTabWindow_Prison w in Find.WindowStack.Windows.OfType<MainTabWindow_Prison>())
+                    HarmonyLib.AccessTools.Field(typeof(MainTabWindow_Prison), "scroll").SetValue(w, new Vector2(0f, Mathf.Max(0f, (row - 2) * 32f)));
+            }));
+            steps.Add(("trusty-grant-menu", () =>
+            {
+                // The inmates list's actions menu of another minimum-security inmate: the grant item (greyed with its reason when they cannot be made one).
+                if (trustyOther == null) { Missing("no second minimum-security inmate for the grant item's menu"); return; }
+                if (HarmonyLib.AccessTools.Method(typeof(InmatesTab), "Actions")?.Invoke(null, new object[] { trustyOther, trustyOther.Inmate() }) is List<FloatMenuOption> options)
+                    Find.WindowStack.Add(new FloatMenu(options, trustyOther.LabelShort));
+            }));
+            steps.Add(("trusty-back", () =>
+            {
+                Find.WindowStack.TryRemove(typeof(FloatMenu), doCloseSound: false);
+                TrustyUI.scrollToBlock = false;
+                PrisonMap pm = PrisonMap.Of(map);
+                if (trustyWas is { } was && was.pawn?.Inmate() is { } c)
+                {
+                    (c.trustySinceTick, c.job, c.jobLocked, c.outsidePass, c.workPass) = (was.since, was.job, was.locked, was.pass, was.workPass);
+                    TrustyPlace(was.pawn, was.pos);
+                    pm?.Notify_WorkPassChanged(was.pawn);
+                }
+                if (trustyGuard is { } g) TrustyPlace(g.pawn, g.pos);
+                if (trustyGate is { } gate)
+                {
+                    if (gate.door is { Spawned: true }) gate.door.Destroy(DestroyMode.Vanish);
+                    var wall = (Thing)ThingMaker.MakeThing(gate.def, gate.def.MadeFromStuff ? gate.stuff : null);
+                    if (wall.def.CanHaveFaction) wall.SetFactionDirect(Faction.OfPlayer);
+                    GenSpawn.Spawn(wall, gate.cell, map);
+                }
+                if (pm != null && trustyPainted != null)
+                    foreach ((IntVec3 cell, PrisonZoneDef zone) in trustyPainted) pm.zones.Set(cell, zone);
+                if (pm != null && trustyWas != null) TrustyBeat(pm);
+                (trustyWas, trustyGuard, trustyGate, trustyPainted, trustyTrusty, trustyOther) = (null, null, null, null, null, null);
+                if (trustySpeed is { } speed) Find.TickManager.CurTimeSpeed = speed;
+                trustySpeed = null;
+            }));
+            // RIMPRISON_TOUR=trusty: those steps. Not in the whole tour: it builds a gate, paints a zone and moves people.
+            if (System.Environment.GetEnvironmentVariable("RIMPRISON_TOUR") == "trusty") steps.RemoveAll(x => x.name != "map" && !x.name.StartsWith("trusty-"));
+            else steps.RemoveAll(x => x.name.StartsWith("trusty-"));
             // RIMPRISON_TOUR=deployment: the Deployment screen, at its head and scrolled to its foot.
             if (System.Environment.GetEnvironmentVariable("RIMPRISON_TOUR") == "deployment") steps.RemoveAll(x => x.name is not ("map" or "screen-deployment" or "screen-deployment-foot"));
             // The applicants' dialog: through the real entry (the Staff tab's hire button), on a pool of the tour's own (the live one put back, with the funds), for the guard post.

@@ -27,6 +27,7 @@ namespace RimPrison
             CheckLiftingToughensOnlyUpToACap(map);
             CheckBookContrabandIsOnlyDrugs(map);
             CheckBookContrabandPaysADebt(map);
+            CheckRestlessSpellNeedsChances(map);
         }
 
         /// <summary>
@@ -519,6 +520,33 @@ namespace RimPrison
                 bool toughWhenCapped = c.HasReputation(ReputationDefOf.RP_Tough);
                 if (!openBefore || !toughWhenOpen || !capped || toughWhenCapped)
                     problems0.Add($"library: under the cap ({openBefore}) a lucky workout made them Tough {toughWhenOpen} (true expected); with {given.Count} others Tough the cap is reached {capped} and a lucky workout made them Tough {toughWhenCapped} (false expected)");
+            });
+        }
+
+        /// <summary>
+        /// The long plans' restlessness bound (<see cref="TrackLibrary"/>) counts against the benches only a spell that had the chances to end it: 28 hours between two stays in the hole, spent at a prayer and a class,
+        /// is not the benches' fault (census c87's normal run). The hours of a spell are counted as the hourly pass counts them, and a hole, a lockdown or a prayer is no chance.
+        /// </summary>
+        private static void CheckRestlessSpellNeedsChances(Map map)
+        {
+            Guarded("library: a restless spell counts against the benches only with the chances to lift", map, r =>
+            {
+                (int run, int chances) spell = (0, 0);
+                for (int h = 0; h < 28; h++) spell = RestlessHour(spell, true, h == 5);
+                bool shortOfChances = RestlessSpellFails(spell.run, spell.chances);
+                (int run, int chances) full = (0, 0);
+                for (int h = 0; h < 28; h++) full = RestlessHour(full, true, h % 7 is 3 or 4 or 5);
+                bool withChances = RestlessSpellFails(full.run, full.chances);
+                (int run, int chances) lifted = RestlessHour(full, false, false);
+                bool shortRun = RestlessSpellFails(MaxRestlessStreak, 99);
+                if (spell != (28, 1) || shortOfChances || full.run != 28 || !withChances || lifted != (0, 0) || shortRun)
+                    problems0.Add($"library: a spell of 28 restless hours with one chance reads {spell} and fails {shortOfChances} (false expected); with {full.chances} chances it reads {full} and fails {withChances} (true expected); a lift ends it ({lifted}); {MaxRestlessStreak} hours with every chance fail {shortRun} (false expected)");
+                // The hour's own reading: the hole, a lockdown or a prayer is no chance to lift, whatever the bench.
+                Pawn p = Throwaway(map, r);
+                p.Inmate().forcedActivity = RPDefOf.RP_Lockup;
+                p.Inmate().forcedUntilTick = Find.TickManager.TicksGame + GenDate.TicksPerHour;
+                r.Add(() => (p.Inmate().forcedActivity, p.Inmate().forcedUntilTick) = (null, -1));
+                if (LiftChance(map, PrisonGame.Instance, PrisonMap.Of(map), p)) problems0.Add("library: an inmate kept in their cell is counted as having a chance to lift");
             });
         }
 

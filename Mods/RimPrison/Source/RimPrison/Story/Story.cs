@@ -210,6 +210,8 @@ namespace RimPrison
             DebtSystem.Notify_Leaving(p);
             KeepApart.Notify_Leaving(p);
             InformantTask.Notify_Leaving(p);
+            // (A trusty's status and the outside job end with the stay, quietly.)
+            Trusties.Notify_Leaving(p);
             if (p.Inmate() != null) StaffWariness.Notify_InmateLeaving(p);
             OldAge.Notify_Leaving(this, p);
             WatchList.Notify_Leaving(p);

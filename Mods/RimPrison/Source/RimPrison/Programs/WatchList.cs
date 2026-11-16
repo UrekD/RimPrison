@@ -581,15 +581,16 @@ namespace RimPrison
         }
 
         /// <summary>
-        /// How free a guard is to be called off what they are doing (lower first), or -1 when they are not: idle or on patrol (0), recreation (1: a joy job, a meditation), a break in the staff room (2). Never one who is
-        /// asleep, down, drafted, in a mental state, or on a job the warden ordered.
+        /// How free a guard is to be called off what they are doing (lower first), or -1 when they are not: idle, on patrol or wandering (0), recreation (1: a joy job, a meditation), a break in the staff room (2). Never one who is
+        /// asleep, down, drafted, in a mental state, or on a job the warden ordered. A wander is idle as the guard posts and the care detail count it (vanilla's idle is only <c>Wait</c>): a guard on a long walk about the
+        /// unit was not called, and the check came when the walk ended - 1817 ticks after the last in trusty-t11a, the wander 784 of them (the rule's beat and walk made it 1536 at most).
         /// </summary>
         public static int LeisureRank(Pawn g)
         {
             if (!g.Spawned || g.Downed || g.Drafted || g.InMentalState || !g.Awake() || !GuardUtility.IsGuard(g)) return -1;
             Job job = g.CurJob;
             if (job == null || job.playerForced) return -1;
-            if (job.def.isIdle || job.def == RPSecurityDefOf.RP_Patrol) return 0;
+            if (job.def.isIdle || job.def == RPSecurityDefOf.RP_Patrol || job.def == JobDefOf.Wait_Wander || job.def == JobDefOf.GotoWander) return 0;
             if (job.def == RPStaffRoomDefOf.RP_StaffBreak) return 2;
             return job.def.joyKind != null ? 1 : -1;
         }

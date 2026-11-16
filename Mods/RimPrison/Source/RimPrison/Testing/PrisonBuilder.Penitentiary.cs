@@ -742,6 +742,9 @@ namespace RimPrison
             ClearArea(Rect(38, -6, 43, -2));
             Floor(38, -6, 43, -2, TerrainDefOf.Soil);
             Paint(38, -6, 43, -2, RPBurialDefOf.RP_BurialPlot);
+            // The trusties' outside work ground (see Trusties): open land south of the wall, west of the landing pad, left as the map has it (trees and brush to cut). No gate is built into it: the zone is painted so that
+            // the showcase's list of the mod's zones has it.
+            Paint(8, -12, 26, -4, RPTrustyDefOf.RP_OutsideWork);
         }
 
         /// <summary>The stores the cooks start from: food stockpiles in the freezer and the dry store, with the first stock in them, and the first meals on the counters.</summary>

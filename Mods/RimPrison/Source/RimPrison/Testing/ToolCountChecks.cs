@@ -210,6 +210,9 @@ namespace RimPrison
                 if (job.requiredProgram != null && !c.passedPrograms.Contains(job.requiredProgram)) c.passedPrograms.Add(job.requiredProgram);
                 c.forcedActivity = RPLaborDefOf.RP_Work;
                 cast.Add(p);
+                // (The live prison's wardens answer to the scene's worker like any inmate's: a real guard carried one to a bed in the middle of the proof's count - "Lyons on EscortPrisonerToBed", trusty-t5d - and a routine
+                // frisk takes one from the work. The worker is held against both, as the drug-test scenes' inmates are.)
+                HoldInmate(p, r);
                 Place(p, at ?? At(4, 3));
                 return p;
             }

@@ -35,6 +35,8 @@ namespace RimPrison
             if (!c.InBounds(Map) || c.Fogged(Map)) return false;
             // (Painting a room is for the prison's own land; taking a room's paint off is always allowed.)
             if (zone != null && !DebugSettings.godMode && PrisonGrounds.Of(Map) is { Limited: true } grounds && !grounds.Contains(c)) return new AcceptanceReport(PrisonGrounds.OutsideText);
+            // (The outside work zone is ground in the open beyond the wall: a cell whose district does not touch the map's edge is inside the walls, where a trusty at work would be no escape risk and a corridor door could be a gate.)
+            if (zone is { outsideWork: true } && c.GetDistrict(Map) is not { TouchesMapEdge: true }) return new AcceptanceReport("RP_OutsideWorkNotOutside".Translate());
             PrisonZoneDef cur = PrisonMap.Of(Map)?.zones.ZoneAt(c);
             return cur != zone;
         }

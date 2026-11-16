@@ -473,6 +473,8 @@ namespace RimPrison
             if (UtilitySystem.Active) game.ledger.Add(RPDefOf.RP_Utilities, -UtilitySystem.DailyBill(map), "RP_UtilitiesNote".Translate());
             game.ledger.Add(RPDefOf.RP_InmateWages, -game.today.inmateWages, "RP_InmateWagesNote".Translate());
             game.ledger.Add(RPDefOf.RP_CommissarySales, game.today.commissarySales, "RP_CommissaryNote".Translate());
+            // (The state's grounds contract: the day's trusty-hours in the outside zone, one line.)
+            Trusties.Daily(game, map);
             game.laundry.DailyTopUp(game, map.mapPawns.PrisonersOfColonySpawnedCount);
 
             Remission.Daily(game, map);

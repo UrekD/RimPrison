@@ -139,6 +139,21 @@ namespace RimPrison
                     if (showStar == null || showStar.needs?.mood == null || showStar.needs.mood.thoughts.memories.Memories.All(m => m.def != RPPastimeDefOf.RP_StarOfTheShow))
                         problems0.Add($"the talent show had no star (the pick before it {showStar?.LabelShort ?? "none"}, after it {pickedAfter?.LabelShort ?? "none"}; funds {funds0} -> {PrisonGame.Instance.ledger.funds} (the show costs {IncidentWorker_TalentShow.Cost}); the pick's flag {showStar?.Inmate()?.activeFlag}, active now {InmateUtility.IsActiveInmate(showStar)}, mental {showStar?.MentalStateDef?.defName ?? "none"}, " +
                             $"memories [{string.Join(", ", showStar?.needs?.mood?.thoughts.memories.Memories.Select(m => m.def.defName) ?? Enumerable.Empty<string>())}]; inmates {map.mapPawns.PrisonersOfColonySpawned.Count} spawned, {map.mapPawns.PrisonersOfColonySpawned.Count(x => x.Inmate() is { activeFlag: true })} flagged active)");
+                    // (The star is picked among the inmates the show gives a memory to, those flagged active: the pick put off its flag - the flag refreshes every 60 ticks, s30a - is not the star, another is, who is flagged.)
+                    if (pickedAfter?.Inmate() is { activeFlag: true } starFlag)
+                    {
+                        starFlag.activeFlag = false;
+                        try
+                        {
+                            Pawn unflagged = IncidentWorker_TalentShow.BestPerformer(map);
+                            if (unflagged == pickedAfter || unflagged != null && !unflagged.Inmate().activeFlag)
+                                problems0.Add($"the talent show's star {unflagged?.LabelShort} is not flagged active ({pickedAfter.LabelShort}'s flag was put off, and the show gives its memory only to flagged inmates)");
+                        }
+                        finally
+                        {
+                            starFlag.activeFlag = true;
+                        }
+                    }
                     GangDef gang = DefDatabase<GangDef>.AllDefsListForReading.FirstOrDefault();
                     List<Pawn> recruitPair = map.mapPawns.PrisonersOfColonySpawned.Where(x => InmateUtility.IsActiveInmate(x) && DeathRowSystem.Ext(x.Inmate()) == null && !x.Downed).Take(2).ToList();
                     if (gang != null && recruitPair.Count == 2)

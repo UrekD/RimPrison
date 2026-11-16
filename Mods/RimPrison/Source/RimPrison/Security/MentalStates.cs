@@ -115,6 +115,13 @@ namespace RimPrison
     /// <summary>Making a break for the map edge.</summary>
     public class MentalState_Escaping : MentalState
     {
+        /// <summary>Any escape that starts (a walk-off, a misconduct, a tunnel, a stowaway, a breach) ends a trusty's status and outside pass on the spot, quietly: the escape's own message, or the count's letter for a hidden one, tells it. A start that fails never gets here.</summary>
+        public override void PostStart(string reason)
+        {
+            base.PostStart(reason);
+            Trusties.Notify_EscapeStarted(pawn);
+        }
+
         public override RandomSocialMode SocialModeMax() => RandomSocialMode.Off;
     }
 

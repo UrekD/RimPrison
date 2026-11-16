@@ -529,6 +529,33 @@ namespace RimPrison
                 CheckBreak(map);
             }
 
+            private void EvStability28()
+            {
+                // Stability round 28 (StabilityTwentyEightChecks.cs): a manned post stays manned through the watch's hour on real ticks, a scene's inmate is held against the wardens' bed and frisk work, a throwaway's dementia is
+                // taken off. Round 2: the watch ends for a named guard and for the post's closing, not on a timer.
+                CheckPostWatchAcrossTheHour(map);
+                CheckPostWatchEndsForANamedGuard(map);
+                CheckScenesHoldTheirPeople(map);
+            }
+
+            private void EvStability29()
+            {
+                // Stability round 29 (StabilityTwentyNineChecks.cs): the vocation scenes' inmates and the post probes' guards held against the prison's work, a guard sent to a far post arrives, a cut-short drug-test round judged on its kit, the line that names what ended a job.
+                CheckVocationInmatesAreHeld(map);
+                CheckPostSceneGuardsAreNotCalledToTheWardensWork(map);
+                CheckPostGuardWalksFarAndStands(map);
+                CheckDrugTestCutRoundJudgesTheKit(map);
+                CheckJobEndsAreWrittenDown(map);
+            }
+
+            private void EvStability31()
+            {
+                // Stability round 31 (StabilityThirtyOneChecks.cs; the warden asks' own are in WardenAskChecks.cs): news from home is a trigger for the watch list; staff at home heal for the time away (a wound, two wounds and a scar, the time
+                // away read once, a tended wound and blood loss, a flu with its immunity, a plague near lethal, the dog, what ticks its own way left alone).
+                CheckNewsFromHomeIsATrigger(map);
+                CheckStaffHealAtHome(map);
+            }
+
             private void EvAgreement()
             {
                 // ...and for staff agreements (AgreementChecks.cs): a promise to fix the grievance kept by real cover over the hours and not by the last hour's, nights by night staff, safety broken by a blow, the pay rise paid and taken back, one reloaded before judgment judged once, a representative who left, the peace and the bonus that is not offered.

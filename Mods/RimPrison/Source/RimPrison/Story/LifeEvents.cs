@@ -154,6 +154,9 @@ namespace RimPrison
             Relatives.Recount(c);
             Find.LetterStack.ReceiveLetter("RP_NewsLabel".Translate(p.LabelShort), text, letter, p);
             Story.Record(RPChronicleDefOf.RP_Chr_Life, importance, text, p);
+            // (A death in the family, a partner who leaves: what can put them at risk, as the letter and the kin's death do, see WatchList.)
+            if (news == News.Death) WatchList.Notify_Trigger(p, RiskTrigger.FamilyDeath);
+            else if (news == News.Leaving) WatchList.Notify_Trigger(p, RiskTrigger.DearJohn);
             if (news != News.Money && news != News.Job) Wants.Notify_FamilyNews(p, c, news == News.Death ? FamilyNews.Death : news == News.Birth ? FamilyNews.Birth : FamilyNews.Leaving);
             return true;
         }

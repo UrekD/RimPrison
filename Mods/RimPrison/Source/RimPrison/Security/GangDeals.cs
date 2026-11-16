@@ -520,8 +520,10 @@ namespace RimPrison
                     // (Only the job the deal locked, if the warden has not changed it since: the member's own job and lock are put back, as they were before the deal.)
                     if (CourtUtil.FindInmate(map, deal.jobMemberId)?.Inmate() is { } mc && mc.job == deal.jobDef && mc.jobLocked)
                     {
-                        mc.job = deal.prevJob;
-                        mc.jobLocked = deal.prevJobLocked;
+                        // (The outside job is a trusty's: given back to one who is no trusty now, it is no job at all.)
+                        bool back = Trusties.MayHold(mc, deal.prevJob);
+                        mc.job = back ? deal.prevJob : null;
+                        mc.jobLocked = back && deal.prevJobLocked;
                     }
                     break;
             }

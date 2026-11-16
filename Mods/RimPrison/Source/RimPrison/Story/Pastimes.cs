@@ -107,7 +107,11 @@ namespace RimPrison
             return true;
         }
 
-        public static Pawn BestPerformer(Map map) => map.mapPawns.PrisonersOfColonySpawned.Where(InmateUtility.IsActiveInmate)
+        /// <summary>
+        /// The star of the show, among the inmates the show gives a memory to (<see cref="TalentShowDecision.Choose"/>: those flagged active, a flag that refreshes every 60 ticks): one picked by the live
+        /// <see cref="InmateUtility.IsActiveInmate"/> and not flagged yet was given nothing, and the show had no star (s30a: "the pick's flag False, active now True").
+        /// </summary>
+        public static Pawn BestPerformer(Map map) => map.mapPawns.PrisonersOfColonySpawned.Where(p => InmateUtility.IsActiveInmate(p) && p.Inmate().activeFlag)
             .OrderByDescending(p => Mathf.Max(p.skills?.GetSkill(SkillDefOf.Artistic).Level ?? 0, p.skills?.GetSkill(SkillDefOf.Social).Level ?? 0)).FirstOrDefault();
     }
 

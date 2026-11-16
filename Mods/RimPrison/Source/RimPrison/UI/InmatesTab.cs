@@ -345,6 +345,7 @@ namespace RimPrison
                 Text.Anchor = TextAnchor.UpperLeft;
                 x += w + 3f;
             }
+            if (c.IsTrusty) Chip("RP_TrustyChip".Translate(), RPTrustyDefOf.RP_OutsideWork.color);
             if (c.gang != null && c.gangKnown) Chip(c.gang.label + GangRanks.ChipSuffix(c), c.gang.color);
             else if (c.gang == null && GangExit.ExActive(c)) Chip("RP_FileExMember".Translate(c.exGang.label), c.exGang.color);
             foreach (string rep in c.ReputationsText().Split(new[] { ", " }, System.StringSplitOptions.RemoveEmptyEntries)) Chip(rep, new Color(0.7f, 0.7f, 0.75f));
@@ -392,6 +393,12 @@ namespace RimPrison
                 options.Add(new FloatMenuOption("RP_TransferOut".Translate(Money.Format(InmateUtility.TransferCost)), () => InmateUtility.TransferOut(p, c)));
             if (DeathRowSystem.Ext(c) == null)
                 options.Add(new FloatMenuOption("RP_InmatesMoveCell".Translate(), () => Find.WindowStack.Add(new FloatMenu(Cellmates.MoveOptions(p, c)))));
+            // A trusty works outside the wall: the warden makes one of a minimum-security inmate with a high conduct grade, and takes it back (see Trusties).
+            if (c.IsTrusty) options.Add(new FloatMenuOption("RP_TrustyEnd".Translate(), () => Trusties.Revoke(p, "RP_TrustyWhy_Warden".Translate(), silent: false)));
+            else if (c.security == RPTrustyDefOf.RP_Minimum)
+                options.Add(Trusties.CanGrant(p, out string noTrusty)
+                    ? new FloatMenuOption("RP_TrustyGrant".Translate(), () => Trusties.Grant(p))
+                    : new FloatMenuOption("RP_TrustyGrant".Translate() + " (" + noTrusty + ")", null));
             options.Add(new FloatMenuOption("RP_InmatesSetJob".Translate(), () => Find.WindowStack.Add(new FloatMenu(JobOptions(c)))));
             options.Add(new FloatMenuOption("RP_InmatesRefer".Translate(), () => Find.WindowStack.Add(new FloatMenu(ReferOptions(p, c)))));
             return options;
@@ -443,8 +450,13 @@ namespace RimPrison
                 InmateJobDef j = job;
                 bool trained = j.requiredProgram == null || c.passedPrograms.Contains(j.requiredProgram);
                 bool allowed = j.allowedSecurity.Count == 0 || j.allowedSecurity.Contains(c.security);
-                if (!trained || !allowed)
-                    options.Add(new FloatMenuOption(j.LabelCap + " (" + (!allowed ? "RP_JobNotForSecurity".Translate() : "RP_JobNeedsProgram".Translate(j.requiredProgram.label)) + ")", null));
+                // (The outside job is a trusty's: shown, and greyed out, for anyone else - "not for this security" first, for the levels no trusty is at.)
+                if (!allowed)
+                    options.Add(new FloatMenuOption(j.LabelCap + " (" + "RP_JobNotForSecurity".Translate() + ")", null));
+                else if (!Trusties.MayHold(c, j))
+                    options.Add(new FloatMenuOption(j.LabelCap + " (" + "RP_JobNeedsTrusty".Translate() + ")", null));
+                else if (!trained)
+                    options.Add(new FloatMenuOption(j.LabelCap + " (" + "RP_JobNeedsProgram".Translate(j.requiredProgram.label) + ")", null));
                 else
                     options.Add(new FloatMenuOption(j.LabelCap + " (" + JobSlots(j, c.Pawn.Map) + ")", () => { c.job = j; c.jobLocked = true; }));
             }

@@ -327,6 +327,9 @@ namespace RimPrison
         /// </summary>
         public static EscortKind? DueFor(Pawn p, CompInmate c, PrisonGame game)
         {
+            // A trusty out in the open who cannot get back to the bed (the zone erased, the gate rebuilt or locked): a guard walks them in, through the doors on the way (see Trusties.Stranded).
+            if (Trusties.Stranded(p) && c.leg == null && c.forcedActivity == null && !p.Downed && !p.InMentalState && p.Awake() && p.Map != null && Find.TickManager.TicksGame >= c.escortRetryTick && !EvacuationSystem.Involves(p))
+                return EscortKind.Home;
             if (c.security is not { escortOnly: true } || c.leg != null || c.forcedActivity != null || p.Downed || p.InMentalState || !p.Awake() || p.Map == null || Find.TickManager.TicksGame < c.escortRetryTick) return null;
             // (Out of the cell in an evacuation: the evacuation's guards have them, and the walk back is the all-clear's.)
             if (EvacuationSystem.Involves(p)) return null;
@@ -344,7 +347,7 @@ namespace RimPrison
         /// <summary>The inmates a guard could be sent to walk now (see <see cref="WorkGiver_EscortInmate"/>): in their cells and due for the shower or the yard, or out of them with nobody (<see cref="TryPlan"/> says whether there is anywhere to take them, and for the yard whose turn it is).</summary>
         public static bool Candidate(Pawn p)
         {
-            if (p.Inmate() is not { activeFlag: true } c || c.security is not { escortOnly: true } || PrisonGame.Instance is not { } game) return false;
+            if (p.Inmate() is not { activeFlag: true } c || c.security is not { escortOnly: true } && !Trusties.Stranded(p) || PrisonGame.Instance is not { } game) return false;
             return DueFor(p, c, game) != null;
         }
 
@@ -380,7 +383,7 @@ namespace RimPrison
             if (due != EscortKind.Home && IncidentWorker_StaffStrike.Striking(guard)) return false;
             if (due == EscortKind.Home)
             {
-                target = post = EscortWalk.HomeCell(inmate);
+                target = post = EscortWalk.HomeCell(inmate, guard, toWing: true);
                 return target.IsValid && guard.CanReach(target, PathEndMode.OnCell, Danger.Deadly);
             }
             if (due == EscortKind.Shower)

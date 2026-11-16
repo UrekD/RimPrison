@@ -47,14 +47,15 @@ namespace RimPrison
             private readonly PrisonMap pm0;
             private readonly List<Rumour> rumours0;
             private readonly List<WardenAsk> asks0;
-            private readonly bool? rumourStart0, rumourTip0;
+            private readonly bool? rumourStart0, rumourTip0, rumourAsk0;
 
             public Rollback(Map map)
             {
                 // (The rumour mill's dice are quiet in a check: a transfer, a death, an order or a search would else start a rumour half the time and write one more chronicle line, or a tip would be about talk. A rumour
                 // check sets them on purpose; they are put back as they were on dispose.)
-                (rumourStart0, rumourTip0) = (Rumours.ForceStart, Rumours.ForceTip);
-                (Rumours.ForceStart, Rumours.ForceTip) = (false, false);
+                // (The asker's dice too: a rumour a check starts has nobody ask to see the warden about it unless the check says so.)
+                (rumourStart0, rumourTip0, rumourAsk0) = (Rumours.ForceStart, Rumours.ForceTip, WardenAsks.ForceAsk);
+                (Rumours.ForceStart, Rumours.ForceTip, WardenAsks.ForceAsk) = (false, false, false);
                 funds0 = g.ledger.funds;
                 reputation0 = g.reputation;
                 recent0 = g.ledger.recent.ToList();
@@ -165,7 +166,7 @@ namespace RimPrison
                 foreach ((CompInmate c, float tension, string cause) in tensions0) (c.tension, c.mainCause) = (tension, cause);
                 if (pm0 != null && rumours0 != null) pm0.rumours = rumours0.Select(x => x.Copy()).ToList();
                 if (pm0 != null && asks0 != null) pm0.asks = asks0.Select(x => x.Copy()).ToList();
-                (Rumours.ForceStart, Rumours.ForceTip) = (rumourStart0, rumourTip0);
+                (Rumours.ForceStart, Rumours.ForceTip, WardenAsks.ForceAsk) = (rumourStart0, rumourTip0, rumourAsk0);
             }
         }
 
@@ -212,6 +213,15 @@ namespace RimPrison
             foreach (Trait t in p.story.traits.allTraits.Where(t => t.CurrentData.randomMentalState != null || t.CurrentData.forcedMentalState != null).ToList()) p.story.traits.RemoveTrait(t);
         }
 
+        /// <summary>
+        /// The conditions that start mental states taken off (dementia: "has broken down and is wandering around confused", the scene's workman in trusty-t6b, who then wandered about instead of burying): the traits' twin
+        /// of <see cref="NoMentalStateTraits"/>. A throwaway generated at an old age may have one.
+        /// </summary>
+        private static void NoMentalStateHediffs(Pawn p)
+        {
+            foreach (Hediff h in p.health.hediffSet.hediffs.Where(h => h.def.stages != null && h.def.stages.Any(st => !st.mentalStateGivers.NullOrEmpty())).ToList()) p.health.RemoveHediff(h);
+        }
+
         /// <summary>A new guard on site (or at home), not paid for or written up, removed again by the rollback.</summary>
         private static Pawn ThrowawayStaff(Map map, Rollback r, StaffRoleDef role, bool atHome = false)
         {
@@ -219,6 +229,7 @@ namespace RimPrison
             GenSpawn.Spawn(p, IntakeSystem.IntakeCell(map, IntakeSystem.IntakeSpot(map)), map);
             StaffUtility.ApplyRole(p, role, record: false);
             NoMentalStateTraits(p);
+            NoMentalStateHediffs(p);
             PrisonGame g = PrisonGame.Instance;
             r.Add(() =>
             {

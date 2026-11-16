@@ -33,6 +33,8 @@ namespace RimPrison
             CheckAskCellRequest(map);
             CheckAskRumour(map);
             CheckAskRumourTied(map);
+            CheckAskRumourSameTick(map);
+            CheckAskRumourTruthNeutral(map);
             CheckAskStepDown(map);
             CheckAskGo(map);
         }
@@ -422,6 +424,8 @@ namespace RimPrison
                 SecurityLevelDef level = levels[0], other = levels[1];
                 Pawn origin = RumourInmate(s, level, IntakeSystem.IntakeCell(map, IntakeSystem.IntakeSpot(map)), cast), mate = RumourInmate(s, level, origin.Position, cast);
                 int real = RealOn(map, level, cast);
+                // (The asker's dice forced: a rumour has someone ask at WardenAsks.RumourAskChance, the same for a true one and a false one; the rollback puts the dice back.)
+                WardenAsks.ForceAsk = true;
                 Rumour rumour = Rumours.Start(pm, level, RumourKind.Supermax, isTrue: false, subject: null, origin: origin);
                 List<WardenAsk> asked = pm.asks.Where(a => a.reason == WardenAskReason.Rumour).ToList();
                 if (rumour == null || asked.Count != 1 || asked[0].inmateId == origin.thingIDNumber)
@@ -435,12 +439,30 @@ namespace RimPrison
                 // Met on the walk: who started it, and that it is false.
                 if (WardenSystem.Meet(w, asker) != 1 || !rumour.originKnown || !rumour.truthKnown || WardenAsks.Of(asker) != null)
                     AskFail(check, $"the asker met on the walk - origin known {rumour.originKnown}, truth known {rumour.truthKnown}, request left {WardenAsks.Of(asker) != null}");
-                // A true rumour: nobody asks.
+                // A true rumour: someone asks as for a false one (never the origin), and the dice alone decide it: with them against, nobody asks.
                 Pawn o2 = RumourInmate(s, other, origin.Position, cast);
                 RumourInmate(s, other, origin.Position, cast);
+                WardenAsks.ForceAsk = false;
                 int before = pm.asks.Count;
-                Rumours.Start(pm, other, RumourKind.Supermax, isTrue: true, subject: null, origin: o2);
-                if (pm.asks.Count != before) AskFail(check, $"a true rumour had someone ask ({WardenAsks.Describe(pm)})");
+                Rumour quiet = Rumours.Start(pm, other, RumourKind.Supermax, isTrue: true, subject: null, origin: o2);
+                if (quiet == null || pm.asks.Count != before) AskFail(check, $"a true rumour started ({quiet != null}) with the asker's dice against and the queue went from {before} to {pm.asks.Count} (nobody asks expected)");
+                else Rumours.End(quiet, RumourEnd.Replaced, s.Now);
+                WardenAsks.ForceAsk = true;
+                Rumour truth0 = Rumours.Start(pm, other, RumourKind.Supermax, isTrue: true, subject: null, origin: o2);
+                List<WardenAsk> askedTrue = pm.asks.Where(a => a.reason == WardenAskReason.Rumour && a.inmateId != asked[0].inmateId).ToList();
+                if (truth0 == null || askedTrue.Count != 1 || askedTrue[0].inmateId == o2.thingIDNumber)
+                    AskFail(check, $"a true rumour on the wing with the asker's dice for it had {askedTrue.Count} ask ({WardenAsks.Describe(pm)}, origin {o2.thingIDNumber}; one, never the origin, expected)");
+                else
+                {
+                    Pawn askerTrue = CourtUtil.FindInmate(map, askedTrue[0].inmateId);
+                    if (WardenAsks.RumourOf(map, askerTrue.Inmate(), askedTrue[0]) != truth0 || WardenAsks.Moot(map, askerTrue, askerTrue.Inmate(), askedTrue[0]))
+                        AskFail(check, "the request about a true rumour is not tied to it, or is over as it is made");
+                    // Met on the walk: who started it, and the truth - the same investigation as for a false one.
+                    if (WardenSystem.Meet(w, askerTrue) != 1 || !truth0.originKnown || !truth0.truthKnown || WardenAsks.Of(askerTrue) != null)
+                        AskFail(check, $"the asker of a true rumour met on the walk - origin known {truth0.originKnown}, truth known {truth0.truthKnown}, request left {WardenAsks.Of(askerTrue) != null}");
+                }
+                if (truth0 != null) Rumours.End(truth0, RumourEnd.Replaced, s.Now);
+                WardenAsks.ForceAsk = true;
                 // The rumour ended: the request goes at the hour.
                 Rumour again = Rumours.Start(pm, level, RumourKind.Death, isTrue: false, subject: "Zsubject", origin: origin);
                 Pawn second = pm.asks.Where(a => a.reason == WardenAskReason.Rumour).Select(a => CourtUtil.FindInmate(map, a.inmateId)).FirstOrDefault();
@@ -490,7 +512,7 @@ namespace RimPrison
                 r.Add(() => Find.TickManager.DebugSetTicksGame(clock0));
                 Find.TickManager.DebugSetTicksGame(clock0 + 1);
                 Rumour here = Rumours.Start(pm, level, RumourKind.Supermax, isTrue: false, subject: null, origin: origin);
-                WardenAsks.Raise(mate, WardenAskReason.Rumour);
+                WardenAsks.Raise(mate, WardenAskReason.Rumour, here);
                 CompInmate mc = mate.Inmate();
                 if (there == null || here == null || WardenAsks.Of(mate) is not { reason: WardenAskReason.Rumour } ask)
                 {
@@ -523,6 +545,158 @@ namespace RimPrison
                 if (WardenAsks.Answered != answered0 || truth.truthKnown) AskFail(check, $"meeting the asker of a replaced rumour - answered {WardenAsks.Answered != answered0}, the true one's truth told {truth.truthKnown} (neither expected)");
                 if (WardenAsks.Of(mate) != null) AskFail(check, "the request about a replaced rumour was left after the walk met them");
                 Find.TickManager.DebugSetTicksGame(clock0);
+            });
+        }
+
+        /// <summary>
+        /// A request is tied to its own rumour when others start in the same tick (stability round 31: with the false-only filter gone, nothing but the tick told two rumours apart). Two wings' rumours start in one tick (a strike,
+        /// a food scare): an asker moved from one wing to the other is not asking about that wing's. A worse thing replaces theirs in the tick it started (the same wing, another kind): the request is not about it. A request
+        /// saved without the wing and the kind (an old save) is tied by the tick alone, as it was. Fails without the discriminator: the moved asker described and answered the other wing's rumour.
+        /// </summary>
+        private static void CheckAskRumourSameTick(Map map)
+        {
+            const string check = "the rumour asked about, in one tick";
+            Guarded("warden asks: the rumour asked about, in one tick", map, r =>
+            {
+                var s = new WardenScene(map, r);
+                PrisonMap pm = AskIsolate(map);
+                pm.rumours = new List<Rumour>();
+                List<SecurityLevelDef> levels = RumourLevels(map);
+                if (levels.Count < 2)
+                {
+                    RPLog.Message("[RimPrison:test] warden asks: the rumour asked about, in one tick skipped - fewer than two levels a rumour can be told on");
+                    return;
+                }
+                var cast = new List<Pawn>();
+                SecurityLevelDef level = levels[0], other = levels[1];
+                Pawn origin = RumourInmate(s, level, IntakeSystem.IntakeCell(map, IntakeSystem.IntakeSpot(map)), cast), mate = RumourInmate(s, level, origin.Position, cast);
+                Pawn otherOrigin = RumourInmate(s, other, origin.Position, cast);
+                RumourInmate(s, other, origin.Position, cast);
+                // Both wings' false rumours in the same tick; the mate asks about their own wing's.
+                Rumour there = Rumours.Start(pm, other, RumourKind.Supermax, isTrue: false, subject: null, origin: otherOrigin);
+                Rumour here = Rumours.Start(pm, level, RumourKind.Supermax, isTrue: false, subject: null, origin: origin);
+                WardenAsks.Raise(mate, WardenAskReason.Rumour, here);
+                CompInmate mc = mate.Inmate();
+                if (there == null || here == null || there.startTick != here.startTick || WardenAsks.Of(mate) is not { reason: WardenAskReason.Rumour } ask)
+                {
+                    AskFail(check, $"premise: the two rumours of one tick or the mate's request did not start ({there != null}, {here != null}, {WardenAsks.Describe(pm)})");
+                    return;
+                }
+                if (WardenAsks.RumourOf(map, mc, ask) != here) AskFail(check, "a request about the talk is not tied to the rumour it was made for");
+                mc.security = other;
+                Rumour asWing = WardenAsks.RumourOf(map, mc, ask);
+                string moved = WardenAsks.ReasonText(map, mate, mc, ask);
+                bool movedMoot = WardenAsks.Moot(map, mate, mc, ask);
+                mc.security = level;
+                if (asWing != null || !movedMoot || moved.Contains(Rumours.Text(there)))
+                    AskFail(check, $"an asker moved to another wing whose rumour started in the same tick - tied to {(asWing == null ? "nothing" : "that wing's rumour")}, the reason \"{moved}\", over {movedMoot} (not that wing's talk, and over, expected)");
+                // An old save's request (no wing, no kind): the tick ties it, as it did.
+                WardenAsk old = ask.Copy();
+                (old.rumourLevel, old.rumourKind) = (null, -1);
+                if (WardenAsks.RumourOf(map, mc, old) != here) AskFail(check, "a request saved without the rumour's wing and kind is not tied to the rumour live on the wing that started in its tick");
+
+                // A worse thing replaces the wing's rumour in the same tick: the request is not about it. (The wing's own first is let go, or a lesser thing would not start over it.)
+                Rumours.End(here, RumourEnd.Replaced, Find.TickManager.TicksGame);
+                Rumour first = Rumours.Start(pm, level, RumourKind.Transfer, isTrue: false, subject: "Zsubject", origin: origin);
+                if (first == null || !WardenAsks.Raise(mate, WardenAskReason.Rumour, first) || WardenAsks.Of(mate) is not { } ask2)
+                {
+                    AskFail(check, $"premise: the transfer rumour's request did not start ({first != null}, {WardenAsks.Describe(pm)})");
+                    return;
+                }
+                Rumour worse = Rumours.Start(pm, level, RumourKind.Death, isTrue: false, subject: "Zsubject", origin: origin);
+                if (worse == null || worse.startTick != first.startTick || first.Live)
+                {
+                    RPLog.Message($"[RimPrison:test] warden asks: the rumour asked about, in one tick - the worse rumour did not replace the first in its tick ({worse != null}, {first.Live}), not checked");
+                    return;
+                }
+                if (WardenAsks.RumourOf(map, mc, ask2) != null || !WardenAsks.Moot(map, mate, mc, ask2) || WardenAsks.ReasonText(map, mate, mc, ask2).Contains(Rumours.Text(worse)))
+                    AskFail(check, "the request about a rumour that a worse one replaced in the same tick describes or answers the worse one");
+            });
+        }
+
+        /// <summary>
+        /// The request tells nothing of the rumour's truth (stability round 31, sol W1): a true rumour and a false one of the same kind and words (<see cref="Rumour.distorted"/> alike), started through the mill's own
+        /// <see cref="Rumours.Notify_Source"/> with the dice forced, each have someone ask, and what the warden can see of the two requests reads the same before the conversation - the reason's words, the "Go"'s state and the
+        /// walk it orders (the zone), who may ask (never the origin) - and an asker's request is no likelier for a true rumour than a false one (the unforced roll, many times over). The conversation then tells what the asker
+        /// knows, for either: the origin and the truth. Fails without the change: a true rumour had nobody ask.
+        /// </summary>
+        private static void CheckAskRumourTruthNeutral(Map map)
+        {
+            const string check = "the request tells nothing of the truth";
+            Guarded("warden asks: the request tells nothing of the truth", map, r =>
+            {
+                var s = new WardenScene(map, r);
+                PrisonMap pm = AskIsolate(map);
+                pm.rumours = new List<Rumour>();
+                List<SecurityLevelDef> levels = RumourLevels(map);
+                if (levels.Count < 1)
+                {
+                    RPLog.Message("[RimPrison:test] warden asks: the request tells nothing of the truth skipped - no level a rumour can be told on");
+                    return;
+                }
+                r.Add(() => Rumours.ForceDistort = null);
+                Pawn w = s.Warden();
+                var cast = new List<Pawn>();
+                SecurityLevelDef level = levels[0];
+                Pawn origin = RumourInmate(s, level, IntakeSystem.IntakeCell(map, IntakeSystem.IntakeSpot(map)), cast);
+                for (int i = 0; i < 2; i++) RumourInmate(s, level, origin.Position, cast);
+                List<PrisonZoneDef> wings = WardenSystem.Wings(map);
+                CompStaff sc = w.GetComp<CompStaff>();
+                sc.wordReadyTick = sc.walkReadyTick = -1;
+                (Rumours.ForceStart, Rumours.ForceDistort, WardenAsks.ForceAsk) = (true, true, true);
+
+                // The same kind and words, the one true (the guards did kill them) and the other not, started by the mill and asked about by the roll.
+                var seen = new List<(string reason, string go, PrisonZoneDef zone, bool hasAsk, bool originAsked, WardenAskReason askReason)>();
+                foreach (bool truth in new[] { false, true })
+                {
+                    Rumour rumour = Rumours.Notify_Source(map, level, RumourKind.Death, "Zsubject", exclude: null, distortedIsTrue: truth);
+                    // (The rumour mill picks the origin from the wing, who may be a real inmate: the exclusion is the request's own, never the origin.)
+                    if (rumour == null || rumour.isTrue != truth || !rumour.distorted)
+                    {
+                        AskFail(check, $"premise: the forced {(truth ? "true" : "false")} rumour did not start as asked ({rumour != null})");
+                        return;
+                    }
+                    WardenAsk ask = pm.asks.Find(a => a.reason == WardenAskReason.Rumour && a.tick == rumour.startTick && a.rumourKind == (int)rumour.kind);
+                    Pawn asker = ask == null ? null : CourtUtil.FindInmate(map, ask.inmateId);
+                    if (ask == null || asker == null)
+                    {
+                        seen.Add((null, null, null, false, false, default));
+                        AskFail(check, $"a {(truth ? "true" : "false")} rumour started by the mill with the asker's dice for it had nobody ask ({WardenAsks.Describe(pm)})");
+                        Rumours.End(rumour, RumourEnd.Replaced, s.Now);
+                        continue;
+                    }
+                    string reason = WardenAsks.ReasonText(map, asker, asker.Inmate(), ask);
+                    string go = WardenAsks.GoUnready(w, ask, asker, wings);
+                    PrisonZoneDef zone = Rumours.WingZone(map, asker.Inmate().security, wings);
+                    seen.Add((reason, go ?? "-", zone, true, asker.thingIDNumber == rumour.originId, ask.reason));
+                    // The conversation, the walk meeting them: the origin and the truth, whichever it is.
+                    if (WardenSystem.Meet(w, asker) != 1 || !rumour.originKnown || !rumour.truthKnown || WardenAsks.Of(asker) != null)
+                        AskFail(check, $"the asker of a {(truth ? "true" : "false")} rumour met on the walk - origin known {rumour.originKnown}, truth known {rumour.truthKnown}, request left {WardenAsks.Of(asker) != null}");
+                    pm.asks.Clear();
+                    Rumours.End(rumour, RumourEnd.Replaced, s.Now);
+                }
+                if (seen.Count == 2 && seen[0].hasAsk && seen[1].hasAsk)
+                {
+                    var (f, t) = (seen[0], seen[1]);
+                    if (f.reason != t.reason || f.go != t.go || f.zone != t.zone || f.askReason != t.askReason || f.originAsked || t.originAsked)
+                        AskFail(check, $"the requests about a false and a true rumour of the same words differ before the conversation - reason \"{f.reason}\" / \"{t.reason}\", go {f.go} / {t.go}, wing zone {f.zone?.defName} / {t.zone?.defName}, origin asked {f.originAsked} / {t.originAsked}");
+                }
+
+                // The rate does not depend on the truth: the roll itself, unforced, many times over for a true rumour and for a false one of the same kind and words.
+                WardenAsks.ForceAsk = null;
+                const int rolls = 300;
+                int tick = s.Now;
+                int[] asked = new int[2];
+                for (int k = 0; k < 2; k++)
+                {
+                    var probe = new Rumour { kind = RumourKind.Death, level = level, originId = origin.thingIDNumber, originName = origin.LabelShort, isTrue = k == 1, distorted = true, subject = "Zsubject", startTick = tick, expireTick = tick + GenDate.TicksPerDay, reach = Rumours.StartReach };
+                    for (int i = 0; i < rolls; i++)
+                        if (WardenAsks.Notify_Rumour(map, probe) != null) asked[k]++;
+                    pm.asks.Clear();
+                }
+                float lo = rolls * (WardenAsks.RumourAskChance - 0.15f), hi = rolls * (WardenAsks.RumourAskChance + 0.15f);
+                if (asked[0] < lo || asked[0] > hi || asked[1] < lo || asked[1] > hi || asked[0] == rolls || asked[1] == rolls)
+                    AskFail(check, $"the roll for a request about a rumour came {asked[0]} of {rolls} for a false rumour and {asked[1]} for a true one (the same chance, {WardenAsks.RumourAskChance}, whatever the truth: between {lo:F0} and {hi:F0})");
             });
         }
 
@@ -609,7 +783,7 @@ namespace RimPrison
 
         /// <summary>
         /// Requests with every field off its default, for the round trip: from inmates of the wing the seeded rumour runs on (<see cref="SeedRumoursForReload"/>, which comes first), at the tick it started (a request is tied to
-        /// its rumour by that), so the reason stands if an hour passes before the check (never before 1).
+        /// its rumour by that and by the wing and kind), so the reason stands if an hour passes before the check (never before 1).
         /// </summary>
         private static void SeedWardenAsksForReload(Map map)
         {
@@ -623,10 +797,31 @@ namespace RimPrison
             SecurityLevelDef level = wing[0].Inmate().security;
             wing = wing.Where(p => p.Inmate().security == level).Take(2).ToList();
             asksBeforeSeed = pm.asks;
-            int tick = Rumours.LiveOn(pm, level) is { isTrue: false } seeded ? seeded.startTick : Mathf.Max(1, Find.TickManager.TicksGame - 1234);
-            pm.asks = wing.Select(p => new WardenAsk { inmateId = p.thingIDNumber, reason = WardenAskReason.Rumour, tick = tick }).ToList();
+            // (About a true rumour: the request is no more about a false one than a true one, stability round 31. The wing and the kind it is tied by are off their defaults too.)
+            Rumour seeded = Rumours.LiveOn(pm, level);
+            int tick = seeded != null ? seeded.startTick : Mathf.Max(1, Find.TickManager.TicksGame - 1234);
+            pm.asks = wing.Select(p => new WardenAsk { inmateId = p.thingIDNumber, reason = WardenAskReason.Rumour, tick = tick, rumourLevel = level, rumourKind = (int)(seeded?.kind ?? RumourKind.Supermax) }).ToList();
             askSeed = WardenAsks.Describe(pm);
             RPLog.Message($"[RimPrison:test] saveload asks: {askSeed}");
+        }
+
+        /// <summary>
+        /// The seeded requests are still about the rumour they were made for, a true one (stability round 31): tied to it and not over. Called with the seeded rumours still in place (<see cref="CheckRumoursAfterReload"/> puts
+        /// the map's own back first of the two). Fails without the change: a request about a true rumour was tied to nothing.
+        /// </summary>
+        private static void CheckAskTiesAfterReload(Map map)
+        {
+            if (askSeed == null) return;
+            PrisonMap pm = PrisonMap.Of(map);
+            int tied = 0;
+            foreach (WardenAsk a in pm.asks)
+            {
+                if (CourtUtil.FindInmate(map, a.inmateId) is not { } asker || asker.Inmate() is not { } ac || Rumours.LiveOn(pm, ac.security) is not { isTrue: true }) continue;
+                tied++;
+                if (WardenAsks.RumourOf(map, ac, a) == null || WardenAsks.Moot(map, asker, ac, a))
+                    reloadProblems.Add($"a request about a true rumour came back from the round trip tied to nothing or over: {a.Describe()}");
+            }
+            if (tied == 0) reloadProblems.Add($"no seeded request came back about the seeded true rumour ({WardenAsks.Describe(pm)})");
         }
 
         /// <summary>The seeded requests came back whole; then the map has its own again.</summary>
