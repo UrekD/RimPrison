@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimPrison
@@ -208,40 +209,49 @@ namespace RimPrison
             Find.LetterStack.ReceiveLetter(letter);
         }
 
-        /// <summary>For the tests: the cameras the cache calls watched that a plain walk would not (or the other way round), counted over every camera of the map (see <see cref="Shadow.CheckCctv"/>): who sits now, the cameras that work now.</summary>
+        /// <summary>For the tests: what the cache says that a plain walk would not (or the other way round), counted over every camera of the map (watched or not, and which monitor carries it) and every monitor (who sits, how many it carries), see <see cref="Shadow.CheckCctv"/>: who sits now, the cameras that work now.</summary>
         internal static int Mismatches(Map map, PrisonMap pm, out int asked)
         {
-            int capacity = 0;
-            if (Needed)
-            {
-                List<Thing> things = map.listerThings.ThingsOfDef(RPCctvDefOf.RP_CctvMonitor);
-                for (int i = 0; i < things.Count; i++)
-                    if (things[i].TryGetComp<CompCctvMonitor>() is { } m && Manned(m, out _)) capacity += m.Props.feeds;
-            }
+            SeatedMonitors(map, live: true);
             asked = pm.Cameras.Count;
-            return Differ(pm, capacity, live: true);
+            return Differ(map, pm, live: true);
         }
 
         /// <summary>
-        /// For the tests, before a rebuild: how many cameras' cached answers are out of date for a reason a rebuild is owed at once (see <see cref="Shadow.CheckCctvStale"/>). Who sits at a monitor and what has power are the beat's to
+        /// For the tests, before a rebuild: how many of the cache's answers are out of date for a reason a rebuild is owed at once (see <see cref="Shadow.CheckCctvStale"/>). Who sits at a monitor and what has power are the beat's to
         /// change (they may lag up to 250 ticks), so the walk takes the monitors that were manned at the last rebuild and the cameras that worked then, and asks what only the warden or the builders change: the policy, which cameras
-        /// are on the screens and their priority, which are spawned. A difference is a trigger that never rebuilds.
+        /// are on the screens and their priority, which cameras and monitors are spawned (a camera that a taken-down monitor carries, or a monitor that carries what it should not, counts). A difference is a trigger that never rebuilds.
         /// </summary>
         internal static int Stale(Map map, PrisonMap pm, out int asked)
         {
-            int capacity = 0;
-            List<Thing> things = map.listerThings.ThingsOfDef(RPCctvDefOf.RP_CctvMonitor);
-            for (int i = 0; i < things.Count; i++)
-                if (things[i].TryGetComp<CompCctvMonitor>() is { seated: not null } m && m.parent.Spawned) capacity += m.Props.feeds;
+            SeatedMonitors(map, live: false);
             asked = pm.Cameras.Count;
-            return Differ(pm, capacity, live: false);
+            return Differ(map, pm, live: false);
         }
 
-        /// <summary>The plain way: <paramref name="capacity"/> places on the screens, a camera's rank among those that may go on them (the high-priority first, then by id). <paramref name="live"/>: the cameras that work now; else the ones that worked at the last rebuild, and a camera built under another policy is out of date.</summary>
-        private static int Differ(PrisonMap pm, int capacity, bool live)
+        private static readonly List<CompCctvMonitor> oracleSeated = new List<CompCctvMonitor>();
+
+        /// <summary>The monitors that would carry cameras, in thing-id order (the order they take them in): the ones manned now (<paramref name="live"/>), else the ones that were seated at the last rebuild and still stand.</summary>
+        private static void SeatedMonitors(Map map, bool live)
+        {
+            oracleSeated.Clear();
+            List<Thing> things = map.listerThings.ThingsOfDef(RPCctvDefOf.RP_CctvMonitor);
+            for (int i = 0; i < things.Count; i++)
+                if (things[i].TryGetComp<CompCctvMonitor>() is { } m && (live ? Needed && Manned(m, out _) : m.seated != null && m.parent.Spawned)) oracleSeated.Add(m);
+            oracleSeated.Sort((a, b) => a.parent.thingIDNumber.CompareTo(b.parent.thingIDNumber));
+        }
+
+        /// <summary>
+        /// The plain way over <see cref="oracleSeated"/>: a camera's rank among those that may go on the screens (the high-priority first, then by id) says whether it is watched and which monitor carries it (each takes its
+        /// <see cref="CompProperties_CctvMonitor.feeds"/> in turn), and so how many each monitor carries. <paramref name="live"/>: the cameras that work now, who sits now; else the ones that worked at the last rebuild, and a camera
+        /// built under another policy is out of date.
+        /// </summary>
+        private static int Differ(Map map, PrisonMap pm, bool live)
         {
             bool Eligible(CompSecurityCamera c) => c.onScreens && (live ? c.Working : c.parent.Spawned && c.poolWorked);
-            int differ = 0;
+            int differ = 0, eligible = 0;
+            for (int i = 0; i < pm.Cameras.Count; i++)
+                if (Needed && Eligible(pm.Cameras[i])) eligible++;
             for (int i = 0; i < pm.Cameras.Count; i++)
             {
                 CompSecurityCamera cam = pm.Cameras[i];
@@ -254,8 +264,32 @@ namespace RimPrison
                 if (Eligible(cam))
                     for (int j = 0; j < pm.Cameras.Count; j++)
                         if (j != i && Eligible(pm.Cameras[j]) && ByPriority(pm.Cameras[j], cam) < 0) rank++;
-                bool expected = Needed && Eligible(cam) && rank < capacity;
-                if (expected != cam.watched) differ++;
+                int owner = 0;
+                if (Needed && Eligible(cam))
+                {
+                    int before = 0;
+                    for (int k = 0; k < oracleSeated.Count; k++)
+                    {
+                        before += oracleSeated[k].Props.feeds;
+                        if (rank >= before) continue;
+                        owner = oracleSeated[k].parent.thingIDNumber;
+                        break;
+                    }
+                }
+                if ((owner != 0) != cam.watched || owner != cam.screenId) differ++;
+            }
+            List<Thing> things = map.listerThings.ThingsOfDef(RPCctvDefOf.RP_CctvMonitor);
+            for (int i = 0; i < things.Count; i++)
+            {
+                if (things[i].TryGetComp<CompCctvMonitor>() is not { } m) continue;
+                int at = oracleSeated.IndexOf(m), expected = 0;
+                if (at >= 0)
+                {
+                    int before = 0;
+                    for (int k = 0; k < at; k++) before += oracleSeated[k].Props.feeds;
+                    expected = Mathf.Clamp(eligible - before, 0, m.Props.feeds);
+                }
+                if (m.carrying != expected || live && m.seated != (at >= 0 ? OperatorOf(m.parent) : null)) differ++;
             }
             return differ;
         }

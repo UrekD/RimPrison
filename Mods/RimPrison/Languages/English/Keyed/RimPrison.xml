@@ -356,13 +356,9 @@ Acting on tips can expose the informant.</RP_TipText>
   <RP_AppealWonLabel>Sentence commuted</RP_AppealWonLabel>
   <RP_AppealWonText>The appeals court has commuted {0}'s death sentence to life imprisonment. They move to {1}.</RP_AppealWonText>
   <RP_AppealsExhaustedLabel>Execution scheduled</RP_AppealsExhaustedLabel>
-  <RP_AppealsExhaustedText>{0} has exhausted all appeals. The state has scheduled the execution in {1} day(s).\n\nOn the day, guards will restrain {0} in their cell and carry them to an execution table. Without one, the state fines the prison every day the sentence is overdue.</RP_AppealsExhaustedText>
+  <RP_AppealsExhaustedText>{0} has exhausted all appeals. The state has set the execution date in {1} day(s).\n\nWhen it comes the case waits for you, warden - authorise the execution, or ask the state for one stay. Every day it waits the state stops paying for them and fines the prison, a little more each day. An execution needs an execution table in a staff-only room, clear of any body.</RP_AppealsExhaustedText>
   <RP_ExecutionDay>Guards have restrained {0} for the execution.</RP_ExecutionDay>
   <RP_Executed>The sentence on {0} has been carried out.</RP_Executed>
-  <RP_ExecutionOverdueLabel>Execution overdue</RP_ExecutionOverdueLabel>
-  <RP_ExecutionOverdueText>{0}'s execution is overdue. The state has stopped paying for them and fined you {1}, and will fine you every day until the sentence is carried out. {2}</RP_ExecutionOverdueText>
-  <RP_ExecutionNoTable>Build an execution table in a staff-only room.</RP_ExecutionNoTable>
-  <RP_ExecutionNoGuard>Make sure a guard can reach both the inmate and the execution table.</RP_ExecutionNoGuard>
   <RP_ExecutionOverdueNote>Overdue execution: {0}</RP_ExecutionOverdueNote>
   <RP_WrongfulExecutionLabel>Wrongful execution</RP_WrongfulExecutionLabel>
   <RP_WrongfulExecutionText>New evidence shows that {0} was innocent. The family is suing the prison: {1} in damages, and the prison's reputation suffers.</RP_WrongfulExecutionText>
@@ -439,7 +435,7 @@ Acting on tips can expose the informant.</RP_TipText>
   <RP_Problem_Hungry>{0} inmate(s) are going hungry right now. Check meals on the canteen counters, cooks, stoves (each needs a meal bill, and the kitchen zone under it) and food stock.</RP_Problem_Hungry>
   <RP_Problem_NoBed>{0} inmate(s) have no cell bed (overcrowding, or no bed in their wing).</RP_Problem_NoBed>
   <RP_Problem_NoChapel>{0} religious inmate(s) have no chapel (they pray in their cells at half comfort).</RP_Problem_NoChapel>
-  <RP_Problem_NoExecutionTable>An execution is due and there is no execution table. The state fines you daily.</RP_Problem_NoExecutionTable>
+  <RP_Problem_NoExecutionTable>An execution is waiting and there is no execution table that is free (build one in a staff-only room).</RP_Problem_NoExecutionTable>
   <RP_Problem_Strike>Staff are on strike.</RP_Problem_Strike>
   <RP_Problem_BureaucracyStalled>Bureaucracy project "{0}" is stalled. It needs an administrator and an office desk.</RP_Problem_BureaucracyStalled>
   <RP_Problem_LaundryBill>The laundry service cost {0} yesterday. A laundry room with washers and inmate workers would pay for itself.</RP_Problem_LaundryBill>
@@ -692,7 +688,7 @@ Acting on tips can expose the informant.</RP_TipText>
   <RP_Alert_ContractAtRiskDesc>The export contract is due with the next run, and {0} of {1} items have been delivered. Put more inmates in the workshop, or the contract is missed.</RP_Alert_ContractAtRiskDesc>
   <RP_Alert_LowFunds>Funds running low</RP_Alert_LowFunds>
   <RP_Alert_LowFundsDesc>The prison has {0}, less than two days of wages ({1} a day). Cut costs or take in more inmates before it goes into debt.</RP_Alert_LowFundsDesc>
-  <RP_Alert_ExecutionNoTable>Execution due - no room</RP_Alert_ExecutionNoTable>
+  <RP_Alert_ExecutionNoTable>Execution waiting - no table</RP_Alert_ExecutionNoTable>
   <RP_Alert_Hungry>Inmates hungry</RP_Alert_Hungry>
   <RP_Alert_HungryN>{0} inmates hungry</RP_Alert_HungryN>
   <RP_Alert_NoBed>Inmates without a bed</RP_Alert_NoBed>

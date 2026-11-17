@@ -147,6 +147,8 @@ namespace RimPrison
                 Label(new Rect(0f, y, w, h), text, color);
                 y += h;
             }
+            // The condemned's case, once it is the warden's to answer: authorise the night, ask for the one stay, name the guards for it.
+            if (DeathRowSystem.Ext(c) != null && c.execStage is ExecStage.Awaiting or ExecStage.Authorised) y += DrawLastDay(p, c, y, w);
             // The warden's keep-apart orders are listed above; the button picks another inmate to keep this one from (or lifts the order that is there).
             var apartButton = new Rect(w - 140f, y + 2f, 140f, 24f);
             TooltipHandler.TipRegion(apartButton, "RP_FileKeepApartTip".Translate(p.LabelShort));
@@ -305,6 +307,12 @@ namespace RimPrison
                     SupermaxSystem.CleanDays(c) >= SupermaxSystem.StepDownCleanDays ? PrisonHUD.Good : PrisonHUD.Muted);
             if (Suppression.Held(c)) yield return ("RP_FileSuppressed".Translate(c.suppressed.ToString("F0")), PrisonHUD.Muted);
             if (c.timesAdmitted > 1) yield return ("RP_FileStatusAdmitted".Translate(c.timesAdmitted), PrisonHUD.Muted);
+            if (DeathRowSystem.Ext(c) is { } deathRow)
+            {
+                // (The night itself has no line to act on, but the detail - who is named, who refused - stays on the file through the procedure and the fallback.)
+                if (LastDay.Line(c, deathRow) is { } lastDay) yield return (lastDay + " " + LastDay.DetailText(p.MapHeld ?? Find.CurrentMap, c), PrisonHUD.Bad);
+                else if (c.execStage == ExecStage.Authorised && c.detailIds.Count > 0) yield return (LastDay.DetailText(p.MapHeld ?? Find.CurrentMap, c), PrisonHUD.Muted);
+            }
             if (!c.IsLifer && DeathRowSystem.Ext(c) == null)
             {
                 float toHalf = c.TermDays * 0.5f - c.DaysServed;
@@ -351,6 +359,45 @@ namespace RimPrison
             foreach (string line in Adjudication.FileLinesCached(p)) yield return (line, PrisonHUD.Muted);
             foreach (string line in ComplaintSystem.FileLines(p)) yield return (line, PrisonHUD.Muted);
             yield return ((c.assessed ? "RP_FileAssessed" : "RP_FileNotAssessed").Translate(), PrisonHUD.Muted);
+        }
+
+        /// <summary>The death-row case's buttons (the line above them is in <see cref="StatusLines"/>): authorise (while the case waits), ask for the one stay, name a guard for the detail or take one off. Returns the height used.</summary>
+        private static float DrawLastDay(Pawn p, CompInmate c, float y, float w)
+        {
+            float bw = (w - 8f) / 3f, x = 0f;
+            if (c.execStage == ExecStage.Awaiting)
+            {
+                string why = LastDay.AuthoriseWhy(p);
+                var authorise = new Rect(x, y, bw, 24f);
+                TooltipHandler.TipRegion(authorise, why ?? "RP_Last_AuthoriseTip".Translate().Resolve());
+                if (Widgets.ButtonText(authorise, "RP_Last_Authorise".Translate(), active: why == null) && why == null)
+                    Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("RP_Last_AuthoriseConfirm".Translate(p.LabelShort), () => LastDay.TryAuthorise(p), destructive: true));
+                x += bw + 4f;
+            }
+            string stayWhy = LastDay.StayWhy(p);
+            var stay = new Rect(x, y, bw, 24f);
+            TooltipHandler.TipRegion(stay, stayWhy ?? "RP_Last_StayTip".Translate(LastDay.StayHearingDays, LastDay.StayReputation.ToString("0")).Resolve());
+            if (Widgets.ButtonText(stay, "RP_Last_Stay".Translate(), active: stayWhy == null) && stayWhy == null)
+                Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("RP_Last_StayConfirm".Translate(p.LabelShort, LastDay.StayHearingDays, LastDay.StayReputation.ToString("0")), () => LastDay.TryStay(p), destructive: true));
+            x += bw + 4f;
+            var detail = new Rect(x, y, bw, 24f);
+            TooltipHandler.TipRegion(detail, "RP_Last_DetailTip".Translate(LastDay.DetailMax).Resolve());
+            if (Widgets.ButtonText(detail, "RP_Last_NameGuard".Translate())) Find.WindowStack.Add(new FloatMenu(DetailOptions(p, c)));
+            return 28f;
+        }
+
+        /// <summary>The detail's menu: each named guard (to take off), then each guard who may be named (up to the limit).</summary>
+        private static List<FloatMenuOption> DetailOptions(Pawn p, CompInmate c)
+        {
+            Map map = p.MapHeld ?? Find.CurrentMap;
+            var options = new List<FloatMenuOption>();
+            foreach (Pawn named in LastDay.Named(map, c))
+                options.Add(new FloatMenuOption("RP_Last_TakeOff".Translate(named.LabelShort), () => LastDay.Unname(c, named)));
+            if (c.detailIds.Count < LastDay.DetailMax)
+                foreach (Pawn guard in LastDay.Eligible(map, c))
+                    if (!c.detailIds.Contains(guard.thingIDNumber)) options.Add(new FloatMenuOption("RP_Last_Name".Translate(guard.LabelShort), () => LastDay.TryName(p, guard)));
+            if (options.Count == 0) options.Add(new FloatMenuOption("RP_Last_NoGuards".Translate(), null));
+            return options;
         }
 
         private static void Label(Rect r, string text, Color color)

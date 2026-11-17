@@ -394,7 +394,7 @@ namespace RimPrison
             for (int i = 0; i < prisoners.Count; i++)
             {
                 CompInmate c = prisoners[i].Inmate();
-                if (c?.security == null || DeathRowSystem.ExecutionOverdue(c) || ShuttleSystem.OnTheWayOut(prisoners[i])) continue;
+                if (c?.security == null || DeathRowSystem.Pending(c) || ShuttleSystem.OnTheWayOut(prisoners[i])) continue;
                 payments += UnityEngine.Mathf.RoundToInt(SupermaxSystem.DailyPayment(c) * multiplier);
                 inmates++;
             }

@@ -562,6 +562,15 @@ namespace RimPrison
                 CheckStaffHealAtHome(map);
             }
 
+            private void EvLastDay()
+            {
+                // The last day on death row (LastDayChecks.cs): the case waits for the warden (no carry, no per-diem, one fine a day, the alerts), authorising sets the night, the one stay and its hearing, the last evening
+                // (the family, the chaplain, neither), a guard with kin on the row refusing,
+                // the body's letter and no funeral, an old save's cases, a resurrected one. The checks on real ticks (the night by the named detail, a stop at the last moment: a commutation mid-carry and the final action asking again) are not
+                // in the burst but run once after the trusty checks (AutoTest.CheckLastDayTickedOnce). The round trip through a save is in the saveload plan.
+                CheckLastDay(map);
+            }
+
             private void EvHurtOnDuty()
             {
                 // Hurt on duty (HurtOnDutyChecks.cs): how bad an injury is, one case and one letter (a second hook joins, another attacker is a new case), who is a case, the minor case with no letter, the leave (paid, off the roster,

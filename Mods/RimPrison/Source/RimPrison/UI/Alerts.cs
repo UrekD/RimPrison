@@ -16,7 +16,8 @@ namespace RimPrison
         private static Map cachedMap;
         public static readonly List<Pawn> Rioters = new List<Pawn>(), Escaping = new List<Pawn>(), HungerStrikers = new List<Pawn>(),
             Hungry = new List<Pawn>(), NoBed = new List<Pawn>(), Strikers = new List<Pawn>(), FluSick = new List<Pawn>(),
-            HoleNoBed = new List<Pawn>(), Suspended = new List<Pawn>(), ReferralBlocked = new List<Pawn>(), Hostages = new List<Pawn>(), StuckArrivals = new List<Pawn>();
+            HoleNoBed = new List<Pawn>(), Suspended = new List<Pawn>(), ReferralBlocked = new List<Pawn>(), Hostages = new List<Pawn>(), StuckArrivals = new List<Pawn>(),
+            ExecutionAwaiting = new List<Pawn>(), ExecutionSet = new List<Pawn>();
         public static readonly List<string> MissingZones = new List<string>(), ReferralLines = new List<string>(), ServiceLines = new List<string>();
         /// <summary>The inmates the last count found missing, one line each (name, where last seen, how long ago): see <see cref="CountSystem"/>.</summary>
         public static readonly List<string> Unaccounted = new List<string>();
@@ -25,6 +26,8 @@ namespace RimPrison
         /// <summary>The map has pads and none can take the shuttle (roofed, or walled off from holding), and what holds the shuttle off a pad that is only taken for now.</summary>
         public static ShuttleSystem.PadProblem PadProblem;
         public static Thing PadBlocker;
+        /// <summary>The body that keeps a waiting execution from the table (see <see cref="DeathRowSystem.BodyOnTable"/>).</summary>
+        public static Corpse ExecutionBody;
         public static int LaundryBill, ShuttleHours, DailyWages;
         /// <summary>Letters waiting more than a day, and why (see <see cref="MailSystem.Backlog"/>).</summary>
         public static int MailOverdue;
@@ -61,6 +64,8 @@ namespace RimPrison
             Suspended.Clear();
             ReferralBlocked.Clear();
             StuckArrivals.Clear();
+            ExecutionAwaiting.Clear();
+            ExecutionSet.Clear();
             ReferralLines.Clear();
             referred.Clear();
             MissingZones.Clear();
@@ -80,6 +85,9 @@ namespace RimPrison
                 if (InmateUtility.IsActiveInmate(p) && p.ownership?.OwnedBed == null) NoBed.Add(p);
                 if (Outbreaks.Active && c.activeFlag && Outbreaks.Sick(p)) FluSick.Add(p);
                 if (c.activeFlag && c.referral != null && c.referral.Eligible(p, c)) referred.Add(p);
+                // The condemned whose case is the warden's: awaiting their authority, or set for a night.
+                if (c.execStage == ExecStage.Awaiting && DeathRowSystem.Ext(c) != null) ExecutionAwaiting.Add(p);
+                else if (c.execStage == ExecStage.Authorised && DeathRowSystem.Ext(c) != null && Find.TickManager.TicksGame < c.executionTick) ExecutionSet.Add(p);
             }
             // Referred to a program that cannot run (no room, no teacher on site, or switched off): they wait for nothing.
             foreach (IGrouping<ProgramDef, Pawn> waiting in referred.GroupBy(x => x.Inmate().referral))
@@ -125,7 +133,10 @@ namespace RimPrison
             NoGuards = !StaffCommute.AllStaff(map).Any(GuardUtility.IsGuard);
             int religious = map.mapPawns.PrisonersOfColonySpawned.Count(p => p.Inmate() is { religious: true });
             NoChapel = religious > 0 && !pm.zones.Any(RPFaithDefOf.RP_Chapel);
-            ExecutionNoTable = map.mapPawns.PrisonersOfColonySpawned.Any(p => p.Inmate() is { } c && DeathRowSystem.ExecutionDue(c)) && DeathRowSystem.FindTable(map, null) == null;
+            // (No table, or a body on the one there is: two different things to put right, and two different alerts.)
+            bool executionWaits = map.mapPawns.PrisonersOfColonySpawned.Any(p => p.Inmate() is { } c && DeathRowSystem.Pending(c));
+            ExecutionBody = executionWaits ? DeathRowSystem.BodyOnTable(map) : null;
+            ExecutionNoTable = executionWaits && ExecutionBody == null && DeathRowSystem.FindTable(map, null) == null;
             BureaucracyStalled = game.bureaucracy.active != null && BureaucracySystem.Stalled(map);
             MailReason = game.mail.Backlog(map, out MailOverdue);
             LaundryBill = game.ledger.Yesterday is { } y && y.totals.TryGetValue(RPDefOf.RP_Laundry, out int laundry) && laundry < -50 ? -laundry : 0;
@@ -336,6 +347,45 @@ namespace RimPrison
 
         public override TaggedString GetExplanation() => "RP_Problem_NoExecutionTable".Translate();
         protected override AlertReport Report() => PrisonAlerts.ExecutionNoTable;
+    }
+
+    /// <summary>An execution waits and a body lies on the only table there is: the next cannot be laid on it. Says whose, and what it needs.</summary>
+    public class Alert_RP_ExecutionBodyOnTable : Alert_Prison
+    {
+        public Alert_RP_ExecutionBodyOnTable()
+        {
+            defaultLabel = "RP_Alert_ExecutionBodyOnTable".Translate();
+            defaultPriority = AlertPriority.High;
+        }
+
+        public override TaggedString GetExplanation() => PrisonAlerts.ExecutionBody is { } body ? DeathRowSystem.BodyOnTableText(body) : "";
+        protected override AlertReport Report() => PrisonAlerts.ExecutionBody is { Spawned: true } body ? AlertReport.CulpritIs(body) : false;
+    }
+
+    /// <summary>A condemned whose date has passed and whose execution waits for the warden (and the state fines the prison a little more each day).</summary>
+    public class Alert_RP_ExecutionAwaiting : Alert_Prison
+    {
+        public Alert_RP_ExecutionAwaiting()
+        {
+            defaultLabel = "RP_Alert_ExecutionAwaiting".Translate();
+            defaultPriority = AlertPriority.High;
+        }
+
+        public override TaggedString GetExplanation() => "RP_Alert_ExecutionAwaitingDesc".Translate(string.Join(", ", PrisonAlerts.ExecutionAwaiting.Select(p => p.LabelShort)));
+        protected override AlertReport Report() => AlertReport.CulpritsAre(PrisonAlerts.ExecutionAwaiting);
+    }
+
+    /// <summary>An execution the warden authorised, set for a coming night.</summary>
+    public class Alert_RP_ExecutionSet : Alert_Prison
+    {
+        public Alert_RP_ExecutionSet()
+        {
+            defaultLabel = "RP_Alert_ExecutionSet".Translate();
+            defaultPriority = AlertPriority.Medium;
+        }
+
+        public override TaggedString GetExplanation() => "RP_Alert_ExecutionSetDesc".Translate(string.Join(", ", PrisonAlerts.ExecutionSet.Select(p => p.LabelShort + " (" + "RP_Alert_InHours".Translate(((p.Inmate().executionTick - Find.TickManager.TicksGame) / (float)GenDate.TicksPerHour).ToString("0")) + ")")));
+        protected override AlertReport Report() => AlertReport.CulpritsAre(PrisonAlerts.ExecutionSet);
     }
 
     public class Alert_RP_Hungry : Alert_Prison

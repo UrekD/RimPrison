@@ -61,9 +61,9 @@ and feature checks. It fails on any error in the log that is not a known vanilla
 A run without the expansions (Core, Harmony and this mod) was checked too.
 
 **Census runs.** To measure flakiness, batches of about six runs (two of the events plan, saveload, normal, stress,
-showcase) ran on the main line of development (numbered up to 90), and **34 stability rounds** fixed what they
+showcase) ran on the main line of development (numbered up to 91), and **35 stability rounds** fixed what they
 turned up: flaky checks, and the product bugs behind some of them. Of the last batches, 6, 6, 3, 5, 5 and 5 of 6 runs
-passed, then 4, 5 and 6 of 6 after the trusties, the injured officer's case and the staffed control room landed. The round after the 3 of 6 fixed its cause. The showcase prison's
+passed, then 4, 5, 6 and 6 of 6 after the trusties, the injured officer's case, the staffed control room and the last day on death row landed. The round after the 3 of 6 fixed its cause. The showcase prison's
 freezer running warm came back once and its check now names the cause (the cooler had no power), which is the next fix.
 
 **UI tour** (`tools/uitour.sh`, `tools/showcase-shots.sh`): a windowed run under Xvfb with software Vulkan that opens
@@ -76,7 +76,8 @@ every screen, or walks the prison, and takes a screenshot of each. The screensho
 - **Flaky checks.** Some feature checks still fail now and then in the harness (a few timing-dependent ones are
   known); not every failure has been traced to a cause.
 - **Unfinished work.** The planned escape, the outside work party, an injured officer's leave and return, and a staffed
-  control room are in; the last day on death row is being built, and the tape of unwatched cameras is planned.
+  control room and the last day on death row are in; menus by wing and a word with an officer are being built, and the tape of
+  unwatched cameras is planned.
 - **Other mods.** Only Harmony was loaded with it. No modded save was tried.
 - **Multiplayer.** Not considered.
 

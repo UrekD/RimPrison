@@ -107,7 +107,7 @@ namespace RimPrison
                 }
                 Pawn p = Throwaway(map, r);
                 CompInmate c = p.Inmate();
-                if (c?.security == null || ShuttleSystem.OnTheWayOut(p) || DeathRowSystem.ExecutionOverdue(c)) { PerDiemFail("payment", $"premise: the throwaway inmate is not one the state pays for (level {c?.security?.defName})"); return; }
+                if (c?.security == null || ShuttleSystem.OnTheWayOut(p) || DeathRowSystem.Pending(c)) { PerDiemFail("payment", $"premise: the throwaway inmate is not one the state pays for (level {c?.security?.defName})"); return; }
                 int rate = SupermaxSystem.DailyPayment(c);
                 var log = new List<string>();
                 var with = new Dictionary<string, int>();

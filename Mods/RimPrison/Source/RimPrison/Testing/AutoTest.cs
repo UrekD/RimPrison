@@ -473,6 +473,7 @@ namespace RimPrison
                 c.appealsLeft = 1;
                 c.nextAppealTick = Find.TickManager.TicksGame + (3 + k) * GenDate.TicksPerHour;
                 c.innocent = k == 1;
+                deathRowHurried.Add(p.thingIDNumber);
                 k++;
             }
             RPLog.Message($"[RimPrison:test] death row inmates: {k}");
@@ -980,6 +981,7 @@ namespace RimPrison
                     arc.pawns[0] = condemned;
                     string condemnedName = condemned.LabelShort;
                     DeathRowSystem.Execute(condemned, null);
+                    ExecutedBodyGone(condemned); // (an execution leaves the body: the check does not)
                     executedLine = $"{condemned.Dead}/{arc.done}/{arc.pawns.Contains(condemned)}/{g.stats.gangWarsEnded - ended0}";
                     if (!condemned.Dead || !arc.done || arc.pawns.Contains(condemned) || g.stats.gangWarsEnded != ended0 + 1 || !Told(EndLine("RP_Chr_GangWarEnd_Leader", condemnedName, saints.label)))
                         problems0.Add($"executing a gang war leader did not end the war with the leader line, or left them in the cast ({executedLine})");
@@ -3725,7 +3727,9 @@ namespace RimPrison
             RPLog.Message($"[RimPrison:test] statistics: {StatisticsTab.Rows.Count} rows, {counters.Count} fields");
         }
         private static readonly List<string> problems0 = new List<string>();
-        private static int lastRequests;
+        private static int lastRequests, lastDayAuthorised, deathRowBodiesStuck, deathRowBodiesForbidden;
+        /// <summary>The condemned the deathrow plan hurried (the ones the end check answers for, and the only ones: a case admitted later has its appeals ahead of it).</summary>
+        private static readonly HashSet<int> deathRowHurried = new HashSet<int>();
         private static readonly HashSet<int> debtsSeen = new HashSet<int>();
         private static readonly int[] debtKinds = new int[3];
         private static int towerHours, downedOutHours, nightGuardHours, hungryLogs, gardenerHours, gardenIdleLogs, maxBeatsInADay, floorSleeps, floorSleepLogs, maxInmatesSeen;
@@ -3786,6 +3790,8 @@ namespace RimPrison
             if (Plan == "events" && eventsFired) CheckVocationOnce(Find.CurrentMap);
             // Trusties and the outside work party (TrustyChecks.cs): once the stove fire left to the staff is over (see CheckTrustiesOnce).
             if (Plan == "events" && eventsFired) CheckTrustiesOnce(Find.CurrentMap);
+            // The last day's checks on real ticks (LastDayChecks.cs): once, after the trusty checks, so every other check's clock is main's.
+            if (Plan == "events" && eventsFired) CheckLastDayTickedOnce(Find.CurrentMap);
             // Hostage plan: two hours in, a guard is taken and nobody answers (see StartHostageSoak).
             if (Plan == "hostage" && !hostageSoakStarted && Find.TickManager.TicksGame - startTick >= 2 * GenDate.TicksPerHour) StartHostageSoak(Find.CurrentMap);
             if (Plan == "hostage" && hostageSoakStarted) WatchHostageSoak(Find.CurrentMap);
@@ -3934,6 +3940,7 @@ namespace RimPrison
                 sb.Append($"dt={DrugTesting.Describe(c)} ");
                 sb.Append($"it={InformantTask.Describe(c)} ");
                 sb.Append($"wl={WatchList.Describe(c)} ");
+                sb.Append($"ld={LastDay.Describe(c)} ");
             }
             foreach (Pawn s in map.mapPawns.FreeColonistsSpawned.OrderBy(p => p.thingIDNumber))
                 sb.Append($"{s.LabelShort}:{s.GetComp<CompStaff>()?.role?.defName}/t={s.GetComp<CompStaff>()?.lastTrainedTick}:{s.GetComp<CompStaff>()?.trainingPending}/w={s.GetComp<CompStaff>()?.waryOfId}:{s.GetComp<CompStaff>()?.waryUntilTick}:{s.GetComp<CompStaff>()?.waryOfName}/rank={s.GetComp<CompStaff>()?.rank}:{s.GetComp<CompStaff>()?.passedOverTick}/since={s.GetComp<CompStaff>()?.roleSinceTick}:{s.GetComp<CompStaff>()?.pendingFire}/held={HostageCrisis.IsHeld(s)}:{s.MentalStateDef?.defName}/cmp={s.GetComp<CompStaff>()?.complaintsUpheld}:{s.GetComp<CompStaff>()?.lastUpheldTick}:{s.GetComp<CompStaff>()?.trueComplaints}:{s.GetComp<CompStaff>()?.disciplineUntilTick}:{s.GetComp<CompStaff>()?.standDownUntilTick}/as={s.GetComp<CompStaff>()?.assaultedTick}/uo={UnitOfficers.Describe(s.GetComp<CompStaff>())}/hs={s.GetComp<CompStaff>()?.homeSinceTick} ");
@@ -3992,6 +3999,7 @@ namespace RimPrison
             SeedSupermaxForReload(map);
             SeedPsychForReload(map);
             SeedDrugTestForReload(map);
+            SeedLastDayForReload(map);
             // A state loan being repaid, so its fields make the round trip.
             if (PrisonGame.Instance.story.loanOwed == 0)
             {
@@ -4221,6 +4229,8 @@ namespace RimPrison
             SeedEvacuationForReload(map);
             // (Last of the seeds: the guard is to be carrying the meal at the save. It ticks no more than a few ticks: see SeedCareDetailForReload.)
             SeedCareDetailForReload(map);
+            // (After it: the last day's procedures, started by hand and put at their moment with no game tick, so that the seeds above keep what they set: see SeedLastDayCaseForReload.)
+            SeedLastDayCaseForReload(map);
             // (The evacuation's drill flag, set only now: nothing ticks between this and the save.)
             MarkEvacuationForSnapshot(map);
             RecordWatchListForReload(map);
@@ -4281,6 +4291,7 @@ namespace RimPrison
             // The seeded shot-caller's deal came back whole, and is taken out again.
             UnseedGangDealAfterReload(map);
             CheckDrugTestAfterReload(map);
+            CheckLastDayAfterReload(map);
             // The seeded funerals came back whole, and are taken out again.
             CheckFuneralAfterReload(map);
             // The seeded supplies and the traced tool in a stash came back whole, and are taken out again.
@@ -4392,15 +4403,18 @@ namespace RimPrison
             CheckAdjudicationAfterReload(map);
             // (The same for the handover's seeds: a tunnel dug a few hours, a suspicion file that grew, would move what the round trip is judged on.)
             CheckHandoverAfterReload(map);
+            // (The control room's answer and the supermax walks are judged before the last day's procedures tick the game for a thousand ticks and more: the operator's seat is held by the shift and the walks are tick-sensitive. The walks' ticks keep the last day's guards on shift: see KeepLastDayGuardsOnShift.)
+            CheckCctvAfterReload(map);
+            CheckSupermaxAfterReload(map);
+            // (The last day's procedures, carried on from the save by ticking the game: before the checks that tick it for long, which would send the seeded guards home at a shift change.)
+            FinishLastDayCaseAfterReload(map);
             // (Last: it ticks the game, which the state comparison above must not see.)
             CheckArrestAfterReload(map);
             CheckHostageAfterReload(map);
-            CheckSupermaxAfterReload(map);
             FinishCareDetailAfterReload(map);
             CheckEvacuationAfterReload(map);
             CheckBarAfterReload(map);
             CheckGuardPostAfterReload(map);
-            CheckCctvAfterReload(map);
             CheckKeptRoomsAfterReload(map);
             CheckHiringAfterReload(map);
             CheckCountAfterReload(map);
@@ -4507,6 +4521,30 @@ namespace RimPrison
                     lastRequests++;
                     RPLog.Message($"[RimPrison:test] last request of {condemned?.LabelShort}: {(condemned?.Inmate()?.innocent == true ? "clemency" : "last meal")}");
                 }
+            // (The execution is no longer automatic: the warden authorises each case that waits. Hurried like the appeals - the night is five hours off, so the evening is one hour off - and the real procedure follows.)
+            if (Plan == "deathrow")
+                foreach (Pawn waiting in map.mapPawns.PrisonersOfColonySpawned.ToList())
+                    if (waiting.Inmate() is { execStage: ExecStage.Awaiting } waitingCase && LastDay.TryAuthorise(waiting))
+                    {
+                        waitingCase.executionTick = Find.TickManager.TicksGame + 5 * GenDate.TicksPerHour;
+                        lastDayAuthorised++;
+                        RPLog.Message($"[RimPrison:test] authorised the execution of {waiting.LabelShort}");
+                    }
+            // (An executed body is never forbidden - the procedure allows it, the staff would otherwise pass it by outside the home area - and the executioner moves it off the table at once. Nothing is allowed here: a body forbidden, or still on a table two
+            // hours after, is counted and fails the plan, with what the haulers see.)
+            if (Plan == "deathrow")
+            {
+                foreach (Building executionTable in map.listerBuildings.AllBuildingsColonistOfDef(RPDeathRowDefOf.RP_ExecutionTable))
+                    if (executionTable.Position.GetFirstThing<Corpse>(map) is { } onTable && onTable.InnerPawn?.Inmate() is { execStage: ExecStage.Executed } && onTable.Age > 2 * GenDate.TicksPerHour && PrisonMap.Of(map) is { } morguePm)
+                    {
+                        deathRowBodiesStuck++;
+                        RPLog.Message($"[RimPrison:test] the body of {onTable.InnerPawn.LabelShort} has lain on the execution table for {onTable.Age / (float)GenDate.TicksPerHour:F1} h: ours {Morgue.Ours(onTable)}, settled {Morgue.Settled(onTable, morguePm)}, morgue full {Morgue.Full(map, morguePm)}, forbidden {onTable.IsForbidden(Faction.OfPlayer)}, " +
+                                      $"haulers on {string.Join("/", map.mapPawns.FreeColonistsSpawned.Where(x => x.GetComp<CompStaff>()?.role != null).Select(x => x.CurJobDef?.defName ?? "none"))}");
+                    }
+                foreach (Thing t in map.listerThings.ThingsInGroup(ThingRequestGroup.Corpse))
+                    if (t is Corpse body && body.InnerPawn?.Inmate() is { execStage: ExecStage.Executed } && body.IsForbidden(Faction.OfPlayer) && deathRowBodiesForbidden++ < 3)
+                        RPLog.Message($"[RimPrison:test] the body of {body.InnerPawn.LabelShort}, executed, is forbidden at {body.Position} (outside the home area: {!map.areaManager.Home[body.Position]})");
+            }
             // Off-shift staff go home instead of sleeping on the floor (a nap from exhaustion or sickness mid-shift is
             // vanilla behaviour, not this).
             maxInmatesSeen = Math.Max(maxInmatesSeen, map.mapPawns.PrisonersOfColonySpawnedCount);
@@ -4989,6 +5027,9 @@ namespace RimPrison
             // The trusty checks run after the stove fire (CheckTrustiesOnce): a run that ends before they ran judged none of them.
             if (Plan == "events" && !trustiesRan)
                 problems.Add($"the trusty checks never ran (the stove fire left to the staff: pending {staffFirePending}, lit at {staffFireTick}, out at {staffFireOutTick})");
+            // The last day's real-tick checks run after the trusty checks (CheckLastDayTickedOnce): a run that ends before they ran judged none of them.
+            if (Plan == "events" && !lastDayTickedRan)
+                problems.Add($"the last day's checks on real ticks never ran (the trusty checks ran: {trustiesRan}; the stove fire left to the staff: pending {staffFirePending}, lit at {staffFireTick}, out at {staffFireOutTick})");
             // The stove fire left to the staff: out within a few hours, the stove still standing (fought, not burned out).
             if (Plan == "events")
             {
@@ -5037,8 +5078,25 @@ namespace RimPrison
                 if (fineNow + ateFine == 0) problems.Add("the fine menu produced no fine meals");
             }
             if (Plan == "deathrow" && game.stats.executions > 0 && lastRequests == 0) problems.Add("an execution with no last request asked of the warden");
-            if (Plan == "deathrow" && game.stats.executions + game.stats.commuted < 2)
-                problems.Add($"death row unresolved: executions={game.stats.executions} commuted={game.stats.commuted}");
+            if (Plan == "deathrow" && game.stats.executions > 0 && lastDayAuthorised == 0) problems.Add("an execution the warden never authorised");
+            if (Plan == "deathrow")
+            {
+                // Every condemned the plan hurried is accounted for: executed, commuted, or authorised for a night that has not come yet (by design: the plan's run ends before it). Anything else is said with what it waits for.
+                int nowTick = Find.TickManager.TicksGame, nightsAhead = 0;
+                var unresolved = new List<string>();
+                foreach (Pawn waiting in map.mapPawns.PrisonersOfColonySpawned)
+                {
+                    if (!deathRowHurried.Contains(waiting.thingIDNumber) || waiting.Inmate() is not { } waitingCase || DeathRowSystem.Ext(waitingCase) == null) continue;
+                    if (waitingCase.execStage == ExecStage.Authorised && waitingCase.executionTick > nowTick) nightsAhead++;
+                    else unresolved.Add($"{waiting.LabelShort} {LastDay.Describe(waitingCase)} (restrained {waiting.health.hediffSet.HasHediff(RPSecurityDefOf.RP_Restrained)}, mental {waiting.MentalStateDef?.defName ?? "no"}, a free table {DeathRowSystem.FindTable(map, null) != null})");
+                }
+                int resolved = game.stats.executions + game.stats.commuted;
+                RPLog.Message($"[RimPrison:test] death row: {deathRowHurried.Count} hurried, executed {game.stats.executions}, commuted {game.stats.commuted}, authorised for a night ahead {nightsAhead}, unresolved {unresolved.Count}, authorised by the plan {lastDayAuthorised}, executed bodies forbidden {deathRowBodiesForbidden}, on a table over two hours {deathRowBodiesStuck}");
+                if (deathRowBodiesForbidden > 0) problems.Add($"an executed body was forbidden {deathRowBodiesForbidden} times (the procedure allows it)");
+                if (deathRowBodiesStuck > 0) problems.Add($"an executed body lay on the execution table for more than two hours {deathRowBodiesStuck} times (the executioner moves it off at once)");
+                if (resolved + nightsAhead < deathRowHurried.Count || unresolved.Count > 0)
+                    problems.Add($"death row unresolved: executions={game.stats.executions} commuted={game.stats.commuted} nights ahead={nightsAhead} of {deathRowHurried.Count} hurried; still waiting: {string.Join("; ", unresolved)}");
+            }
             // The state shuttle came (weather and threats may call off a day, not all of them), nobody is stuck on the way in, and nobody released has waited days for it.
             if (days >= 2 && (Plan == "normal" || Plan == "stress" || Plan == "big" || Plan == "huge") && game.stats.shuttleLandings == 0)
                 problems.Add($"the state shuttle never landed in {days} days (called off {game.stats.shuttlesCancelled}, delayed {game.shuttle.delayedVisits}, visit {game.shuttle.visit?.Describe()})");

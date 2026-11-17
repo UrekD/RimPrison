@@ -28,6 +28,7 @@
     <comps>
       <li Class="RimPrison.CompProperties_GuardPost" />
     </comps>
+    <placeWorkers><li>RimPrison.PlaceWorker_NotOnMonitorSeat</li></placeWorkers>
   </ThingDef>
   <JobDef>
     <defName>RP_ManPost</defName>

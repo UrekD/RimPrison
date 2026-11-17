@@ -201,8 +201,8 @@ namespace RimPrison
             Ask(PrisonGame.Instance, c.Map, pm, c);
         }
 
-        /// <summary>One of the prison's own people: an inmate or one of the staff (the morgue takes a visitor's body too, and no funeral is asked for them).</summary>
-        private static bool Mournable(Pawn dead) => IsStaff(dead) || dead.Inmate() is { security: not null };
+        /// <summary>One of the prison's own people: an inmate or one of the staff (the morgue takes a visitor's body too, and no funeral is asked for them), and not one the state put to death.</summary>
+        internal static bool Mournable(Pawn dead) => IsStaff(dead) || dead.Inmate() is { security: not null, execStage: not ExecStage.Executed };
 
         /// <summary>Whether there is a place to hold a funeral for this body: the grave (the plot will take it), the chapel or the shuttle pad.</summary>
         public static bool HasPlace(Map map, PrisonMap pm, Corpse body) => body != null && Burial.Wanted(body, pm) || HasVenue(map, pm);

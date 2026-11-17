@@ -42,8 +42,13 @@ namespace RimPrison
         /// <summary>Death row: appeals left (-1 = not yet set up), next hearing, execution date (-1 = none).</summary>
         public int appealsLeft = -1;
         public int nextAppealTick = -1;
+        /// <summary>The execution date; once the warden has authorised it, the night itself (22:00, see <see cref="LastDay"/>). -1: none.</summary>
         public int executionTick = -1;
         public int lastOverdueTick = -999999;
+        /// <summary>Death row, the last day (see <see cref="LastDay"/>): where the case stands, whether the one stay was asked for, whether the last evening has been had, whether the wrongful execution of them came to light (the family's letter says so), the guards the warden named for the night and the named ones who refused it.</summary>
+        public ExecStage execStage;
+        public bool stayUsed, lastEveningDone, exposedWrongful;
+        public List<int> detailIds = new List<int>(), detailRefused = new List<int>();
         /// <summary>Seen by the psychologist (hidden reputations and gang revealed).</summary>
         public bool assessed;
         public int lastTherapyTick = -999999;
@@ -420,6 +425,17 @@ namespace RimPrison
             Scribe_Values.Look(ref nextAppealTick, "rpNextAppeal", -1);
             Scribe_Values.Look(ref executionTick, "rpExecution", -1);
             Scribe_Values.Look(ref lastOverdueTick, "rpLastOverdue", -999999);
+            Scribe_Values.Look(ref execStage, "rpExecStage");
+            Scribe_Values.Look(ref stayUsed, "rpStayUsed");
+            Scribe_Values.Look(ref lastEveningDone, "rpLastEvening");
+            Scribe_Values.Look(ref exposedWrongful, "rpExposedWrongful");
+            Scribe_Collections.Look(ref detailIds, "rpDetail", LookMode.Value);
+            Scribe_Collections.Look(ref detailRefused, "rpDetailRefused", LookMode.Value);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                detailIds ??= new List<int>();
+                detailRefused ??= new List<int>();
+            }
             Scribe_Values.Look(ref innocent, "rpInnocent");
             Scribe_Values.Look(ref religious, "rpReligious");
             Scribe_Values.Look(ref assessed, "rpAssessed");
@@ -818,7 +834,7 @@ namespace RimPrison
         /// activity, the restraint), the home bed, the tunnel and what staff suspect of it (suspected, cell search pending, a tip
         /// waiting, who smuggled for them), sanctions (yard, shop and visit bans), a hunger strike, the care refusal, and the
         /// arrangements of the stay (appeal, innocence claim, referral, mentor, remission, informant pay and task, dealer, the restorative meeting), doubts about the gang and an old gang's green light, the library book in the cell and how far it was read, and the watch list (a period, its answer and clocks, the last trigger; the count of crises stays).</item>
-        /// <item>Reset too: the trusty status and the outside pass (<see cref="trustySinceTick"/>, <see cref="outsidePass"/>; a returning reoffender is no trusty), and with it the outside job.</item>
+        /// <item>Reset too: the death-row case (<see cref="DeathRowSystem.ClearCase"/>: the stage, the stay, the last evening, the detail), the trusty status and the outside pass (<see cref="trustySinceTick"/>, <see cref="outsidePass"/>; a returning reoffender is no trusty), and with it the outside job.</item>
         /// <item>Kept on purpose: <see cref="staffMemories"/> (what staff feel about them outlives a stay, a story feature), the
         /// misconduct records, reputations, gang, life and mail history, passed programs, relatives, the answered care decisions about chronic conditions (the condition stays with them; "nothing" and unanswered ones are asked again, see <see cref="OldAge"/>), cash and the psychologist's
         /// file, and the job (re-checked for eligibility by the labor pass).</item>
@@ -843,6 +859,7 @@ namespace RimPrison
             assailantId = assaultTick = -1;
             hungerStrikeUntilTick = -1;
             careRefusedTick = -1;
+            DeathRowSystem.ClearCase(this);
             // (A letter that was never answered, or answered with nothing, is asked again: the answered history stays.)
             care.RemoveAll(d => d.choice is CareChoice.Pending or CareChoice.Nothing);
             appealResolveTick = -1;

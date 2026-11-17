@@ -206,6 +206,8 @@ namespace RimPrison
         /// <summary>Someone left for good (released, transferred, dead): their stories end now.</summary>
         public void Notify_Leaving(Pawn p)
         {
+            // (The condemned's case ends, and its detail is freed.)
+            DeathRowSystem.Notify_Leaving(p);
             // (Before a release clears the stay: an approved restorative meeting is refunded.)
             Amends.Notify_Leaving(p);
             Mentors.Notify_Leaving(p);

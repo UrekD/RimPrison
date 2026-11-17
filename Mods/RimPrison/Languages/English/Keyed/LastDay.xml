@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- The last day on death row (Security/LastDay.cs). No capital letter may follow a colon here (the game capitalises it): a dash or a comma. A keyed string defined twice keeps the first. -->
+
+  <!-- The condemned's status, on the file and in the sentence column. -->
+  <RP_DeathRowAwaiting>Death row - awaiting the warden's authority</RP_DeathRowAwaiting>
+  <RP_DeathRowAuthorised>Death row - execution authorised, in {0} hours</RP_DeathRowAuthorised>
+  <RP_DeathRowStay>Death row - stay granted, hearing in {0} days</RP_DeathRowStay>
+
+  <!-- The warden's answers. -->
+  <RP_Last_NotOpen>They are not in custody on death row.</RP_Last_NotOpen>
+  <RP_Last_NotAwaiting>The case is not waiting for your authority.</RP_Last_NotAwaiting>
+  <RP_Last_StayUsed>The state has granted this one stay already, and will not grant another.</RP_Last_StayUsed>
+  <RP_Last_StayTooLate>A stay can only be asked for until the night begins.</RP_Last_StayTooLate>
+  <RP_Last_Authorise>Authorise</RP_Last_Authorise>
+  <RP_Last_AuthoriseTip>Set the execution for the next night at 22:00, at least twelve hours from now. The last evening comes first.</RP_Last_AuthoriseTip>
+  <RP_Last_AuthoriseConfirm>Authorise the execution of {0}? It is set for the next night at 22:00, at least twelve hours from now.</RP_Last_AuthoriseConfirm>
+  <RP_Last_Stay>Ask for a stay</RP_Last_Stay>
+  <RP_Last_StayTip>Ask the state for one stay, once per case. One more hearing is held in {0} days at the usual odds, and it costs {1} reputation with the state. Lost, the case comes back to you.</RP_Last_StayTip>
+  <RP_Last_StayConfirm>Ask the state for a stay for {0}? One more hearing is held in {1} days at the usual odds, it costs {2} reputation with the state, and it can only be asked for once.</RP_Last_StayConfirm>
+  <RP_Last_NameGuard>Name the detail</RP_Last_NameGuard>
+  <RP_Last_DetailTip>Name up to {0} guards for the night. Only they take the condemned to the table, until the third hour of the night, when any free guard may. A guard with kin on death row will refuse.</RP_Last_DetailTip>
+  <RP_Last_Name>Name {0}</RP_Last_Name>
+  <RP_Last_TakeOff>Take {0} off the detail</RP_Last_TakeOff>
+  <RP_Last_NoGuards>No guard who could be named.</RP_Last_NoGuards>
+  <RP_Last_DetailNone>Detail - nobody named, any free guard will do.</RP_Last_DetailNone>
+  <RP_Last_Detail>Detail - {0}.</RP_Last_Detail>
+  <RP_Last_Refuses>(refuses)</RP_Last_Refuses>
+  <RP_Last_OffSite>(off site)</RP_Last_OffSite>
+  <RP_Last_LineAwaiting>The execution awaits your authority, and the state fines the prison {0} today.</RP_Last_LineAwaiting>
+  <RP_Last_LineSet>The execution is set for the night, in {0} hours.</RP_Last_LineSet>
+  <RP_Authorised>The execution of {0} is set for the night, in {1} hours.</RP_Authorised>
+  <RP_Chr_Authorised>The warden authorised the execution of {0}, set for the night in {1} hours.</RP_Chr_Authorised>
+  <RP_StayAsked>The warden asked the state for a stay for {0}. A last hearing is set in {1} days.</RP_StayAsked>
+  <RP_Chr_StayAsked>The warden asked the state for a stay for {0}. A last hearing is set in {1} days.</RP_Chr_StayAsked>
+  <RP_StayLostLabel>Stay refused</RP_StayLostLabel>
+  <RP_StayLostText>The last hearing for {0} is over and the stay is refused. The case is back with you, warden.</RP_StayLostText>
+
+  <!-- The date reached. -->
+  <RP_AwaitingLabel>Execution awaits your authority</RP_AwaitingLabel>
+  <RP_AwaitingText>The date for {0} has come, and the state waits for the warden. Open their file and authorise the execution, or ask the state for one stay.\n\nUntil you do, the state stops paying for them and fines the prison {1} the first day, and more every day after.</RP_AwaitingText>
+  <RP_Chr_AwaitingAuthority>The date for {0} came. The state waits for the warden's authority.</RP_Chr_AwaitingAuthority>
+  <RP_Chr_NightMissed>The night passed without the execution of {0} - {1}. It is set for the next night.</RP_Chr_NightMissed>
+  <RP_NightMissed_NoGuard>no guard took them to the table</RP_NightMissed_NoGuard>
+  <RP_NightMissed_NotRestrained>they could not be restrained</RP_NightMissed_NotRestrained>
+  <RP_NightMissed_BodyOnTable>a body lies on the execution table</RP_NightMissed_BodyOnTable>
+  <RP_NightMissed_NoTable>there is no execution table</RP_NightMissed_NoTable>
+
+  <!-- The last evening. -->
+  <RP_Chr_LastVisit>{0} had a last visit at the cell door - {1}.</RP_Chr_LastVisit>
+  <RP_Chr_LastChaplain>The chaplain sat with {0} at the cell door on the last evening.</RP_Chr_LastChaplain>
+  <RP_Chr_LastEveningAlone>{0} had no family to visit and no chaplain to sit with them on the last evening.</RP_Chr_LastEveningAlone>
+
+  <!-- The detail and the procedure. -->
+  <RP_Chr_DetailRefused>{0} refused to be on the detail for {1} - there is family of theirs on death row.</RP_Chr_DetailRefused>
+  <RP_ExecStop_Gone>they are gone</RP_ExecStop_Gone>
+  <RP_ExecStop_NotSentenced>they are no longer under sentence of death</RP_ExecStop_NotSentenced>
+  <RP_ExecStop_NotAuthorised>the execution is not authorised any more</RP_ExecStop_NotAuthorised>
+  <RP_ExecStop_NotYet>the night has not begun</RP_ExecStop_NotYet>
+  <RP_ExecStop_Clemency>the governor has not answered the plea</RP_ExecStop_Clemency>
+  <RP_ExecStop_NotInCustody>they are not in the prison's custody</RP_ExecStop_NotInCustody>
+  <RP_ExecStop_NoTable>there is no execution table</RP_ExecStop_NoTable>
+  <RP_ExecStop_NotOnTable>they are not on the table</RP_ExecStop_NotOnTable>
+  <RP_ExecStop_Interrupted>the procedure was interrupted</RP_ExecStop_Interrupted>
+  <RP_Chr_ExecutionStopped>The execution of {0} was stopped - {1}.</RP_Chr_ExecutionStopped>
+  <RP_Chr_ExecutedReturned>{0} is alive again. The case is back with the warden, the one stay already used.</RP_Chr_ExecutedReturned>
+
+  <!-- A body on the only table. -->
+  <RP_Alert_ExecutionBodyOnTable>Execution waiting - a body lies on the execution table</RP_Alert_ExecutionBodyOnTable>
+  <RP_Problem_ExecutionBodyOnTable>An execution is waiting, and the body of {0} lies on the execution table, so the next cannot be laid on it. {1}</RP_Problem_ExecutionBodyOnTable>
+  <RP_Table_NeedMorgue>Paint a morgue so the staff can take it there, or move it yourself.</RP_Table_NeedMorgue>
+  <RP_Table_NeedAllow>It is forbidden, so the staff will not touch it - allow it, or move it yourself.</RP_Table_NeedAllow>
+  <RP_Table_NeedRoom>The morgue is full - make room in it, or move the body yourself.</RP_Table_NeedRoom>
+  <RP_Table_NeedHauler>A guard, cook, workman or janitor on shift must be able to reach it and the morgue - or move it yourself.</RP_Table_NeedHauler>
+
+  <!-- Last words: by traits and by how they spent the appeals. Never by whether they were guilty. -->
+  <RP_Chr_LastWords>{0}'s last words were "{1}"</RP_Chr_LastWords>
+  <RP_LastWords_Plain_0>Is it time? All right then.</RP_LastWords_Plain_0>
+  <RP_LastWords_Plain_1>Tell them I was not afraid.</RP_LastWords_Plain_1>
+  <RP_LastWords_Plain_2>Could I have a glass of water, if there is one?</RP_LastWords_Plain_2>
+  <RP_LastWords_Cold_0>Get on with it. I have heard worse threats.</RP_LastWords_Cold_0>
+  <RP_LastWords_Cold_1>None of you will remember my name by spring.</RP_LastWords_Cold_1>
+  <RP_LastWords_Cold_2>Do not make a speech over me, warden.</RP_LastWords_Cold_2>
+  <RP_LastWords_Appeals_0>I asked them to look once more. They looked.</RP_LastWords_Appeals_0>
+  <RP_LastWords_Appeals_1>The paper said no. Paper always wins.</RP_LastWords_Appeals_1>
+  <RP_LastWords_Appeals_2>I waited for the last letter. It was not the one I wanted.</RP_LastWords_Appeals_2>
+  <RP_LastWords_Faith_0>I am ready. Pray for me.</RP_LastWords_Faith_0>
+  <RP_LastWords_Faith_1>I will see you on the other side.</RP_LastWords_Faith_1>
+  <RP_LastWords_Faith_2>I have made my peace. Go with God.</RP_LastWords_Faith_2>
+  <RP_LastWords_Regret_0>I am sorry. I am sorry to every one of them.</RP_LastWords_Regret_0>
+  <RP_LastWords_Regret_1>Tell my family I thought of them every day.</RP_LastWords_Regret_1>
+  <RP_LastWords_Regret_2>I wish I had been better than I was.</RP_LastWords_Regret_2>
+
+  <!-- The alerts and the to-do list. -->
+  <RP_Alert_ExecutionAwaiting>Execution awaits your authority</RP_Alert_ExecutionAwaiting>
+  <RP_Alert_ExecutionAwaitingDesc>The date has come for {0}, and the state is waiting for the warden. Open the inmate's file and authorise the execution, or ask the state for one stay. Every day it waits the state stops paying for them and fines the prison.</RP_Alert_ExecutionAwaitingDesc>
+  <RP_Alert_ExecutionSet>Execution set for the night</RP_Alert_ExecutionSet>
+  <RP_Alert_ExecutionSetDesc>An execution is set for the coming night - {0}. The condemned has the last evening from 18:00, and the guards you named (or any free guard) take them to the table at 22:00. A stay can still be asked for until then.</RP_Alert_ExecutionSetDesc>
+  <RP_Alert_InHours>in {0} hours</RP_Alert_InHours>
+  <RP_Problem_ExecutionCase>{0} - {1}</RP_Problem_ExecutionCase>
+
+  <!-- The family's letter after an execution. -->
+  <RP_Mail_CondolenceExecuted_Label>A letter about {0}</RP_Mail_CondolenceExecuted_Label>
+  <RP_Mail_CondolenceExecuted_Text>{0}'s {1} writes to the warden. The body came home on the state shuttle after the execution. The family says they knew how it would end, and thanks the prison for the last visit and for the way it was done.</RP_Mail_CondolenceExecuted_Text>
+  <RP_Mail_Chr_CondolenceExecuted>The family of {0} wrote after the execution, and the body came home.</RP_Mail_Chr_CondolenceExecuted>
+  <RP_Mail_CondolenceExecutedBitter_Label>A bitter letter about {0}</RP_Mail_CondolenceExecutedBitter_Label>
+  <RP_Mail_CondolenceExecutedBitter_Text>{0}'s {1} writes to the warden. The body came home on the state shuttle. The evidence that came out afterwards says {0} should never have been executed, and the family holds the prison to blame. They say they will tell anyone who asks.</RP_Mail_CondolenceExecutedBitter_Text>
+  <RP_Mail_Chr_CondolenceExecutedBitter>The family of {0} wrote after the execution, and blamed the prison for a death that should not have happened.</RP_Mail_Chr_CondolenceExecutedBitter>
+</LanguageData>

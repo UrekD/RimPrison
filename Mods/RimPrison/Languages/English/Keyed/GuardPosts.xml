@@ -7,6 +7,7 @@
   <RP_PostGuardAny>any free guard</RP_PostGuardAny>
   <RP_PostPlace>{0} ({1}, {2})</RP_PostPlace>
   <RP_PostPlaceNone>post at ({0}, {1})</RP_PostPlaceNone>
+  <RP_PostOnMonitorSeat>That is where a guard sits at a CCTV monitor</RP_PostOnMonitorSeat>
 
   <RP_PostInspectHours>Hours - {0}</RP_PostInspectHours>
   <RP_PostInspectGuard>Guard - {0}</RP_PostInspectGuard>

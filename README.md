@@ -206,6 +206,14 @@ duty watches it.
   gang may lean on them, and friends inside are glad. They may also visit a friend inside as themselves.
 - **Programs and parole:** inmates take programs. Parole means a hearing room with a board and speakers for and
   against, then life on parole. There is also remission, and death row.
+- **The last day on death row:** when the appeals run out the execution waits for you. On the condemned's file you
+  authorise it for the next night at 22:00 (at least twelve hours off) or ask the state for one stay, once, at a cost in
+  reputation (one more hearing, three days on). Until you answer, the state stops paying for them and fines the prison a
+  little more every day. The evening before, they have a last visit at the cell door if they have family, and the chaplain
+  if you have one. You may name up to three guards for the night; a guard with kin on death row will never take part, and if none
+  of the named has taken it by the third hour any free guard may. Their last words go in the chronicle; the body goes
+  home on the shuttle (or to the plot) like any other death's, and the family writes. The guard who carried it out moves the
+  body off the table at once, so the next execution is not kept waiting.
 - **Restorative meeting:** for an inmate inside for a violent crime who has passed a program (or wants to make amends,
   a goal of its own), the counsellor may propose a meeting with the victim's family. The letter states the fee, the
   counsellor's hours and the odds, and what makes them (the inmate's tension and traits, the counsellor's Social skill,
@@ -429,6 +437,7 @@ Hidden gangs, debts and rings stay hidden until then.
   screens to the next), so a camera nobody watches sees no misconduct, adds no suppression and cannot
   see an escape; a court still takes a working camera's recording as evidence. The state penitentiary comes with a control
   room of four monitors, two for the day and two for the night, and its yard, canteens and gates on the first screens.
+  A guard post cannot be placed on the cell a monitor's guard sits on.
 - **A care detail:** on the Deployment tab, keep up to three guards for care. They are picked each hour from the guards on
   duty (those already feeding or carrying first) or named by you, and they bring the meal to the inmate shut in a cell, feed
   and carry the injured and walk a supermax inmate back to the cell, while the others answer the trouble: a reserve guard

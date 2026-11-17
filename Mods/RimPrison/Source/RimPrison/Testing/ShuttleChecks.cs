@@ -26,6 +26,7 @@ namespace RimPrison
                 Find.TickManager.DoSingleTick();
                 KeepSupermaxGuardsOnShift();
                 KeepDrugTestDoctorsOnShift();
+                KeepLastDayGuardsOnShift();
                 ticked++;
             }
             return ticked;

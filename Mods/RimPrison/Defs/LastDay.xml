@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The last day on death row (Security/LastDay.cs): the last evening's memories, the guards' memory of the night, and the family's letter after an execution. -->
+  <ThoughtDef>
+    <defName>RP_LastVisit</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>saw my family one last time</label><description>They came to the cell door tonight. I said what I had to say.</description><baseMoodEffect>8</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RP_ChaplainAtTheDoor</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>the chaplain stayed at my door</label><description>The chaplain stayed at the door as long as I wanted to talk.</description><baseMoodEffect>6</baseMoodEffect></li></stages>
+  </ThoughtDef>
+  <!-- A plain memory with no other pawn (see the hurt-on-duty memories: vanilla discards a social memory that names a pawn when that pawn is discarded, and an executed one is). -->
+  <ThoughtDef>
+    <defName>RP_ExecutionDetail</defName>
+    <durationDays>5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages><li><label>on the execution detail</label><description>I was there when it was done. It is the job, and it does not wash off.</description><baseMoodEffect>-8</baseMoodEffect></li></stages>
+  </ThoughtDef>
+
+  <!-- The family's letter to the warden about an execution (never post for an inmate: see CondolenceSystem). -->
+  <RimPrison.MailKindDef>
+    <defName>RP_Mail_CondolenceExecuted</defName>
+    <label>a family's letter after an execution</label>
+    <weight>0</weight>
+    <workerClass>RimPrison.MailKindWorker_Condolence</workerClass>
+    <chronicleKey>RP_Mail_Chr_CondolenceExecuted</chronicleKey>
+    <importance>2</importance>
+    <minFamily>0</minFamily>
+  </RimPrison.MailKindDef>
+  <RimPrison.MailKindDef>
+    <defName>RP_Mail_CondolenceExecutedBitter</defName>
+    <label>a family's bitter letter after a wrongful execution</label>
+    <weight>0</weight>
+    <workerClass>RimPrison.MailKindWorker_Condolence</workerClass>
+    <chronicleKey>RP_Mail_Chr_CondolenceExecutedBitter</chronicleKey>
+    <importance>2</importance>
+    <reputation>-1</reputation>
+    <minFamily>0</minFamily>
+  </RimPrison.MailKindDef>
+</Defs>

@@ -185,7 +185,8 @@ namespace RimPrison
                 EvStability29();
                 EvStability31();
                 EvHurtOnDuty();
-                // (The trusties' checks are not in the burst: their real ticks take hours of the game's clock, which the stove fire left to the staff waits on - see AutoTest.CheckTrustiesOnce.)
+                EvLastDay();
+                // (The trusties' checks and the last day's real-tick checks are not in the burst: their ticks take hours of the game's clock, which the stove fire left to the staff waits on - see AutoTest.CheckTrustiesOnce and CheckLastDayTickedOnce.)
             }
 
         }

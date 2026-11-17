@@ -311,12 +311,21 @@ namespace RimPrison
             string.Join(",", Posts(map).Select(p => $"{p.parent.Position.x},{p.parent.Position.z}:{p.fromHour}:{p.toHour}:{p.assigned?.thingIDNumber}"));
     }
 
+    /// <summary>A floor post is not put on a monitor's seat: whoever stands on a floor post there would be counted as the monitor's operator (see <see cref="GuardPosts.IsMonitorSeat"/>). Only a monitor already built has a seat to refuse; a monitor put up later beside a post is the monitor's own placement.</summary>
+    public class PlaceWorker_NotOnMonitorSeat : PlaceWorker
+    {
+        public override AcceptanceReport AllowsPlacing(BuildableDef checkingDef, IntVec3 loc, Rot4 rot, Map map, Thing thingToIgnore = null, Thing thing = null) =>
+            GuardPosts.IsMonitorSeat(map, loc) ? new AcceptanceReport("RP_PostOnMonitorSeat".Translate()) : true;
+    }
+
     /// <summary>Guards on shift and free man the open posts (under the towers, above the patrol, under all the rest of a guard's work: a built tower keeps its guard, the posts take the guards no tower needs).</summary>
     public class WorkGiver_ManPost : WorkGiver_Scanner
     {
-        // (Floor posts and monitors are both posts, and nothing else is: the scan is over the two lists and no region search is made - an undefined request has none - and a job asked for by hand takes the same list, see
-        // FloatMenuOptionProvider_WorkGivers.ScannerShouldSkip.)
-        public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.Undefined);
+        // (Floor posts and monitors are both posts, and nothing else is: the scan is over the two lists, which is the narrow scan - the game takes the list when there is one and makes no region search for it, with AllowUnreachable
+        // below, see JobGiver_Work - and a job asked for by hand takes the same list, see FloatMenuOptionProvider_WorkGivers.ScannerShouldSkip. The request is for the game's tests of one thing: a hand-ordered job is given again as
+        // priority work only for a thing the request accepts, JobGiver_Work.GiverTryGiveJobPrioritized. A request takes one def or one group, never two defs, so it is the narrowest group that holds both, the artificial buildings,
+        // and HasJobOnThing says no to every one that is not a post.)
+        public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial);
 
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => GuardPosts.PostThings(pawn.Map);
 

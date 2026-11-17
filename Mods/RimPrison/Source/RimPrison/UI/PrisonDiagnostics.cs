@@ -83,8 +83,12 @@ namespace RimPrison
             if (bodies > 0 && !pm.zones.Any(RPMorgueDefOf.RP_Morgue)) yield return new Item("RP_Problem_Bodies".Translate(bodies), rooms);
             // A morgue that does not take them (full, out of reach, or a body outside the home area that vanilla forbade): the line stays until they are collected.
             else if (pm.zones.Any(RPMorgueDefOf.RP_Morgue) && Morgue.Uncollected(map, pm, Morgue.StuckAfterTicks) is var stuck and > 0) yield return new Item("RP_Problem_BodiesStuck".Translate(stuck), rooms);
-            if (inmates.Any(p => p.Inmate() is { } c && DeathRowSystem.ExecutionDue(c)) && DeathRowSystem.FindTable(map, null) == null)
-                yield return new Item("RP_Problem_NoExecutionTable".Translate(), rooms);
+            if (inmates.Any(p => p.Inmate() is { } c && DeathRowSystem.Pending(c)) && DeathRowSystem.FindTable(map, null) == null)
+                yield return new Item(DeathRowSystem.BodyOnTable(map) is { } tableBody ? DeathRowSystem.BodyOnTableText(tableBody) : "RP_Problem_NoExecutionTable".Translate().Resolve(), rooms);
+            // The condemned whose case is the warden's: their authority awaited, or a night set.
+            foreach (Pawn p in inmates)
+                if (p.Inmate() is { } dc && DeathRowSystem.Ext(dc) is { } dext && LastDay.Line(dc, dext) is { } caseLine)
+                    yield return new Item("RP_Problem_ExecutionCase".Translate(p.LabelShort, caseLine), MainTabWindow_Prison.Tab.Inmates);
             if (map.mapPawns.FreeColonistsSpawned.Any(IncidentWorker_StaffStrike.Striking)) yield return new Item("RP_Problem_Strike".Translate(), MainTabWindow_Prison.Tab.Staff);
             if (game.bureaucracy.active != null && BureaucracySystem.Stalled(map))
                 yield return new Item("RP_Problem_BureaucracyStalled".Translate(game.bureaucracy.active.label), MainTabWindow_Prison.Tab.Bureaucracy);

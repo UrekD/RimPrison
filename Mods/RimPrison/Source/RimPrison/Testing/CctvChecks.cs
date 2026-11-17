@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using HarmonyLib;
 using RimWorld;
@@ -180,11 +181,13 @@ namespace RimPrison
             CheckCctvSeat(map);
             CheckCctvWorkGiver(map);
             CheckCctvPolicyOff(map);
+            CheckCctvPolicySetter(map);
             CheckCctvOldSave(map);
             CheckCctvOldSaveLetter(map);
             CheckCctvSpecialMeasures(map);
             CheckCctvOverlay(map);
             CheckCctvOracle(map);
+            CheckCctvOracleOwnership(map);
             CheckCctvPenitentiary(map);
         }
 
@@ -574,7 +577,7 @@ namespace RimPrison
 
         /// <summary>
         /// A floor post is never put on a monitor's seat (its interaction cell): the cell is known as a seat, the cell for a post near it is another, and a post put up at the seat goes elsewhere - a guard on a floor post standing
-        /// there would be counted as the monitor's operator. (Fails if the post's cell search does not skip a seat.)
+        /// there would be counted as the monitor's operator. (Fails if the post's cell search does not skip a seat, or the post's def has no place worker that refuses one.)
         /// </summary>
         private static void CheckCctvSeat(Map map)
         {
@@ -596,13 +599,19 @@ namespace RimPrison
                     if (post.Position == s.sit) CctvFail(check, "a floor post put up at a monitor's seat was put on it");
                 }
                 else RPLog.Message("[RimPrison:test] cctv (seat): no floor post could be put up near the seat (the post's cell is not judged)");
+                // The player's own post (the designator and the blueprint ask the def's place workers): not on the seat, the cell beside it as before.
+                AcceptanceReport onSeat = GenConstruct.CanPlaceBlueprintAt(RPPostDefOf.RP_GuardPost, s.sit, Rot4.North, map);
+                if (onSeat.Accepted) CctvFail(check, $"a floor post could be placed on the monitor's seat {s.sit}: the def's place workers did not refuse it");
+                else if (onSeat.Reason != "RP_PostOnMonitorSeat".Translate().ToString()) CctvFail(check, $"a floor post on the monitor's seat {s.sit} was refused for another reason than the seat ('{onSeat.Reason}')");
+                IntVec3 beside = GuardPosts.CellNear(map, s.sit);
+                if (beside.IsValid && !GenConstruct.CanPlaceBlueprintAt(RPPostDefOf.RP_GuardPost, beside, Rot4.North, map).Accepted) CctvFail(check, $"a floor post could not be placed beside the seat, at {beside}: the place worker refuses more than the seat");
             });
         }
 
         /// <summary>
-        /// The work giver scans the posts and nothing else, and the guard goes to the seat: its request is undefined (the game's region search over every building is skipped), what it scans is the posts' own list (the floor
-        /// spots and the monitors), reach is asked of the seat and not of the building (a monitor's own cell is no place to go), so a walled-in seat is no job, and a monitor facing another way has its seat on the right side of it.
-        /// (Fails if the giver asks for every building, or lets the game test reach to the building.)
+        /// The work giver scans the posts and nothing else, and the guard goes to the seat: its request accepts a post of either kind (so that a job ordered by hand is given again as priority work), what it scans is the posts' own list (the floor
+        /// spots and the monitors, no region search over every building), reach is asked of the seat and not of the building (a monitor's own cell is no place to go), so a walled-in seat is no job, and a monitor facing another way has its seat on the right side of it.
+        /// (Fails if the giver's request accepts no monitor, a hand-ordered post job is not given again as priority work, or the game is let to test reach to the building.)
         /// </summary>
         private static void CheckCctvWorkGiver(Map map)
         {
@@ -612,7 +621,9 @@ namespace RimPrison
                 CctvScene s = CctvScene.TryMake(map, r, check, reachableFromIntake: true);
                 if (s == null) return;
                 var giver = new WorkGiver_ManPost();
-                if (!giver.PotentialWorkThingRequest.IsUndefined) CctvFail(check, $"the work giver's request is {giver.PotentialWorkThingRequest}: the game would search the regions around every guard for buildings, and test each of them");
+                // (The request accepts both kinds of post, or the game would not give a hand-ordered post job again as priority work; the scan stays the posts' own list below.)
+                ThingRequest request = giver.PotentialWorkThingRequest;
+                if (request.IsUndefined || !request.Accepts(s.monitor.parent)) CctvFail(check, $"the work giver's request is {request}: it does not accept a CCTV monitor, so the game never gives a hand-ordered post job again as priority work");
                 List<Thing> scanned = giver.PotentialWorkThingsGlobal(s.op).ToList();
                 if (!scanned.Contains(s.monitor.parent) || scanned.Count != GuardPosts.Posts(map).Count || scanned.Any(t => t.TryGetComp<CompGuardPost>() == null))
                     CctvFail(check, $"the work giver scans {scanned.Count} things ({scanned.Count(t => t.TryGetComp<CompGuardPost>() == null)} of them no post) for {GuardPosts.Posts(map).Count} posts, the monitor among them {scanned.Contains(s.monitor.parent)}");
@@ -622,6 +633,20 @@ namespace RimPrison
                 {
                     RPLog.Message($"[RimPrison:test] cctv (work giver): the seat and the rotated monitor are not judged - the free guard has no job at the working monitor (open {s.post.OpenNow})");
                     return;
+                }
+                // A hand-ordered post job is given again as priority work (the game's JobGiver_Work asks the giver with the request's own test, for the things on the cell the player ordered): a monitor and a floor post.
+                MethodInfo again = AccessTools.Method(typeof(JobGiver_Work), "GiverTryGiveJobPrioritized");
+                WorkGiver worker = DefDatabase<WorkGiverDef>.GetNamed("RP_ManPost").Worker;
+                Job monitorJob = (Job)again.Invoke(new JobGiver_Work(), new object[] { s.op, worker, s.monitor.parent.Position });
+                if (monitorJob == null || monitorJob.def != RPPostDefOf.RP_ManPost || monitorJob.targetA.Thing != s.monitor.parent)
+                    CctvFail(check, $"a hand-ordered job at the monitor was not given again as priority work (got {monitorJob?.def.defName ?? "nothing"}, target {monitorJob?.targetA.Thing?.LabelShort ?? "none"})");
+                IntVec3 floor = s.posts.Site(s.op);
+                CompGuardPost floorPost = floor.IsValid ? s.posts.Post(floor) : null;
+                if (floorPost == null) RPLog.Message("[RimPrison:test] cctv (work giver): the floor post's priority work is not judged - no cell for a floor post");
+                else if (giver.HasJobOnThing(s.op, floorPost.parent))
+                {
+                    Job floorJob = (Job)again.Invoke(new JobGiver_Work(), new object[] { s.op, worker, floorPost.parent.Position });
+                    if (floorJob == null || floorJob.targetA.Thing != floorPost.parent) CctvFail(check, $"a hand-ordered job at a floor post was not given again as priority work (got {floorJob?.def.defName ?? "nothing"})");
                 }
                 // A walled-in seat is no job, though the monitor's own cell can be walked to.
                 Thing wall = ThingMaker.MakeThing(ThingDefOf.Wall, ThingDefOf.BlocksGranite);
@@ -673,6 +698,60 @@ namespace RimPrison
                 s.Leave();
                 CctvPolicy(r, true);
                 if (s.Seen()) CctvFail(check, "with the policy back on the camera still saw the inmate with nobody at the monitor");
+            });
+        }
+
+        /// <summary>
+        /// 5b. The policy's own setter (the Policy tab's switch, the old-save letter's Accept) rebuilds the cache in the same tick: with a guard seated at the monitor, switching the policy on makes the camera seen and the monitor
+        /// carry it at once, switching it off clears what the monitor carried at once - through <see cref="Cctv.SetPolicy"/> and the letter's worker, with no rebuild by hand and no tick between. (Fails if the setter does not rebuild:
+        /// the cameras stay unwatched until the next beat.)
+        /// </summary>
+        private static void CheckCctvPolicySetter(Map map)
+        {
+            Guarded("cctv: setting the policy changes what is seen in the same tick", map, r =>
+            {
+                const string check = "policy setter";
+                CctvScene s = CctvScene.TryMake(map, r, check);
+                if (s == null) return;
+                if (!s.Covers())
+                {
+                    RPLog.Message("[RimPrison:test] cctv (policy setter): not judged - the scene's camera does not cover the inmate's cell");
+                    return;
+                }
+                PrisonGame g = PrisonGame.Instance;
+                (bool need, bool migrated, bool sent) = (g.camerasNeedOperator, g.cctvMigrated, g.cctvLetterSent);
+                r.Add(() =>
+                {
+                    (g.camerasNeedOperator, g.cctvMigrated, g.cctvLetterSent) = (need, migrated, sent);
+                    Cctv.RebuildAll();
+                });
+                s.Sit();
+                var worker = new PrisonDecisionWorker_CctvSwitch();
+                for (int round = 0; round < 2; round++)
+                {
+                    string how = round == 0 ? "Cctv.SetPolicy" : "the old-save letter's Accept";
+                    // The policy off, the guard seated: the old rule sees the inmate, and the cache carries nothing.
+                    CctvPolicy(r, false);
+                    g.cctvMigrated = false;
+                    if (!s.Seen() || s.monitor.carrying != 0 || Cctv.OperatorOf(s.monitor.parent) != s.op)
+                    {
+                        CctvFail(check, $"({how}) the check's own premise: with the policy off and a guard seated the inmate is seen {s.Seen()} (want true), the monitor carries {s.monitor.carrying} (want 0), the operator is {Cctv.OperatorOf(s.monitor.parent)?.LabelShort ?? "nobody"}");
+                        return;
+                    }
+                    if (round == 0) Cctv.SetPolicy(true);
+                    else worker.Accept(null, map);
+                    if (!g.camerasNeedOperator || !g.cctvMigrated) CctvFail(check, $"({how}) left the policy {g.camerasNeedOperator} (want true) and the migration {g.cctvMigrated} (want done)");
+                    if (!s.Camera.watched || s.monitor.carrying < 1 || s.monitor.seated != s.op || !s.Seen())
+                        CctvFail(check, $"({how}) switching the policy on with a guard seated left the cache as it was: camera watched {s.Camera.watched}, the monitor carries {s.monitor.carrying}, seated {s.monitor.seated?.LabelShort ?? "nobody"}, inmate seen {s.Seen()} (a rebuild is owed in the same tick)");
+                    // And off: what the monitor carried is cleared at once, the camera is watched by itself again.
+                    if (round == 0)
+                    {
+                        Cctv.SetPolicy(false);
+                        if (s.Camera.watched || s.monitor.carrying != 0 || s.monitor.seated != null || !s.Seen())
+                            CctvFail(check, $"({how}) switching the policy off left the cache as it was: camera watched {s.Camera.watched}, the monitor carries {s.monitor.carrying}, seated {s.monitor.seated?.LabelShort ?? "nobody"}, inmate seen {s.Seen()} (want not carried, seen by itself)");
+                    }
+                    if (Cctv.Stale(map, s.pm, out _) != 0) CctvFail(check, $"({how}) the plain walk found the cache stale right after the policy was set");
+                }
             });
         }
 
@@ -928,6 +1007,61 @@ namespace RimPrison
                 if (flipped == 0) CctvFail(check, "the policy flipped by hand, with no rebuild, was not found stale by the beat's walk before it rebuilt");
                 s.Rebuild();
                 if (Cctv.Mismatches(s.map, s.pm, out _) != 0) CctvFail(check, "the beat's rebuild did not leave the cache and the plain walk agreeing");
+            });
+        }
+
+        /// <summary>
+        /// 10b. The oracle holds the cache's screen ownership too, not only which cameras are watched: with two monitors seated and fewer cameras than one monitor carries, every camera is watched by the first and the second
+        /// carries none. A camera that names the other monitor as its screen is found with every watched flag right (<see cref="Cctv.Mismatches"/>), and so is the lifecycle fault it stands for - the carrying monitor taken down
+        /// and the cache not rebuilt (its cameras still name it, the other monitor carries nothing, <see cref="Cctv.Stale"/>), while the rebuild of a real take-down leaves both walks at zero. (Fails if the walk reads the
+        /// booleans only.)
+        /// </summary>
+        private static void CheckCctvOracleOwnership(Map map)
+        {
+            Guarded("cctv: the oracle holds which monitor carries a camera", map, r =>
+            {
+                const string check = "oracle ownership";
+                CctvScene s = CctvScene.TryMake(map, r, check);
+                if (s == null) return;
+                IntVec3 site = CctvSite(map, s.monitor.parent.Position, 3f);
+                if (!site.IsValid)
+                {
+                    RPLog.Message("[RimPrison:test] cctv (oracle ownership): not run - no free cell for a second monitor");
+                    return;
+                }
+                CompCctvMonitor second = SpawnTestMonitor(map, r, site);
+                Pawn op2 = s.posts.Guard(s.away);
+                s.Sit();
+                s.posts.Place(op2, GuardPosts.StandCell(second.parent));
+                s.Rebuild();
+                CompCctvMonitor first = s.monitor;
+                CompSecurityCamera cam = s.Camera;
+                if (s.pm.Cameras.Count >= first.Props.feeds || first.seated != s.op || second.seated != op2 || !cam.watched || cam.screenId != first.parent.thingIDNumber || first.carrying != s.pm.Cameras.Count || second.carrying != 0)
+                {
+                    RPLog.Message($"[RimPrison:test] cctv (oracle ownership): not judged - the premise does not hold ({s.pm.Cameras.Count} cameras, first seated {first.seated?.LabelShort ?? "nobody"} carrying {first.carrying}, second seated {second.seated?.LabelShort ?? "nobody"} carrying {second.carrying}, camera on screen {cam.screenId})");
+                    return;
+                }
+                if (Cctv.Mismatches(map, s.pm, out _) != 0 || Cctv.Stale(map, s.pm, out _) != 0) CctvFail(check, "two seated monitors with a right cache already differ from the plain walk");
+                // A camera that names the other monitor, its watched answer still right.
+                cam.screenId = second.parent.thingIDNumber;
+                if (Cctv.Mismatches(map, s.pm, out _) == 0) CctvFail(check, "a camera that names a monitor that does not carry it was not found by the walk after a rebuild (the watched answers are all right)");
+                if (Cctv.Stale(map, s.pm, out _) == 0) CctvFail(check, "a camera that names a monitor that does not carry it was not found by the walk before a rebuild");
+                s.Rebuild();
+                // A monitor's own count.
+                second.carrying = 1;
+                if (Cctv.Mismatches(map, s.pm, out _) == 0) CctvFail(check, "a monitor that carries a camera it should not (its count is wrong, every camera right) was not found by the walk");
+                s.Rebuild();
+                // The carrying monitor taken down with no rebuild after it: the take-down rebuilds by itself, so its answer is put back by hand as it stood.
+                int gone = first.parent.thingIDNumber;
+                int carried = first.carrying;
+                first.parent.Destroy(DestroyMode.Vanish);
+                if (Cctv.Mismatches(map, s.pm, out _) != 0 || Cctv.Stale(map, s.pm, out _) != 0 || cam.screenId != second.parent.thingIDNumber || second.carrying != carried)
+                    CctvFail(check, $"after the take-down the cache was not rebuilt to the monitor left (camera on screen {cam.screenId}, want {second.parent.thingIDNumber}; the monitor left carries {second.carrying}, want {carried})");
+                (cam.screenId, second.carrying) = (gone, 0);
+                if (Cctv.Stale(map, s.pm, out _) == 0) CctvFail(check, "a take-down of the carrying monitor with no rebuild (its camera still names it, the monitor left carries nothing) was not found stale");
+                if (Cctv.Mismatches(map, s.pm, out _) == 0) CctvFail(check, "a take-down of the carrying monitor with no rebuild was not found by the walk after a beat");
+                s.Rebuild();
+                if (Cctv.Mismatches(map, s.pm, out _) != 0 || Cctv.Stale(map, s.pm, out _) != 0) CctvFail(check, "a rebuild did not put the ownership right");
             });
         }
 

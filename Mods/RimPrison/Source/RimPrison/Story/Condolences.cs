@@ -10,6 +10,7 @@ namespace RimPrison
     {
         public static MailKindDef RP_Mail_Condolence;
         public static MailKindDef RP_Mail_CondolenceBitter;
+        public static MailKindDef RP_Mail_CondolenceExecuted, RP_Mail_CondolenceExecutedBitter;
 
         static RPCondolenceDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(RPCondolenceDefOf));
     }
@@ -122,6 +123,9 @@ namespace RimPrison
             Pawn dead = corpse.InnerPawn;
             string name = dead.LabelShort;
             bool family = HasFamily(dead, out string from, out bool staff), fault = AtFault(dead), old = dead.Inmate() is { diedOfAge: true };
+            // (An execution has its own letter, bitter only when the wrongful one came to light: what is written is what the warden knows, never whether they were guilty.)
+            CompInmate file = dead.Inmate();
+            bool executed = file is { execStage: ExecStage.Executed }, exposed = executed && file.exposedWrongful;
             corpse.Destroy();
             game.story.bitterDeaths.Remove(dead.thingIDNumber);
             game.stats.bodiesSent++;
@@ -130,7 +134,7 @@ namespace RimPrison
             if (!family) return;
             game.story.condolences.Add(new Condolence
             {
-                kind = fault ? RPCondolenceDefOf.RP_Mail_CondolenceBitter : old ? RPOldAgeDefOf.RP_Mail_CondolenceOld : RPCondolenceDefOf.RP_Mail_Condolence,
+                kind = executed ? (exposed ? RPCondolenceDefOf.RP_Mail_CondolenceExecutedBitter : RPCondolenceDefOf.RP_Mail_CondolenceExecuted) : fault ? RPCondolenceDefOf.RP_Mail_CondolenceBitter : old ? RPOldAgeDefOf.RP_Mail_CondolenceOld : RPCondolenceDefOf.RP_Mail_Condolence,
                 name = name,
                 from = from,
                 staff = staff,

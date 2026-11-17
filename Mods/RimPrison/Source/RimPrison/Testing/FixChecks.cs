@@ -637,6 +637,7 @@ namespace RimPrison
                     int entries0 = PrisonGame.Instance.story.entries.Count, ledger0 = PrisonGame.Instance.ledger.recent.Count;
                     var letters0 = new HashSet<Letter>(Find.LetterStack.LettersListForReading);
                     DeathRowSystem.Execute(p, null);
+                    ExecutedBodyGone(p); // (an execution leaves the body: the check does not)
                     letter = Find.LetterStack.LettersListForReading.Any(l => !letters0.Contains(l));
                     fines = PrisonGame.Instance.ledger.recent.Skip(ledger0).Count(e => e.category == RPDefOf.RP_Fines);
                     List<ChronicleEntry> written = PrisonGame.Instance.story.entries.Skip(entries0).Where(e => e.cat == RPChronicleDefOf.RP_Chr_Death).ToList();

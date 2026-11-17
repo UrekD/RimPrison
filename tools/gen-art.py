@@ -787,6 +787,11 @@ def glyph(kind, size=64, outlined=False):
     elif kind == 'tree':
         rect(28,36,36,55,1)
         poly([(32,7),(12,29),(21,29),(7,43),(57,43),(43,29),(52,29)])
+    elif kind == 'axe':
+        line([(12,55),(43,22)],5.5)
+        poly([(33,16),(41,10),(52,8),(57,15),(56,28),(48,33),(41,28)])
+        c.line([(46,16),(51,21)],None,2.5)
+        line([(8,57),(27,57)],3.5)
     elif kind == 'drop':
         poly([(32,7),(18,26),(12,38),(14,47),(21,54),(32,57),(43,54),(50,47),(52,38),(46,26)])
         c.line([(23,33),(20,40),(23,47)],None,3)
@@ -932,6 +937,8 @@ ZONE_GLYPHS = {
     'RP_SupermaxYard': 'tree',
     # (The morgue and the burial plot came with the death-inside work, which left no icon for them: this run's art generation stopped at them.)
     'RP_Morgue': 'bed', 'RP_BurialPlot': 'leaf',
+    # (Trusties' outside work party: the axe of the tree cutting.)
+    'RP_OutsideWork': 'axe',
 }
 SMALL_ICONS = {'Padlock': 'padlock', 'Bed': 'bed', 'Cross': 'cross',
                'Fist': 'fist', 'Star': 'star', 'Door': 'door', 'Eye': 'eye',

@@ -102,7 +102,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RP_ExecutionTable</defName>
     <label>execution table</label>
-    <description>Where death sentences are carried out. On the day, guards restrain the condemned in their cell, carry them here and carry out the sentence. Put it in a staff-only room.</description>
+    <description>Where death sentences are carried out. On the night you have authorised, guards restrain the condemned in their cell, carry them here and carry out the sentence, and the guard who did it moves the body off the table. Put it in a staff-only room.</description>
     <thingClass>Building</thingClass>
     <designationCategory>RP_Prison</designationCategory>
     <graphicData>

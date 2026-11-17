@@ -197,7 +197,7 @@ namespace RimPrison
             foreach (Thing screen in screens)
             {
                 IntVec3 sit = GuardPosts.StandCell(screen);
-                if (!sit.Standable(map) || !map.reachability.CanReach(gate, sit, Verse.AI.PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors))) Fail($"nobody can sit at the CCTV monitor at {screen.Position - PrisonBuilder.Origin(map)}: its cell {sit} is not standable or not reachable from the gatehouse");
+                if (!sit.Standable(map) || !map.reachability.CanReach(gate, sit, Verse.AI.PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors))) Fail($"nobody can sit at the CCTV monitor at {screen.Position - PrisonBuilder.Origin(map)}: its seat {sit - PrisonBuilder.Origin(map)} is not standable or not reachable from the gatehouse");
             }
             // (The control room's check files its problems on the events plan's list; the showcase has its own, so they are carried over.)
             int cctvProblems0 = problems0.Count;

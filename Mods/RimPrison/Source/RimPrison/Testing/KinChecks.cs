@@ -865,6 +865,7 @@ namespace RimPrison
                 string name = condemned.LabelShort;
                 string executedLine = "RP_Chr_KinExecuted".Translate(Kin.Mention(guard), Kin.Label(condemned, guard), name).Resolve();
                 DeathRowSystem.Execute(condemned, null);
+                ExecutedBodyGone(condemned); // (an execution leaves the body: the check does not)
                 if (!condemned.Dead) { KinFail(check, "the check's own premise: the execution did not kill"); return; }
                 if (!r.NewEntries.Any(en => en.text == executedLine)) KinFail(check, $"no colleague line \"{executedLine}\" for an execution");
                 if (executedThought == null) KinFail(check, "the check's own premise: vanilla has no died thought for the executed kin");
